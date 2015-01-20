@@ -1,0 +1,45 @@
+﻿@section HeaderStyle
+{
+@Html.CombresCustomUrl("contentCss")}
+@section FooterJs
+{@Html.CombresCustomUrl("toolsJs")}
+<div class="body">
+    <div style="margin:50px 0 50px 200px">
+     <a href="@Url.Action("prove", "tools")" target="_blank">@Html.GetTrans(572)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("rejected", "tools")" target="_blank">查看被拒绝的课程</a>
+    </div>
+    @if (ViewBag.IsAdmin)
+    {
+    <div style="margin:50px 0 50px 200px">
+    根据ID审批/拒绝课程<br />
+    Class Id :   <input type="text" value="" id="classId"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Preview Class" id="previewbtn"/>
+    </div>
+    <div style="margin:30px 0 50px 200px">
+    根据ID上线/下架课程<br />
+    Class Id :   <input type="text" value="" id="classId1"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Change Class Status" id="viewbtn"/>
+    </div>
+    }
+   
+    <div style="margin:50px 0 50px 200px">
+        Check Blurb Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Show Blurb Id" id="showll"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Hide Blurb Id" id="hidell"/>
+    </div>
+    <div style="margin:50px 0 50px 200px">
+        MemberId:<input type="text" value="0" id="memberId"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Set MemberId" id="setmemberid"/>
+    </div>
+      
+    @if (ViewBag.IsAdmin)
+    {
+    <div style="margin:50px 0 50px 200px">
+        MemberId:<input type="text" value="0" id="masterMemberId"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="设置达人" id="setmaster"/>
+    </div>
+    <div style="margin:100px 0 50px 200px">
+      <a href="@Url.Action("coins", "tools")" target="_blank">课币相关的工具</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;收回 @(DateTime.Now.AddDays(-60).ToString("yy-MM-dd")) 至 @(DateTime.Now.AddDays(-30).ToString("yy-MM-dd")) 免费课币&nbsp;&nbsp;<input type="button" value="收回" id="getcoinbackbtn"/>
+    </div>
+    }
+    
+      
+
+    
+    
+    
+</div>    
+<!-- end of body -->

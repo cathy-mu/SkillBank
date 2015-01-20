@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "q3";
+    Layout = "~/Views/Shared/_3rdLayout.cshtml";
+}
+
+<html xmlns:wb="http://open.weibo.com/wb">
+<head>
+    <title>Sina</title>
+    <meta http-equiv="content-script-type" content="text/javascript" />  
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=111240964" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        function login() {
+            var returnUrl = "http://www.skillbank.cn/signup";
+            window.open("https://api.weibo.com/oauth2/authorize?client_id=111240964&response_type=code&redirect_uri=" + encodeURIComponent(returnUrl))
+        }
+    </script>
+</head>
+<body>
+    <div></div>
+    
+    <a href="javascript:login();">Login</a>
+</body>
+
+</html>

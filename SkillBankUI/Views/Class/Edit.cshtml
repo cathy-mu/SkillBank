@@ -1,0 +1,352 @@
+﻿@model SkillBank.Site.Web.ViewModel.ClassEditModel
+@section HeaderStyle
+{@Html.CombresCustomUrl("classEditCss")}
+@section FooterJs
+{@Html.CombresCustomUrl("classEditJs")}
+<div class="body">
+    <div class="create-class">
+        <div class="create-class-hd">
+            <div class="inner">
+                <div class="row-fluid">
+                    <div class="span10">
+                        <ul class="nav nav-tabs steps-tabs">
+                            <li class="active" id="tab-about-me"><a href="#about-me" data-toggle="tab"><span class="icon icon-circle-me"></span>
+                                <br />
+                                @Html.GetTrans(597)</a></li>
+                            <li id="tab-class-overview"><a href="#class-overview" data-toggle="tab"><span class="icon icon-circle-overview"></span>
+                                <br />
+                                @Html.GetTrans(263)</a></li>
+                            <li id="tab-class-photo"><a href="#class-photo" data-toggle="tab"><span class="icon icon-circle-photo"></span>
+                                <br />
+                                @Html.GetTrans(264)</a></li>
+                        </ul>
+                    </div>
+                    <div class="span2 tcenter">
+                        <div class="steps-left">
+                            <h3 id="number-steps-left">3</h3>
+                            <h4>
+                                <label id="number-steps-tip3" class="number-steps-tips">@Html.GetTrans(265)</label><label id="number-steps-tip2" class="number-steps-tips hide">@Html.GetTrans(493)</label><label id="number-steps-tip1" class="number-steps-tips hide">@Html.GetTrans(492)</label></h4>
+                        </div>
+
+                        <div class="steps-complete none">
+                            <a href="#" id="class-publish" class="btn btn-primary btn-block spaced">@Html.GetTrans(486)</a>
+                            <a id="class-confirm-publish" href="#modal-confirm-publish" data-toggle="modal"></a>
+                            <a href="@Url.Action("Preview", "Class", new { id = @ViewBag.ClassId })" target="_blank" id="class-preview" class="btn btn-default btn-block">@Html.GetTrans(487)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="create-class-bd">
+            <div class="inner">
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <h3 class="spaced-larger errormessage">@ViewBag.ErrorMessage</h3>
+                }
+                
+                @if (Model.ClassInfo != null)
+                { 
+                    <div class="tab-content">
+                        <div class="tab-pane active padding" id="about-me">
+                            <form id="form-about-me">
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+
+                                        <div class="row-fluid spaced-large">
+                                            <div class="span2 tright">
+                                                <label for="" class="control-label">@Html.GetTrans(249)</label>
+                                            </div>
+                                            <div class="span6 form-inline">
+                                                <select name="" id="class-category-list" class="form-control span6 chosen">
+                                                    <option value="" data-id="">@Html.GetTrans(250)</option>
+                                                    @if (Model.CategoryLkp != null)
+                                                    {
+                                                        foreach (var item in Model.CategoryLkp)
+                                                        {
+                                                        <option value="@item.CateId" data-id="@item.SubCategories" data-name="@item.CateName" @((Model.ParentCategoryId != null && (Model.ParentCategoryId == item.CateId || Model.ClassInfo.Category_Id == item.CateId)) ? "selected=\"selected\"" : "")>@Html.GetTrans(item.BlubId)</option>
+                                                        }
+                                                    }
+                                                </select>
+                                                <span id="class-subcategory-list-frame">
+                                                    <select name="" id="class-subcategory-list" class="form-control span6 chosen">
+                                                        @if (Model.CategoryLkp != null && Model.CategoryLkp.Count > 0)
+                                                        {
+                                                            foreach (var item in Model.CategoryLkp)
+                                                            {
+                                                                if (!String.IsNullOrEmpty(item.SubCategories))
+                                                                {
+                                                                    var subCates = item.SubCategories.Split(';');
+                                                                    foreach (var cate in subCates)
+                                                                    {
+                                                                        var optItem = cate.Split(',');
+                                                            <option value="@optItem[0]" @((Model.ParentCategoryId != null && Model.ClassInfo.Category_Id.ToString() == optItem[0]) ? "selected=\"selected\"" : "")>@optItem[1]</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </select>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-fluid spaced-larger">
+                                            <div class="span2 tright">
+                                                <label for="" class="control-label">@Html.GetTrans(252)</label>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-slider">
+                                                    <div class="slider-labels">
+                                                        <table>
+                                                            <tr>
+                                                                <td>@Html.GetTrans(255)</td>
+                                                                <td>@Html.GetTrans(256)</td>
+                                                                <td>@Html.GetTrans(257)</td>
+                                                                <td>@Html.GetTrans(258)</td>
+                                                                <td class="last">@Html.GetTrans(259)</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div id="skill-slider"></div>
+                                                    <input type="hidden" name="" id="skill-slider-input" value="@((Model.ClassInfo == null) ? "50" : Model.ClassInfo.SkillLevel.ToString())">
+                                                    <div class="slider-min">0</div>
+                                                    <div class="slider-max">100</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-fluid spaced-larger">
+                                            <div class="span2 tright">
+                                                <label for="" class="control-label">@Html.GetTrans(253)</label>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-slider">
+                                                    <div class="slider-labels">
+                                                        <table>
+                                                            <tr>
+                                                                <td>@Html.GetTrans(255)</td>
+                                                                <td>@Html.GetTrans(256)</td>
+                                                                <td>@Html.GetTrans(257)</td>
+                                                                <td>@Html.GetTrans(258)</td>
+                                                                <td class="last">@Html.GetTrans(259)</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div id="level-slider"></div>
+                                                    <input type="hidden" name="" id="level-slider-input" value="@((Model.ClassInfo == null) ? "50" : Model.ClassInfo.TeacheLevel.ToString())">
+                                                    <div class="slider-min">0</div>
+                                                    <div class="slider-max">100</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row-fluid spaced-larger">
+                                            <div class="span2 tright">
+                                                <label for="" class="control-label">@ResourceHelper.GetTransText(254)</label>
+                                            </div>
+                                            <div class="span6">
+                                                <input type="text" name="" id="classskill-city" class="form-control" value="@((ViewBag.MemberInfo!=null && ViewBag.MemberInfo.CityId>0) ? TagHelper.GetCityName(ViewBag.MemberInfo.CityId).Trim() : "")">
+                                                <div class="control-autocomplete">
+                                                    <ul id="classskill-citylist" class="dropdown-menu" role="menu"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row-fluid spaced-larger">
+                                            <div class="span2 tright">&nbsp;</div>
+                                            <div class="span3">&nbsp;</div>
+                                            <div class="span3">
+                                                <a id="class-tab1-next" class="btn btn-primary btn-block classnavbtn" data-value="1">@Html.GetTrans(646)</a>
+                                            </div>    
+                                        </div>
+                                        <input type="hidden" id="classskill-hidcityid" value="@((ViewBag.MemberInfo != null)?ViewBag.MemberInfo.CityId:0)"/>
+                                        <input type="hidden" id="classskill-hidcityhasclass" />
+                                        <input type="hidden" name="" id="classskill-hidcategorypid" value="@((Model.ParentCategoryId == null) ? "" : Model.ParentCategoryId.ToString())" />
+                                        <input type="hidden" name="" id="classskill-hidcategoryid" value="@((Model.ClassInfo.Category_Id == null) ? "" : Model.ClassInfo.Category_Id.ToString())" />
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <!-- end of tab pane -->
+
+                        <div class="tab-pane" id="class-overview">
+
+                            <form action="" id="form-class-overview">
+
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(275)</div>
+                                            <div class="span6 form-inline" id="class-level">
+                                                <label for="4899" class="spaced-right" data-value="1">
+                                                    <input type="radio" name="class-level" id="class-level1" value="1" class="class-level" @((Model.ClassInfo.Level==null || Model.ClassInfo.Level==1) ? "checked" : "")>
+                                                    @Html.GetTrans(276)</label>
+                                                <label for="7871" class="spaced-right" data-value="2">
+                                                    <input type="radio" name="class-level" id="class-level2" value="2" class="class-level" @((Model.ClassInfo.Level==2) ? "checked" : "")>
+                                                    @Html.GetTrans(277)</label>
+                                                <label for="6687" class="spaced-right" data-value="3">
+                                                    <input type="radio" name="class-level" id="class-level3" value="3" class="class-level" @((Model.ClassInfo.Level==3) ? "checked" : "")>
+                                                    @Html.GetTrans(278)</label>
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div>
+
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(279)</div>
+                                            <div class="span6">
+                                                <input type="text" id="title" value="@Model.ClassInfo.Title" class="form-control span12" >
+                                                <div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="title-charsleft">30</span>@ViewBag.CharacterCountText[1]</div>
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div>
+
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(281)</div>
+                                            <div class="span6">
+                                                <textarea name="summary" id="summary" class="form-control span12" rows="8" placeholder="@ResourceHelper.GetTransText(635).Trim()">@Model.ClassInfo.Summary</textarea>
+                                                <br />&nbsp;
+                                                <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="summary-charsleft">300</span>@ViewBag.CharacterCountText[1]</div>-->
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div>
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(636)</div>
+                                            <div class="span6">
+                                                <textarea name="whyu" id="whyu" class="form-control span12" rows="4" placeholder="@ResourceHelper.GetTransText(637).Trim()">@(Model.isEdit ? Model.ClassInfo.Location : ResourceHelper.GetTransText(291))</textarea>
+                                                <br />&nbsp;
+                                                <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="class-whyu-charsleft">400</span>@ViewBag.CharacterCountText[1]</div>-->
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div>
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(638)</div>
+                                            <div class="span6">
+                                                <input type="text" id="period" value="@Model.ClassInfo.Period" class="form-control span12" placeholder="@ResourceHelper.GetTransText(639).Trim()">
+                                                <br />&nbsp;
+                                                <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="class-period-charsleft">50</span>@ViewBag.CharacterCountText[1]</div>-->
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div>
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(640)</div>
+                                            <div class="span6">
+                                                <textarea name="location" id="location" class="form-control span12" rows="2" placeholder="@ResourceHelper.GetTransText(641).Trim()">@(Model.isEdit ? Model.ClassInfo.Location : ResourceHelper.GetTransText(291))</textarea>
+                                                <br />&nbsp;
+                                                <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="class-location-charsleft">100</span>@ViewBag.CharacterCountText[1]</div>-->
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div><div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(642)</div>
+                                            <div class="span6">
+                                                <textarea name="available" id="available" class="form-control span12" rows="2" placeholder="@ResourceHelper.GetTransText(647).Trim()">@Model.ClassInfo.Available</textarea>
+                                                <br />&nbsp;
+                                                <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="class-available-charsleft">100</span>@ViewBag.CharacterCountText[1]</div>-->
+                                            </div>
+                                            <div class="span4"><span class="label label-warning label-private">可选填</span></div>
+                                        </div>
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(643)</div>
+                                            <div class="span6">
+                                                <textarea name="remark" id="remark" class="form-control span12" rows="4" placeholder="@ResourceHelper.GetTransText(644).Trim()">@Model.ClassInfo.Location</textarea>
+                                                <br />&nbsp;
+                                                <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="class-remark-charsleft">100</span>@ViewBag.CharacterCountText[1]</div>-->
+                                            </div>
+                                            <div class="span4"><span class="label label-warning label-private">可选填</span></div>
+                                        </div>
+                                        <div class="row-fluid spaced-larger">
+                                            <div class="span2 tright">&nbsp;</div>
+                                            <div class="span3">
+                                                <a id="class-tab2-prev" class="btn btn-primary btn-block classnavbtn" data-value="0">@Html.GetTrans(645)</a>
+                                            </div>    
+                                            <div class="span3">
+                                                <a id="class-tab2-next" class="btn btn-primary btn-block classnavbtn" data-value="2">@Html.GetTrans(646)</a>
+                                            </div>    
+                                        </div>
+                                        <!--
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(287)</div>
+                                            <div class="span6">
+                                                <input id="classf-tags" type="text" class="classf-input" value="面授,小班" />
+                                                <div>@Html.GetTrans(288)</div>
+                                                <div class="tagssuggestion">
+                                                    <span class="tag">课程标签1</span>
+                                                    <span class="tag">class tag2</span>
+                                                </div>
+                                            </div>
+                                            <div class="span4">
+                                                <div class="row-fluid field-hint">
+                                                    <div class="span1"><i class="fa fa-info-circle icon-large gray-light"></i></div>
+                                                    <div class="span11">
+                                                        <p class="gray-light">@Html.GetTrans(559)</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        -->
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <!-- end of tab pane -->
+
+                        <div class="tab-pane" id="class-photo">
+                            <form action="" id="form-class-photo">
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <div class="row-fluid">
+                                            <div class="span6 offset2">
+                                                <div class="upload-box spaced-larger" id="preview-placeholder">
+                                                    <!-- <a href="#" class="btn btn-primary"><i class="fa fa-cloud-upload"></i>@Html.GetTrans(293)</a>-->
+                                                </div>
+                                                <div id="preview-holder"></div>
+                                                <a href="#" id="class-coverupload" class="btn btn-primary"><i class="fa fa-cloud-upload"></i>@Html.GetTrans(293)</a>
+                                                <button type="button" class="btn btn-primary" id="btnimg-upload"><i class="fa fa-save"></i><span>@Html.GetTrans(425)</span></button>
+                                                <!--<a href="#" class="btn btn-default">Cancel</a>-->
+                                            </div>
+                                            <div class="span2">
+                                                <p id="preview_m_holder">
+                                                    <img src="@ContentHelper.GetClassCoverPath((Model.isEdit && !String.IsNullOrEmpty(Model.ClassInfo.Cover)) ? Model.ClassInfo.Cover : "", "b")">
+                                                </p>
+                                                <p id="imgupload-error"></p>
+                                            </div>
+                                            
+                                            <div class="fileinfo">
+                                                <input type="file" id="class-coverupload-file" name="class-coverupload-file" />
+                                                <input type="hidden" id="imagefilesetting" name="imagefilesetting" value="0,0,384,256" />
+                                                <input type="hidden" id="imagefileext" name="imagefileext" />
+                                                <input type="hidden" id="imagefilename" name="imagefilename" value="@ViewBag.ClassId"/>
+                                                <input type="hidden" id="classhascover" name="classhascover" value="@((Model.ClassInfo != null && !String.IsNullOrEmpty(Model.ClassInfo.Cover)) ? "true" : "")"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <div class="row-fluid">
+                                            <div class="span3 offset2">
+                                             <br />
+                                             <a id="class-tab3-prev" class="btn btn-primary btn-block classnavbtn" data-value="1">@Html.GetTrans(645)</a>
+                                            </div>
+                                        </div></div></div>
+                            </form>
+
+                        </div>
+                        <!-- end of tab pane -->
+
+                    </div>
+                    <!-- end of tab content -->
+                }
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" id="classf-hidcatename" value="@((Model != null && !String.IsNullOrEmpty(Model.ParentCategoryName)) ? Model.ParentCategoryName : "default")" />
+    <input type="hidden" id="classf-hidclassid" value="@ViewBag.ClassId" />
+    <input type="hidden" id="classf-hidclasslevel" value="2" />
+    <input type="hidden" id="classf-hidisproved" value="@(Model.ClassInfo == null ? 0 : Model.ClassInfo.IsProved)" />
+</div>
+<!-- end of body -->
+@Html.Partial("_ConfirmPublishPartial")

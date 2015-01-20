@@ -1,0 +1,201 @@
+﻿@model SkillBank.Site.Web.ViewModel.ProfilelModel
+@{
+    ViewBag.Title = "Personal";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+<!-- bug hack -->
+<header class="bar-nav"></header>
+
+<div class="content" id="personal-page">
+    <a class="icon icomoon icon-redo pull-right nav-inner nav-right"></a>
+    <a href="index.html" class="icon icomoon icon-arrow-left nav-inner nav-left" data-transition="slide-out"></a>
+
+    <div class="info">
+        <h3>Jason Wu</h3>
+        <p><small>6km&nbsp;.&nbsp;上海</small></p>
+        <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "mb", Model.MemberInfo.SocialType)" alt="" class="avatar">
+        <p class="white"><small>2014.8 加入 SkillBank</small></p>
+        <div class="btn-set mb-1">
+            <a href="#privateMsg" class="btn btn-default">私信 TA</a>
+            <a href="#" class="btn btn-olive">关注</a>
+        </div>
+        <div class="nums">
+            <table class="u-full-width">
+                <thead>
+                    <tr>
+                        <th>2</th>
+                        <th>2</th>
+                        <th>15</th>
+                        <th>4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>认证</td>
+                        <td>分享</td>
+                        <td>关注</td>
+                        <td>粉丝</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="content-padded">
+        <p class="padded-tex">
+            @Html.Raw(TextContentHelper.GetTextContent(Model.MemberInfo.SelfIntro))
+        </p>
+        <h4 align="center" class="mb-2">TA的分享课程（2）</h4>
+    </div>
+    @if (Model.ClassList != null)
+    {
+    <div class="course-list" id="slider">
+        <div class="course card">
+            <div class="slider" id="mySlider">
+                <div class="slide-group">
+                    @foreach (var classItem in Model.ClassList)
+                    {
+                    <div class="slide">
+                        <div class="title-bar u-full-width">
+                            <h3 class="pull-left">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 20, true))</h3>
+                            <div class="pull-right">
+                                <a href="#" class="icon icomoon icon-comment">
+                                    <span class="num">14</span>
+                                </a>
+                                <a href="#" class="icon icomoon icon-heart">
+                                    <span class="num">28</span>
+                                </a>
+                            </div>
+                        </div>
+                        <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "ms")">
+                    </div>
+                 } 
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div id="bullets">
+        <ul>
+            @for (int i = 0; i < Model.ClassList.Count; i++)
+            {
+              <li @(i == 0 ? "class=active" : "")></li>
+            }
+        </ul>
+    </div>
+    }
+
+
+
+    <div id="comment">
+        <div class="segmented-control">
+            <a class="control-item active" href="#item1mobile">
+                <h3>2</h3>
+                <h6>身份认证</h6>
+            </a>
+            <a class="control-item" href="#item2mobile">
+                <h3>0</h3>
+                <h6>学生评价</h6>
+            </a>
+            <a class="control-item" href="#item3mobile">
+                <h3>0</h3>
+                <h6>老师评价</h6>
+            </a>
+        </div>
+        <div class="comment-content">
+            <span id="item1mobile" class="control-content active">
+                <ul class="comment-text verified">
+                    <li class="card">
+                        <h5>新浪微博</h5>
+                        <small>weibo.com/mooninzoo</small>
+                        <img src="images/icons/icon-correct.png"></li>
+                    <li class="table-view-cell">
+                        <span>手机认证</span>
+                        <small>13******601</small>
+                        <img src="images/icons/icon-correct.png"></li>
+                </ul>
+            </span>
+            <span id="item2mobile" class="control-content">
+                <ul class="comment-text">
+                    <li class="card">
+                        <div class="pull-left flag-num">
+                            <img class="avatar" src="images/avatar.png">
+                        </div>
+                        <div class="msg-title">
+                            <span class="time pull-right">3小时 之前</span>
+                            <h4 class="flag-num">Jason Wu
+                  </h4>
+                        </div>
+                        <p>
+                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
+               
+                        </p>
+                    </li>
+                    <li class="card">
+                        <div class="pull-left flag-num">
+                            <img class="avatar" src="images/avatar.png">
+                        </div>
+                        <div class="msg-title">
+                            <span class="time pull-right">3小时 之前</span>
+                            <h4 class="flag-num">Jason Wu
+                  </h4>
+                        </div>
+                        <p>
+                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
+               
+                        </p>
+                    </li>
+                </ul>
+            </span>
+            <span id="item3mobile" class="control-content">
+                <ul class="comment-text">
+                    <li class="card">
+                        <div class="pull-left flag-num">
+                            <img class="avatar" src="images/avatar.png">
+                        </div>
+                        <div class="msg-title">
+                            <span class="time pull-right">3小时 之前</span>
+                            <h4 class="flag-num">Jason Wu
+                  </h4>
+                        </div>
+                        <p>
+                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
+               
+                        </p>
+                    </li>
+                    <li class="card">
+                        <div class="pull-left flag-num">
+                            <img class="avatar" src="images/avatar.png">
+                        </div>
+                        <div class="msg-title">
+                            <span class="time pull-right">3小时 之前</span>
+                            <h4 class="flag-num">Jason Wu
+                  </h4>
+                        </div>
+                        <p>
+                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
+               
+                        </p>
+                    </li>
+                </ul>
+            </span>
+        </div>
+    </div>
+
+    <div id="privateMsg" class="modal toBeRemoved">
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right grey" href="#privateMsg"></a>
+            <h1 class="title">私信老师</h1>
+        </header>
+
+        <div class="content">
+            <div class="content-inner">
+                <div class="content-padded">
+                    <textarea name="" id="" cols="30" rows="6" placeholder="输入你的私信内容，向老师咨询关于课程的各种问题"></textarea>
+                    <button class="btn btn-primary btn-block">发送私信</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

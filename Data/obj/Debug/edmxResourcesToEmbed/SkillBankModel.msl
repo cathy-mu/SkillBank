@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SkillBankModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="SkillCategory">
+      <EntityTypeMapping TypeName="SkillBankModel.SkillCategory">
+        <MappingFragment StoreEntitySet="SkillCategory">
+          <ScalarProperty Name="Parent_CategoryId" ColumnName="Parent_CategoryId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="Blurb_Id" ColumnName="Blurb_Id" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Blurbs_LoadByLanguageSiteVersion_p" FunctionName="SkillBankModel.Store.Blurbs_LoadByLanguageSiteVersion_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBankModel.Blurb">
+          <ScalarProperty Name="BlurbId" ColumnName="BlurbId" />
+          <ScalarProperty Name="BlurbText" ColumnName="BlurbText" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="SkillCategory_LoadAll_p" FunctionName="SkillBankModel.Store.SkillCategory_LoadAll_p" />
+    <EntitySetMapping Name="CityInfo">
+      <EntityTypeMapping TypeName="SkillBankModel.CityInfo">
+        <MappingFragment StoreEntitySet="CityInfo">
+          <ScalarProperty Name="CityKey" ColumnName="CityKey" />
+          <ScalarProperty Name="CityName" ColumnName="CityName" />
+          <ScalarProperty Name="LocaleCode" ColumnName="LocaleCode" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Message">
+      <EntityTypeMapping TypeName="SkillBankModel.Message">
+        <MappingFragment StoreEntitySet="Message">
+          <ScalarProperty Name="IsLatest" ColumnName="IsLatest" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+          <ScalarProperty Name="Show4To" ColumnName="Show4To" />
+          <ScalarProperty Name="Show4From" ColumnName="Show4From" />
+          <ScalarProperty Name="MessageText" ColumnName="MessageText" />
+          <ScalarProperty Name="To_Id" ColumnName="To_Id" />
+          <ScalarProperty Name="From_Id" ColumnName="From_Id" />
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Message_LoadByMemberId_p" FunctionName="SkillBankModel.Store.Message_LoadByMemberId_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBankModel.MessageListItem">
+          <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+          <ScalarProperty Name="From_Id" ColumnName="From_Id" />
+          <ScalarProperty Name="To_Id" ColumnName="To_Id" />
+          <ScalarProperty Name="MessageText" ColumnName="MessageText" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Message_Save_p" FunctionName="SkillBankModel.Store.Message_Save_p" />
+    <FunctionImportMapping FunctionImportName="Message_LoadByFromAndToId_p" FunctionName="SkillBankModel.Store.Message_LoadByFromAndToId_p" />
+    <EntitySetMapping Name="CoinsHistory">
+      <EntityTypeMapping TypeName="SkillBankModel.CoinsHistory">
+        <MappingFragment StoreEntitySet="CoinsHistory">
+          <ScalarProperty Name="AddType" ColumnName="AddType" />
+          <ScalarProperty Name="CoinsToAdd" ColumnName="CoinsToAdd" />
+          <ScalarProperty Name="Member_Id" ColumnName="Member_Id" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Message_Load_p" FunctionName="SkillBankModel.Store.Message_Load_p" />
+    <FunctionImportMapping FunctionImportName="Order_Load_p" FunctionName="SkillBankModel.Store.Order_Load_p" />
+    <FunctionImportMapping FunctionImportName="Order_Save_p" FunctionName="SkillBankModel.Store.Order_Save_p" />
+    <FunctionImportMapping FunctionImportName="TestHelper_DataCleanUp_p" FunctionName="SkillBankModel.Store.TestHelper_DataCleanUp_p" />
+    <EntitySetMapping Name="ClassTag">
+      <EntityTypeMapping TypeName="SkillBankModel.ClassTag">
+        <MappingFragment StoreEntitySet="ClassTag">
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="TagText" ColumnName="TagText" />
+          <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+          <ScalarProperty Name="TagId" ColumnName="TagId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ClassTag_Load_p" FunctionName="SkillBankModel.Store.ClassTag_Load_p" />
+    <FunctionImportMapping FunctionImportName="ClassTag_Save_p" FunctionName="SkillBankModel.Store.ClassTag_Save_p" />
+    <FunctionImportMapping FunctionImportName="CategoryPopTag_Load_p" FunctionName="SkillBankModel.Store.CategoryPopTag_Load_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBankModel.CategoryTag">
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="TagText" ColumnName="TagText" />
+          <ScalarProperty Name="RankNum" ColumnName="RankNum" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="MetaTag">
+      <EntityTypeMapping TypeName="SkillBankModel.MetaTag">
+        <MappingFragment StoreEntitySet="MetaTag">
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="DescriptionBlurb" ColumnName="DescriptionBlurb" />
+          <ScalarProperty Name="KeywordsBlurb" ColumnName="KeywordsBlurb" />
+          <ScalarProperty Name="TitleBlurb" ColumnName="TitleBlurb" />
+          <ScalarProperty Name="MetaKey" ColumnName="MetaKey" />
+          <ScalarProperty Name="MetaId" ColumnName="MetaId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="MetaTag_LoadAll_p" FunctionName="SkillBankModel.Store.MetaTag_LoadAll_p" />
+    <EntitySetMapping Name="StudentReview">
+      <EntityTypeMapping TypeName="SkillBankModel.StudentReview">
+        <MappingFragment StoreEntitySet="StudentReview">
+          <ScalarProperty Name="PrivateComment" ColumnName="PrivateComment" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="FeedBack" ColumnName="FeedBack" />
+          <ScalarProperty Name="Score3" ColumnName="Score3" />
+          <ScalarProperty Name="Score2" ColumnName="Score2" />
+          <ScalarProperty Name="Score1" ColumnName="Score1" />
+          <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+          <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TeacherReview">
+      <EntityTypeMapping TypeName="SkillBankModel.TeacherReview">
+        <MappingFragment StoreEntitySet="TeacherReview">
+          <ScalarProperty Name="PrivateComment" ColumnName="PrivateComment" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="FeedBack" ColumnName="FeedBack" />
+          <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+          <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="StudentReview_Load_p" FunctionName="SkillBankModel.Store.StudentReview_Load_p" />
+    <FunctionImportMapping FunctionImportName="StudentReview_Save_p" FunctionName="SkillBankModel.Store.StudentReview_Save_p" />
+    <FunctionImportMapping FunctionImportName="TeacherReview_Load_p" FunctionName="SkillBankModel.Store.TeacherReview_Load_p" />
+    <FunctionImportMapping FunctionImportName="TeacherReview_Save_p" FunctionName="SkillBankModel.Store.TeacherReview_Save_p" />
+    <EntitySetMapping Name="EmailTemplate">
+      <EntityTypeMapping TypeName="SkillBankModel.EmailTemplate">
+        <MappingFragment StoreEntitySet="EmailTemplate">
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="SiteVersion" ColumnName="SiteVersion" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+          <ScalarProperty Name="TemplateId" ColumnName="TemplateId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="EmailTemplate_Load_p" FunctionName="SkillBankModel.Store.EmailTemplate_Load_p" />
+    <FunctionImportMapping FunctionImportName="MemberInfo_Load_p" FunctionName="SkillBankModel.Store.MemberInfo_Load_p" />
+    <FunctionImportMapping FunctionImportName="MemberInfo_Add_p" FunctionName="SkillBankModel.Store.MemberInfo_Add_p" />
+    <FunctionImportMapping FunctionImportName="ClassInfo_Add_p" FunctionName="SkillBankModel.Store.ClassInfo_Add_p" />
+    <FunctionImportMapping FunctionImportName="ClassInfo_Save_p" FunctionName="SkillBankModel.Store.ClassInfo_Save_p" />
+    <FunctionImportMapping FunctionImportName="ClassInfo_Load_p" FunctionName="SkillBankModel.Store.ClassInfo_Load_p" />
+    <FunctionImportMapping FunctionImportName="StudentReview_LoadByClass_p" FunctionName="SkillBankModel.Store.StudentReview_LoadByClass_p" />
+    <FunctionImportMapping FunctionImportName="Order_LoadByStudent_p" FunctionName="SkillBankModel.Store.Order_LoadByStudent_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBankModel.OrderItem">
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+          <ScalarProperty Name="BookedDate" ColumnName="BookedDate" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Order_LoadByTeacher_p" FunctionName="SkillBankModel.Store.Order_LoadByTeacher_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBankModel.OrderItem">
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+          <ScalarProperty Name="BookedDate" ColumnName="BookedDate" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ClassInfo_LoadAll_p" FunctionName="SkillBankModel.Store.ClassInfo_LoadAll_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBankModel.ClassItem">
+          <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+          <ScalarProperty Name="Category_Id" ColumnName="Category_Id" />
+          <ScalarProperty Name="Member_Id" ColumnName="Member_Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="PosX" ColumnName="PosX" />
+          <ScalarProperty Name="PosY" ColumnName="PosY" />
+          <ScalarProperty Name="Rank" ColumnName="Rank" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Cover" ColumnName="Cover" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="CompleteStatus" ColumnName="CompleteStatus" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="ClassInfo">
+      <EntityTypeMapping TypeName="SkillBankModel.ClassInfo">
+        <MappingFragment StoreEntitySet="ClassInfo">
+          <ScalarProperty Name="Cover" ColumnName="Cover" />
+          <ScalarProperty Name="Rank" ColumnName="Rank" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsProved" ColumnName="IsProved" />
+          <ScalarProperty Name="CompleteStatus" ColumnName="CompleteStatus" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Detail" ColumnName="Detail" />
+          <ScalarProperty Name="Summary" ColumnName="Summary" />
+          <ScalarProperty Name="TeacheLevel" ColumnName="TeacheLevel" />
+          <ScalarProperty Name="SkillLevel" ColumnName="SkillLevel" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Member_Id" ColumnName="Member_Id" />
+          <ScalarProperty Name="Category_Id" ColumnName="Category_Id" />
+          <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Coins_Update_p" FunctionName="SkillBankModel.Store.Coins_Update_p" />
+    <FunctionImportMapping FunctionImportName="Message_LoadUnReadNo_p" FunctionName="SkillBankModel.Store.Message_LoadUnReadNo_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBankModel.MessageUnReadItem">
+          <ScalarProperty Name="From_Id" ColumnName="From_Id" />
+          <ScalarProperty Name="Num" ColumnName="Num" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="Order">
+      <EntityTypeMapping TypeName="SkillBankModel.Order">
+        <MappingFragment StoreEntitySet="Order">
+          <ScalarProperty Name="BookedDate" ColumnName="BookedDate" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+          <ScalarProperty Name="Student_Id" ColumnName="Student_Id" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MemberInfo">
+      <EntityTypeMapping TypeName="SkillBankModel.MemberInfo">
+        <MappingFragment StoreEntitySet="MemberInfo">
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
+          <ScalarProperty Name="Coins" ColumnName="Coins" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="LearnTag" ColumnName="LearnTag" />
+          <ScalarProperty Name="TeachTag" ColumnName="TeachTag" />
+          <ScalarProperty Name="PosY" ColumnName="PosY" />
+          <ScalarProperty Name="PosX" ColumnName="PosX" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="SocialType" ColumnName="SocialType" />
+          <ScalarProperty Name="Social3" ColumnName="Social3" />
+          <ScalarProperty Name="Social2" ColumnName="Social2" />
+          <ScalarProperty Name="Social1" ColumnName="Social1" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BlurbsMain">
+      <EntityTypeMapping TypeName="SkillBankModel.BlurbsMain">
+        <MappingFragment StoreEntitySet="BlurbsMain">
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="SiteVersion" ColumnName="SiteVersion" />
+          <ScalarProperty Name="BlurbText" ColumnName="BlurbText" />
+          <ScalarProperty Name="BlurbId" ColumnName="BlurbId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="CityInfo_LoadAll_p" FunctionName="SkillBankModel.Store.CityInfo_LoadAll_p" />
+    <FunctionImportMapping FunctionImportName="MemberInfo_Save_p" FunctionName="SkillBankModel.Store.MemberInfo_Save_p" />
+    <FunctionImportMapping FunctionImportName="OrderCoin_Update_p" FunctionName="SkillBankModel.Store.OrderCoin_Update_p" />
+  </EntityContainerMapping>
+</Mapping>

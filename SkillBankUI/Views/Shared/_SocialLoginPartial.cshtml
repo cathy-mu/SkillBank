@@ -1,0 +1,60 @@
+﻿<div id="social_login_pop" style="display:none;">
+    <div class="social_login_row">
+        <div class="social_login_col1">
+            Email
+        </div>
+        <div class="social_login_col2">
+            <input type="text" id="email" />
+        </div>
+    </div>
+    <div class="social_login_row">
+        <div class="social_login_col1">
+            Name
+        </div>
+        <div class="social_login_col2">
+            <input type="text" id="username" />
+        </div>
+    </div>
+    <div class="social_login_row">
+        <input type="checkbox" id="fllow" />Follow us
+    </div>
+    <div class="social_login_row">
+        <input type="button" id="login" value="login" />
+    </div>
+    <input type="text" id="login_socialaccount" placeholder="Social Account" />
+    <input type="text" id="login_socialopenId" value="E4064A72A5DF573EE358F5DC0FC8901C" />
+    <input type="text" id="login_socialtype" value="3" /><!--QQ:3-->
+    <div id="memberinfo_popop" style="display:none;">
+        <input type="text" id="login_name" placeholder="Member name" />
+        <input type="text" id="login_email" placeholder="Member Email" />
+        <input type="button" id="signup" value="signup" />
+   </div>
+
+</div>
+<!-- Sina WeiBo login -->
+<!--<div id="wb_connect_btn"></div>-->
+<script type="text/javascript">
+    WB2.anyWhere(function (W) {
+        W.widget.connectButton({
+            id: "wb_connect_btn",
+            type: "3,2",
+            callback: {
+                login: function (o) {	//登录后的回调函数
+                    console.log(o);
+                },
+                logout: function () {	//退出后的回调函数
+                }
+            }
+        });
+    });
+</script><!-- End of Sina WeiBo login -->
+<!--
+<script type="text/javascript">
+    XN_RequireFeatures(["Connect"], function ()
+    {
+        XN.Main.init("ad2f3e5e5be44299aeae1abdca32028d", "http://www.skillbank.cn/content/xd_receiver.html");
+    });
+</script>-->
+
+
+

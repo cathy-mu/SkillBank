@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7D49E64B-6DF5-4B06-A2D6-7A9759FEC527}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SkillBank.Site.DataSource</RootNamespace>
+    <AssemblyName>SkillBank.Site.DataSource</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EF.Frameworks.Common">
+      <HintPath>..\packages\EF.Frameworks.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="EF.Frameworks.Orpheus">
+      <HintPath>..\packages\EF.Frameworks.Orpheus.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\BlurbsMain.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Blurbs_LoadByLanguageSiteVersion_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CategoryPopTag.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CategoryPopTag_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CityInfo.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CityInfo_LoadAll_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassEditInfo.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassEditInfo_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassInfo.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassInfo_LoadAll_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassInfo_LoadByList_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassInfo_LoadByTab_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassInfo_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassReview_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\CoinsHistory.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Comment.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\EmailAccount.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\EmailTemplate.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Favorite.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MemberInfo.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MemberInfo_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Message.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Message_LoadByFromAndToId_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Message_LoadByMemberId_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Message_LoadUnReadNo_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MetaTag.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\NotificationAlert_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Notification_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Order.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Order_LoadByStudent_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Order_LoadByTeacher_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Order_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\RecommendationItem.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Recommendation_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ReportClassMemberNum_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ReportNumItem.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Review_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SkillBankModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SkillBankModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SkillBankModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SkillBankModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SkillBankModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SkillCategory.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SkillCategory_LoadAll_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\StudentReview.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\StudentReview_LoadByClass_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\StudentReview_LoadByMember_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\StudentReview_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\TeacherReview.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\TeacherReview_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Mapper\BlurbMapper.cs" />
+    <Compile Include="Mapper\ClassMapper.cs" />
+    <Compile Include="Mapper\ReportToolsMapper.cs" />
+    <Compile Include="Mapper\NotificationMapper.cs" />
+    <Compile Include="Mapper\FeedBackMapper.cs" />
+    <Compile Include="Mapper\LookupsMapper.cs" />
+    <Compile Include="Mapper\MemberMapper.cs" />
+    <Compile Include="Mapper\MessageMapper.cs" />
+    <Compile Include="Mapper\OrderMapper.cs" />
+    <Compile Include="Model\Blurbs.cs" />
+    <Compile Include="Model\CategoryTag.cs" />
+    <Compile Include="Model\ClassEditItem.cs" />
+    <Compile Include="Model\ClassItem.cs" />
+    <Compile Include="Model\ClassReviewItem.cs" />
+    <Compile Include="Model\ClassListItem.cs" />
+    <Compile Include="Model\MemberInfoItem.cs" />
+    <Compile Include="Model\MemberReviewItem.cs" />
+    <Compile Include="Model\MemberViewInfo.cs" />
+    <Compile Include="Model\NotificationAlertItem.cs" />
+    <Compile Include="Model\MessageListItem.cs" />
+    <Compile Include="Model\MessageUnReadItem.cs" />
+    <Compile Include="Model\NotificationItem.cs" />
+    <Compile Include="Model\OrderItem.cs" />
+    <Compile Include="Model\ReviewItem.cs" />
+    <Compile Include="Model\StudentReviewItem.cs" />
+    <Compile Include="Model\TeacherReviewItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\IReportToolsRepository.cs" />
+    <Compile Include="Repositories\IInteractive.cs" />
+    <Compile Include="Repositories\IBlurbsRepository.cs" />
+    <Compile Include="Repositories\ICategotyTagRepository.cs" />
+    <Compile Include="Repositories\IClassInfoRepository.cs" />
+    <Compile Include="Repositories\IClassTagRepository.cs" />
+    <Compile Include="Repositories\ILookupsRespository.cs" />
+    <Compile Include="Repositories\IMailTemplatesRepository.cs" />
+    <Compile Include="Repositories\IMemberRepository.cs" />
+    <Compile Include="Repositories\IMessageRepository.cs" />
+    <Compile Include="Repositories\INotificationRepository.cs" />
+    <Compile Include="Repositories\IOrderRepository.cs" />
+    <Compile Include="Repositories\IStudentReviewRepository.cs" />
+    <Compile Include="Repositories\ITeacherReviewRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <EntityDeploy Include="Data\SkillBankModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SkillBankModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Data\SkillBankModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SkillBankModel.edmx</DependentUpon>
+      <LastGenOutput>SkillBankModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Data\SkillBankModel.edmx.diagram">
+      <DependentUpon>SkillBankModel.edmx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\SkillBankModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SkillBankModel.edmx</DependentUpon>
+      <LastGenOutput>SkillBankModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{19835b64-d9fd-417e-b24b-5fb606ea90c9}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

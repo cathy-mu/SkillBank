@@ -1,0 +1,433 @@
+﻿@model SkillBank.Site.Web.ViewModel.ClassDetailModel
+@section HeaderStyle{<meta name="robots" content="index,follow" />@Html.CombresCustomUrl("classDetailCss")}
+@section FooterJs{@Html.CombresCustomUrl("classDetailJs")}
+<div class="body">
+    <div class="inner">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <h3 class="spaced-larger errormessage">@ViewBag.ErrorMessage</h3>
+        }
+        @if (Model.ClassInfo != null)
+        { 
+            <div class="class-detail cf">
+
+                <div class="class-detail-main">
+
+                    <div class="class-desc spaced-larger">
+
+                        <div class="class-desc-hd spaced-larger">
+                            <h3 class="spaced-larger" id="classdetail-title">@Model.ClassInfo.Title</h3>
+                            <p class="classdetail-method">
+                                <span>@Html.GetTrans(573)</span>
+                                <span>@TextContentHelper.GetLevelName(@Model.ClassInfo.Level)</span>
+                            </p>
+                        </div>
+
+                        <div class="class-desc-bd">
+                            <div class="spaced-larger classdetail-summary">
+                                @Html.Raw(TextContentHelper.GetTextContent(Model.ClassInfo.Summary))
+                                @if (!String.IsNullOrEmpty(Model.ClassInfo.WhyU))
+                                {<br /><br />
+                                 @Html.Raw(TextContentHelper.GetTextContent(Model.ClassInfo.WhyU))
+                                }
+                            </div>
+                            
+                            
+                            
+                            @if (!String.IsNullOrEmpty(Model.ClassInfo.Period))
+                            {
+                                <div class="spaced-larger classdetail-desc">
+                                    <span class="classdetail-desctitle">@Html.GetTrans(638)</span>
+                                    @Html.Raw(TextContentHelper.GetTextContent(Model.ClassInfo.Period))
+                                </div>
+                            }
+                            
+                            @if (!String.IsNullOrEmpty(Model.ClassInfo.Location))
+                            {
+                                <div class="spaced-larger classdetail-desc">
+                                    <span class="classdetail-desctitle">@Html.GetTrans(640)</span>
+                                    @Html.Raw(TextContentHelper.GetTextContent(Model.ClassInfo.Location))
+                                </div>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.ClassInfo.Available))
+                            {
+                                <div class="spaced-larger classdetail-desc">
+                                    <span class="classdetail-desctitle">@Html.GetTrans(642)</span>
+                                    @Html.Raw(TextContentHelper.GetTextContent(Model.ClassInfo.Available))
+                                </div>
+                            }
+                            
+                            @if (!String.IsNullOrEmpty(Model.ClassInfo.Remark))
+                            {    
+                                <div class="spaced-larger classdetail-desc">
+                                    <span class="classdetail-desctitle">@Html.GetTrans(643)</span>
+                                    @Html.Raw(TextContentHelper.GetTextContent(Model.ClassInfo.Remark))
+                                </div>
+                            }
+                            
+                        </div>
+                    </div>
+
+                    <div class="class-reviews">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#review-current" data-toggle="tab">@Html.GetTrans(210) (@Model.ClassNumDic["sum0"])</a></li>
+                            <li><a href="#review-other" data-toggle="tab">@Html.GetTrans(211) (@Model.ClassNumDic["sum1"])</a></li>
+                            <!-- Begin of comment test html -->
+                            <!--<li><a href="#review-comment" data-toggle="tab">评论 (@Model.ClassNumDic["comment"])</a></li>-->
+                        </ul>
+                        <!-- end of tabs -->
+
+                        <div class="tab-content">
+                            <div class="tab-pane active padding" id="review-current">
+
+                                <div class="row-fluid form-inline spaced-larger">
+                                    <div class="span4 review-filter-class" id="review-tabsum00" data-value="@Model.ClassNumDic["sum0"]">
+                                        <label for="2390" class="control-label radio" data-value="0">
+                                            <input type="radio" name="class-reviewrad0" id="2390" checked="checked">
+                                            @Html.GetTrans(212)
+                                        </label>
+                                    </div>
+                                    <div class="span8 tright review-filter-class">
+                                        <label for="5466" class="control-label spaced-right" data-value="3">
+                                            <input type="radio" name="class-reviewrad0" id="5466">
+                                            <span class="label label-warning label-good" id="review-tabsum03" data-value="@Model.ClassNumDic["r03"]">@Html.GetTrans(213) (@Model.ClassNumDic["r03"])</span>
+                                        </label>
+                                        <label for="4886" class="control-label spaced-right" data-value="2">
+                                            <input type="radio" name="class-reviewrad0" id="4886">
+                                            <span class="label label-success label-okay" id="review-tabsum02" data-value="@Model.ClassNumDic["r02"]">@Html.GetTrans(214) (@Model.ClassNumDic["r02"])</span>
+                                        </label>
+                                        <label for="1563" class="control-label" data-value="1">
+                                            <input type="radio" name="class-reviewrad0" id="1563">
+                                            <span class="label label-default label-bad" id="review-tabsum01" data-value="@Model.ClassNumDic["r01"]">@Html.GetTrans(215) (@Model.ClassNumDic["r01"])</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- end of review filter -->
+                                @if (Model.ClassReview != null)
+                                {
+                                    <div class="review-list" id="review-list-tab0">
+                                        @foreach (var reviewItem in Model.ClassReview)
+                                        {
+                                            <div class="review-item">
+                                                <div class="row-fluid">
+                                                    <div class="span1">
+                                                        <a href="@Url.Action("index", "profile", new { id = reviewItem.MemberId })">
+                                                            <img src="@ContentHelper.GetAvatarPath(reviewItem.Avatar, "m")" class="avatar-m"></a>
+                                                    </div>
+                                                    <div class="span11">
+                                                        <p>@reviewItem.Comment</p>
+                                                        <div class="row-fluid">
+                                                            <div class="span4"><span class="gray-light"><a href="@Url.Action("index", "profile", new { id = reviewItem.MemberId })">@reviewItem.Name</a>&nbsp;&nbsp;&nbsp;@reviewItem.CreatedDate</span></div>
+                                                            <div class="span8 tright">
+                                                                @if (reviewItem.FeedBack.Value.Equals(3))
+                                                                {
+                                                                    <span class="label label-warning label-good">@Html.GetTrans(213)</span>
+                                                                }
+                                                                else if (reviewItem.FeedBack.Value.Equals(2))
+                                                                {
+                                                                    <span class="label label-success label-okay">@Html.GetTrans(214)</span>
+                                                                }
+                                                                else if (reviewItem.FeedBack.Value.Equals(1))
+                                                                {
+                                                                    <span class="label label-default label-bad">@Html.GetTrans(215)</span>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        <!-- end of review item -->
+                                    </div>
+                                    <!-- end of review list -->
+                                   <a href="javascript:void(0);" id="review-morebtn0" class="btn btn-default btn-block hide review-morebtn" data-value="0">@Html.GetTrans(216)</a>
+                                }
+                            </div>
+
+                            <div class="tab-pane padding" id="review-other">
+                                <div class="row-fluid form-inline spaced-larger">
+                                    <div class="span4 review-filter-other" id="review-tabsum10" data-value="@Model.ClassNumDic["sum1"]">
+                                        <label for="4009" class="control-label" data-value="0">
+                                            <input type="radio" name="class-reviewrad1" id="4009" checked="checked">
+                                            @Html.GetTrans(212)</label>
+                                    </div>
+                                    <div class="span8 tright review-filter-other">
+                                        <label for="6122" class="control-label spaced-right" data-value="3">
+                                            <input type="radio" name="class-reviewrad1" id="6122">
+                                            <span class="label label-warning label-good" id="review-tabsum13" data-value="@Model.ClassNumDic["r13"]">@Html.GetTrans(213) (@Model.ClassNumDic["r13"])</span>
+                                        </label>
+                                        <label for="1622" class="control-label spaced-right" data-value="2">
+                                            <input type="radio" name="class-reviewrad1" id="1622">
+                                            <span class="label label-success label-okay" id="review-tabsum12" data-value="@Model.ClassNumDic["r12"]">@Html.GetTrans(214) (@Model.ClassNumDic["r12"])</span>
+                                        </label>
+                                        <label for="6324" class="control-label" data-value="1">
+                                            <input type="radio" name="class-reviewrad1" id="6324">
+                                            <span class="label label-default label-bad" id="review-tabsum11" data-value="@Model.ClassNumDic["r11"]">@Html.GetTrans(215) (@Model.ClassNumDic["r11"])</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- end of review filter -->
+
+                                @if (Model.OtherClassReview != null)
+                                {
+                                    <div class="review-list" id="review-list-tab1">
+                                        @foreach (var reviewItem in Model.OtherClassReview)
+                                        {
+                                            <div class="review-item">
+                                                <div class="row-fluid">
+                                                    <div class="span1">
+                                                        <a href="@Url.Action("index", "profile", new { id = reviewItem.MemberId })">
+                                                            <img src="@ContentHelper.GetAvatarPath(reviewItem.Avatar, "m")" class="avatar-m"></a>
+                                                    </div>
+                                                    <div class="span11">
+                                                        <p>@reviewItem.Comment</p>
+                                                        <div class="row-fluid">
+                                                            <div class="span4"><span class="gray-light"><a href="@Url.Action("index", "profile", new { id = reviewItem.MemberId })">@reviewItem.Name</a>&nbsp;&nbsp;&nbsp;@reviewItem.CreatedDate</span></div>
+                                                            <div class="span8 tright"><a href="@Url.Action("detail", "class", new { id = reviewItem.ClassId })">@reviewItem.Title</a>&nbsp;&nbsp;&nbsp;
+                                                                @if (reviewItem.FeedBack.Value.Equals(3))
+                                                                {
+                                                                    <span class="label label-warning label-good">@Html.GetTrans(213) </span>
+                                                                }
+                                                                else if (reviewItem.FeedBack.Value.Equals(2))
+                                                                {
+                                                                    <span class="label label-success label-okay">@Html.GetTrans(214) </span>
+                                                                }
+                                                                else if (reviewItem.FeedBack.Value.Equals(1))
+                                                                {
+                                                                    <span class="label label-default label-bad">@Html.GetTrans(215) </span>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        <!-- end of review item -->
+                                    </div>
+                                    <!-- end of review list -->
+                                    <a href="javascript:void(0);" id="review-morebtn1" class="btn btn-default btn-block hide review-morebtn" data-value="1">@Html.GetTrans(216)</a>
+                                }
+                            </div>
+                            <!-- Begin of comment test html -->
+                            <!--
+                            <div class="tab-pane padding" id="review-comment">
+                                <div class="row-fluid form-inline spaced-larger"  id="review-tabsum20" data-value="@Model.ClassNumDic["comment"]">
+                                </div>
+                                
+
+                                @if (Model.ClassComment != null)
+                                {
+                                    <div class="review-list" id="review-list-tab2">
+                                        @foreach (var reviewItem in Model.ClassComment)
+                                        {
+                                            <div class="review-item">
+                                                <div class="row-fluid">
+                                                    <div class="span1">
+                                                        <a href="@Url.Action("index", "profile", new { id = reviewItem.MemberId })">
+                                                            <img src="@ContentHelper.GetAvatarPath(reviewItem.Avatar, "m")" class="avatar-m"></a>
+                                                    </div>
+                                                    <div class="span11">
+                                                        <p>@reviewItem.Comment</p>
+                                                        <div class="row-fluid">
+                                                            <div class="span4"><span class="gray-light"><a href="@Url.Action("index", "profile", new { id = reviewItem.MemberId })">@reviewItem.Name</a>&nbsp;&nbsp;&nbsp;@reviewItem.CreatedDate</span></div>
+                                                            <div class="span8 tright"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        
+                                    </div>
+                                    
+                                    <a href="javascript:void(0);" id="review-morebtn2" class="btn btn-default btn-block hide review-morebtn" data-value="2">@Html.GetTrans(216)</a>
+                                }
+                            </div>
+                            -->
+                            <div id="review-item-template">
+                                <div class="review-item">
+                                    <div class="row-fluid">
+                                        <div class="span1">
+                                            <a href="" class="review-item-memberlnk">
+                                                <img src="" class="avatar-m"></a>
+                                        </div>
+                                        <div class="span11">
+                                            <p>Comment</p>
+                                            <div class="row-fluid">
+                                                <div class="span4"><span class="gray-light"><a href="" class="review-item-memberlnk"></a>&nbsp;&nbsp;<label></label></span></div>
+                                                <div class="span8 tright"><a href="" class="review-item-classlnk"></a>&nbsp;&nbsp;&nbsp;
+                                                    <span class="label label-warning label-good hide">@Html.GetTrans(213)</span>
+                                                    <span class="label label-success label-okay hide">@Html.GetTrans(214)</span>
+                                                    <span class="label label-default label-bad hide">@Html.GetTrans(215)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+                        </div>
+                        <!-- end of tab content -->
+                    </div>
+                    <!-- Begin of comment test html -->
+                    <!--
+                    @if (ViewBag.MemberInfo != null)
+                    {
+                    <div class="class-reviews">
+                        <div class="conversation-form">
+                            <div class="row-fluid">
+                                <div class="span1">
+                                    <img src="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "m")">
+                                </div>
+                                <div class="span11">
+                                    <textarea name="" rows="6" class="form-control span12" placeholder="You Comment" id="classdetail-comment"></textarea>
+                                </div>
+                            </div>
+                            <div class="sendmessage-btn">
+                                <button class="btn btn-primary" id="classdetail-commentaddbtn" type="button">Add Comment</button>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    -->
+                    <!-- End of comment test html -->
+                    
+                </div>
+
+                <div class="class-detail-side">
+
+                    <div class="class-booking spaced-larger">
+
+                        <div class="row-fluid spaced">
+                            <div class="span6"><span class="gray-light">@Html.GetTrans(197)</span></div>
+                            <div class="span6 tright"><em>1</em>@Html.GetTrans(198)</div>
+                        </div>
+                        <a href="@(Model.IsLogin ? (Model.IsOwner ? "#" : ((ViewBag.MemberInfo.Coins > 0) ? "#modal-booking-request" : "#modal-get-coin")) : "#modal-login")" data-toggle="modal" class="btn btn-warning btn-block spaced">@Html.GetTrans(199)</a>
+                        <div class="tcenter">@Html.ActionLink(ResourceHelper.GetTransText(200), "qanda", "about", "http", "www.skillbank.cn", "qatab0s2", new { id = 0 }, new { @class = "gray-light", target = "_blank" })</div>
+
+                    </div>
+                    <!-- end of booking pane -->
+
+                    <div class="class-user-pane">
+                        <div class="spaced-larger">
+                            <a href="@Url.Action("index", "profile", new { id = Model.MemberInfo.MemberId })">
+                                <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "h", Model.MemberInfo.SocialType)">
+                            </a>
+                        </div>
+
+                        <h3 class="tcenter">@Model.MemberInfo.Name@if (Model.MemberInfo.Gender)
+                                                                  {<img id="profile-gendermale" src="/img/icon-male-s.png">}
+                                                                  else
+                                                                  { <img id="profile-genderfemale" src="/img/icon-female-s.png">}</h3>
+
+                        <p class="tcenter"><a href="@Url.Action("index", "profile", new { id = Model.MemberInfo.MemberId })">@Html.GetTrans(201) <i class="fa fa-caret-right"></i></a></p>
+
+                        <a id="class-detail-contact" href="@(Model.IsLogin ? (Model.IsOwner ? "#" : "#modal-contact-teacher") : "#modal-login")" data-toggle="modal" class="btn btn-primary btn-block">@Html.GetTrans(202)</a>
+
+                    </div>
+                    <!-- end of user pane -->
+
+                    <div class="class-user-evaluation">
+                        <h4 class="tcenter spaced-larger">@Html.GetTrans(203)</h4>
+                        <div class="cf spaced-large">
+                            <h5>@Html.GetTrans(204)</h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:@(Model.ClassInfo == null ? 0 : Model.ClassInfo.SkillLevel)%;">
+                                    <div class="progress-label">@TextContentHelper.GetSkillLevelName(Model.ClassInfo.SkillLevel)</div>
+                                    <div class="progress-val">@(Model.ClassInfo == null ? 0 : Model.ClassInfo.SkillLevel)</div>
+                                </div>
+                                <!--<div class="progres-start-val">0</div>
+                            <div class="progres-end-val">100</div>-->
+                            </div>
+                        </div>
+
+                        <div class="cf">
+                            <h5>@Html.GetTrans(205)</h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:@(Model.ClassInfo == null ? 0 : Model.ClassInfo.TeacheLevel)%;">
+                                    <div class="progress-label">@TextContentHelper.GetSkillLevelName(Model.ClassInfo.TeacheLevel)</div>
+                                    <div class="progress-val">@(Model.ClassInfo == null ? 0 : Model.ClassInfo.TeacheLevel)</div>
+                                </div>
+                                <!--<div class="progres-start-val">0</div>
+                            <div class="progres-end-val">100</div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of self evaluation -->
+
+                    <div class="class-user-popularity">
+                        <div class="hd">
+                            <h3>@Model.ClassNumDic["rank"]@Html.Raw("%")</h3>
+                            <p>@Html.GetTrans(206)</p>
+                        </div>
+                        <div class="bd">
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <h4>@Model.ClassNumDic["class"]</h4>
+                                    <p>@Html.GetTrans(207)</p>
+                                </div>
+                                <div class="span4">
+                                    <h4>@Model.ClassNumDic["student"]</h4>
+                                    <p>@Html.GetTrans(208)</p>
+                                </div>
+                                <div class="span4">
+                                    <h4>@Model.ClassNumDic["sum0"]</h4>
+                                    <p>@Html.GetTrans(209)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end of student evaluation -->
+
+                </div>
+            </div>
+            <input type="hidden" id="classdetail-hidmaxid0" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["max0"])" />
+            <input type="hidden" id="classdetail-hidmaxid1" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["max1"])" />
+            <input type="hidden" id="classdetail-hidmaxid2" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["max2"])" />
+            <input type="hidden" id="classdetail-hidminid0" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["min0"])" />
+            <input type="hidden" id="classdetail-hidminid1" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["min1"])" />
+            <input type="hidden" id="classdetail-hidminid2" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["min2"])" />
+            <input type="hidden" id="classdetail-hidclassid" value="@(Model.ClassInfo == null ? 0 : Model.ClassInfo.ClassId)" />
+            <input type="hidden" id="classdetail-hidmemberid" value="@(Model.MemberInfo == null ? 0 : Model.MemberInfo.MemberId)" />
+            <input type="hidden" id="classdetail-hidmrname" value="@(Model.MemberInfo == null ? "" : Model.MemberInfo.Name)" />
+            <input type="hidden" id="classdetail-hidmremail" value="@(Model.MemberInfo == null ? "" : Model.MemberInfo.Email)" />
+            <input type="hidden" id="classdetail-hidmsname" value="@(ViewBag.MemberInfo == null ? "" : ViewBag.MemberInfo.Name)" />
+        }
+    </div>
+</div>
+<!-- end of body -->
+ @if (Model.ClassInfo != null)
+ {
+<div class="bottom-bar">
+          <div class="inner">
+            <div class="row-fluid">
+              <div class="span8">
+                <h4>
+                  <span class="gray spaced-right">@Model.ClassInfo.Title </span> 
+                  <a href="javascript:void(0);" class="spaced-right"><img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "s", Model.MemberInfo.SocialType)"></a> 
+                  <a id="class-detail-btmcontact" href="@(Model.IsLogin ? (Model.IsOwner ? "#" : "#modal-contact-teacher") : "#modal-login")" data-toggle="modal" class="btn btn-primary">@Html.GetTrans(202)</a>
+               </h4>
+              </div>
+              <div class="span4 tright">
+                <!--<span class="gray-light spaced-right">分享</span>
+                <span class="spaced-right">
+                  <a href="#"><img src="../img/icon-share-weibo-2.png"></a> 
+                  <a href="#"><img src="../img/icon-share-qzone.png"></a> 
+                  <a href="#"><img src="../img/icon-share-tencent-2.png"></a> 
+                  <a href="#"><img src="../img/icon-share-renren-2.png"></a> 
+                  <a href="#"><img src="../img/icon-share-douban-2.png"></a> 
+                </span>-->
+                <span class="high-light spaced-right">@Html.GetTrans(285)</span>
+                <span class="spaced-right"><i id="class-detail-linkicon" class="fa fa-heart icon-large @(Model.ClassInfo.PublishStatus.Equals(1) ? "fa-heart-like" : "")"></i> <span id="class-detail-linknum" class="gray-light bold">@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["like"])</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+<!-- end of bottom bar -->
+ }
+@Html.Partial("_BookClassPartial", Model)
+@Html.Partial("_ContactPartial")
+@Html.Partial("_GetCoinPartial")
+

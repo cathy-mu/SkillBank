@@ -1,0 +1,31 @@
+﻿<div class="modal fade modal-contact-teacher" id="modal-contact-teacher" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="contactpop-close">&times;</button>
+
+                <div class="bd">
+
+                    <h4 class="spaced-larger"><i class="fa fa-envelope"></i>@Html.GetTrans(301)</h4>
+
+                    <p class="gray">@Html.GetTrans(302)</p>
+
+                    <div class="row-fluid spaced">
+                        <div class="span12">
+                            <textarea name="" placeholder="@ResourceHelper.GetTransText(461).Trim()" rows="5" class="form-control span12" id="message-content"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row-fluid">
+                        <div class="span6"><a href="@(ViewBag.ContactorId==null?"#":"/message/chat/"+ViewBag.ContactorId)">@Html.GetTrans(303)</a></div>
+                        <div class="span6 tright">
+                            <input type="button" class="btn btn-primary" value="@Html.GetTrans(304)" id="message-sendbtn"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end of modal: contact teacher -->

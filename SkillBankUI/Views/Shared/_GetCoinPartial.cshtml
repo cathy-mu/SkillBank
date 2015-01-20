@@ -1,0 +1,77 @@
+﻿<div class="modal fade modal-get-coin" id="modal-get-coin" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                <div class="bd">
+
+                    <h4 class="orange spaced-larger"><i class="fa fa-info-circle"></i>@Html.GetTrans(326)</h4>
+
+                    <div class="get-coin-steps">
+                        <p class="spaced-larger">@Html.GetTrans(327)</p>
+
+                        <div class="row-fluid spaced-larger">
+                            <div class="span6">
+                                <div class="get-coin-step">
+                                    <h5 class="spaced-larger">@Html.GetTrans(328)</h5>
+                                    <p class="spaced-larger">@Html.GetTrans(329)</p>
+                                    <p><a href="@Url.Action("beteacher", "class")" class="btn btn-warning">@Html.GetTrans(330)</a></p>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="get-coin-step">
+                                    <h5 class="spaced-larger">@Html.GetTrans(331)</h5>
+                                    <p class="spaced-larger">@Html.GetTrans(332)</p>
+                                    <p><i class="fa fa-share-alt"></i></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid">
+                            <div class="span12">@Html.ActionLink(ResourceHelper.GetTransText(185), "qanda", "about", "http", "www.skillbank.cn", "qatab0s1", new { id = 0 }, null)<!--<a href="javascript:void(0);" class="btn-show-coin-methods">@Html.GetTrans(333)</a>--></div>
+                        </div>
+                    </div>
+
+
+                    <div class="get-coin-methods none">
+
+                        <p class="spaced-larger">@Html.GetTrans(327)</p>
+
+                        <div class="row-fluid spaced-larger">
+                            <div class="span6">
+                                <div class="get-coin-method">
+                                    <h5 class="spaced-larger">@Html.GetTrans(336)</h5>
+                                    <p class="spaced-large"><a href="#" class="btn btn-warning"><i class="fa fa-share-alt"></i>@Html.GetTrans(337)</a></p>
+                                    <p>@Html.GetTrans(338)</p>
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="get-coin-method">
+                                    <h5 class="spaced-larger">@Html.GetTrans(339)</h5>
+                                    <p class="spaced-large"><a href="#" class="btn btn-primary"><i class="fa fa-user"></i>@Html.GetTrans(340)</a></p>
+                                    <p>
+                                        <i class="fa fa-qq"></i><a href="#">@Html.GetTrans(341)</a>
+                                        <br>
+                                        <i class="fa fa-phone">@Html.GetTrans(342)</i>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid">
+                            <div class="span12 tright gray-light">
+                                @Html.GetTrans(343)<br>
+                                @Html.GetTrans(344)
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end of modal: get coin -->

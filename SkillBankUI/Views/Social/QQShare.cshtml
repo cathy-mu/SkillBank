@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/_3rdLayout.cshtml";
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="http://mat1.gtimg.com/app/vt/css/share/style_09_01.css" type=text/css rel=stylesheet data-custom="0" id="theme"/>
+<link rel="apple-touch-icon-precomposed" href="http://mat1.gtimg.com/www/mb/images/microblog_72_72.png" />
+<link rel="shortcut icon" href="http://mat1.gtimg.com/app/opent/images/index/favicon.ico"/>
+<title>一键分享-腾讯微博分享组件</title>
+<meta name="keywords" content="分享,微博,组件">
+<meta name="Description" content="第三方网站可以通过腾讯微博开放平台(dev.t.qq.com)获取微博一键分享组件代码，布署到自己的网站中后，用户点击分享按钮，可以将内容分享到腾讯微博。">
+<script src="http://mat1.gtimg.com/app/vt/js/jquery.js"></script>
+</head>
+<body>
+
+<p class="hide">
+<input type="hidden" id="urllevel" value="0" />
+<input type="hidden" id="isCelebrity" value="0" />
+<input type="hidden" id="isValidLogin" value="2" />
+</p>
+<!-- 头部 -->
+<a href="#" class="pnone" title="反馈读屏软件使用微博时遇到的问题 （快捷键:编辑内容Alt+U 发微博Ctrl+Enter）" tabindex="1">微博无障碍意见反馈</a>
+<div class="wrap">
+	<div class="header">
+		<div class="uinfo"><!--<a href="javascript:;" class="ptlogin" data-type="0" title="登录">登录</a> | <a href="http://t.qq.com/reg/index.php" target="_blank" title="注册">注册</a>--></div></div>
+	<div class="center">
+	    <div class="anchor">
+	       <!-- 登录窗 -->
+            <div class="login_layer">
+                <div id="login_div">
+                    <iframe id="login_frame" name="login_frame" src="about:blank" frameborder="0" height="200" scrolling="auto" width="100%"></iframe>
+                </div>
+                <div class="arrow_shadow"></div>
+                <div class="arrow"></div>
+                <a href="javascript:;" class="close_btn" data-action="hideLoginFrame" title="关闭">&times;</a>
+            </div>
+        </div>
+	    <div class="bgtop"></div>
+	    <div class="bgcenter bgcenter_form">
+	    	<div class="t">
+		      <div class="l fl"><!--<span class="none fl_name"><a href="javascript:;" title="登录" data-action="showLoginFrame">请先登录</a> | <a href="http://t.qq.com/reg/index.php" target="_blank" title="注册">注册</a>，</span>转播给你的听众--></div>
+		      <div class="r fr" id="txtLen">还能输入&nbsp;<em>140</em>&nbsp;字</div>
+		      <div class="cl"></div>
+	    	</div>
+		    <!-- 提交表单 -->
+		    <div class="subform">
+		      <form action='http://share.v.t.qq.com/index.php?c=share&a=submit' method="post" target="login_frame" id="subform">
+		      <textarea class="input" id="content" name="content">Here is the content</textarea>
+		      <input type="hidden" name="g_tk" value="5381"/>
+		      <input type="hidden" name="title" value="Here is the content" data-default="Here is the content"/>
+		      <input type="hidden" name="summary" value=""/> <!-- Rich消息的摘要 -->
+		      <input type="hidden" name="rtype" value="0"/>	<!-- 1=>网页 2=>音频 4=>视频 8=>app -->
+		      <input type="hidden" name="type" value="2"/>
+		      <input type="hidden" name="qzone" id="qzone" value="0" />
+		      <input type="hidden" name="pic" id="pic" value="http://www.skillbank.cn/img/logo-115.png"/>
+		      <input type="hidden" name="rpic" id="rpic" value=""/> <!-- rich化消息缩略图 -->
+		      <input type="hidden" name="picsize" id="picsize" value="0"/> <!-- rpic字段缩略图大小，rtype值对应   1=>80*80，2=>120*90，3=>90*120-->
+		      <input type="hidden" name="url" value="http://localhost:8008/social/qq"/>
+		      <input type="hidden" name="shorturl" value="http://localhost:8008/social/qq"/>
+		      <input type="hidden" name="iframeurl" value=""/> <!-- type为8时，pc侧填写iframe url,url地址域名必须和申请应用的域名匹配 -->
+		      <input type="hidden" name="appkey" value="7f937514830a46ce132a30aa3253073d"/>
+		      <input type="hidden" name="f" value=""/>
+		      <input type="hidden" name="subtype" id="subtype" value="0"/> <!-- subtype:0 正常登录  subtype:1 点击分享却未登录 subtype:2 分享结果返回登录态失效-->
+		      </form>
+		      <div class="set none">
+		      	<!--<a href="javascript:;" id="friends" class="mentions none" title="" hidefocus>朋友</a>-->
+		      	<div class="mentions_users none"><strong class="fl">点击@TA们：</strong><span id="mentions_users" class="fl"></span></div>
+		      	<a href="javascript:;" id="qzoneflag" class="qzoneflag none" hidefocus title="已设置为同步至QQ空间" data-action="toggleQzoneFlag">同步：</a>
+		      </div>
+		    </div>
+		    <!-- 其它功能 -->
+		    
+		    <div class="suburl">
+		    	<a href="javascript:;" class="short_url" title="http://localhost:8008/social/qq"><span class="share_url_icon"></span>http://localhost:8008/social/qq</a>
+		    	<a href="javascript:;" data-action="toggleShortUrlChecked" class="remove_url" title="点击取消分享网站地址">&times;</a>
+                                		    </div>
+<!--
+		    		    <div class="media_poor" id="media"></div>
+		    -->
+            <div class="weibo"></div>
+            <div class="publicer">
+            	<span class="fleft"></span>
+            	<span class="fright"><input type="button" id="subbtn" title="转播 (快捷键 Ctrl+Enter))" value="转播"/></span>
+            </div>
+	    </div>
+	    <div class="bgcenter bgcenter_result none"></div>
+	    <div class="bgfoot"></div>
+	</div>
+    <div class="footer"><a href="http://dev.t.qq.com/websites/share" target="_blank" title="获取分享按钮">获取分享按钮</a><br/>Copyright &copy; 1998 - 2014 Tencent. All Rights Reserved</div> 
+    <!-- -->
+	<div class="pop_layer">
+	    <div class="pop">
+	        <div class="search">
+	            <input type="text" id="match" autocomplete="off" />
+	            <div class="x_close"></div>
+	        </div>
+	        <ul id="list"></ul>
+	    </div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    var hadlogin = '';// 登录标识
+    var weibo_name = '';
+    var pics = [["http:\/\/www.skillbank.cn\/img\/logo-115.png"]][0];// 图片数组
+    var currentImgIndex = 0; // 当前图片序号
+    var pos = 0; // 文本域光标位置
+    var type = +"2";//转播类型
+    var img = new Image();
+    var pconf = "{\"type\":2,\"data\":{\"pics\":\"[\\\"http:\\\\\\\/\\\\\\\/www.skillbank.cn\\\\\\\/img\\\\\\\/logo-115.png\\\"]\",\"cover\":\"http:\\\/\\\/www.skillbank.cn\\\/img\\\/logo-115.png\",\"picnum\":1}}";
+    var uinfo = { "isCelebrity": 0, "isValidLogin": 2 };
+</script>
+<script type="text/javascript" src="http://mat1.gtimg.com/app/vt/js/share/share_11_01.js?20140102"></script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+﻿@section HeaderStyle {@Html.CombresCustomUrl("memberInfoCss")}
+@section FooterJs {@Html.CombresCustomUrl("memberInfoJs")}
+<div class="body">
+    <div class="inner">
+
+        <div class="profile-edit">
+
+            <div class="profile-edit-hd">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h2>@Html.GetTrans(407)</h2>
+                    </div>
+                    <div class="span6 tright"><a href="@Url.Action("Index", "Profile", new { id = ViewBag.MemberId })" class="btn btn-default pull-right"><i class="fa fa-eye"></i>@Html.GetTrans(408)</a></div>
+                </div>
+            </div>
+
+            <div class="profile-edit-bd">
+                <table class="table-layout">
+                    <tr>
+                        <td class="profile-edit-side">
+                            <ul class="nav nav-stacked nav-inverse">
+                                <li class="active"><a href="#"><i class="fa fa-pencil-square icon-large"></i>&nbsp; @Html.GetTrans(409)</a></li>
+                                <li><a href="@Url.Action("Photo", "Member")"><i class="fa fa-user icon-large"></i>&nbsp; @Html.GetTrans(410)</a></li>
+                                <li><a href="@Url.Action("Location", "Member")"><i class="fa fa-map-marker icon-large"></i>&nbsp; @Html.GetTrans(411)</a></li>
+                                <li><a href="@Url.Action("Verification", "Member")"><i class="fa fa-check-circle icon-large"></i>&nbsp; @Html.GetTrans(412)</a></li>
+                            </ul>
+                        </td>
+
+                        <td class="profile-edit-main">
+                            <h3 class="spaced-larger">@Html.GetTrans(413)</h3>
+                            @if (ViewBag.MemberInfo != null)
+                            {
+                                <form class="form-horizontal profile-edit-form" role="form">
+
+                                    <div class="row-fluid spaced-large">
+                                        <div class="span2 tright">
+                                            <label class="control-label">@Html.GetTrans(414)</label>
+                                        </div>
+                                        <div class="span8">
+                                            <input type="text" class="form-control spaced-small span8" id="profileinfo-name" value="@ViewBag.MemberInfo.Name">
+                                            <!--<div class="field-hint">@Html.GetTrans(416)</div>-->
+                                        </div>
+                                        <div class="span2"><!--<span class="label label-warning label-private none"><i class="fa fa-lock"></i>&nbsp; @Html.GetTrans(415)</span>--></div>
+                                    </div>
+
+                                    <div class="row-fluid spaced-large">
+                                        <div class="span2 tright">
+                                            <label class="control-label">@Html.GetTrans(417)</label>
+                                        </div>
+                                        <div class="span8 form-inline">
+                                            <select name="" id="profileinfo-gender" class="form-control span4 chosen">
+                                                <option value="">@Html.GetTrans(418)</option>
+                                                <option value="false" @(ViewBag.MemberInfo.Gender ? "" : "selected=\"selected\"")>@Html.GetTrans(561)</option>
+                                                <option value="true" @(ViewBag.MemberInfo.Gender ? "selected=\"selected\"" : "")>@Html.GetTrans(562)</option>
+                                            </select>
+                                        </div>
+                                        <div class="span2"></div>
+                                    </div>
+
+                                    <div class="row-fluid spaced">
+                                        <div class="span2 tright">
+                                            <label class="control-label">@Html.GetTrans(419)</label>
+                                        </div>
+                                        <div class="span8 form-inline">
+                                            <select name="" id="profileinfo-month" placeholder="Month" class="form-control span4 chosen">
+                                                <option value="">@Html.GetTrans(420)</option>
+                                                @for (int i = 1; i < 13; i++)
+                                                { <option value="@i" @((ViewBag.MemberInfo.BirthDate != null && ViewBag.MemberInfo.BirthDate.Month == i) ? "selected=\"selected\"": "")>@i @Html.GetTrans(420)</option> }
+                                            </select>
+
+                                            <select name="" id="profileinfo-day" placeholder="Day" class="form-control span3 chosen">
+                                                <option value="">@Html.GetTrans(421)</option>
+                                                @for (int i = 1; i < 32; i++)
+                                                { <option value="@i" @((ViewBag.MemberInfo.BirthDate != null && ViewBag.MemberInfo.BirthDate.Day == i) ? "selected=\"selected\"": "")>@i @Html.GetTrans(421)</option> }
+                                            </select>
+
+                                            <select name="" id="profileinfo-year" placeholder="Year" class="form-control span3 chosen">
+                                                <option value="">@Html.GetTrans(422)</option>
+                                                @for (int i = 1930; i < DateTime.Now.Year; i++)
+                                                { <option value="@i" @((ViewBag.MemberInfo.BirthDate != null && ViewBag.MemberInfo.BirthDate.Year == i) ? "selected=\"selected\"": "")>@i @Html.GetTrans(422)</option> }
+                                            </select>
+
+                                            <div class="field-hint">@Html.GetTrans(423)</div>
+                                        </div>
+                                        <div class="span2">
+                                            <p class="spaced-large"><span class="label label-warning label-private"><i class="fa fa-lock"></i>&nbsp; @Html.GetTrans(415)</span></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid spaced-large">
+                                        <div class="span2 tright">
+                                            <label class="control-label">@Html.GetTrans(227)</label>
+                                        </div>
+                                        <div class="span8 form-inline">
+                                            <input type="text" class="form-control spaced-small span8" id="profileinfo-email" value="@ViewBag.MemberInfo.Email">
+                                            <div class="field-hint">@Html.GetTrans(416)</div>
+                                        </div>
+                                        <div class="span2">
+                                            <p class="spaced-large"><span class="label label-warning label-private"><i class="fa fa-lock"></i>&nbsp; @Html.GetTrans(415)</span></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid spaced-large">
+                                        <div class="span2 tright">
+                                            <label class="control-label">@Html.GetTrans(318)</label>
+                                        </div>
+                                        <div class="span8 form-inline">
+                                            <input type="text" class="form-control spaced-small span8" id="profileinfo-phone" value="@ViewBag.MemberInfo.Phone">
+                                               <div class="field-hint"><span class="errormessage" id="verify-errormobile">手机号码已被验证&nbsp;&nbsp;&nbsp;</span><span class="errormessage" id="verify-errorcode">验证失败&nbsp;&nbsp;&nbsp;</span>@Html.GetTrans(416)</div>
+                                        </div>
+                                        <div class="span2">
+                                            <p class="spaced-large"><span class="label label-warning label-private"><i class="fa fa-lock"></i>&nbsp; @Html.GetTrans(415)</span></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row-fluid spaced">
+                                        <div class="span2 tright">
+                                            <label class="control-label">@Html.GetTrans(254)</label>
+                                        </div>
+                                        <div class="span8 form-inline">
+                                            <input type="text" class="form-control spaced-small span8" id="profileinfo-city" value="@(ViewBag.MemberInfo.CityId==0?"":TagHelper.GetCityName(ViewBag.MemberInfo.CityId).Trim())">
+                                            <div class="control-autocomplete" style="margin-top:33px;width:300px" id="profile-cityholder"><ul id="profileinfo-citylist" class="dropdown-menu" role="menu"></ul></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row-fluid spaced">
+                                        <div class="span2 tright">
+                                            <label class="control-label">@Html.GetTrans(266)</label>
+                                        </div>
+                                        <div class="span8 form-inline">
+                                            <textarea name="" id="profileinfo-intro" cols="30" rows="15" class="span12 form-control spaced">@ViewBag.MemberInfo.SelfIntro</textarea>
+                                            <div class="field-hint">@Html.GetTrans(424)</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid spaced">
+                                        <div class="span8 offset2">
+                                            <button id="profileinfo-save" type="button" class="btn btn-primary"><i class="fa fa-save"></i><span>@Html.GetTrans(425)</span></button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="profileinfo-hidcityid" value="@ViewBag.MemberInfo.CityId"/>
+                                </form>
+                            }
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>

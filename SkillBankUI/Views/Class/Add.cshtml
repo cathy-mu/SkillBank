@@ -1,0 +1,322 @@
+﻿@model SkillBank.Site.Web.ViewModel.ClassAddModel
+@section HeaderStyle
+{<link rel="stylesheet" type="text/css" href="http://api.amap.com/Public/css/demo.Default.css" />
+    @Html.CombresCustomUrl("classEditCss")}
+@section FooterJs
+{<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.2&key=7f937514830a46ce132a30aa3253073d"></script>
+ @Html.CombresCustomUrl("classAddJs")
+<script type="text/javascript" src="/scripts/map.js"></script>
+    }
+   
+<div class="body">
+    <div class="create-class">
+
+        <div class="create-class-hd">
+            <div class="inner">
+                <div class="row-fluid">
+                    <div class="span10">
+                        <ul class="nav nav-tabs">
+                            <li class="active" id="tab-about-me"><a href="#about-me" data-toggle="tab"><span class="icon icon-circle-me"></span>
+                                <br />
+                                @Html.GetTrans(262)</a></li>
+                            <li id="tab-class-overview"><a href="#class-overview" data-toggle="tab"><span class="icon icon-circle-overview"></span>
+                                <br />
+                                @Html.GetTrans(263)</a></li>
+                            <li id="tab-class-photo"><a href="#class-photo" data-toggle="tab"><span class="icon icon-circle-photo"></span>
+                                <br />
+                                @Html.GetTrans(264)</a></li>
+                        </ul>
+                    </div>
+                    <div class="span2 tcenter">
+                        <div class="steps-left">
+                            <h3 id="number-steps-left">3</h3>
+                            <h4>
+                                <label id="number-steps-tip3" class="number-steps-tips">@Html.GetTrans(265)</label><label id="number-steps-tip2" class="number-steps-tips hide">@Html.GetTrans(493)</label><label id="number-steps-tip1" class="number-steps-tips hide">@Html.GetTrans(492)</label></h4>
+                        </div>
+
+                        <div class="steps-complete none">
+                            <a href="#" id="class-publish" class="btn btn-primary btn-block spaced">@Html.GetTrans(486)</a>
+                            <a id="class-confirm-publish" href="#modal-confirm-publish" data-toggle="modal"></a>
+                            <a href="@Url.Action("Preview", "Class", new { id = @ViewBag.ClassId })" target="_blank" id="class-preview" class="btn btn-default btn-block">@Html.GetTrans(487)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="create-class-bd">
+            <div class="inner">
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <h3 class="spaced-larger errormessage">@ViewBag.ErrorMessage</h3>
+                }
+                @if (Model.ClassInfo != null)
+                {  
+           
+                    <div class="tab-content">
+                        <div class="tab-pane padding active" id="about-me"><!-- @(Model.hasAboutMeInfo?"":"active")-->
+                            <form id="form-about-me">
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(266)</div>
+                                            <div class="span6">
+                                                <textarea name="selfintro" id="selfintro" class="form-control span12" rows="8">@(Model.MyInfo==null ? "" : Model.MyInfo.SelfIntro)</textarea>
+                                                <div class="pull-right gray-light"><span id="selfintro-charsleft">0/400</span></div>
+                                            </div>
+                                            <div class="span4">
+                                                <div class="row-fluid field-hint">
+                                                    <div class="span1"><i class="fa fa-info-circle icon-large gray-light"></i></div>
+                                                    <div class="span11">
+                                                        <p class="gray-light" data-id="default">@Html.GetTrans(268)@Html.GetTrans(269)</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-fluid spaced field-gender">
+                                            <div class="span2 tright">@Html.GetTrans(271)</div>
+                                            <div class="span6 form-inline" id="class-membergender">
+                                                <label for="2342" class="spaced-right member-female">
+                                                    <input type="radio" name="member-gender" id="member-female" value="0" class="member-gender" @((Model.MyInfo==null || !Model.MyInfo.Gender) ? "checked" : "")>
+                                                    <i class="icon-female"></i>
+                                                </label>
+                                                <label for="6234" class="spaced-right member-male">
+                                                    <input type="radio" name="member-gender" id="member-male" value="1" class="member-gender" @((Model.MyInfo!=null && Model.MyInfo.Gender) ? "checked" : "")>
+                                                    <i class="icon-male"></i>
+                                                </label>
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div>
+
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(272)</div><div style="width:0px;height:0px;overflow:hidden"><input type="text" name="locationfix" id="locationfix" /></div>
+                                                
+                                            <div class="span6 form-inline">
+                                                <input type="text" name="location" id="location" class="form-control span12 map-input" value="@(Model.MyInfo==null ?"" : Model.MyInfo.Address )" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row-fluid spaced">
+                                            <div class="span10 offset2" style="width:400px;">
+                                                <div>
+                                                    <div id="addressoption" name="addressoption" style="overflow: auto; width: 95%; border: 1px solid gray; display: none;"></div>
+                                                    <div id="iCenter"></div>
+
+                                                    <br />
+                                                    <p class="gray-light">@Html.GetTrans(274)</p>
+                                                </div>
+                                            </div>
+                                            <div style="width:260px;float:left;margin-top:-50px;padding-left:20px;">
+                                                    <p class="spaced-large">
+                                                        <!--<span class="label label-warning label-private none"><i class="fa fa-lock"></i>Private</span>-->
+                                                    </p>
+                                                    <div id="map-tip" class="row-fluid" style="float:left;">
+                                                        <div class="span12" id="map-hits">
+                                                            <p class="gray-light enter">@Html.GetTrans(598)</p>
+                                                            <p class="gray-light select">@Html.GetTrans(599)</p>
+                                                            <p class="gray-light click">@Html.GetTrans(600)</p>
+                                                            <p class="gray-light saved">@Html.GetTrans(601)</p>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" id="classf-hidcityname" value="@Model.CityForMap" />
+                                        <input type="hidden" id="mapposx" name="mapposx" value="@(Model.MyInfo==null  ? "" : Model.MyInfo.PosX.ToString())" />
+                                        <input type="hidden" id="mapposy" name="mapposy" value="@(Model.MyInfo==null  ? "" : Model.MyInfo.PosY.ToString())" />
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- end of tab pane -->
+
+                        <div class="tab-pane " id="class-overview"><!-- @(Model.hasAboutMeInfo?"active":"")-->
+
+                            <form id="form-class-overview">
+
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(275)</div>
+                                            <div class="span6 form-inline" id="class-level">
+                                                <label for="4899" class="spaced-right" data-value="1">
+                                                    <input type="radio" name="class-level" id="class-level1" value="1" class="class-level" @((Model.ClassInfo.Level==null || Model.ClassInfo.Level==1) ? "checked" : "")>
+                                                    @Html.GetTrans(276)</label>
+                                                <label for="7871" class="spaced-right" data-value="2">
+                                                    <input type="radio" name="class-level" id="class-level2" value="2" class="class-level" @((Model.ClassInfo.Level==2) ? "checked" : "")>
+                                                    @Html.GetTrans(277)</label>
+                                                <label for="6687" class="spaced-right" data-value="3">
+                                                    <input type="radio" name="class-level" id="class-level3" value="3" class="class-level" @((Model.ClassInfo.Level==3) ? "checked" : "")>
+                                                    @Html.GetTrans(278)</label>
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div>
+
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(279)</div>
+                                            <div class="span6">
+                                                <input type="text" id="title" value="@(Model.isEdit ? Model.ClassInfo.Title : "")" class="form-control span12" >
+                                                <div class="pull-right gray-light"><span id="title-charsleft">0/30</span></div>
+                                            </div>
+                                            <div class="span4">
+                                                <div class="row-fluid field-hint">
+                                                    <div class="span1"><i class="fa fa-info-circle icon-large gray-light"></i></div>
+                                                    <div class="span11" id="title-hits">
+                                                        <p class="gray-light">
+                                                            <span data-name="default">@Html.GetTrans(268)</span>
+                                                            <span data-name="language">@Html.GetTrans(506)</span>
+                                                            <span data-name="art">@Html.GetTrans(507)</span>
+                                                            <span data-name="coding">@Html.GetTrans(508)</span>
+                                                            <span data-name="sport">@Html.GetTrans(509)</span>
+                                                            <span data-name="dance">@Html.GetTrans(510)</span>
+                                                            <span data-name="food">@Html.GetTrans(511)</span>
+                                                            <span data-name="professional">@Html.GetTrans(512)</span>
+                                                            <span data-name="self">@Html.GetTrans(513)</span>
+                                                            <span data-name="experience">@Html.GetTrans(514)</span>
+                                                            <span data-name="other">@Html.GetTrans(515)</span>
+                                                         </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(281)</div>
+                                            <div class="span6">
+                                                <textarea name="summary" id="summary" class="form-control span12" rows="8" placeholder="请避免课程介绍的内容过于简短">@(Model.isEdit ? Model.ClassInfo.Summary : "")</textarea>
+                                                <div class="pull-right gray-light"><span id="summary-charsleft">0/300</span></div><!--@ViewBag.CharacterCountText[0]@ViewBag.CharacterCountText[1]-->
+                                            </div>
+                                            <div class="span4">
+                                                <div class="row-fluid field-hint">
+                                                    <div class="span1"><i class="fa fa-info-circle icon-large gray-light"></i></div>
+                                                    <div class="span11" id="summary-hits">
+                                                        <p class="gray-light">
+                                                            <span data-name="default">@Html.GetTrans(269)</span>
+                                                            <span data-name="language">@Html.GetTrans(516)</span>
+                                                            <span data-name="art">@Html.GetTrans(517)</span>
+                                                            <span data-name="coding">@Html.GetTrans(518)</span>
+                                                            <span data-name="sport">@Html.GetTrans(519)</span>
+                                                            <span data-name="dance">@Html.GetTrans(520)</span>
+                                                            <span data-name="food">@Html.GetTrans(521)</span>
+                                                            <span data-name="professional">@Html.GetTrans(522)</span>
+                                                            <span data-name="self">@Html.GetTrans(523)</span>
+                                                            <span data-name="experience">@Html.GetTrans(524)</span>
+                                                            <span data-name="other">@Html.GetTrans(525)</span>
+                                                         </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row-fluid spaced">
+                                            <div class="span6 offset2">
+                                                <a href="javascript:void(0)" class="btn-toggle-class-detail"><i class="fa fa-plus-circle"></i><i class="fa fa-minus-circle none"></i>@Html.GetTrans(286)</a><!-- @Html.GetTrans(290)-->
+                                            </div>
+                                        </div>
+
+                                        <div class="row-fluid spaced @((Model.ClassInfo==null || String.IsNullOrEmpty(Model.ClassInfo.Detail))?"none":"") section-class-detail">
+                                            <div class="span2 tright">@Html.GetTrans(603)</div>
+                                            <div class="span6">
+                                                <textarea name="detail" id="detail" class="form-control span12" rows="12">@(Model.isEdit ? Model.ClassInfo.Detail : ResourceHelper.GetTransText(291))</textarea>
+                                                <div class="pull-right gray-light"><span id="class-detail-charsleft">0/2000</span></div>
+                                            </div>
+                                            <div class="span4">
+                                                <div class="row-fluid field-hint">
+                                                    <div class="span1"><i class="fa fa-info-circle icon-large gray-light"></i></div>
+                                                    <div class="span11">
+                                                        <p class="gray-light">@Html.GetTrans(559)</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(287)</div>
+                                            <div class="span6">
+                                                <input id="classf-tags" type="text" class="classf-input" value="面授,小班" />
+                                                <div>@Html.GetTrans(288)</div>
+                                                <div class="tagssuggestion">
+                                                    <span class="tag">课程标签1</span>
+                                                    <span class="tag">class tag2</span>
+                                                </div>
+                                            </div>
+                                            <div class="span4">
+                                                <div class="row-fluid field-hint">
+                                                    <div class="span1"><i class="fa fa-info-circle icon-large gray-light"></i></div>
+                                                    <div class="span11">
+                                                        <p class="gray-light">@Html.GetTrans(559)</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        -->
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <!-- end of tab pane -->
+
+                        <div class="tab-pane" id="class-photo">
+
+                            <form id="form-class-photo">
+
+                                <div class="row-fluid">
+                                    <div class="span10 offset1">
+                                        <div class="row-fluid">
+                                            <div class="span6 offset2">
+                                                <div class="field-hit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Html.GetTrans(602)<br /><br /></div>
+                                            </div>
+                                            <div class="span6 offset2">
+                                                
+                                                <div class="upload-box spaced-larger" id="preview-placeholder">
+                                                    <!-- <a href="#" class="btn btn-primary"><i class="fa fa-cloud-upload"></i>@Html.GetTrans(293)</a>-->
+                                                </div>
+                                                <div id="preview-holder"></div>
+                                                <a href="#" id="class-coverupload" class="btn btn-primary"><i class="fa fa-cloud-upload"></i>@Html.GetTrans(293)</a>
+                                                <button type="button" class="btn btn-primary" id="btnimg-upload"><i class="fa fa-save"></i><span>@Html.GetTrans(425)</span></button>
+                                                <!--<a href="#" class="btn btn-default">Cancel</a>-->
+
+                                            </div>
+                                            <div class="span2">
+                                                <p id="preview_m_holder">
+                                                    <img src="@(Model.isEdit && !String.IsNullOrEmpty(Model.ClassInfo.Cover) ? ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "b") : "/img/default_cover.png")">
+                                                </p>
+                                                <p id="imgupload-error"></p>
+                                            </div>
+                                            <div class="fileinfo">
+                                                <input type="file" id="class-coverupload-file" name="class-coverupload-file" />
+                                                <input type="hidden" id="imagefilesetting" name="imagefilesetting" value="0,0,240,180" />
+                                                <input type="hidden" id="imagefileext" name="imagefileext" />
+                                                <input type="hidden" id="imagefilename" name="imagefilename" value="@ViewBag.ClassId"/>
+                                                <input type="hidden" id="classhascover" name="classhascover" value="@((Model.ClassInfo != null && !String.IsNullOrEmpty(Model.ClassInfo.Cover)) ? "true" : "")"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <!-- end of tab pane -->
+
+                    </div>
+                    <!-- end of tab content -->
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <input type="hidden" id="classf-hidcatename" value="@((Model!=null && !String.IsNullOrEmpty(Model.CategoryName))?Model.CategoryName:"default")" />
+    <input type="hidden" id="classf-hidcateid" value="@Model.ClassInfo.Category_Id" />
+    <input type="hidden" id="classf-hidclassid" value="@ViewBag.ClassId" />
+    <input type="hidden" id="classf-hidclasslevel" value="2" />
+    <input type="hidden" id="map-address" name="map_address" />
+
+</div>
+<!-- end of body -->
+@Html.Partial("_ConfirmPublishPartial")
+    

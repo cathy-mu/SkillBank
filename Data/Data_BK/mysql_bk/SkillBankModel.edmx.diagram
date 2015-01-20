@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6e733b5211924223b06fae1b78a17c6d" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="SkillBankModel.CategoryPopTag" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBankModel.ClassTag" Width="1.5" PointX="7.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBankModel.Message" Width="1.5" PointX="1" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBankModel.OrderStatusReason" Width="1.5" PointX="5.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBankModel.SkillCategory" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBankModel.MetaTag" Width="1.5" PointX="9" PointY="3" />
+        <EntityTypeShape EntityType="SkillBankModel.StudentReview" Width="1.5" PointX="7.375" PointY="6.25" />
+        <EntityTypeShape EntityType="SkillBankModel.TeacherReview" Width="1.5" PointX="7.25" PointY="3" />
+        <EntityTypeShape EntityType="SkillBankModel.EmailTemplate" Width="1.5" PointX="5.125" PointY="6.25" />
+        <EntityTypeShape EntityType="SkillBankModel.CityInfo" Width="1.5" PointX="5.125" PointY="0.75" />
+        <EntityTypeShape EntityType="SkillBankModel.Order" Width="1.5" PointX="5.125" PointY="2.875" />
+        <EntityTypeShape EntityType="SkillBankModel.MemberInfo" Width="1.5" PointX="3" PointY="2.875" />
+        <AssociationConnector Association="SkillBankModel.IDX_Message_FromId" />
+        <AssociationConnector Association="SkillBankModel.IDX_Order_MemberId" />
+        <EntityTypeShape EntityType="SkillBankModel.BlurbsMain" Width="1.5" PointX="9.625" PointY="6.125" />
+        <EntityTypeShape EntityType="SkillBankModel.ClassInfo" Width="1.5" PointX="4.214931754495451" PointY="13.484350240549237" />
+        <AssociationConnector Association="SkillBankModel.IDX_Order_ClassId" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

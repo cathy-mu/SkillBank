@@ -1,0 +1,116 @@
+﻿@using System.Data.Entity
+@using SkillBank.Site.DataSource.Data
+@model SkillBank.Site.Web.ViewModel.ClassListModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+<!-- bug hack -->
+<header class="bar-nav"></header>
+
+<nav class="bar bar-tab">
+    <a class="tab-item active" href="#" data-transition="slide-in">
+        <span class="icon icon-search"></span>
+        <span class="tab-label">发现</span>
+    </a>
+    <a class="tab-item " href="message.html" data-transition="slide-in">
+        <span class="icon icomoon icon-comment2"></span>
+        <span class="tab-label">消息</span>
+    </a>
+    <a class="tab-item" href="course.html" data-transition="slide-in" data-ignore="pushY">
+        <span class="icon icomoon icon-text"></span>
+        <span class="tab-label">课程</span>
+    </a>
+    <a class="tab-item" href="personal.html" data-transition="slide-in">
+        <span class="icon icomoon icon-user"></span>
+        <span class="tab-label">个人</span>
+    </a>
+</nav>
+
+<div class="content" id="course-search">
+    <div class="search-bar">
+        <form>
+            <img src="/images/logo.png" alt="" class="logo">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="icon icon-search"></span>
+                    </div>
+                    <input type="search" placeholder="搜索技能" class="icon icon-search">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="search-cat">
+        <div class="search-cat-wrap toBeRemoved">
+            <div class="inner">
+                <a class="active" href="#" data-by="0" data-type="1">附近技能 </a>
+                <a class="" href="#" data-by="1" data-type="1">达人技能 </a>
+                <a class="" href="#" data-by="1" data-type="3">奇葩课程 </a>
+            @if (Model.CategoryLkp != null)
+                {
+                   foreach (var item in Model.CategoryLkp)
+                   {        
+                       <a class="" href="#" data-by="2" data-type="@item.CateId">@Html.GetTrans(item.BlubId)</a>
+                   }
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="course-list">
+
+        @if (Model.ClassList != null)
+        {
+            foreach (var classItem in Model.ClassList)
+            {
+           <div class="course card">
+            <div class="title-bar u-full-width">
+                <p class="pull-left">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 20, true))</p>
+                <div class="pull-right">
+                    <a href="#" class="icon icomoon icon-comment">
+                        <span class="num">14</span>
+                    </a>
+                    <a href="#" class="icon icomoon icon-heart">
+                        <span class="num">28</span>
+                    </a>
+                </div>
+            </div>
+            <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "mm")" alt="" class="cover">
+            <div class="info">
+                <img src="@ContentHelper.GetAvatarPath(classItem.Avatar,"mb")" alt="" class="avatar">
+                <h4>@classItem.Name</h4>
+                <p>64km 上海</p>
+            </div>
+        </div>
+            }
+        }
+    </div>
+
+    <script type="text/template" id="course-tpl">
+        <% _.forEach(courses, function(course) { %>
+          <div class="course card">
+            <div class="title-bar u-full-width">
+              <p class="pull-left"><%- course.Title %></p>
+              <div class="pull-right">
+                <a href="#" class="icon icomoon icon-comment">
+                  <span class="num"><%- course.ReviewNum %></span>
+                </a>
+                <a href="#" class="icon icomoon icon-heart <%- course.IsLike ? 'liked' : '' %>">
+                  <span class="num"><%- course.LikeNum %></span>
+                </a>
+              </div>
+            </div>
+            <img src="<%- checkImgHost(imgHost, course.Cover) %>" alt="" class="cover">
+            <div class="info">
+              <img src="<%- checkImgHost(imgHost, course.Avatar) %>" alt="" class="avatar">
+              <h4><%- course.Name %></h4>
+              <p>64km <%- course.CityName %></p>
+            </div>
+          </div>
+        <% }); %>
+      </script>
+
+</div>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/lodash/dist/lodash.min.js"></script>

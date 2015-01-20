@@ -1,0 +1,11 @@
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.Services.dll
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.Services.pdb
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\EF.Frameworks.Common.dll
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\EF.Frameworks.Orpheus.dll
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.Common.dll
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.DataSource.dll
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.Common.pdb
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.DataSource.pdb
+E:\SourceCode\VS\SkillBank\Business\obj\Debug\BusinessLayer.csprojResolveAssemblyReference.cache
+E:\SourceCode\VS\SkillBank\Business\obj\Debug\SkillBank.Site.Services.dll
+E:\SourceCode\VS\SkillBank\Business\obj\Debug\SkillBank.Site.Services.pdb

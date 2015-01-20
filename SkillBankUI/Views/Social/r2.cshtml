@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "r2";
+    Layout = "~/Views/Shared/_3rdLayout.cshtml";
+}
+
+<html>
+<head>
+    <title>RenRen</title>
+    <script type="text/javascript">
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return (r[2]); return null;
+        }
+
+        function Login(socialType, bkUrl) {
+            var APIkey = "ad2f3e5e5be44299aeae1abdca32028d"
+            var redirectUrl = encodeURIComponent(bkUrl);
+            var requestPara = "&response_type=code&display=iframe&redirect_uri=" + redirectUrl;//&response_type=code&display=iframe&scope=read_user_status+read_user_feed+read_user_comment+send_request+publish_share+publish_feed&secure=true&origin=0
+            var requestPath = "http://graph.renren.com/oauth/grant?client_id=" + APIkey + requestPara;
+                        
+            window.location = requestPath;
+        }
+
+
+        function Logout() {
+            var APIkey = "ad2f3e5e5be44299aeae1abdca32028d"
+            var requestPath = "https://graph.renren.com/oauth/token?grant_type=authorization_code&x_renew=true&client_id=" + APIkey + "&redirect_uri=http://www.skillbank.cn&client_secret=03cade26161d403dae76f62aba50587e&code=" + GetQueryString("code");
+            console.log(GetQueryString("code"));
+            console.log(requestPath);
+            window.location = requestPath;
+        }
+      
+    </script>
+</head>
+<body>
+    <!--<a href="http://graph.renren.com/oauth/authorize?client_id=ad2f3e5e5be44299aeae1abdca32028d&response_type=code&redirect_uri=http://www.skillbank.cn/Social/RR&display=iframe">-->
+    <a href="javascript:Login(1, 'http://www.skillbank.cn/social/r2');">
+        <img style="border: 0px" src="/img/renren_login_button.png" />
+    </a>
+    <a href="javascript:Logout();">
+        logout
+    </a>
+    <!--https://graph.renren.com/oauth/token?client_id=YOUR_API_KEY&client_secret=YOUR_SECRET_KEY&redirect_uri=YOUR_CALLBACK_URL&grant_type=client_credentials-->
+</body>
+
+</html>
+
+<!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Renren Webcanvas Demo -- Welcome</title>
+  <script type="text/javascript" src="/javascript/renren.js"></script>
+</head>
+<body>
+  <script type="text/javascript">
+	  var uiOpts = {
+		  url : "http://graph.renren.com/oauth/authorize",
+		  display : "iframe",
+		  params: { "response_type": "token", "client_id": "ad2f3e5e5be44299aeae1abdca32028d" },
+		  onSuccess: function(r){
+		    top.location = "http://apps.renren.com/yourapp/home";
+		  },
+		  onFailure: function(r){} 
+	  };
+	  Renren.ui(uiOpts);
+  </script>
+  Hi, Welcome!
+</body>
+</html>-->
+
+
+
+

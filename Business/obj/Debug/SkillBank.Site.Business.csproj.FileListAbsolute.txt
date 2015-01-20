@@ -1,0 +1,5 @@
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\Business.dll
+E:\SourceCode\VS\SkillBank\Business\bin\Debug\Business.pdb
+E:\SourceCode\VS\SkillBank\Business\obj\Debug\Business.dll
+E:\SourceCode\VS\SkillBank\Business\obj\Debug\Business.pdb
+E:\SourceCode\VS\SkillBank\Business\obj\Debug\SkillBank.Site.Business.csprojResolveAssemblyReference.cache

@@ -1,0 +1,75 @@
+﻿@section HeaderStyle
+{
+@Html.CombresCustomUrl("contentCss")}
+@section FooterJs
+{@Html.CombresCustomUrl("toolsJs")}
+<div class="body">
+    <div style="margin:50px 0 70px 200px">
+     <p>1. 根据Member Id 增加课程分享课币，如果已经获得分享课币，无法再次添加</p>
+     <b>Member Id :</b> <input type="text" value="" id="memberid2"/>
+     <b></b>Coins To Add : <input type="text" value="3" id="coin2"/>
+     <br /><br />
+     <p><input type="button" value="Add Share Class Coin" id="btn2"/></p>
+    </div>
+
+    <div style="margin:50px 0 70px 200px">
+    <p>2. 根据Member Id 增加课币，与是否获得分享课币无关（就是无条件想给或者扣他课币，负数就是扣除课币）</p>
+     <b>Member Id :</b> <input type="text" value="" id="memberid3"/>
+     Coins To Add : <input type="text" value="" id="coin3"/>
+     <br /><br />
+     <p><input type="button" value="Add Coin for Member" id="btn3"/></p>
+    </div>
+    
+    <div style="margin:50px 0 70px 200px">
+    <p>3. 根据Class Id 增加课币（根据微博分享的课程link）<br />如果此用户的全部课程中已经获得分享课币，无法重复添加</p>
+     <b>Class Id :</b><input type="text" value="" id="classid4"/>
+     Coins To Add : <input type="text" value="3" id="coin4"/>
+     <br /><br />
+     <p><input type="button" value="Add Coin By Class" id="btn4"/></p>
+    </div>
+    
+    <div style="margin:50px 0 70px 200px">
+    <p>4.  清除获得分享课币记录，并不改变用户课币数量<br />只是使系统认为该用户没有获得过分享课程的课币，用于反复分享的测试
+     </p>
+    <b>Member Id :</b><input type="text" value="" id="memberid5"/>
+    <br /><br />
+     <p><input type="button" value="Clear Member Share History" id="btn5"/></p>
+    </div>
+
+    <div style="margin:50px 0 70px 200px">
+     <p>5. 检查此Member Id 是否已经有课程分享课币</p>
+     <b>Member Id :</b> <input type="text" value="" id="memberid1"/>
+     <br /><br />
+     <p><input type="button" value="Check Share Class Coin" id="btn1"/></p>
+     <p><label id="labcoin"></label></p>
+    </div>
+
+
+
+    <div style="margin:100px 0 70px 200px">
+    <p>6. 根据Member Id 增加课币，（一个用户只能赠送一次的注册免费课币，默认1枚）</p>
+     <b>Member Id :</b> <input type="text" value="" id="memberid6"/>
+     Coins To Add : <input type="text" value="1" id="coin6"/>
+     <br /><br />
+     <p><input type="button" value="Add Coin for Member" id="btn6"/></p>
+    </div>
+
+
+    <div style="margin:50px 0 70px 200px">
+     <p>7. 根据用户信息查找Member Id</p>
+     <b>Email Keyword:</b> <input type="text" value="" id="email"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearche"/>
+     <br /><br />
+     <b>Name Keyword:</b> <input type="text" value="" id="name"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchn"/>
+     <br /><br />
+     <b>Phone Keyword:</b> <input type="text" value="" id="phone"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchp"/>
+     <br /><br />
+     <b>Social Account:</b> <input type="text" value="" id="socail"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchs"/>
+     <br /><br />
+     <p></p>
+     
+    </div>
+    
+
+</div>    
+<!-- end of body -->
+

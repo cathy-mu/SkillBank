@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SkillBank.Site.DataSource.Data.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="SkillBankSiteDataSourceDataStoreContainer">
+    <EntitySet Name="BlurbsMain" EntityType="SkillBank.Site.DataSource.Data.Store.BlurbsMain" store:Type="Tables" store:Schema="dbo" store:Name="BlurbsMain">
+      <DefiningQuery>SELECT 
+      [BlurbsMain].[Id] AS [Id], 
+      [BlurbsMain].[BlurbId] AS [BlurbId], 
+      [BlurbsMain].[BlurbText] AS [BlurbText], 
+      [BlurbsMain].[SiteVersion] AS [SiteVersion], 
+      [BlurbsMain].[LastUpdateDate] AS [LastUpdateDate]
+      FROM [dbo].[BlurbsMain] AS [BlurbsMain]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CategoryPopTag" EntityType="SkillBank.Site.DataSource.Data.Store.CategoryPopTag" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CityInfo" EntityType="SkillBank.Site.DataSource.Data.Store.CityInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ClassInfo" EntityType="SkillBank.Site.DataSource.Data.Store.ClassInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CoinsHistory" EntityType="SkillBank.Site.DataSource.Data.Store.CoinsHistory" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EmailAccount" EntityType="SkillBank.Site.DataSource.Data.Store.EmailAccount" store:Type="Tables" store:Schema="dbo" store:Name="EmailAccount">
+      <DefiningQuery>SELECT 
+      [EmailAccount].[Id] AS [Id], 
+      [EmailAccount].[UserName] AS [UserName], 
+      [EmailAccount].[Email] AS [Email]
+      FROM [dbo].[EmailAccount] AS [EmailAccount]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="EmailTemplate" EntityType="SkillBank.Site.DataSource.Data.Store.EmailTemplate" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MemberInfo" EntityType="SkillBank.Site.DataSource.Data.Store.MemberInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Message" EntityType="SkillBank.Site.DataSource.Data.Store.Message" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MetaTag" EntityType="SkillBank.Site.DataSource.Data.Store.MetaTag" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Notification" EntityType="SkillBank.Site.DataSource.Data.Store.Notification" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Order" EntityType="SkillBank.Site.DataSource.Data.Store.Order" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SkillCategory" EntityType="SkillBank.Site.DataSource.Data.Store.SkillCategory" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StudentReview" EntityType="SkillBank.Site.DataSource.Data.Store.StudentReview" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TeacherReview" EntityType="SkillBank.Site.DataSource.Data.Store.TeacherReview" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'qds0280365_db.dbo.BlurbsMain' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <EntityType Name="BlurbsMain">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="BlurbId" />
+      <PropertyRef Name="BlurbText" />
+      <PropertyRef Name="SiteVersion" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BlurbId" Type="int" Nullable="false" />
+    <Property Name="BlurbText" Type="nvarchar" Nullable="false" MaxLength="2000" />
+    <Property Name="SiteVersion" Type="tinyint" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="CategoryPopTag">
+    <Key>
+      <PropertyRef Name="CategoryTagId" />
+    </Key>
+    <Property Name="CategoryTagId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Category_Id" Type="tinyint" Nullable="false" />
+    <Property Name="TagText" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="RankNo" Type="smallint" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CityInfo">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="LocaleCode" Type="varchar" Nullable="false" MaxLength="2" />
+    <Property Name="CityName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CityKey" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ClassInfo">
+    <Key>
+      <PropertyRef Name="ClassId" />
+    </Key>
+    <Property Name="ClassId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Category_Id" Type="tinyint" Nullable="false" />
+    <Property Name="Member_Id" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="100" />
+    <Property Name="Level" Type="tinyint" Nullable="false" />
+    <Property Name="SkillLevel" Type="tinyint" Nullable="false" />
+    <Property Name="TeacheLevel" Type="tinyint" Nullable="false" />
+    <Property Name="Summary" Type="nvarchar" MaxLength="200" />
+    <Property Name="Detail" Type="nvarchar" MaxLength="2000" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="CompleteStatus" Type="tinyint" />
+    <Property Name="IsProved" Type="bit" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="Rank" Type="decimal" Nullable="false" />
+    <Property Name="Cover" Type="varchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="CoinsHistory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Member_Id" Type="int" Nullable="false" />
+    <Property Name="CoinsToAdd" Type="int" Nullable="false" />
+    <Property Name="AddType" Type="tinyint" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+      warning 6002: The table/view 'qds0280365_db.dbo.EmailAccount' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+  <EntityType Name="EmailAccount">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="EmailTemplate">
+    <Key>
+      <PropertyRef Name="TemplateId" />
+    </Key>
+    <Property Name="TemplateId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="TemplateName" Type="varchar" MaxLength="20" />
+    <Property Name="Content" Type="nvarchar" MaxLength="2000" />
+    <Property Name="SiteVersion" Type="tinyint" />
+    <Property Name="LastUpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="MemberInfo">
+    <Key>
+      <PropertyRef Name="MemberId" />
+    </Key>
+    <Property Name="MemberId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Social1" Type="nvarchar" MaxLength="50" />
+    <Property Name="Social2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Social3" Type="nvarchar" MaxLength="50" />
+    <Property Name="SocialType" Type="tinyint" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="PosX" Type="decimal" Nullable="false" Precision="10" Scale="6" />
+    <Property Name="PosY" Type="decimal" Nullable="false" Precision="10" Scale="6" />
+    <Property Name="TeachTag" Type="tinyint" Nullable="false" />
+    <Property Name="LearnTag" Type="tinyint" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Gender" Type="bit" Nullable="false" />
+    <Property Name="Coins" Type="int" Nullable="false" />
+    <Property Name="CoinsLocked" Type="int" Nullable="false" />
+    <Property Name="Avatar" Type="nvarchar" Nullable="false" MaxLength="150" />
+    <Property Name="SelfIntro" Type="nvarchar" Nullable="false" MaxLength="800" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="OpenId" Type="nvarchar" Nullable="false" MaxLength="70" />
+    <Property Name="BirthDate" Type="datetime" Nullable="false" />
+    <Property Name="Etag" Type="nvarchar" MaxLength="100" />
+    <Property Name="Address" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="MessageId" />
+    </Key>
+    <Property Name="MessageId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="From_Id" Type="int" Nullable="false" />
+    <Property Name="To_Id" Type="int" Nullable="false" />
+    <Property Name="MessageText" Type="nvarchar" Nullable="false" MaxLength="300" />
+    <Property Name="Show4From" Type="bit" Nullable="false" />
+    <Property Name="Show4To" Type="bit" Nullable="false" />
+    <Property Name="IsRead" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="IsLatest" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MetaTag">
+    <Key>
+      <PropertyRef Name="MetaId" />
+    </Key>
+    <Property Name="MetaId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="MetaKey" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="TitleBlurb" Type="int" Nullable="false" />
+    <Property Name="KeywordsBlurb" Type="int" Nullable="false" />
+    <Property Name="DescriptionBlurb" Type="int" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="NotificationId" />
+    </Key>
+    <Property Name="NotificationId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="TypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Member_Id" Type="int" Nullable="false" />
+    <Property Name="RelatedMemberId" Type="int" Nullable="false" />
+    <Property Name="IsRead" Type="tinyint" Nullable="false" />
+    <Property Name="IsPop" Type="bit" Nullable="false" />
+    <Property Name="ClassOrderId" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Student_Id" Type="int" Nullable="false" />
+    <Property Name="Class_Id" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="300" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+    <Property Name="OrderStatus" Type="tinyint" />
+    <Property Name="BookedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SkillCategory">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Blurb_Id" Type="int" Nullable="false" />
+    <Property Name="CategoryName" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="Parent_CategoryId" Type="int" />
+  </EntityType>
+  <EntityType Name="StudentReview">
+    <Key>
+      <PropertyRef Name="ReviewId" />
+    </Key>
+    <Property Name="ReviewId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Order_Id" Type="int" Nullable="false" />
+    <Property Name="Score1" Type="tinyint" />
+    <Property Name="Score2" Type="tinyint" />
+    <Property Name="Score3" Type="tinyint" />
+    <Property Name="FeedBack" Type="tinyint" />
+    <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="300" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="PrivateComment" Type="nvarchar" Nullable="false" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="TeacherReview">
+    <Key>
+      <PropertyRef Name="ReviewId" />
+    </Key>
+    <Property Name="ReviewId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Order_Id" Type="int" Nullable="false" />
+    <Property Name="FeedBack" Type="tinyint" />
+    <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="300" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="PrivateComment" Type="nvarchar" Nullable="false" MaxLength="300" />
+  </EntityType>
+  <Function Name="Blurbs_LoadByLanguageSiteVersion_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Language" Type="varchar" Mode="In" />
+    <Parameter Name="Version" Type="tinyint" Mode="In" />
+  </Function>
+  <Function Name="CategoryPopTag_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="CategoryPopTag_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="MinToAdd" Type="smallint" Mode="In" />
+  </Function>
+  <Function Name="CityInfo_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="ClassInfo_Add_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="MemberId" Type="int" Mode="In" />
+    <Parameter Name="CategoryId" Type="int" Mode="In" />
+    <Parameter Name="Teache" Type="tinyint" Mode="In" />
+    <Parameter Name="Skill" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="InOut" />
+    <Parameter Name="IsExist" Type="bit" Mode="InOut" />
+  </Function>
+  <Function Name="ClassInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ClassInfo_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="CategoryId" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+    <Parameter Name="City" Type="int" Mode="In" />
+    <Parameter Name="Keyword" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="ClassInfo_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+    <Parameter Name="TxtValue" Type="nvarchar" Mode="In" />
+    <Parameter Name="ParaValue" Type="tinyint" Mode="In" />
+    <Parameter Name="IsValue" Type="bit" Mode="In" />
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+  </Function>
+  <Function Name="ClassNum_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Member" Type="int" Mode="In" />
+    <Parameter Name="Class" Type="int" Mode="In" />
+    <Parameter Name="ClassNum" Type="smallint" Mode="InOut" />
+    <Parameter Name="Result1" Type="smallint" Mode="InOut" />
+    <Parameter Name="Result2" Type="smallint" Mode="InOut" />
+  </Function>
+  <Function Name="EmailAccount_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Mail" Type="nvarchar" Mode="In" />
+    <Parameter Name="Name" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="MemberInfo_Add_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="SocialId" Type="varchar" Mode="In" />
+    <Parameter Name="SType" Type="tinyint" Mode="In" />
+    <Parameter Name="Id" Type="int" Mode="InOut" />
+    <Parameter Name="City" Type="int" Mode="In" />
+    <Parameter Name="Mail" Type="nvarchar" Mode="In" />
+    <Parameter Name="MemberName" Type="nvarchar" Mode="In" />
+    <Parameter Name="AvatarPath" Type="nvarchar" Mode="In" />
+    <Parameter Name="Result" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="MemberInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="Account" Type="nvarchar" Mode="In" />
+    <Parameter Name="Type" Type="tinyint" Mode="In" />
+    <Parameter Name="Id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="MemberInfo_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="IsMale" Type="bit" Mode="In" />
+    <Parameter Name="Mail" Type="nvarchar" Mode="In" />
+    <Parameter Name="PhoneNo" Type="nvarchar" Mode="In" />
+    <Parameter Name="City" Type="int" Mode="In" />
+    <Parameter Name="MemberName" Type="nvarchar" Mode="In" />
+    <Parameter Name="Intro" Type="nvarchar" Mode="In" />
+    <Parameter Name="Result" Type="tinyint" Mode="InOut" />
+    <Parameter Name="X" Type="decimal" Mode="In" />
+    <Parameter Name="Y" Type="decimal" Mode="In" />
+    <Parameter Name="Birthday" Type="datetime" Mode="In" />
+    <Parameter Name="Img" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="Message_LoadByFromAndToId_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="MemberId1" Type="int" Mode="In" />
+    <Parameter Name="MemberId2" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Message_LoadByMemberId_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Message_LoadUnReadNo_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="MemberId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Message_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="FromId" Type="int" Mode="In" />
+    <Parameter Name="ToId" Type="int" Mode="In" />
+    <Parameter Name="Message" Type="nvarchar" Mode="In" />
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="Id" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="Order_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="loadType" Type="tinyint" Mode="In" />
+    <Parameter Name="paraId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Order_LoadByStudent_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="paraId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Order_LoadByTeacher_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="paraId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Order_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="studentId" Type="int" Mode="In" />
+    <Parameter Name="classId" Type="int" Mode="In" />
+    <Parameter Name="status" Type="int" Mode="In" />
+    <Parameter Name="classDate" Type="datetime" Mode="In" />
+    <Parameter Name="comment" Type="nvarchar" Mode="In" />
+    <Parameter Name="saveType" Type="tinyint" Mode="In" />
+    <Parameter Name="paraId" Type="int" Mode="InOut" />
+    <Parameter Name="result" Type="tinyint" Mode="InOut" />
+  </Function>
+  <Function Name="OrderCoin_Update_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="studentId" Type="int" Mode="In" />
+    <Parameter Name="paraId" Type="int" Mode="In" />
+    <Parameter Name="status" Type="tinyint" Mode="In" />
+    <Parameter Name="result" Type="tinyint" Mode="InOut" />
+  </Function>
+  <Function Name="SkillCategory_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="StudentReview_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="loadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="paraId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="StudentReview_LoadByClass_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="loadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="classId" Type="int" Mode="In" />
+    <Parameter Name="memberId" Type="tinyint" Mode="In" />
+    <Parameter Name="maxId" Type="tinyint" Mode="In" />
+  </Function>
+  <Function Name="StudentReview_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="orderId" Type="int" Mode="In" />
+    <Parameter Name="scoreA" Type="int" Mode="In" />
+    <Parameter Name="scoreB" Type="int" Mode="In" />
+    <Parameter Name="scoreC" Type="int" Mode="In" />
+    <Parameter Name="feedBack" Type="tinyint" Mode="In" />
+    <Parameter Name="comment" Type="varchar" Mode="In" />
+    <Parameter Name="paraId" Type="int" Mode="InOut" />
+    <Parameter Name="priComment" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="TeacherReview_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="loadBy" Type="int" Mode="In" />
+    <Parameter Name="paraId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="TeacherReview_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="orderId" Type="int" Mode="In" />
+    <Parameter Name="feedBack" Type="tinyint" Mode="In" />
+    <Parameter Name="comment" Type="varchar" Mode="In" />
+    <Parameter Name="paraId" Type="int" Mode="InOut" />
+    <Parameter Name="priComment" Type="varchar" Mode="In" />
+  </Function>
+</Schema>

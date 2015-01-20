@@ -1,0 +1,179 @@
+﻿@model SkillBank.Site.Web.ViewModel.ProfilelModel
+@section HeaderStyle
+{<meta name="robots" content="index,follow" />@Html.CombresCustomUrl("profileCss")}
+@section FooterJs
+{@Html.CombresCustomUrl("toolsJs")}
+<!--Member public Profile page / profile -->
+<div class="body">
+    <div class="inner">
+
+        <div class="profile cf">
+
+            <div class="profile-side">
+
+                <div class="profile-user-pane spaced-larger">
+                    <p>
+                        <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "h", Model.MemberInfo.SocialType)" class="avatar-h" />
+                    </p>
+
+                    <div class="row-fluid spaced-large">
+                        <div class="span6 tcenter">
+                            <div class="profile-badge-review"><span>0</span></div>
+                            <br>
+                            <span class="gray-light"></span>
+                        </div>
+                        <div class="span6 tcenter">
+                            <div class="profile-badge-verification"><span>1</span></div>
+                            <br>
+                            <span class="gray-light">@TextContentHelper.ReplaeceBlurbParameterWithNumber(224, 1)</span>
+                        </div>
+                    </div>
+                    <div class="tcenter">
+                        @if (@Model.MemberInfo.SocialType == 1)
+                        {<a href="http://weibo.com/@Model.MemberInfo.SocialAccount">查看微博   <i class="fa fa-caret-right"></i></a>}
+                        else
+                        {@TextContentHelper.GetSocialAccoutName(Model.MemberInfo.SocialType)}
+                    </div>
+                    <!--<div class="tcenter"> 
+                        <i class="profile-linkicon fa fa-heart icon-large @(Model.MemberInfo.IsLike ? "fa-heart-like" : "")" data-id="@Model.MemberInfo.MemberId"></i>&nbsp;<label class="profile-linknum">@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic["like"])</label>
+                    </div>-->
+                </div>
+                <!-- end of user pane -->
+
+            </div>
+
+            <div class="profile-main">
+
+                <h2>@Model.MemberInfo.Name @if (Model.MemberInfo.Gender)
+                                           {<img id="profile-gendermale" src="/img/icon-male-s.png">}
+                                           else
+                                           { <img id="profile-genderfemale" src="/img/icon-female-s.png">}</h2>
+                <h4 class="spaced-large">
+                    <span class="spaced-right strong"><i class="fa fa-map-marker theme-blue"></i>&nbsp;@if (ViewBag.MemberInfo == null || Model.MemberInfo.MemberId == ViewBag.MemberInfo.MemberId)
+                                                                                                       {
+                        @Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(0, Model.MemberInfo.CityId, 0, 0))
+                                                                                                       }
+                                                                                                       else
+                                                                                                       {
+                        @Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(ViewBag.MemberInfo.CityId, Model.MemberInfo.CityId, Model.MemberInfo.PosX, Model.MemberInfo.PosY))
+                                                                                                       }</span><span>@TextContentHelper.GetJoinUsDateText(Model.MemberInfo.CreatedDate)</span></h4>
+
+                <div class="profile-user-selfintro cf spaced-larger">
+                    <p>@Html.Raw(TextContentHelper.GetTextContent(Model.MemberInfo.SelfIntro))</p>
+                </div>
+
+                <div class="profile-user-classes cf spaced-larger">
+                    <div class="hd spaced">
+                        <h3>@Html.GetTrans(231) (@(Model.ClassList == null ? 0 : Model.ClassList.Count))</h3>
+                    </div>
+                    <div class="bd">
+                        <div id="user-classes" class="carousel slide" data-ride="carousel" data-interval="0">
+
+                            <!-- Indicators -->
+                            @if (Model.ClassList != null)
+                            {
+                                var classNum = Model.ClassList.Count;
+                                if (classNum > 3)
+                                {
+                                    var pageNum = ((classNum % 3 == 0) ? (classNum / 3) : (classNum / 3 + 1));
+                                <ol class="carousel-indicators">
+                                    @for (int i = 0; i < pageNum; i++)
+                                    {
+                                        <li data-target="#user-classes" data-slide-to="@i" @(i == 0 ? "class=active" : "")></li>
+                                    }
+                                </ol>
+                                }
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner">
+                                    @foreach (var classItem in Model.ClassList)
+                                    {
+                                        var index = (Model.ClassList.IndexOf(classItem));
+                                        if (index == 0)
+                                        {@Html.Raw("<div class=\"item active\"><ul class=\"cf user-class-list\">")}
+                                        else if (index % 3 == 0)
+                                        {@Html.Raw("<div class=\"item\"><ul class=\"cf user-class-list\">")}
+                                        <li @((index % 3 == 0) ? "class=row-start" : "")>
+                                            <div class="class-item">
+                                                <div class="class-item-hd">
+                                                    <a href="@Url.Action("detail", "class", new { id = classItem.ClassId })">
+                                                        <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "m")"></a>
+                                                    <div class="class-item-bar">
+                                                        <div class="row-fluid">
+                                                            <div class="span6"><strong>@TextContentHelper.GetLevelName(classItem.Level)</strong></div>
+                                                            <div class="span6 tright"></div>
+                                                            <!--<i class="fa fa-thumbs-up icon-large"></i>100%-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="class-item-bd">
+                                                    <h3><a href="@Url.Action("detail", "class", new { id = classItem.ClassId })">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 50, true))</a></h3>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        if (index % 3 == 2 || index == (Model.ClassList.Count - 1))
+                                        {@Html.Raw("</ul></div>")}
+                                    }
+                                </div>
+                            }
+                            <!--end of Wrapper for slides-->
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="profile-user-reviews cf spaced-larger">
+                   <div class="bd">
+
+                            <div class="row-fluid spaced">
+                                <div class="span2"><h3>推荐达人</h3> </div>
+                                <div class="span4">
+                                    <a id="btnsetmaster" class="btn btn-primary btn-block">设置达人信息</a>
+                                </div>
+                            </div>
+                            <div class="row-fluid spaced">
+                            <div class="span2">类型</div>
+                            <div class="span10">推荐链接</div>
+                            </div>
+                            <div class="row-fluid spaced master-groupitem" data-id="1" >
+                                @if(Model.MasterInfos!=null && Model.MasterInfos.ContainsKey(1)){
+                                <div class="span2"><input type="checkbox" class="master-groupset" checked="checked" />&nbsp;&nbsp;百度知乎</div>
+                                <div class="span10"><input type="text" class="master-channellink span10" value="@Model.MasterInfos[1]"/></div>
+                                }else{
+                                <div class="span2"><input type="checkbox" class="master-groupset"/>&nbsp;&nbsp;知乎</div>
+                                <div class="span10"><input type="text" class="master-channellink span10"/></div>
+                                }
+                            </div>
+                            <div class="row-fluid spaced master-groupitem" data-id="2" >
+                                @if (Model.MasterInfos != null && Model.MasterInfos.ContainsKey(2))
+                                {
+                                <div class="span2"><input type="checkbox" class="master-groupset" checked="checked" />&nbsp;&nbsp;新浪微博</div>
+                                <div class="span10"><input type="text" class="master-channellink span10" value="@Model.MasterInfos[2]"/></div>
+                                }else{
+                                <div class="span2"><input type="checkbox" class="master-groupset" />&nbsp;&nbsp;新浪微博</div>
+                                <div class="span10"><input type="text" class="master-channellink span10"/></div>
+                                }
+                            </div>
+                            <div class="row-fluid spaced master-groupitem" data-id="3" >
+                               @if (Model.MasterInfos != null && Model.MasterInfos.ContainsKey(3))
+                               {
+                                <div class="span2"><input type="checkbox" class="master-groupset" checked="checked" />&nbsp;&nbsp;先锋推荐</div>
+                                <div class="span10"><input type="text" class="master-channellink span10" value="@Model.MasterInfos[3]"/></div>
+                               }else{
+                                <div class="span2"><input type="checkbox" class="master-groupset" />&nbsp;&nbsp;先锋推荐</div>
+                                <div class="span10"><input type="text" class="master-channellink span10" /></div>
+                               }
+                            </div>
+                            
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <input type="hidden" id="profile-hidmemberid" value="@((Model.MemberInfo == null) ? 0 : Model.MemberInfo.MemberId)" />
+    <input type="hidden" id="classlist-mycityid" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.CityId)"/>
+    <input type="hidden" id="profile-myposx" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.PosX)"/>
+    <input type="hidden" id="profile-myposy" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.PosY)"/>

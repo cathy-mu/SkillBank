@@ -1,0 +1,89 @@
+﻿@section HeaderStyle {<link rel="stylesheet" type="text/css" href="http://api.amap.com/Public/css/demo.Default.css" />
+    @Html.CombresCustomUrl("memberLocationCss")}
+@section FooterJs {<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.2&key=7f937514830a46ce132a30aa3253073d"></script>
+    @Html.CombresCustomUrl("memberLocationJs")}
+
+<div class="body">
+    <div class="inner">
+
+        <div class="profile-edit">
+
+            <div class="profile-edit-hd">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h2>@Html.GetTrans(407)</h2>
+                    </div>
+                    <div class="span6 tright"><a href="@Url.Action("Index", "Profile", new { id = ViewBag.MemberId })" class="btn btn-default pull-right"><i class="fa fa-eye"></i>@Html.GetTrans(408)</a></div>
+                </div>
+            </div>
+
+            <div class="profile-edit-bd">
+                <table class="table-layout">
+                    <tr>
+                        <td class="profile-edit-side">
+
+                            <ul class="nav nav-stacked nav-inverse">
+                                <li><a href="@Url.Action("Info", "Member")"><i class="fa fa-pencil-square icon-large"></i>&nbsp; @Html.GetTrans(409)</a></li>
+                                <li><a href="@Url.Action("Photo", "Member")"><i class="fa fa-user icon-large"></i>&nbsp; @Html.GetTrans(410)</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-map-marker icon-large"></i>&nbsp; @Html.GetTrans(411)</a></li>
+                                <li><a href="@Url.Action("Verification", "Member")"><i class="fa fa-check-circle icon-large"></i>&nbsp; @Html.GetTrans(412)</a></li>
+                            </ul>
+
+                        </td>
+
+                        <td class="profile-edit-main">
+
+                            <form class="form-horizontal profile-edit-form spaced-larger" role="form">
+
+                                <!--<div class="row-fluid spaced">
+                                    <div class="span8">&nbsp;&nbsp;&nbsp;&nbsp;@Html.GetTrans(274)</div>
+                                    <div class="span2"><span class="label label-warning label-private none"><i class="fa fa-lock"></i>@Html.GetTrans(415)</span></div>
+                                </div>-->
+                                <div class="row-fluid spaced" style="height:50px;">
+                                    <div class="span2 tright">
+                                        <label class="control-label">@Html.GetTrans(431)</label>
+                                    </div>
+                                    <div class="span8 form-inline" style="position: relative;">
+                                        <div class="form-inline">
+                                            <input type="text" name="location" id="location"  class="form-control map-input spaced-small span8" value="@(ViewBag.MemberInfo == null ? "" : ViewBag.MemberInfo.Address)">
+                                        </div>
+                                        
+                                        <div id="addressoption" style="position: absolute; overflow: auto; width: 456px; top: 34px; border: 1px solid gray; display: none; z-index: 10000; background-color: #FFF;"></div>
+                                    </div>
+                                    <div class="span2">
+                                        <div id="map-tip" class="row-fluid" style="margin-left:-150px;">
+                                        <div class="span12" id="map-hits">
+                                            <p class="gray-light enter">@Html.GetTrans(598)</p>
+                                            <p class="gray-light select">@Html.GetTrans(599)</p>
+                                            <p class="gray-light click">@Html.GetTrans(600)</p>
+                                            <p class="gray-light saved">@Html.GetTrans(601)</p>
+                                        </div>
+                                        </div></div>
+                                </div>
+
+                                <div class="row-fluid spaced">
+                                    <div class="span12 memberlocation">
+                                        <div id="iCenter"></div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="classf-hidcityname" value="" />
+                                        <input type="hidden" id="mapposx" name="mapposx" value="@(ViewBag.MemberInfo == null ? "" : ViewBag.MemberInfo.PosX.ToString())" />
+                                        <input type="hidden" id="mapposy" name="mapposy" value="@(ViewBag.MemberInfo == null ? "" : ViewBag.MemberInfo.PosY.ToString())" />
+                                        
+                                <!--<div class="row-fluid spaced">
+                                    <div class="span8 offset2">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>@Html.GetTrans(425)</button>
+                                    </div>
+                                </div>-->
+
+                            </form>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>

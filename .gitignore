@@ -1,0 +1,14 @@
+.DS_Store
+Thumb.db
+/TestResults
+/UnitTests
+/SkillBankUI/web.config
+/SkillBankUI/example
+/SkillBankUI/images
+/SkillBankUI/mock
+/SkillBankUI/bower_components
+/Common
+/packages
+/SkillBankWeb.Tests
+/SkillBankUI/bin
+/SkillBankUI/Demo

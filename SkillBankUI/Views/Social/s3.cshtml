@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "q2";
+    Layout = "~/Views/Shared/_3rdLayout.cshtml";
+}
+
+<html xmlns:wb="http://open.weibo.com/wb">
+<head>
+    <title>Sina</title>
+    <meta http-equiv="content-script-type" content="text/javascript" />  
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=111240964" type="text/javascript" charset="utf-8"></script>
+    <script src="/scripts/libs/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        function login(type) {
+            if (type ==1) {
+                var returnUrl = "http://www.skillbank.cn/signup";
+                window.open("https://api.weibo.com/oauth2/authorize?client_id=111240964&response_type=code&redirect_uri=" + encodeURIComponent(returnUrl));
+            } else if (type == 3) {
+                var returnUrl = "http://www.skillbank.cn/signup";
+                window.open("https://open.t.qq.com/cgi-bin/oauth2/authorize?client_id=801527091&response_type=code&redirect_uri=" + encodeURIComponent(returnUrl))
+            }
+        }
+
+        function logout() {
+            $.ajax({
+                url: "/SignUp/LogOutSocialAccount",
+                type: "POST",
+                dataType: "Json",
+                cache: false,
+                success: function (data) {
+                    console.log(data);
+                }, error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div></div>
+    
+    <a href="javascript:login(1);">Login Sina</a>
+    <br />
+    <br />
+    <a href="javascript:login(3);">Login Tencent MicroBlog</a>
+    <br />
+    <br />
+    <a href="javascript:logout();">Logout</a>
+</body>
+
+</html>

@@ -1,0 +1,310 @@
+﻿@model SkillBank.Site.Web.ViewModel.ClassPreviewModel
+@section HeaderStyle{@Html.CombresCustomUrl("classDetailCss")}
+@section FooterJs{@Html.CombresCustomUrl("classDetailJs")}
+<div class="body">
+    <div class="inner">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <h3 class="spaced-larger errormessage">@ViewBag.ErrorMessage</h3>
+        }
+        @if (Model.ClassEditInfo != null)
+        {
+            <div class="class-detail cf">
+
+                <div class="class-detail-main">
+
+                    <div class="class-desc spaced-larger">
+
+                        <div class="class-desc-hd spaced-larger">  
+                            <h3 class="spaced-larger" id="classdetail-title">@(String.IsNullOrEmpty(Model.ClassEditInfo.Title)?ResourceHelper.GetTransText(560):Model.ClassEditInfo.Title)</h3>
+                            @if (Model.ClassEditInfo.IsProved.Equals(3) && Model.ClassEditInfo.PublishStatus.Equals(0))
+                            {
+                               <h5 class="spaced-larger">New</h5>
+                            }
+                            <p class="classdetail-method">
+                                <span>@Html.GetTrans(573)</span>
+                                <span>@TextContentHelper.GetLevelName(@Model.ClassEditInfo.Level)</span>
+                            </p>
+                        </div>
+
+                        <div class="class-desc-bd">
+                            <div class="spaced-larger classdetail-summary">
+                                @Html.Raw(TextContentHelper.GetTextContent(Model.ClassEditInfo.Summary))
+                                @if (!String.IsNullOrEmpty(Model.ClassEditInfo.WhyU))
+                                {<br /><br />
+                                 @Html.Raw(TextContentHelper.GetTextContent(Model.ClassEditInfo.WhyU))
+                                }
+                            </div>
+                            <!--
+                            <div class="spaced-larger">
+                                <div id="carousel-class-content" class="carousel slide carousel-class-content" data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                    </ol>
+
+                                    <div class="carousel-inner">
+                                        <div class="item active">
+                                            <img src="../mock/course-content-1.jpg">
+                                        </div>
+
+                                        <div class="item">
+                                            <img src="../mock/course-content-2.jpg">
+                                        </div>
+
+                                        <div class="item">
+                                            <img src="../mock/course-content-3.jpg">
+                                        </div>
+                                    </div>
+
+                                    <a class="left carousel-control" href="#carousel-class-content" data-slide="prev">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                    </a>
+                                    <a class="right carousel-control" href="#carousel-class-content" data-slide="next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                    </a>
+
+                                </div>
+                            </div>
+                            -->
+                            
+                            
+                            @if (!String.IsNullOrEmpty(Model.ClassEditInfo.Period))
+                            {
+                                <div class="spaced-larger classdetail-desc">
+                                    <span class="classdetail-desctitle">@Html.GetTrans(638)</span>
+                                    @Html.Raw(TextContentHelper.GetTextContent(Model.ClassEditInfo.Period))
+                                </div>
+                            }
+                            
+                            @if (!String.IsNullOrEmpty(Model.ClassEditInfo.Location))
+                            {
+                                <div class="spaced-larger classdetail-desc">
+                                    <span class="classdetail-desctitle">@Html.GetTrans(640)</span>
+                                    @Html.Raw(TextContentHelper.GetTextContent(Model.ClassEditInfo.Location))
+                                </div>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.ClassEditInfo.Available))
+                            {
+                                <div class="spaced-larger classdetail-desc">
+                                    <span class="classdetail-desctitle">@Html.GetTrans(642)</span>
+                                    @Html.Raw(TextContentHelper.GetTextContent(Model.ClassEditInfo.Available))
+                                </div>
+                            }
+                            
+                            @if (!String.IsNullOrEmpty(Model.ClassEditInfo.Remark))
+                            {    
+                                <div class="spaced-larger classdetail-desc">
+                                    <span class="classdetail-desctitle">@Html.GetTrans(643)</span>
+                                    @Html.Raw(TextContentHelper.GetTextContent(Model.ClassEditInfo.Remark))
+                                </div>
+                            }
+                            
+                        </div>
+
+                    </div>
+
+                    <div class="class-reviews">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#review-current" data-toggle="tab">@Html.GetTrans(210) (0)</a></li>
+                            <li><a href="#review-other" data-toggle="tab">@Html.GetTrans(211) (0)</a></li>
+                        </ul>
+                        <!-- end of tabs -->
+
+                        <div class="tab-content">
+                            <div class="tab-pane active padding" id="review-current">
+
+                                <div class="row-fluid form-inline spaced-larger">
+                                    <div class="span4">
+                                        <label for="2390" class="control-label radio">
+                                            <input type="radio" name="2393" id="2390" checked>
+                                            @Html.GetTrans(212)
+                                        </label>
+                                    </div>
+                                    <div class="span8 tright">
+                                        <label for="5466" class="control-label spaced-right">
+                                            <input type="radio" name="2393" id="5466">
+                                            <span class="label label-warning label-good">@Html.GetTrans(213) (0)</span>
+                                        </label>
+                                        <label for="4886" class="control-label spaced-right">
+                                            <input type="radio" name="2393" id="4886">
+                                            <span class="label label-success label-okay">@Html.GetTrans(214) (0)</span>
+                                        </label>
+                                        <label for="1563" class="control-label">
+                                            <input type="radio" name="2393" id="1563">
+                                            <span class="label label-default label-bad">@Html.GetTrans(215) (0)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- end of review filter -->
+                                <!--<a href="#" class="btn btn-default btn-block">@Html.GetTrans(216)</a>-->
+                            </div>
+
+                            <div class="tab-pane padding" id="review-other">
+                                <div class="row-fluid form-inline spaced-larger">
+                                    <div class="span4">
+                                        <label for="4009" class="control-label">
+                                            <input type="radio" name="2394" id="4009" checked>
+                                            @Html.GetTrans(212)</label>
+                                    </div>
+                                    <div class="span8 tright">
+                                        <label for="6122" class="control-label spaced-right">
+                                            <input type="radio" name="2394" id="6122">
+                                            <span class="label label-warning label-good">@Html.GetTrans(213) (0)</span>
+                                        </label>
+                                        <label for="1622" class="control-label spaced-right">
+                                            <input type="radio" name="2394" id="1622">
+                                            <span class="label label-success label-okay">@Html.GetTrans(214) (0)</span>
+                                        </label>
+                                        <label for="6324" class="control-label">
+                                            <input type="radio" name="2394" id="6324">
+                                            <span class="label label-default label-bad">@Html.GetTrans(215) (0)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- end of review filter -->
+
+
+                            </div>
+                        </div>
+                        <!-- end of tab content -->
+                    </div>
+
+
+                </div>
+
+                <div class="class-detail-side">
+
+                    <div class="class-booking spaced-larger">
+
+                        <div class="row-fluid spaced">
+                            <div class="span6"><span class="gray-light">@Html.GetTrans(197)</span></div>
+                            <div class="span6 tright"><em>1</em>@Html.GetTrans(198)</div>
+                        </div>
+                        @if (Model.IsAdmin)
+                        {
+                            <a href="#" data-classname="@Model.ClassEditInfo.Title" data-teachername="@Model.MemberInfo.Name" data-email="@Model.MemberInfo.Email" id="classpreview-prove" class="btn btn-primary btn-block spaced">@Html.GetTrans(572)</a>
+                            <a href="#" data-classname="@Model.ClassEditInfo.Title" data-teachername="@Model.MemberInfo.Name" data-email="@Model.MemberInfo.Email" id="classpreview-reject" class="btn btn-warning btn-block spaced">@Html.GetTrans(583)</a>
+                            <a href="#" id="classpreview-cancle" class="btn btn-warning btn-block spaced">@Html.GetTrans(584)</a>
+                            <div id="class-grouppanel">
+                            <div class="row-fluid spaced">
+                            <div class="span2">推荐</div>
+                            <div class="span4">类型</div>
+                            <div class="span2">首页</div>
+                            <div class="span4">Rank</div>
+                            </div>
+                            <div class="row-fluid spaced class-groupitem" data-id="1" >
+                                <div class="span2"><input type="checkbox" class="class-groupset" @((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(1))?"checked=\"checked\"":"") /></div>
+                                <div class="span4">编辑推荐</div>
+                                <div class="span2"><input type="checkbox" class="class-grouphome" @((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(1) && Model.RecommendationDic[1].IsShow)?"checked=\"checked\"":"") /></div>
+                                <div class="span4"><input type="text" class="class-grouprank" value="@((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(1))?Model.RecommendationDic[1].Rank:0)" /></div>
+                            </div>
+                            <div class="row-fluid spaced class-groupitem" data-id="2" >
+                                <div class="span2"><input type="checkbox" class="class-groupset" @((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(2))?"checked=\"checked\"":"") /></div>
+                                <div class="span4">最新课程</div>
+                                <div class="span2"><input type="checkbox" class="class-grouphome" @((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(2) && Model.RecommendationDic[2].IsShow)?"checked=\"checked\"":"") /></div>
+                                <div class="span4"><input type="text" class="class-grouprank" value="@((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(2))?Model.RecommendationDic[2].Rank:0)" /></div>
+                            </div>
+                            <div class="row-fluid spaced class-groupitem" data-id="3" >
+                                <div class="span2"><input type="checkbox" class="class-groupset" @((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(3))?"checked=\"checked\"":"") /></div>
+                                <div class="span4">奇葩课程</div>
+                                <div class="span2"><input type="checkbox" class="class-grouphome" @((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(3) &&Model.RecommendationDic[3].IsShow)?"checked=\"checked\"":"")  /></div>
+                                <div class="span4"><input type="text" class="class-grouprank" value="@((Model.RecommendationDic!=null && Model.RecommendationDic.ContainsKey(3))?Model.RecommendationDic[3].Rank:0)" /></div>
+                            </div>
+                            </div>
+                            <a href="#" id="classpreview-setgroup" class="btn btn-warning btn-block spaced">设置为推荐</a>
+                            
+                        }
+                        @if (Model.IsOwner)
+                        {
+                            <a href="#" class="btn btn-warning btn-block spaced">@Html.GetTrans(199)</a>
+                        }
+
+                        <div class="tcenter">@Html.ActionLink(ResourceHelper.GetTransText(200), "qanda", "about", "http", "www.skillbank.cn", "qatab0s2", new { id = 0 }, new { @class = "gray-light", target = "_blank" })</div>
+
+                    </div>
+                    <!-- end of booking pane -->
+
+                    <div class="class-user-pane">
+                        <div class="spaced-larger">
+                            <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "h")">
+                        </div>
+
+                        <h3 class="tcenter">@Model.MemberInfo.Name@if (Model.MemberInfo.Gender) {<img id="profile-gendermale" src="/img/icon-male-s.png">} else { <img id="profile-genderfemale" src="/img/icon-female-s.png">}</h3>
+
+                        <p class="tcenter"><a href="@Url.Action("index", "profile", new { id = Model.MemberInfo.MemberId })">@Html.GetTrans(201) <i class="fa fa-caret-right"></i></a></p>
+
+                        <a id="class-detail-contact" href="@((Model.IsAdmin && !Model.IsOwner) ? "#modal-contact-teacher" : "#")" data-toggle="modal" class="btn btn-primary btn-block">@Html.GetTrans(202)</a>
+
+                    </div>
+
+                    <!-- end of user pane -->
+
+                    <div class="class-user-evaluation">
+                        <h4 class="tcenter spaced-larger">@Html.GetTrans(203)</h4>
+                        <div class="cf spaced-large">
+                            <h5>@Html.GetTrans(204)</h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:@(Model.ClassEditInfo == null ? 0 : Model.ClassEditInfo.SkillLevel)%;">
+                                    <div class="progress-label">@TextContentHelper.GetSkillLevelName(Model.ClassEditInfo.SkillLevel)</div>
+                                    <div class="progress-val">@(Model.ClassEditInfo == null ? 0 : Model.ClassEditInfo.SkillLevel)</div>
+                                </div>
+                                <div class="progres-start-val">0</div>
+                                <div class="progres-end-val">100</div>
+                            </div>
+                        </div>
+
+                        <div class="cf">
+                            <h5>@Html.GetTrans(205)</h5>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:@(Model.ClassEditInfo == null ? 0 : Model.ClassEditInfo.TeacheLevel)%;">
+                                    <div class="progress-label">@TextContentHelper.GetSkillLevelName(Model.ClassEditInfo.TeacheLevel)</div>
+                                    <div class="progress-val">@(Model.ClassEditInfo == null ? 0 : Model.ClassEditInfo.TeacheLevel)</div>
+                                </div>
+                                <div class="progres-start-val">0</div>
+                                <div class="progres-end-val">100</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end of self evaluation -->
+
+                    <div class="class-user-popularity">
+                        <div class="hd">
+                            <h3>100%</h3>
+                            <p>@Html.GetTrans(206)</p>
+                        </div>
+                        <div class="bd">
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <h4>0</h4>
+                                    <p>@Html.GetTrans(207)</p>
+                                </div>
+                                <div class="span4">
+                                    <h4>0</h4>
+                                    <p>@Html.GetTrans(208)</p>
+                                </div>
+                                <div class="span4">
+                                    <h4>0</h4>
+                                    <p>@Html.GetTrans(209)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end of student evaluation -->
+
+                </div>
+
+            </div>
+            <input type="hidden" name="" id="classdetail-hidclassid" value="@(Model.ClassEditInfo == null ? 0 : Model.ClassEditInfo.ClassId)" />
+            <input type="hidden" name="" id="classdetail-hidmemberid" value="@(Model.ClassEditInfo == null ? 0 : Model.MemberInfo.MemberId)" />
+            <input type="hidden" name="" id="classdetail-hidmrname" value="@(Model.MemberInfo == null ? "" : Model.MemberInfo.Name)" />
+            <input type="hidden" name="" id="classdetail-hidmremail" value="@(Model.MemberInfo == null ? "" : Model.MemberInfo.Email)" />
+            <input type="hidden" name="" id="classdetail-hidmsname" value="@(ViewBag.MemberInfo == null ? "" : ViewBag.MemberInfo.Name)" />
+        }
+    </div>
+</div>
+<!-- end of body -->
+@Html.Partial("_ContactPartial")
+

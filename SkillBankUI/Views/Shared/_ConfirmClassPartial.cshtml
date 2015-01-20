@@ -1,0 +1,50 @@
+﻿<div class="modal fade modal-confirm-class" id="modal-confirm-class" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                <div class="bd">
+
+                    <h4><i class="fa fa-envelope"></i>@Html.GetTrans(345)-- <label id="confirm-classname"></label></h4>
+                    <p class="gray-light spaced-large">@Html.GetTrans(440) : <label id="confirm-bookdate"></label></p>
+
+                    <div class="row-fluid spaced-larger">
+                        <div class="span2">
+                            <img id="confirm-teacheravatar" src="" class="avatar-m" />
+                        </div>
+                        <div class="span10">
+                            @Html.GetTrans(308)
+                            <br>
+                            <strong><label id="confirm-teachername"></label></strong>
+                        </div>
+                    </div>
+
+                    <div class="row-fluid spaced">
+                        <div class="span2">@Html.GetTrans(346)</div>
+                        <div class="span10 form-inline"><label for="8976" class="control-label spaced-right confirm-feedback" data-value="3"><input type="radio" name="confirm-feedback" id="confirm-good" value="3"> <span class="label label-warning label-good">@Html.GetTrans(213)</span></label>
+                          <label for="3544" class="control-label spaced-right confirm-feedback" data-value="2"><input type="radio" name="confirm-feedback" id="confirm-ok" value="2" /> <span class="label label-success label-okay">@Html.GetTrans(214)</span></label>
+                          <label for="1887" class="control-label confirm-feedback" data-value="1"><input type="radio" name="confirm-feedback" id="confirm-bad" value="1" /> <span class="label label-default label-bad">@Html.GetTrans(215)</span></label>
+                          <span class="required">*</span></div>
+                    </div>
+
+                    <div class="row-fluid spaced">
+                        <div class="span2">@Html.GetTrans(347)</div>
+                        <div class="span10">
+                            <textarea name="" id="confirm-feedback-comment" rows="4" class="form-control span12"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row-fluid"><input type="hidden" id="confirm-hidteacherid" /><input type="hidden" id="confirm-hidclassid" /><input type="hidden" id="confirm-hidmailto" />
+                        <div class="span12 tright">
+                            <input type="button" class="btn btn-primary" value="@Html.GetTrans(348)" id="confirm-subbtn">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end of modal: confirm class -->

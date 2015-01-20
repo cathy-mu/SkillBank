@@ -1,0 +1,15 @@
+E:\SourceCode\VS\WebDB\DataAccess\bin\Debug\DataAccess.dll.config
+E:\SourceCode\VS\WebDB\DataAccess\bin\Debug\DataAccess.dll
+E:\SourceCode\VS\WebDB\DataAccess\bin\Debug\DataAccess.pdb
+E:\SourceCode\VS\WebDB\DataAccess\bin\Debug\EntityFramework.dll
+E:\SourceCode\VS\WebDB\DataAccess\bin\Debug\EntityFramework.xml
+E:\SourceCode\VS\WebDB\DataAccess\obj\Debug\DataAccess.dll
+E:\SourceCode\VS\WebDB\DataAccess\obj\Debug\DataAccess.pdb
+E:\SourceCode\VS\SkillBank\DataAccess\bin\Debug\DataAccess.dll.config
+E:\SourceCode\VS\SkillBank\DataAccess\bin\Debug\DataAccess.dll
+E:\SourceCode\VS\SkillBank\DataAccess\bin\Debug\DataAccess.pdb
+E:\SourceCode\VS\SkillBank\DataAccess\bin\Debug\EntityFramework.dll
+E:\SourceCode\VS\SkillBank\DataAccess\bin\Debug\EntityFramework.xml
+E:\SourceCode\VS\SkillBank\DataAccess\obj\Debug\DataAccess.dll
+E:\SourceCode\VS\SkillBank\DataAccess\obj\Debug\DataAccess.pdb
+E:\SourceCode\VS\SkillBank\DataAccess\obj\Debug\SkillBank.Site.DataAccess.csprojResolveAssemblyReference.cache

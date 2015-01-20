@@ -1,0 +1,272 @@
+﻿#body {
+    background-color: #e4e4e4;
+    clear: both;
+    padding-bottom: 35px;
+}
+
+
+.class-forms {
+    margin: 20px 0 0 0;
+}
+
+
+/* Class Header Tabs */
+.class-tabs {
+    background-color: #fcD048;
+    list-style: none;
+    margin: 0;
+    padding: 0 50px;
+    height: 140px;
+}
+
+.class-tabitem {
+    cursor: pointer;
+    float: left;
+    margin: 0 30px;
+    text-align: center;
+    width: 120px;
+    height: 100%;
+}
+
+.class-tabitem .tabbg {
+    display: block;
+    width: 0px;
+    height: 0px;
+    margin-top: 60px;
+    margin-bottom: -60px;
+    margin-left: 60px;
+ }
+
+.class-tabitem:hover .tabbg {
+    background-color: #efeeef;
+    width: 120px;
+    height: 140px;
+    margin-bottom: -121px;
+    margin-top: -19px;
+    margin-left: 0px;
+    background-color: #e4e4e4;
+    -moz-transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -o-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+}
+
+.class-tabitemicon {
+    padding: 10px;
+    display: block;
+    height: 60px;
+}
+
+.class-tabitemtxt {
+    padding: 0 10px 10px 10px;
+    display: block;
+    height: 40px;
+}
+
+.yellow {
+    background-color: #fcD048;
+}
+
+.gray {
+    background-color: #e4e4e4;
+}
+
+.green {
+    background-color: #037a8e;
+}
+
+/* Class Edit Form */
+/* Class Edit Form Common */
+.classf-btn {
+    line-height:30px;
+    padding:5px 20px;
+    background-color:#03838E;
+    box-shadow:0 0 4px rgba(0, 0, 0, 0.4);
+    border-radius:4px;
+    display:block;
+    float:left;
+    color:#FFF;
+    font-weight:bold;
+}
+
+.classf-row {
+    width:700px;
+    padding:3px;
+}
+.classf-col1{
+    width:25%;
+    text-align:right;
+    float:left;
+    text-align:right;
+    padding:0 15px 0 10px;
+}
+.classf-col2{
+    width:65%;
+    text-align:left;
+    float:left;
+    padding:0 0 10px 0;
+}
+.classf-inputtitle, .classf-input, .classf-radtext{
+    height:28px;
+    line-height:28px;
+}
+.classf-radtext {
+    display:inline-block;
+    padding-top:2px;
+}
+
+.classf-inputtitle {
+    display: inline-block;
+    text-align: right;
+    vertical-align:top;
+    margin-top:2px;
+}
+.classf-input {
+    color:#515051;
+    width: 95%;
+    border-radius:3px;
+    padding:5px 5px;
+    margin:0px;
+    box-shadow:0 0 4px rgba(0, 0, 0, 0.4);
+    border:none;
+}
+
+/* Class Edit Form Info page */
+textarea.classf-input {
+    height: 150px;
+}
+
+div.tagssuggestion span.tag {
+    border: 1px solid #a5d24a;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    display: block;
+    float: left;
+    text-decoration: none;
+    background: #cde69c;
+    color: #638421;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-family: helvetica;
+    font-size: 13px;
+    padding: 5px 10px; /*resize padding*/
+    cursor: pointer;
+}
+
+div.tagssuggestion span.seled {
+    background: #e4e4e4;
+    cursor: auto;
+}
+
+/* Class Category dropdown */
+.classf-selectframe {
+    position:relative;
+    margin:0;
+    padding:0;
+}
+
+.classf-select{
+    position:relative;
+    cursor: pointer;
+    display:block;
+    background-color:#FFF;
+    margin:0 0 0 2px;
+}
+
+ .classf-select label {
+      cursor: pointer;
+    display:block;
+      background:#FFF;
+}
+ 
+.classf-list li{
+    cursor: pointer;
+    list-style:none;
+    height:38px;
+    line-height:38px;
+    cursor:pointer;
+    list-style:none;
+
+}
+
+.classf-list li:hover{background-color: #d2d2d2;}
+
+.classf-list
+{
+    margin:0 5px;
+    padding:0;
+    position: absolute;
+    top: 40px;/*resize padding*/
+    left:-2px;
+    background-color: #f1f4f6;
+    position: absolute;
+    right: 0;
+    border-radius: 0 0 3px 3px;
+    -webkit-box-shadow: 1px 2px 9px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 1px 2px 9px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 2px 9px rgba(0, 0, 0, 0.3);
+    color: #333333;
+    display:none;
+    z-index:10;
+}
+
+#classf_category_list {
+    z-index:20;
+}
+#classf_subcategory_list {
+    z-index:15;
+}
+#classf_city_list {
+    z-index:10;
+}
+
+.classf-list label {
+   padding:0 10px;  /*resize padding*/
+   border-top:solid 1px #FFF;
+}
+.classf-list:first-child label {
+   border-top:none;
+   color: red;
+}
+
+.classf-list .category-item:first-child label {
+   border-top:none;
+}
+
+/* Slider */
+/*html{-webkit-text-size-adjust:none;}*/
+.classf-sliderframe {
+    width:98%;
+    border:solid 0px red;
+}
+#skill-slider, #teach-slider
+{
+   
+}
+.ui-slider a.ui-slider-handle {
+              font-size-adjust: none;
+	-webkit-text-size-adjust: none;
+	   -moz-font-size-adjust: none;
+	    -ms-font-size-adjust: none;
+	     -o-font-size-adjust: none;
+/*padding:0 5px 0 5px;*/
+    width:23px;
+    text-align:center;
+    text-decoration:none;
+    font-size:12px;
+    padding:0;
+}
+#skill-slider .ui-slider-range, #teach-slider .ui-slider-range { background: #14343f; }
+#skill-slider .ui-widget-content,#teach-slider .ui-widget-content { background: #a6b0b0; }
+.classf-slidertag .classf-slidertagmin {
+    float:left;
+}.classf-slidertag .classf-slidertagmax {
+    float:right;
+}
+.cf {
+    clear:both;
+}
+
+
+
+

@@ -1,0 +1,59 @@
+﻿@model SkillBank.Site.Web.ViewModel.MessageListModel
+@section HeaderStyle
+{@Html.CombresCustomUrl("messageCss")}
+@section FooterJs
+{@Html.CombresCustomUrl("messageJs")}
+<div class="body">
+    <div class="inner">
+
+        <div class="my-messages">
+
+            <div class="my-messages-hd">
+                <h2>@Html.GetTrans(458)</h2>
+            </div>
+
+            <div class="my-messages-bd">
+                <table class="table-layout">
+                    <tr>
+                        <td class="messages-main">
+
+                            <div class="message-list">
+                                @if (Model.Messages != null && ViewBag.MemberInfo != null)
+                                {
+                                    foreach (var message in Model.Messages)
+                                    {
+                                        var contactId = (message.From_Id == ViewBag.MemberInfo.MemberId) ? message.To_Id : message.From_Id;
+                                    <div class="message-item">
+                                        <!--<a href="@Url.Action("Chat", new { id = contactId })">-->
+                                            <div class="row-fluid">
+                                                <div class="span1">
+                                                    <span class="avatar-wrap">
+                                                        <img src="@ContentHelper.GetAvatarPath(message.Avatar, "m")" class="avatar-m" />@Html.Raw(TagHelper.GetNewMessageTag(Model.UnReadMessageNumDic, message.From_Id))</span>
+                                                </div>
+                                                <div class="span9">
+                                                    <div class="message-content"><a href="@Url.Action("Chat", new { id = contactId })">@Html.Raw(TagHelper.GetTextSubSting(message.MessageText, 100, true))</a></div>
+                                                    <div class="message-from"><a href="@Url.Action("index","profile", new { id = contactId })">@message.Name</a></div>
+                                                </div>
+                                                <div class="span2 tright">
+                                                    <span class="gray">@TextContentHelper.GetDateString(message.CreatedDate)</span>
+                                                    <div class="message-actions"><a href="#" data-memberid="@contactId" data-messageid="@message.MessageId" class="message-delete">@Html.GetTrans(459)</a></div>
+                                                </div>
+                                            </div>
+                                       <!--</a>-->
+                                    </div>  
+                                    }
+                                }
+                            </div>
+                            <!-- end of messages -->
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+

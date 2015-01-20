@@ -1,0 +1,56 @@
+﻿@model SkillBank.Site.Web.ViewModel.ClassProveModel
+@section HeaderStyle {@Html.CombresCustomUrl("classProveCss")}
+
+<div class="body">
+    <div class="inner">
+        @if (ViewBag.ErrorMessage!=null)
+        {
+        <h3 class="spaced-larger errormessage">@ViewBag.ErrorMessage</h3>
+        }
+        <div class="class-results">
+            <div class="class-list">
+
+                <ul class="cf">
+                    @if (Model.ClassEditList != null)
+                    {
+                        foreach (var classItem in Model.ClassEditList)
+                        {
+                            var index = (Model.ClassEditList.IndexOf(classItem));
+                        <li class=@((index % 3 == 0) ? "row-start" : "")>
+                            <div class="class-item">
+                                <div class="class-item-hd">
+                                    <a href="@Url.Action("preview", "class", new { id = classItem.ClassId })">
+                                        <img src="@(String.IsNullOrEmpty(classItem.Cover) ? "~/img/default_cover.png" : ContentHelper.GetClassCoverPath(classItem.Cover, "b"))"></a>
+                                    <div class="class-item-bar">
+                                        <div class="row-fluid">
+                                            <div class="span6"><strong>@TextContentHelper.GetLevelName(classItem.Level)</strong></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="class-item-bd">
+                                    <h3><a href="@Url.Action("preview", "class", new { id = classItem.ClassId })">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 50, true))</a></h3>
+                                </div>
+                                <div class="class-item-ft">
+                                    <div class="row-fluid">
+                                        <div class="span2">
+                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">
+                                                MemberInfo
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        }
+                    }
+                </ul>
+
+            </div>
+            <!-- end of class list -->
+            
+        </div>
+
+    </div>
+</div>
+
+

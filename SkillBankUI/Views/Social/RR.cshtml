@@ -1,0 +1,48 @@
+﻿<html xmlns:wb="http://open.weibo.com/wb">
+<head>
+    <title>Sina</title>
+    <script type="text/javascript" src="http://static.connect.renren.com/js/v1.0/FeatureLoader.jsp"></script>
+    <script type="text/javascript">
+      
+    </script>
+</head>
+<body>
+    <!--<a href="http://graph.renren.com/oauth/authorize?client_id=ad2f3e5e5be44299aeae1abdca32028d&response_type=code&redirect_uri=http://www.skillbank.cn/Social/RR&display=iframe">-->
+    <a href="http://graph.renren.com/oauth/grant?client_id=ad2f3e5e5be44299aeae1abdca32028d&redirect_uri=http%3A%2F%2Fwww.skillbank.cn%2FSocial%2Frr&response_type=code&display=iframe&scope=read_user_status+read_user_feed+read_user_comment+send_request+publish_share+publish_feed&secure=true&origin=0">
+        <img style="border: 0px" src="/img/renren_login_button.png" />
+    </a>
+    <a href="http://graph.renren.com/oauth/authorize?client_id=ad2f3e5e5be44299aeae1abdca32028d&x_renew=true">
+        logout
+    </a>
+    <!--https://graph.renren.com/oauth/token?client_id=YOUR_API_KEY&client_secret=YOUR_SECRET_KEY&redirect_uri=YOUR_CALLBACK_URL&grant_type=client_credentials-->
+</body>
+
+</html>
+
+<!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Renren Webcanvas Demo -- Welcome</title>
+  <script type="text/javascript" src="/javascript/renren.js"></script>
+</head>
+<body>
+  <script type="text/javascript">
+	  var uiOpts = {
+		  url : "http://graph.renren.com/oauth/authorize",
+		  display : "iframe",
+		  params: { "response_type": "token", "client_id": "ad2f3e5e5be44299aeae1abdca32028d" },
+		  onSuccess: function(r){
+		    top.location = "http://apps.renren.com/yourapp/home";
+		  },
+		  onFailure: function(r){} 
+	  };
+	  Renren.ui(uiOpts);
+  </script>
+  Hi, Welcome!
+</body>
+</html>-->
+
+
+

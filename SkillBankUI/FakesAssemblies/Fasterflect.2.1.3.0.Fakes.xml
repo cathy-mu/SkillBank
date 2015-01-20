@@ -1,0 +1,692 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Fasterflect.2.1.3.0.Fakes</name>
+    </assembly>
+    <members>
+        <member name="T:Fasterflect.Fakes.ShimArrayExtensions">
+            <summary>Shim type of Fasterflect.ArrayExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimArrayExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimArrayExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimArrayExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimArrayExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimArrayExtensions.GetElementObjectInt64">
+            <summary>Sets the shim of ArrayExtensions.GetElement(Object array, Int64 index)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimArrayExtensions.SetElementObjectInt64Object">
+            <summary>Sets the shim of ArrayExtensions.SetElement(Object array, Int64 index, Object value)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimAssemblyExtensions">
+            <summary>Shim type of Fasterflect.AssemblyExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAssemblyExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAssemblyExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAssemblyExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimAssemblyExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimAttributeExtensions">
+            <summary>Shim type of Fasterflect.AttributeExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAttributeExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAttributeExtensions.AttributeOf1Enum``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Enum,``0})">
+            <summary>Sets the shim of AttributeExtensions.Attribute(Enum provider)</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAttributeExtensions.AttributeOf1ICustomAttributeProvider``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Reflection.ICustomAttributeProvider,``0})">
+            <summary>Sets the shim of AttributeExtensions.Attribute(ICustomAttributeProvider provider)</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAttributeExtensions.AttributesOf1Enum``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Enum,System.Collections.Generic.IList{``0}})">
+            <summary>Sets the shim of AttributeExtensions.Attributes(Enum provider)</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAttributeExtensions.AttributesOf1ICustomAttributeProvider``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Reflection.ICustomAttributeProvider,System.Collections.Generic.IList{``0}})">
+            <summary>Sets the shim of AttributeExtensions.Attributes(ICustomAttributeProvider provider)</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAttributeExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAttributeExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimAttributeExtensions.HasAttributeOf1ICustomAttributeProvider``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{System.Reflection.ICustomAttributeProvider,System.Boolean})">
+            <summary>Sets the shim of AttributeExtensions.HasAttribute(ICustomAttributeProvider provider)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimAttributeExtensions.AttributeICustomAttributeProvider">
+            <summary>Sets the shim of AttributeExtensions.Attribute(ICustomAttributeProvider provider)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimAttributeExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimCloneExtensions">
+            <summary>Shim type of Fasterflect.CloneExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimCloneExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimCloneExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimCloneExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimCloneExtensions.CloneArrayOf1M0DictionaryOfObjectObject``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0,System.Collections.Generic.Dictionary{System.Object,System.Object},``0})">
+            <summary>Sets the shim of CloneExtensions.CloneArray(!!0 source, Dictionary`2&lt;Object,Object&gt; map)</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimCloneExtensions.CloneObjectOf1M0DictionaryOfObjectObject``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0,System.Collections.Generic.Dictionary{System.Object,System.Object},``0})">
+            <summary>Sets the shim of CloneExtensions.CloneObject(!!0 source, Dictionary`2&lt;Object,Object&gt; map)</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimCloneExtensions.DeepCloneOf1M0``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0,``0})">
+            <summary>Sets the shim of CloneExtensions.DeepClone(!!0 source)</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimCloneExtensions.DeepCloneOf1M0DictionaryOfObjectObject``1(Microsoft.QualityTools.Testing.Fakes.FakesDelegates.Func{``0,System.Collections.Generic.Dictionary{System.Object,System.Object},``0})">
+            <summary>Sets the shim of CloneExtensions.DeepClone(!!0 source, Dictionary`2&lt;Object,Object&gt; map)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimCloneExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimCloneExtensions.ShouldCloneObject">
+            <summary>Sets the shim of CloneExtensions.ShouldClone(Object obj)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimConstructorExtensions">
+            <summary>Shim type of Fasterflect.ConstructorExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimConstructorExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimConstructorExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimConstructorExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimConstructorExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimConstructorInfoExtensions">
+            <summary>Shim type of Fasterflect.ConstructorInfoExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimConstructorInfoExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimConstructorInfoExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimConstructorInfoExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimConstructorInfoExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimDynamicHandler">
+            <summary>Shim type of Fasterflect.DynamicHandler</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimDynamicHandler.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimDynamicHandler.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimDynamicHandler.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimDynamicHandler.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimDynamicHandler.InvokeDelegateObjectStringObjectArray">
+            <summary>Sets the shim of DynamicHandler.InvokeDelegate(Object target, String delegateName, Object[] parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimDynamicHandler._BuildDynamicHandlerb__1ParameterExpression">
+            <summary>Sets the shim of DynamicHandler.&lt;BuildDynamicHandler&gt;b__1(ParameterExpression parm)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimFieldExtensions">
+            <summary>Shim type of Fasterflect.FieldExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFieldExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFieldExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFieldExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.GetFieldValueObjectString">
+            <summary>Sets the shim of FieldExtensions.GetFieldValue(Object obj, String name)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.GetFieldValueObjectStringFlags">
+            <summary>Sets the shim of FieldExtensions.GetFieldValue(Object obj, String name, Flags bindingFlags)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.SetFieldValueObjectStringObject">
+            <summary>Sets the shim of FieldExtensions.SetFieldValue(Object obj, String name, Object value)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.SetFieldValueObjectStringObjectFlags">
+            <summary>Sets the shim of FieldExtensions.SetFieldValue(Object obj, String name, Object value, Flags bindingFlags)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.TryGetFieldValueObjectString">
+            <summary>Sets the shim of FieldExtensions.TryGetFieldValue(Object obj, String name)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.TryGetFieldValueObjectStringFlags">
+            <summary>Sets the shim of FieldExtensions.TryGetFieldValue(Object obj, String name, Flags bindingFlags)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.TrySetFieldValueObjectStringObject">
+            <summary>Sets the shim of FieldExtensions.TrySetFieldValue(Object obj, String name, Object value)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldExtensions.TrySetFieldValueObjectStringObjectFlags">
+            <summary>Sets the shim of FieldExtensions.TrySetFieldValue(Object obj, String name, Object value, Flags bindingFlags)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimFieldInfoExtensions">
+            <summary>Shim type of Fasterflect.FieldInfoExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFieldInfoExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFieldInfoExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFieldInfoExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFieldInfoExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimFlags">
+            <summary>Shim type of Fasterflect.Flags</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFlags.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFlags.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimFlags.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.BitwiseAndOpFlagsFlags">
+            <summary>Sets the shim of Flags.op_BitwiseAnd(Flags f1, Flags f2)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.BitwiseOrOpFlagsFlags">
+            <summary>Sets the shim of Flags.op_BitwiseOr(Flags f1, Flags f2)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.ClearIfFlagsFlagsBoolean">
+            <summary>Sets the shim of Flags.ClearIf(Flags flags, Flags mask, Boolean condition)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.EqualityOpFlagsFlags">
+            <summary>Sets the shim of Flags.op_Equality(Flags f1, Flags f2)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.ExplicitOpInt64Flags">
+            <summary>Sets the shim of Flags.op_Explicit(Int64 m)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.ImplicitOpBindingFlagsFlags">
+            <summary>Sets the shim of Flags.op_Implicit(BindingFlags m)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.ImplicitOpFlagsBindingFlags">
+            <summary>Sets the shim of Flags.op_Implicit(Flags m)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.ImplicitOpFlagsInt64">
+            <summary>Sets the shim of Flags.op_Implicit(Flags m)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.InequalityOpFlagsFlags">
+            <summary>Sets the shim of Flags.op_Inequality(Flags f1, Flags f2)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.SetIfFlagsFlagsBoolean">
+            <summary>Sets the shim of Flags.SetIf(Flags flags, Flags mask, Boolean condition)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.SetOnlyIfFlagsFlagsBoolean">
+            <summary>Sets the shim of Flags.SetOnlyIf(Flags flags, Flags mask, Boolean condition)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.StaticConstructor">
+            <summary>Sets the shim of Flags.Flags()</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags.SubtractionOpFlagsFlags">
+            <summary>Sets the shim of Flags.op_Subtraction(Flags f1, Flags f2)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags._ToStringb__1KeyValuePairOfFlagsString">
+            <summary>Sets the shim of Flags.&lt;ToString&gt;b__1(KeyValuePair`2&lt;Flags,String&gt; kvp)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimFlags._ToStringb__2String">
+            <summary>Sets the shim of Flags.&lt;ToString&gt;b__2(String n)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimFlags.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimMapExtensions">
+            <summary>Shim type of Fasterflect.MapExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMapExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMapExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMapExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMapExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMapExtensions.MapFieldsObjectObjectStringArray">
+            <summary>Sets the shim of MapExtensions.MapFields(Object source, Object target, String[] names)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMapExtensions.MapFieldsToPropertiesObjectObjectStringArray">
+            <summary>Sets the shim of MapExtensions.MapFieldsToProperties(Object source, Object target, String[] names)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMapExtensions.MapObjectObjectFlagsStringArray">
+            <summary>Sets the shim of MapExtensions.Map(Object source, Object target, Flags bindingFlags, String[] names)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMapExtensions.MapObjectObjectMemberTypesMemberTypesFlagsStringArray">
+            <summary>Sets the shim of MapExtensions.Map(Object source, Object target, MemberTypes sourceTypes, MemberTypes targetTypes, Flags bindingFlags, String[] names)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMapExtensions.MapObjectObjectStringArray">
+            <summary>Sets the shim of MapExtensions.Map(Object source, Object target, String[] names)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMapExtensions.MapPropertiesObjectObjectStringArray">
+            <summary>Sets the shim of MapExtensions.MapProperties(Object source, Object target, String[] names)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMapExtensions.MapPropertiesToFieldsObjectObjectStringArray">
+            <summary>Sets the shim of MapExtensions.MapPropertiesToFields(Object source, Object target, String[] names)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimMemberExtensions">
+            <summary>Shim type of Fasterflect.MemberExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMemberExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMemberExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMemberExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMemberExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMemberExtensions.TryGetValueObjectString">
+            <summary>Sets the shim of MemberExtensions.TryGetValue(Object obj, String name)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMemberExtensions.TryGetValueObjectStringFlags">
+            <summary>Sets the shim of MemberExtensions.TryGetValue(Object obj, String name, Flags bindingFlags)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMemberExtensions.TrySetValueObjectStringObject">
+            <summary>Sets the shim of MemberExtensions.TrySetValue(Object obj, String name, Object value)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMemberExtensions.TrySetValueObjectStringObjectFlags">
+            <summary>Sets the shim of MemberExtensions.TrySetValue(Object obj, String name, Object value, Flags bindingFlags)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimMemberInfoExtensions">
+            <summary>Shim type of Fasterflect.MemberInfoExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMemberInfoExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMemberInfoExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMemberInfoExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMemberInfoExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimMethodExtensions">
+            <summary>Shim type of Fasterflect.MethodExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMethodExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMethodExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMethodExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMethodExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMethodExtensions.CallMethodObjectStringFlagsObjectArray">
+            <summary>Sets the shim of MethodExtensions.CallMethod(Object obj, String name, Flags bindingFlags, Object[] parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMethodExtensions.CallMethodObjectStringObjectArray">
+            <summary>Sets the shim of MethodExtensions.CallMethod(Object obj, String name, Object[] parameters)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimMethodInfoExtensions">
+            <summary>Shim type of Fasterflect.MethodInfoExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMethodInfoExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMethodInfoExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimMethodInfoExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimMethodInfoExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimParameterInfoExtensions">
+            <summary>Shim type of Fasterflect.ParameterInfoExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimParameterInfoExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimParameterInfoExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimParameterInfoExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimParameterInfoExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimPropertyExtensions">
+            <summary>Shim type of Fasterflect.PropertyExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimPropertyExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimPropertyExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimPropertyExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.GetIndexerObjectFlagsObjectArray">
+            <summary>Sets the shim of PropertyExtensions.GetIndexer(Object obj, Flags bindingFlags, Object[] parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.GetIndexerObjectObjectArray">
+            <summary>Sets the shim of PropertyExtensions.GetIndexer(Object obj, Object[] parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.GetPropertyValueObjectExpressionOfFuncOfObject">
+            <summary>Sets the shim of PropertyExtensions.GetPropertyValue(Object obj, Expression`1&lt;Func`1&lt;Object&gt;&gt; memberExpression)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.GetPropertyValueObjectString">
+            <summary>Sets the shim of PropertyExtensions.GetPropertyValue(Object obj, String name)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.GetPropertyValueObjectStringFlags">
+            <summary>Sets the shim of PropertyExtensions.GetPropertyValue(Object obj, String name, Flags bindingFlags)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.SetIndexerObjectFlagsObjectArray">
+            <summary>Sets the shim of PropertyExtensions.SetIndexer(Object obj, Flags bindingFlags, Object[] parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.SetIndexerObjectObjectArray">
+            <summary>Sets the shim of PropertyExtensions.SetIndexer(Object obj, Object[] parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.SetPropertyValueObjectExpressionOfFuncOfObjectObject">
+            <summary>Sets the shim of PropertyExtensions.SetPropertyValue(Object obj, Expression`1&lt;Func`1&lt;Object&gt;&gt; memberExpression, Object value)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.SetPropertyValueObjectStringObject">
+            <summary>Sets the shim of PropertyExtensions.SetPropertyValue(Object obj, String name, Object value)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.SetPropertyValueObjectStringObjectFlags">
+            <summary>Sets the shim of PropertyExtensions.SetPropertyValue(Object obj, String name, Object value, Flags bindingFlags)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.TryGetPropertyValueObjectString">
+            <summary>Sets the shim of PropertyExtensions.TryGetPropertyValue(Object obj, String name)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.TryGetPropertyValueObjectStringFlags">
+            <summary>Sets the shim of PropertyExtensions.TryGetPropertyValue(Object obj, String name, Flags bindingFlags)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.TrySetPropertyValueObjectStringObject">
+            <summary>Sets the shim of PropertyExtensions.TrySetPropertyValue(Object obj, String name, Object value)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyExtensions.TrySetPropertyValueObjectStringObjectFlags">
+            <summary>Sets the shim of PropertyExtensions.TrySetPropertyValue(Object obj, String name, Object value, Flags bindingFlags)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimPropertyInfoExtensions">
+            <summary>Shim type of Fasterflect.PropertyInfoExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimPropertyInfoExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimPropertyInfoExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimPropertyInfoExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimPropertyInfoExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimTryCallMethodExtensions">
+            <summary>Shim type of Fasterflect.TryCallMethodExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryCallMethodExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryCallMethodExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryCallMethodExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryCallMethodExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryCallMethodExtensions.TryCallMethodObjectStringBooleanIDictionaryOfStringObject">
+            <summary>Sets the shim of TryCallMethodExtensions.TryCallMethod(Object obj, String methodName, Boolean mustUseAllParameters, IDictionary`2&lt;String,Object&gt; parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryCallMethodExtensions.TryCallMethodObjectStringBooleanObject">
+            <summary>Sets the shim of TryCallMethodExtensions.TryCallMethod(Object obj, String methodName, Boolean mustUseAllParameters, Object sample)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimTryCreateInstanceExtensions">
+            <summary>Shim type of Fasterflect.TryCreateInstanceExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryCreateInstanceExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryCreateInstanceExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryCreateInstanceExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryCreateInstanceExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryCreateInstanceExtensions.StaticConstructor">
+            <summary>Sets the shim of TryCreateInstanceExtensions.TryCreateInstanceExtensions()</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions">
+            <summary>Shim type of Fasterflect.TryInvokeWithValuesExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions.TryCallMethodWithValuesObjectParameterConverterStringBindingFlagsObjectArray">
+            <summary>Sets the shim of TryInvokeWithValuesExtensions.TryCallMethodWithValues(Object obj, ParameterConverter converter, String methodName, BindingFlags flags, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions.TryCallMethodWithValuesObjectStringObjectArray">
+            <summary>Sets the shim of TryInvokeWithValuesExtensions.TryCallMethodWithValues(Object obj, String methodName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions._TryCallMethodWithValuesb__3Object">
+            <summary>Sets the shim of TryInvokeWithValuesExtensions.&lt;TryCallMethodWithValues&gt;b__3(Object v)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTryInvokeWithValuesExtensions._TryCreateInstanceWithValuesb__0Object">
+            <summary>Sets the shim of TryInvokeWithValuesExtensions.&lt;TryCreateInstanceWithValues&gt;b__0(Object v)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimTypeExtensions">
+            <summary>Shim type of Fasterflect.TypeExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTypeExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTypeExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimTypeExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTypeExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTypeExtensions.GetCSharpTypeNameString">
+            <summary>Sets the shim of TypeExtensions.GetCSharpTypeName(String typeName)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimTypeExtensions.StaticConstructor">
+            <summary>Sets the shim of TypeExtensions.TypeExtensions()</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimValueTypeExtensions">
+            <summary>Shim type of Fasterflect.ValueTypeExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimValueTypeExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimValueTypeExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimValueTypeExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimValueTypeExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimValueTypeExtensions.IsWrappedObject">
+            <summary>Sets the shim of ValueTypeExtensions.IsWrapped(Object obj)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimValueTypeExtensions.UnwrapIfWrappedObject">
+            <summary>Sets the shim of ValueTypeExtensions.UnwrapIfWrapped(Object obj)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimValueTypeExtensions.WrapIfValueTypeObject">
+            <summary>Sets the shim of ValueTypeExtensions.WrapIfValueType(Object obj)</summary>
+        </member>
+        <member name="T:Fasterflect.Fakes.ShimXmlTransformerExtensions">
+            <summary>Shim type of Fasterflect.XmlTransformerExtensions</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimXmlTransformerExtensions.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimXmlTransformerExtensions.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Fakes.ShimXmlTransformerExtensions.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimXmlTransformerExtensions.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimXmlTransformerExtensions.IndentStringString">
+            <summary>Sets the shim of XmlTransformerExtensions.Indent(String indent, String currentIndent)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimXmlTransformerExtensions.ToXmlObject">
+            <summary>Sets the shim of XmlTransformerExtensions.ToXml(Object obj)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimXmlTransformerExtensions.ToXmlObjectFormatOptions">
+            <summary>Sets the shim of XmlTransformerExtensions.ToXml(Object obj, FormatOptions options)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimXmlTransformerExtensions.ToXmlObjectStringStringStringString">
+            <summary>Sets the shim of XmlTransformerExtensions.ToXml(Object obj, String header, String afterElementDecoration, String indentDecoration, String currentIndent)</summary>
+        </member>
+        <member name="P:Fasterflect.Fakes.ShimXmlTransformerExtensions.UnindentStringString">
+            <summary>Sets the shim of XmlTransformerExtensions.Unindent(String indent, String currentIndent)</summary>
+        </member>
+        <member name="T:Fasterflect.Probing.Fakes.ShimMethodDispatcher">
+            <summary>Shim type of Fasterflect.Probing.MethodDispatcher</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.ShimMethodDispatcher.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.ShimMethodDispatcher.#ctor(Fasterflect.Probing.MethodDispatcher)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.ShimMethodDispatcher.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.ShimMethodDispatcher.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimMethodDispatcher.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimMethodDispatcher.Constructor">
+            <summary>Sets the shim of MethodDispatcher.MethodDispatcher()</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimMethodDispatcher.InvokeObjectBooleanDictionaryOfStringObject">
+            <summary>Sets the shim of MethodDispatcher.Invoke(Object obj, Boolean mustUseAllParameters, Dictionary`2&lt;String,Object&gt; parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimMethodDispatcher.InvokeObjectBooleanObject">
+            <summary>Sets the shim of MethodDispatcher.Invoke(Object obj, Boolean mustUseAllParameters, Object sample)</summary>
+        </member>
+        <member name="T:Fasterflect.Probing.Fakes.ShimMethodDispatcher.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimMethodDispatcher.AllInstances.InvokeObjectBooleanDictionaryOfStringObject">
+            <summary>Sets the shim of MethodDispatcher.Invoke(Object obj, Boolean mustUseAllParameters, Dictionary`2&lt;String,Object&gt; parameters)</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimMethodDispatcher.AllInstances.InvokeObjectBooleanObject">
+            <summary>Sets the shim of MethodDispatcher.Invoke(Object obj, Boolean mustUseAllParameters, Object sample)</summary>
+        </member>
+        <member name="T:Fasterflect.Probing.Fakes.ShimTypeConverter">
+            <summary>Shim type of Fasterflect.Probing.TypeConverter</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.ShimTypeConverter.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.ShimTypeConverter.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.ShimTypeConverter.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimTypeConverter.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimTypeConverter.GuidToBinaryStringGuid">
+            <summary>Sets the shim of TypeConverter.GuidToBinaryString(Guid guid)</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.ShimTypeConverter.StringToGuidString">
+            <summary>Sets the shim of TypeConverter.StringToGuid(String guid)</summary>
+        </member>
+        <member name="T:Fasterflect.Probing.Fakes.StubMethodDispatcher">
+            <summary>Stub type of Fasterflect.Probing.MethodDispatcher</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.StubMethodDispatcher.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Fasterflect.Probing.Fakes.StubMethodDispatcher.InitializeStub">
+            <summary>Initializes a new instance of type StubMethodDispatcher</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.StubMethodDispatcher.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.StubMethodDispatcher.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:Fasterflect.Probing.Fakes.StubMethodDispatcher.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+    </members>
+</doc>

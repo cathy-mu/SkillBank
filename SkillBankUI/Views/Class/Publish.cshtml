@@ -1,0 +1,73 @@
+﻿@section HeaderStyle
+{@Html.CombresCustomUrl("contentCss")}
+@section FooterJs{@Html.CombresCustomUrl("classPublishJs")}
+<div class="body">
+    <div class="create-class">
+        <div class="my-skills-hd">
+            <div class="inner">
+                <div class="row-fluid">
+                    <div class="span12 tcenter">
+                        <h2>@Html.GetTrans(650)</h2>
+                        <h4>@Html.GetTrans(651)</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="create-class-bd">
+            <div class="inner">
+
+                <div class="class-published">
+                        <div class="row-fluid">
+                                    <div class="span10 offset2">
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">&nbsp;&nbsp;&nbsp;</div>
+                                            <div class="span6"><br /><h4>@Html.GetTrans(648)</h4><br /></div>
+                                            <div class="span2 tright"></div>
+                                            <div class="span4"></div>
+                                        </div>  
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">@Html.GetTrans(266)</div>
+                                            <div class="span6">
+                                                <textarea name="selfintro" id="selfintro" class="form-control span12" rows="8">@(ViewBag.MemberInfo==null ? "" : ViewBag.MemberInfo.SelfIntro)</textarea>
+                                                <!--<div class="pull-right gray-light"><span id="selfintro-charsleft">0/400</span></div>-->
+                                            </div>
+                                            <div class="span4">
+                                                <div class="row-fluid field-hint">
+                                                    <div class="span1"><i class="fa fa-info-circle icon-large gray-light"></i></div>
+                                                    <div class="span11">
+                                                        <p class="gray-light" data-id="default">@Html.GetTrans(268)</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row-fluid spaced field-gender">
+                                            <div class="span2 tright">@Html.GetTrans(271)</div>
+                                            <div class="span6 form-inline" id="class-membergender">
+                                                <label for="2342" class="spaced-right member-female">
+                                                    <input type="radio" name="member-gender" id="member-female" value="0" class="member-gender" @((ViewBag.MemberInfo==null || !ViewBag.MemberInfo.Gender) ? "checked" : "")>
+                                                    <i class="icon-female"></i>
+                                                </label>
+                                                <label for="6234" class="spaced-right member-male">
+                                                    <input type="radio" name="member-gender" id="member-male" value="1" class="member-gender" @((ViewBag.MemberInfo!=null && ViewBag.MemberInfo.Gender) ? "checked" : "")>
+                                                    <i class="icon-male"></i>
+                                                </label>
+                                            </div>
+                                            <div class="span4"></div>
+                                        </div>
+                                        <div class="row-fluid spaced">
+                                            <div class="span2 tright">&nbsp;&nbsp;&nbsp;</div>
+                                            <div class="span6"><button id="profileinfo-save" type="button" class="btn btn-primary"><i class="fa fa-save"></i>@Html.GetTrans(425)</button></div>
+                                            <div class="span2 tright"></div>
+                                            <div class="span4"></div>
+                                        </div> 
+                                        
+                                    </div>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,10 @@
+E:\SourceCode\VS\SkillBank\Data\bin\Debug\SkillBank.Site.DataSource.dll.config
+E:\SourceCode\VS\SkillBank\Data\bin\Debug\SkillBank.Site.DataSource.dll
+E:\SourceCode\VS\SkillBank\Data\bin\Debug\SkillBank.Site.DataSource.pdb
+E:\SourceCode\VS\SkillBank\Data\bin\Debug\EntityFramework.dll
+E:\SourceCode\VS\SkillBank\Data\bin\Debug\SkillBank.Site.Common.dll
+E:\SourceCode\VS\SkillBank\Data\bin\Debug\SkillBank.Site.Common.pdb
+E:\SourceCode\VS\SkillBank\Data\bin\Debug\EntityFramework.xml
+E:\SourceCode\VS\SkillBank\Data\obj\Debug\DataSourceLayer.csprojResolveAssemblyReference.cache
+E:\SourceCode\VS\SkillBank\Data\obj\Debug\SkillBank.Site.DataSource.dll
+E:\SourceCode\VS\SkillBank\Data\obj\Debug\SkillBank.Site.DataSource.pdb

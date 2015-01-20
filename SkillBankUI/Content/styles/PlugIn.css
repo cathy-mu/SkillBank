@@ -1,0 +1,131 @@
+/* 1 iCheck plugin Square skin, green
+----------------------------------- */
+.icheckbox_square-green,
+.iradio_square-green {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    margin: 5px 0 0 0;
+    padding: 0;
+    width: 22px;
+    height: 22px;
+    background: url(/Images/Control/iCheck/green.png) no-repeat;
+    border: none;
+    cursor: pointer;
+}
+
+.icheckbox_square-green {
+    background-position: 0 0;
+}
+    .icheckbox_square-green.hover {
+        background-position: -24px 0;
+    }
+    .icheckbox_square-green.checked {
+        background-position: -48px 0;
+    }
+    .icheckbox_square-green.disabled {
+        background-position: -72px 0;
+        cursor: default;
+    }
+    .icheckbox_square-green.checked.disabled {
+        background-position: -96px 0;
+    }
+
+.iradio_square-green {
+    background-position: -120px 0;
+}
+    .iradio_square-green.hover {
+        background-position: -144px 0;
+    }
+    .iradio_square-green.checked {
+        background-position: -168px 0;
+    }
+    .iradio_square-green.disabled {
+        background-position: -192px 0;
+        cursor: default;
+    }
+    .iradio_square-green.checked.disabled {
+        background-position: -216px 0;
+    }
+
+/* 1 HiDPI support */
+@media (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+    .icheckbox_square-green,
+    .iradio_square-green {
+        background-image: url(/Images/Control/iCheck/green@2x_square.png);
+        -webkit-background-size: 240px 24px;
+        background-size: 240px 24px;
+    }
+}
+
+
+/* 1 iCheck plugin Flat skin, purple
+----------------------------------- */
+.icheckbox_flat-purple,
+.iradio_flat-purple {
+    display: inline-block;
+    *display: inline;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    background: url(/Images/Control/iCheck/purple.png) no-repeat;
+    border: none;
+    cursor: pointer;
+}
+
+.icheckbox_flat-purple {
+    background-position: 0 0;
+}
+    .icheckbox_flat-purple.checked {
+        background-position: -22px 0;
+    }
+    .icheckbox_flat-purple.disabled {
+        background-position: -44px 0;
+        cursor: default;
+    }
+    .icheckbox_flat-purple.checked.disabled {
+        background-position: -66px 0;
+    }
+
+.iradio_flat-purple {
+    background-position: -88px 0;
+}
+    .iradio_flat-purple.checked {
+        background-position: -110px 0;
+    }
+    .iradio_flat-purple.disabled {
+        background-position: -132px 0;
+        cursor: default;
+    }
+    .iradio_flat-purple.checked.disabled {
+        background-position: -154px 0;
+    }
+
+/* 1 HiDPI support */
+@media (-o-min-device-pixel-ratio: 5/4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+    .icheckbox_flat-purple,
+    .iradio_flat-purple {
+        background-image: url(/Images/Control/iCheck/purple@2x.png);
+        -webkit-background-size: 176px 22px;
+        background-size: 176px 22px;
+    }
+}
+
+
+/* 2 jQuery-Tags-Input-masterk plugin 
+----------------------------------- */
+div.tagsinput { border:1px solid #CCC; background: #FFF; padding:5px; width:300px; height:100px; overflow-y: auto;}
+div.tagsinput span.tag, div.tagssuggestion span.tag { border: 1px solid #a5d24a; -moz-border-radius:2px; -webkit-border-radius:2px; display: block; float: left; padding: 5px; text-decoration:none; background: #cde69c; color: #638421; margin-right: 5px; margin-bottom:5px;font-family: helvetica;  font-size:13px; cursor:pointer;}
+div.tagsinput span.tag a { font-weight: bold; color: #82ad2b; text-decoration:none; font-size: 11px;  } 
+div.tagsinput input { width:80px; margin:0px; font-family: helvetica; font-size: 13px; border:1px solid transparent; padding:5px; background: transparent; color: #000; outline:0px;  margin-right:5px; margin-bottom:5px; }
+div.tagsinput div { display:block; float: left; } 
+.tags_clear { clear: both; width: 100%; height: 0px; }
+.not_valid {background: #FBD8DB !important; color: #90111A !important;}
+div.tagssuggestion {margin:10px 0 0 0;}
+div.tagssuggestion span.seled {border: 1px solid #808080; background-color:#CCC;}
+
+
+
+

@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7 lng-cn"  xmlns="http://www.w3.org/1999/xhtml" xmlns:xn="http://www.renren.com/2009/xnml" xmlns:wb="http://open.weibo.com/wb" > <![endif]-->
+<!--[if IE 7]>         <html class="lt-ie9 lt-ie8 lng-cn"  xmlns="http://www.w3.org/1999/xhtml" xmlns:xn="http://www.renren.com/2009/xnml" xmlns:wb="http://open.weibo.com/wb"> <![endif]-->
+<!--[if IE 8]>         <html class="lt-ie9 lng-cn"  xmlns="http://www.w3.org/1999/xhtml" xmlns:xn="http://www.renren.com/2009/xnml" xmlns:wb="http://open.weibo.com/wb"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xn="http://www.renren.com/2009/xnml" xmlns:wb="http://open.weibo.com/wb">
+<!--<![endif]-->
+<head>
+    <title>@ViewBag.MetaTagTitle</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=1240, maximum-scale=1, minimum-scale=0.2" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta name="keywords" content="@ViewBag.MetaTagKeyWords" />
+    <meta name="description" content="@ViewBag.MetaTagDescription" />
+    <meta http-equiv="content-script-type" content="text/javascript" />  
+
+    @RenderSection("HeaderStyle", false)
+    <!--[if lt IE 9]>
+        <script src="../js/html5.js"></script>
+    <![endif]-->
+    @Html.Partial("_TrackingCodeTop")
+</head>
+<body>
+    <div class="wrap">
+
+        <div class="page">
+            
+            <div class="header">
+                <div class="inner cf">
+
+                    <div class="pull-left">
+
+                        <div class="header-logo">
+                            <a href="http://www.skillbank.cn">
+                                <img src="~/img/logo-30.png" alt="@Html.GetTrans(229)" /><!--技能银行-->
+                            </a>
+                        </div>
+                        <!-- end of logo -->
+
+                        <div class="header-search">
+                            <input type="text" class="form-control" id="class-searchkey" placeholder="@ResourceHelper.GetTransText(170).Trim()" />
+                        </div>
+                        <!-- end of search box -->
+
+                        <div class="header-course">
+                            <a href="#" id="header-findclass">@Html.GetTrans(171)</a>
+                        </div>
+                        <!-- end of discover course -->
+
+                    </div>
+
+                    <div class="pull-right">
+                        <div class="header-user">
+                            <div class="dropdown pull-right">
+                                <a id="header-loginbtn" href="#modal-login" data-toggle="modal" @(ViewBag.MemberInfo==null?"":"class=hide")>@Html.GetTrans(299)</a>
+                                <a id="header-membermenu" data-toggle="dropdown" href="#" @(ViewBag.MemberInfo==null?"class=hide":"")>
+                                    <img id="header-membermenu-avatar" src="@((ViewBag.MemberInfo != null && !String.IsNullOrEmpty(ViewBag.MemberInfo.Avatar)) ? ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "s", ViewBag.MemberInfo.SocialType) : "")" class="avatar-s" />
+                                    <label id="header-membermenu-name">@((ViewBag.MemberInfo != null && !String.IsNullOrEmpty(ViewBag.MemberInfo.Name)) ? ViewBag.MemberInfo.Name : "")</label>
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a tabindex="-1" href="@Url.Action("index", "member")" id="header-membermenu-dashboard">@Html.GetTrans(165)</a></li><!---->
+                                    <li><a tabindex="-1" href="@Url.Action("info", "member")" id="header-membermenu-profile">@Html.GetTrans(166)</a></li>
+                                    <li><a tabindex="-1" href="@Url.Action("index", "message")" id="header-membermenu-message">@Html.GetTrans(458)</a></li>
+                                    <li><a tabindex="-1" href="@Url.Action("teach", "member")" id="header-membermenu-teach">@Html.GetTrans(168)</a></li>
+                                    <li><a tabindex="-1" href="@Url.Action("learn", "member")" id="header-membermenu-learn">@Html.GetTrans(169)</a></li>
+                                    <li><a tabindex="-1" href="#" id="sociallogin-logoutbtn">@Html.GetTrans(566)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end of head user pane -->
+
+                        <div class="header-alerts">
+                            <div class="dropdown pull-right">
+                                <a data-toggle="dropdown" href="#" id="header-alerts-pop"><i class="fa fa-bell-o"></i>@if (!String.IsNullOrEmpty(ViewBag.NotificationNum)){<span class="label label-msg">@ViewBag.NotificationNum</span>}</a>
+                                @if (ViewBag.Notification!=null){
+                                <ul class="dropdown-menu" role="menu">
+                                    <!--<li><a tabindex="-1" href="#" id="header-alerts-read"><span class="orange">@Html.GetTrans(618)</span></a></li>-->
+                                    @foreach (var item in ViewBag.Notification)
+                                    {
+                                        if(item.Type=="m")
+                                        {
+                                        <li><a tabindex="-1" href="@Url.Action("chat", "message", new { id = item.Number })" data-memberid="@item.Number">@Html.Raw(TextContentHelper.ReplaeceBlurbParaWithHighLightText(621,item.Name))</a></li>
+                                        }
+                                        else if(item.Type=="c")
+                                        {
+                                        <li><a tabindex="-1" href="@Url.Action("index", "member")">@TextContentHelper.ReplaeceBlurbParameterWithText(622, item.Number.ToString())</a></li>
+                                        }
+                                        else if(item.Type=="o")
+                                        {
+                                        <li><a tabindex="-1" href="@Url.Action("index", "member")">@TextContentHelper.ReplaeceBlurbParameterWithText(623, item.Number.ToString())</a></li>
+                                        }<!--@Html.GetTrans(624)-->
+                                    }
+                                </ul>
+                                }
+                            </div>
+                        </div>
+                        
+                        <!-- end of header alerts -->
+
+                        <div class="header-help">
+                            <div class="dropdown pull-right">
+                                <a data-toggle="dropdown" href="#" id="header-membermenu-help">@Html.GetTrans(172) <b class="caret"></b></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a tabindex="-1" href="@Url.Action("qanda", "about")">@Html.GetTrans(567)</a></li>
+                                    <li><a tabindex="-1" href="@Url.Action("qanda", "about", new { id = 1 })">@Html.GetTrans(570)</a></li>
+                                    <li><a tabindex="-1" href="@Url.Action("qanda", "about", new { id = 2 })">@Html.GetTrans(568)</a></li>
+                                    <li><a tabindex="-1" href="@Url.Action("qanda", "about")">@Html.GetTrans(569)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end of header help -->
+
+                        <div class="header-share">
+                            <a href="@Url.Action("beteacher", "class")" role="button" class="btn btn-warning">@Html.GetTrans(175)</a>
+                        </div>
+                        <!-- end of header share -->
+
+                    </div>
+
+                </div>
+            </div>
+            <!-- end of header -->
+
+            @RenderBody()
+
+            <div class="footer cf">
+                <div class="inner">
+                    <div class="row-fluid footer-links">
+                        <div class="span9">
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    <h5>@Html.GetTrans(176)</h5>
+                                    <ul>
+                                        <li><a href="@Url.Action("aboutus", "about")">@Html.GetTrans(179)</a></li>
+                                        <li><a href="@Url.Action("qanda", "about")">@Html.GetTrans(180)</a></li>
+                                        <li><a href="@Url.Action("recruitment", "about")">技能先锋招募</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="span4">
+                                    <h5>@Html.GetTrans(177)</h5>
+                                    <ul>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(181), "qanda", "about", "http", "www.skillbank.cn", null, new { id = 1 }, null)</li>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(182), "qanda", "about", "http", "www.skillbank.cn", "qatab1s2", new { id = 1 }, null)</li>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(183), "qanda", "about", "http", "www.skillbank.cn", "qatab1s4", new { id = 1 }, null)</li>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(184), "qanda", "about", "http", "www.skillbank.cn", null, new { id = 1 }, null)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="span4">
+                                    <h5>@Html.GetTrans(178)</h5>
+                                    <ul>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(185), "qanda", "about", "http", "www.skillbank.cn", "qatab0s1", new { id = 0 }, null)</li>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(186), "qanda", "about", "http", "www.skillbank.cn", "qatab0s2", new { id = 0 }, null)</li>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(187), "qanda", "about", "http", "www.skillbank.cn", null, new { id = 2 }, null)</li>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(188), "qanda", "about", "http", "www.skillbank.cn", "qatab2s2", new { id = 2 }, null)</li>
+                                        <li>@Html.ActionLink(ResourceHelper.GetTransText(189), "qanda", "about", "http", "www.skillbank.cn", null, new { id = 2 }, null)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="span3 tright">
+                            <a href="mailto:contact@skill-bank.com" class="btn btn-default">@Html.GetTrans(190)</a>&nbsp;&nbsp;<a href="mailto:recruiter@skill-bank.com" class="btn btn-default">@Html.GetTrans(191)</a>
+                            <div class="wecharqr"></div>
+                        </div>
+
+                    </div>
+                    <!-- end of footer links -->
+
+                    <div class="row-fluid footer-copyright">
+                        <div class="span8">
+                            <ul>
+                                <li>@Html.GetTrans(192)</li>
+                                <li>@Html.GetTrans(193)</li>
+                                <li>@Html.GetTrans(194)</li>
+                                <li><a href="@Url.Action("terms", "about")">@Html.GetTrans(195)</a></li>
+                            </ul>
+                        </div>
+                        <div class="span4 tright">
+                            <ul>
+                                <li>@Html.GetTrans(196)</li>
+                                <li><a href="http://weibo.com/SkllBank" target="_blank">
+                                    <img src="~/img/icon-share-weibo.png" alt="" /></a></li>
+                                <li><a href="http://page.renren.com/601881751" target="_blank">
+                                    <img src="~/img/icon-share-renren.png" alt="" /></a></li>
+                                <li><a href="http://site.douban.com/242373/" target="_blank">
+                                    <img src="~/img/icon-share-douban.png" alt="" /></a></li>
+                                <li><a href="http://t.qq.com/skill-bank" target="_blank">
+                                    <img src="~/img/icon-share-tencent.png" alt="" /></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end of copyright -->
+
+                </div>
+            </div><!-- end of footer -->
+         @Html.Partial("_TrackingCode")
+        </div>
+        <!-- end of page -->
+
+    </div>
+    <!-- end of wrap -->
+
+    @RenderSection("HomeVideo", false)
+
+
+    <!--Local Env-->
+    @Html.Partial("_LoginPartial")
+    <!--<div style="display: none">
+        <div id="wb_connect_btn"></div>
+    </div>-->
+    <!-- end of Local Env -->
+
+
+    @Html.CombresCustomUrl("siteJs")
+    @RenderSection("FooterJs", false)
+</body>
+</html>
+

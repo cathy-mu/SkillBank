@@ -1,0 +1,175 @@
+﻿@section HeaderStyle
+{<meta name="robots" content="index,follow" />
+@Html.CombresCustomUrl("contentCss")}
+<div class="body">
+    <div class="inner">
+
+        <div class="qna">
+
+            <div class="qna-hd">
+                <h2>Q&amp;A</h2>
+            </div>
+
+            <div class="qna-bd">
+                <div class="row-fluid">
+                    <div class="span2">
+                        <ul class="nav nav-tabs nav-stacked">
+                            <li class="@((ViewBag.ActiveTabId==0)?"active":"")"><a href="#general" data-toggle="tab">常规问题 <i class="fa fa-caret-right"></i></a></li>
+                            <li class="@((ViewBag.ActiveTabId==1)?"active":"")"><a href="#teacher" data-toggle="tab">老师常见问题 <i class="fa fa-caret-right"></i></a></li>
+                            <li class="@((ViewBag.ActiveTabId==2)?"active":"")"><a href="#student" data-toggle="tab">学生常见问题 <i class="fa fa-caret-right"></i></a></li"@((ViewBag.ActiveTabId==1)?"active":"")>
+                        </ul>
+                    </div>
+                    <div class="span10">
+                        <div class="tab-content">
+                            <div class="tab-pane @((ViewBag.ActiveTabId==0)?"active":"")" id="general">
+
+                                <div class="spaced-larger" id="qatab0s1">
+                                    <h4>什么是技能银行？</h4>
+                                    <p>“技能银行”这个名字是由“技能分享”和“时间银行”两个概念合成的。</p>
+                                    <p>“时间银行”的概念最早在国外兴起。在时间银行里，时间被当作货币，人们可以把自己的空闲时间以服务他人的形式存进时间银行，当自己有需要时则可以从中支取“被服务时间”。</p>
+                                    <p>受到这个概念的启发，在技能银行里，我们创造了“课币”这个全新的货币单位，每个人都可以用“线上发布课程，线下一对一面授教课”的方式去赚取“课币”，然后再用自己赚来的“课币”去学习技能银行里其他小伙伴开设的课程。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab0s2">
+                                    <h4>什么是课币？</h4>
+                                    <p>“课币”是在技能银行里使用的货币系统。如果你想要在技能银行学习课程，你就需要用课币来支付给你的老师。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab0s3">
+                                    <h4>如何获得课币？</h4>
+                                    <p>目前获得课币的方式有2种：</p>
+                                    <p>
+                                        a）在平台上开设一堂教授或分享知识技能的课程，在通过我们的审核后，并首次把课程分享到你的社交媒体账号，就能立即获得共3枚免费课币。<br>
+                                        b）你每教授完一堂课程，就能从学生那儿获取1枚课币。
+                                         
+                                    </p>
+                                    <p>我们还将会陆续推出其他免费获得课币的方法。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab0s4">
+                                    <h4>为什么我要提供我的位置信息？</h4>
+                                    <p>请放心，你的实际位置信息并不会被平台上的其他用户看到，只是用来让技能银行的系统更快更准地为你找到离你最近的资源，让你轻松与你身边的课程和老师相遇。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab0s5">
+                                    <h4>技能银行怎么保障我的安全？</h4>
+                                    <p>目前我们只接受用户使用社交网络账户登录，你可以在每个人页面中的真实身份认证栏看到Ta的粉丝或朋友数，也可以去TA的社交网络察看更多信息，来确认可靠性。我们也建议你，在与其他用户私信时，不要透露你的联系方式，技能银行的系统会在师生双方确认上课的时间地点内容、完成订课申请后，自动把个人信息中的联系方式发送给双方。最后，我们强烈建议大家把上课的地点定在公共场合，起码开头的几节课一定要在公共场合进行。</p>
+                                </div>
+
+
+
+                            </div>
+                            <div class="tab-pane @((ViewBag.ActiveTabId==1)?"active":"")" id="teacher">
+
+                                <div class="spaced-larger" id="qatab1s1">
+                                    <h4>谁可以在技能银行里授课？</h4>
+                                    <p>我们坚信每个人都有一技之长，所以任何人都可以申请在技能银行里成为老师并开设课程。有些你自以为没什么了不起的知识或技能，可能正是别人求之而不得的。我们推崇的上课形式也并非传统的你教我学的单方面传授，而是更注重交流的双向沟通教学，所以，即使你没有任何教学经验，也请大胆尝试。只要把你对面的学生当作是一个向你请教的老友，秉持真诚和互信的心态侃侃而谈，这样的上课氛围，会让脑力激荡产生更好的学习效果。别忘了，技能银行还是一个展示的平台，请别吝啬自己的才能，尽情展示吧！</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab1s2">
+                                    <h4>技能银行接受怎样的技能课程？</h4>
+                                    <p>我们接受的技能类型非常广泛，目前开设的9大类有：乐器类，美术类，IT类，语言类，商务类，烹饪类等等。当然，如果你拥有一些特别的、另类的技能，比如“魔兽语”、“变脸”之类的，我们也非常欢迎你来技能银行与小伙伴们分享，我们相信：你一定不是一个人！但目前我们只接受与知识、技能有关的教学和分享型课程，所以如果只是愿意付出时间和服务他人的类型将不被技能银行接受。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab1s3">
+                                    <h4>我适合开设什么类型的课程？</h4>
+                                    <p>如果你是第一次开课，我们建议你尝试开设一些有简单目标的短期课程，比如“教你弹会一首曲子”、“如何用Photoshop修人物图”、“腹肌训练小窍门”、“咖啡拉花速成”、“旅游英语口语入门”等，会更加容易找到切入点。另外，你也可以利用你的专业知识或生活中积累的经验来开一些“咨询类”的课程，针对学生想要求教的问题进行解答，也都非常受欢迎哦，比如“开公司时所需要的财务知识”、“APP界面设计的注意点和误区”、“美帝海淘入门”、“手把手教你微信营销” 或“装修苦逼经验教训”之类的，一定有很多小伙伴想要拜在你门下。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab1s4">
+                                    <h4>一次课程应该设为多长时间，具体日期和地点如何确定？</h4>
+                                    <p>我们建议每堂课的时长尽量不要少于45分钟，这样也能让付出课币的学生学有所得，如果上课气氛过于愉快而忘记了时间，我想也没有人会介意吧。而具体的上课日期和地点，请师生双方先互相沟通好之后，再提交订课请求和确认接受请求，因为确认之后是无法再更改时间的。同时，我们建议课程最好能在公共场合教授，起码前几堂课要约在公共场合会面，这样更能保证师生双方的安全和隐私。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab1s5">
+                                    <h4>授课流程</h4>
+                                    <p>
+                                        a)  点击页面右上方<a href="@Url.Action("beteacher", "class")" class="theme-blue" target="_blank">“分享你的技能”</a>黄色按钮，然后按提示填写你的技能类型、自我介绍和课程描述信息后提交
+     。我们会在2天内核实你的课程内容，给予是否开课成功的邮件答复。
+                                    </p>
+                                    <p>
+                                        b)  开课成功后，对你的课程感兴趣的小伙伴会通过私信留言与你沟通，请与之确认好上课的内容、日期、时间和
+     地点等问题。
+                                    </p>
+                                    <p>
+                                        c) 当双方将课程相关问题全部确认好后，你会收到学生发来的订课请求。在<a href="@Url.Action("teach", "member")" class="theme-blue" target="_blank">“我教授的课程”</a>页面上点击<span class="orange">“接受预定”</span>红色按钮，在弹出框里确认好上课日期以及你的联系方式。（这个上课日期目前一旦确认就不能更改，请确定后再点击确认）
+                                    </p>
+                                    <p>d)  确认后你可以在<a href="@Url.Action("teach", "member")" class="theme-blue" target="_blank">“我教授的课程”</a>页面里查看到状态已经变成<span class="orange">“接受预定”</span>的订课信息，并且可以在<span class="orange">“联系信息”</span>里找到学生的联络方式。</p>
+                                    <p>
+                                        e)  上完课后，也别忘了去给你的学生评价哦。技能银行是一个建立在互相信任基础上的平台，每一次宝贵的评价
+     反馈，都会让我们的平台变得更好。
+                                    </p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab1s6">
+                                    <h4>上完课后什么时候会收到课币？</h4>
+                                    <p>学生可以在上完课后的三天内主动支付给老师。超过第三天时，如果学生没有提出退款请求，课币就会由系统自动转到老师的账号。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab1s7">
+                                    <h4>如果学生没有出现怎么办？</h4>
+                                    <p>如果学生在约好授课的时间没有出现，将会被示为自动放弃课程，课币会在预定上课日期后的第三天自动转到老师的账号。（比如7月22号下午的课，7月24号晚上12点整可以拿到课币）</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab1s8">
+                                    <h4>如果学生申请退款怎么办？</h4>
+                                    <p>目前我们只支持一种退款情况，就是身为老师的你没能在约定时间里出现授课。如果发生了这种情况，学生可以提出退款请求，你有7天时间做出反应。你可以点击<a href="@Url.Action("teach", "member")" class="theme-blue" target="_blank">“我教授的课程”</a>页面上相应课程的<span class="orange">“同意”</span>按钮，同意退款。如果逾时未作任何反应，课币会自动退还给学生。如果你实际上按时出现并教授了课程，那你可以拒绝学生的退款请求，此课币会被暂时封存，等待学生或老师中任何一方提供更多证据再做定夺。</p>
+                                    <p>因此，我们也强烈建议大家，在上课时请拍摄下双方上课的照片，然后当天就发布到社交网络并<span class="orange">@@技能银行 的官方账号</span>（<a href="http://weibo.com/SkllBank" target="_blank" class="theme-blue">新浪微博</a>，<a href="http://t.qq.com/skill-bank" target="_blank" class="theme-blue">腾讯微博</a>，<a href="http://page.renren.com/601881751" target="_blank" class="theme-blue">人人网</a>，<a href="http://site.douban.com/242373/" target="_blank" class="theme-blue">豆瓣</a>），既能记录教与学的快乐过程，也能在万一发生纠纷时变成我们重要的裁判依据，甚至还能更好地保障你的安全。</p>
+                                </div>
+
+
+
+                            </div>
+                            <div class="tab-pane @((ViewBag.ActiveTabId==2)?"active":"")" id="student">
+
+                                <div class="spaced-larger" id="qatab2s1">
+                                    <h4>我应该如何联系老师？</h4>
+                                    <p>你可以在老师课程页面的右栏老师照片下，点击<span class="orange">“私信老师”</span>的按钮，发送私信留言给老师。如果老师回复了你，你就会立即收到系统提醒，在<a href="@Url.Action("index", "message")" class="theme-blue" target="_blank">“我的私信”</a>页面可以查看老师的回复，你也可以继续发问沟通。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab2s2">
+                                    <h4>开课的日期和地点确定</h4>
+                                    <p>开课的时间和地点请在订课前务必和老师沟通好后再提出订课请求。我们同样建议课程最好在公共场合教授 。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab2s3">
+                                    <h4>订课流程</h4>
+                                    <p>a)  首先在订课前请确认你还有至少一枚可以使用的课币(你可以在<a href="@Url.Action("index", "member")" class="theme-blue" target="_blank">“我的主页”</a>左栏的<span class="orange">“可以使用的课币”</span>中查看)</p>
+                                    <p>b)  在订课前，请务必先通过私信沟通和老师确认上课的内容，日期时间和地点等问题。</p>
+                                    <p>c)  当和老师确认好上课细节后，请点击课程页面右上角的<span class="orange">“订课”</span>橙色按钮。在订课的弹出框里填写好与老师确
+     认过的上课日期以及你的联系方式。（这个上课日期目前一旦老师确认就不能更改，请确认后再填）
+                                    </p>
+                                    <p>d)  当老师确认你的订课后，你会收到系统提醒，你可以在<a href="@Url.Action("learn", "member")" class="theme-blue" target="_blank">“我学习的课程”</a>页面里查看到课程状态已经变成<span class="orange">“订课成功”</span>。在<span class="orange">“联系信息”</span>里会有老师的联络方式。</p>
+                                    <p>e)  上完课后也不要忘了给你的老师一个评价哦！技能银行是一个建立在互相信任基数上的平台，每一次评价反馈
+      ，都会使这个平台变得更好更完善。
+                                    </p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab2s4">
+                                    <h4>如何支付课币?</h4>
+                                    <p>a)  可以在上完课后三天内主动支付给老师, 按<a href="@Url.Action("learn", "member")" class="theme-blue" target="_blank">“我学习的课程”</a>页面上对应课程上的<span class="orange">“去确认”</span>按钮。</p>
+                                    <p>b)  超过第三天如果学生没有发生退款请求，课币会自动转到老师的账号。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab2s5">
+                                    <h4>如果我不满意课程怎么办？</h4>
+                                    <p>如果你对课程不满意，可以在课后给予课程和老师相应的评价，也可以向我们<a href="mailto:contact@skill-bank.com" class="theme-blue">发送反馈</a>。</p>
+                                </div>
+
+                                <div class="spaced-larger" id="qatab2s6">
+                                    <h4>怎么样的情况可以申请退还课币？</h4>
+                                    <p>目前我们只支持一种退款情况，就是在约定时间里老师没有出现。如果发生这种情况，可以在<a href="@Url.Action("learn", "member")" class="theme-blue" target="_blank">“我学习的课程”</a>页面上，点击相应课程的<span class="orange">“退换课币”</span>链接。在你提交退款申请后，老师将有7天时间做出反应。如果老师逾时未作任何反应，课币就会被自动返还给你。如果老师拒绝了退款请求，你的这枚课币会被封存，等待你或老师提供进一步的证据后再做定夺。</p>
+                                    <p>我们也强烈建议大家，在上课时请周围的人拍摄下双方上课的照片，然后当天就发布到社交网络并<span class="orange">@@技能银行 的官方账号</span>（<a href="http://weibo.com/SkllBank" target="_blank" class="theme-blue">新浪微博</a>，<a href="http://t.qq.com/skill-bank" target="_blank" class="theme-blue">腾讯微博</a>，<a href="http://page.renren.com/601881751" target="_blank" class="theme-blue">人人网</a>，<a href="http://site.douban.com/242373/" target="_blank" class="theme-blue">豆瓣</a>），既能记录教与学的快乐过程，也能在万一发生纠纷时变成我们重要的裁判依据，甚至还能更好地保障你的安全。</p>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- end of body -->

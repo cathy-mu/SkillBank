@@ -1,0 +1,137 @@
+﻿@model SkillBank.Site.Web.ViewModel.ClassSkillModel
+@section HeaderStyle{@Html.CombresCustomUrl("skillCss")}
+@section FooterJs{@Html.CombresCustomUrl("skillJs")}
+<div class="body">
+    <div class="my-skills">
+        <div class="my-skills-hd">
+            <div class="inner">
+                <div class="row-fluid">
+                    <div class="span12 tcenter">
+                        <h2>@Html.GetTrans(247)</h2>
+                        <p>@Html.GetTrans(248)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-skills-bd">
+            <div class="inner">
+
+                <form class="form-horizontal">
+
+                    <div class="row-fluid">
+                        <div class="span8 offset2">
+
+                            <div class="row-fluid spaced-large">
+                                <div class="span4 tright">
+                                    <label for="" class="control-label">@Html.GetTrans(249)</label>
+                                </div>
+                                <div class="span8 form-inline">
+                                    <select name="" id="class-category-list" class="form-control span6 chosen">
+                                        <option value="" data-id="">@Html.GetTrans(250)</option>
+                                        @if (Model.CategoryLkp != null)
+                                        {
+                                            foreach (var item in Model.CategoryLkp)
+                                            {
+                                            <option value="@item.CateId" data-id="@item.SubCategories">@Html.GetTrans(item.BlubId)</option>
+                                            }
+                                        }
+                                    </select>
+                                    <span style="width: 0px;" id="class-subcategory-list-frame">
+                                        <select name="" id="class-subcategory-list" class="form-control span6 chosen">
+                                            @foreach (var item in Model.CategoryLkp)
+                                            {
+                                                if (!String.IsNullOrEmpty(item.SubCategories))
+                                                {
+                                                    var subCates = item.SubCategories.Split(';');
+                                                    foreach (var cate in subCates)
+                                                    {
+                                                        var optItem = cate.Split(',');
+                                                <option value="@optItem[0]">@optItem[1]</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </span>
+                                </div>
+                                <input type="hidden" name="" id="classskill-hidcategorypid" />
+                                <input type="hidden" name="" id="classskill-hidcategoryid" />
+                            </div>
+
+                            <div class="row-fluid spaced-larger">
+                                <div class="span4 tright">
+                                    <label for="" class="control-label">@Html.GetTrans(252)</label>
+                                </div>
+                                <div class="span8">
+                                    <div class="control-slider">
+                                        <div class="slider-labels">
+                                            <table>
+                                                <tr>
+                                                    <td>@Html.GetTrans(255)</td>
+                                                    <td>@Html.GetTrans(256)</td>
+                                                    <td>@Html.GetTrans(257)</td>
+                                                    <td>@Html.GetTrans(258)</td>
+                                                    <td class="last">@Html.GetTrans(259)</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div id="skill-slider"></div>
+                                        <input type="hidden" name="" id="skill-slider-input" value="50">
+                                        <div class="slider-min">0</div>
+                                        <div class="slider-max">100</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row-fluid spaced-larger">
+                                <div class="span4 tright">
+                                    <label for="" class="control-label">@Html.GetTrans(253)</label>
+                                </div>
+                                <div class="span8">
+                                    <div class="control-slider">
+                                        <div class="slider-labels">
+                                            <table>
+                                                <tr>
+                                                    <td>@Html.GetTrans(255)</td>
+                                                    <td>@Html.GetTrans(256)</td>
+                                                    <td>@Html.GetTrans(257)</td>
+                                                    <td>@Html.GetTrans(258)</td>
+                                                    <td class="last">@Html.GetTrans(259)</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div id="level-slider"></div>
+                                        <input type="hidden" name="" id="level-slider-input" value="50">
+                                        <div class="slider-min">0</div>
+                                        <div class="slider-max">100</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-fluid spaced-large">
+                                    <div class="span4 tright">
+                                        <label for="" class="control-label">@ResourceHelper.GetTransText(254)</label>
+                                    </div>
+                                    <div class="span8" style="position: relative;">
+                                        <input type="text" name="" id="classskill-city" class="form-control map-input" value="@(Model.hasMemberCityInfo?TagHelper.GetCityName(ViewBag.MemberInfo.CityId).Trim():"")">
+                                        <div class="control-autocomplete"><ul id="classskill-citylist" class="dropdown-menu" role="menu"></ul></div>
+                                    </div>
+                            </div>
+                                <input type="hidden" id="classskill-hidcityid" value="@(Model.hasMemberCityInfo?ViewBag.MemberInfo.CityId:0)"/>
+                                <input type="hidden" id="classskill-hidcityhasclass" />
+                                
+                            <div class="row-fluid">
+                                <div class="span8 offset4">
+                                    <button id="classf-createbtn" class="btn btn-primary" type="button">@Html.GetTrans(261)</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+

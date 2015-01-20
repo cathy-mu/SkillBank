@@ -1,0 +1,76 @@
+﻿@section HeaderStyle
+{@Html.CombresCustomUrl("memberVerificationCss")}
+@section FooterJs {@Html.CombresCustomUrl("memberVerificationJs")}
+<div class="body">
+    <div class="inner">
+
+        <div class="profile-edit">
+            <div class="profile-edit-hd">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h2>@Html.GetTrans(407)</h2>
+                    </div>
+                    <div class="span6 tright"><a href="@Url.Action("Index","Profile",new { id = ViewBag.MemberId })" class="btn btn-default pull-right"><i class="fa fa-eye"></i>@Html.GetTrans(408)</a></div>
+                </div>
+            </div>
+
+
+            <div class="profile-edit-bd">
+                <table class="table-layout">
+                    <tr>
+                        <td class="profile-edit-side">
+
+                            <ul class="nav nav-stacked nav-inverse">
+                                <li><a href="@Url.Action("Info", "Member")"><i class="fa fa-pencil-square icon-large"></i>&nbsp; @Html.GetTrans(409)</a></li>
+                                <li><a href="@Url.Action("Photo", "Member")"><i class="fa fa-user icon-large"></i>&nbsp; @Html.GetTrans(410)</a></li>
+                                <li><a href="@Url.Action("Location", "Member")"><i class="fa fa-map-marker icon-large"></i>&nbsp; @Html.GetTrans(411)</a></li>
+                                <li class="active"><a href="#"><i class="fa fa-check-circle icon-large"></i>&nbsp; @Html.GetTrans(412)</a></li>
+                            </ul>
+
+                        </td>
+
+                        <td class="profile-edit-main form-horizontal">
+
+                            <h4 class="spaced-larger">@Html.GetTrans(432)</h4>
+
+                            <!--<div class="row-fluid spaced">
+                                <div class="span2 tright">@Html.GetTrans(227)</div>
+                                <div class="span8"><span class="gray-light">@Html.GetTrans(433)</span></div>
+                            </div>-->
+                            <div class="row-fluid spaced">
+                                <div class="span2 tright">@ViewBag.SocialName</div>
+                                <div class="span8"><span class="gray-light">@ViewBag.SocialInfo</span></div>
+                            </div>
+                            
+                            <div class="row-fluid spaced-large mobile-verified" style="@(ViewBag.IsMobileVerified?"":"display:none")">
+                                <div class="span2 tright"><label class="control-label">@ResourceHelper.GetTransText(318).Trim()</label></div>
+                                <div class="span8"><span class="gray-light">@(ViewBag.IsMobileVerified?ViewBag.MemberInfo.Phone+" 已通过验证":"")</span>&nbsp;&nbsp;&nbsp;&nbsp;<button id="verify-mobile" type="button" class="btn btn-primary">重新验证</button></div>
+                            </div>
+
+                            <div class="row-fluid spaced-large mobile-verify" style="@(ViewBag.IsMobileVerified?"display:none":"")">
+                                <div class="span2 tright"><label class="control-label">@ResourceHelper.GetTransText(318).Trim() </label></div>
+                                <div class="span8"><input type="text" class="form-control spaced-small span8" id="profileinfo-phone" value="@ViewBag.MemberInfo.Phone"></div>
+                            </div>
+
+                            <div class="row-fluid spaced mobile-verify" style="@(ViewBag.IsMobileVerified?"display:none":"")">
+                                <div class="span2 tright">&nbsp;</div>
+                                <div class="span8">
+                                    <input type="text" class="form-control spaced-small span3" id="profileinfo-verifycode" value="" placeholder="手机验证码">&nbsp;&nbsp;&nbsp;
+                                    <button id="verify-smssend" type="button" class="btn btn-default">获得验证码</button>&nbsp;&nbsp;
+                                    <button id="verify-check" type="button" class="btn btn-primary">验证手机号</button>&nbsp;&nbsp;
+                                    <div class="field-hint">
+                                        <span class="errormessage" id="verify-errormobile">手机号码已被验证&nbsp;&nbsp;&nbsp;</span>
+                                        <span class="errormessage" id="verify-errorcode">验证失败&nbsp;&nbsp;&nbsp;</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>

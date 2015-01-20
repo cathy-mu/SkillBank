@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="558dccd9c8584feaa96303496b2fa669" Name="Diagram1" ZoomLevel="79">
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CategoryPopTag" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CityInfo" Width="1.5" PointX="0.625" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CoinsHistory" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.EmailAccount" Width="1.5" PointX="4.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.EmailTemplate" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.MemberInfo" Width="1.5" PointX="2.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Message" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.MetaTag" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Order" Width="1.5" PointX="0.625" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.SkillCategory" Width="1.5" PointX="6.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.StudentReview" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.TeacherReview" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassInfo" Width="1.5" PointX="4.75" PointY="5.5" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.BlurbsMain" Width="1.5" PointX="0.625" PointY="0.75" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Favorite" Width="1.5" PointX="8.75" PointY="6.125" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassEditInfo" Width="1.5" PointX="6.75" PointY="5.5" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Comment" Width="1.5" PointX="10.75" PointY="6.125" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

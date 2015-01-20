@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  This file contains basic settings needed for most web apps.
+  For full Combres settings (with explanation), refer to the sample definition file: combres_full_with_annotation.xml
+  Also, refer to Combres' documentation: http://combres.codeplex.com/documentation	
+-->
+<combres xmlns='urn:combres'>
+  <filters>
+    <filter type="Combres.Filters.FixUrlsInCssFilter, Combres" />
+  </filters>
+  <resourceSets url="~/combres.axd"
+                defaultDuration="30"
+                defaultVersion="auto"
+                defaultDebugEnabled="false"
+                defaultIgnorePipelineWhenDebug="true"
+                localChangeMonitorInterval="30"
+                remoteChangeMonitorInterval="60"
+                >
+
+    <resourceSet type="css" name="homeCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+      <resource path="~/js/plugins/mediaelement/mediaelementplayer.min.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="homeJs">
+      <resource path="~/js/plugins/mediaelement/mediaelement-and-player.min.js"/>
+      <resource path="~/scripts/home.js"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="contentCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="beTeacherCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="beTeacherJs">
+      <resource path="~/scripts/beteacher.js"/>
+    </resourceSet>
+        
+    <resourceSet type="css" name="skillCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="skillJs">
+      <resource path="~/scripts/classskill.js"/>
+    </resourceSet>
+
+    <!--Class Related pages -->
+    <resourceSet type="css" name="classListCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="classListJs">
+      <resource path="~/scripts/classList.js"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="classEditCss">
+      <resource path="~/css/main.css"/>
+      <!--for tags-->
+      <resource path="~/css/jquery.Jcrop.min.css" />
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="classEditJs">
+      <!--<resource path="~/scripts/PlugIn/jquery.tagsinput_plus.js"/>-->
+      <resource path="~/scripts/plugIn/jquery.Jcrop.min.js"/>
+      <resource path="~/Scripts/libs/jquery.form.js"/>
+      <resource path="~/Scripts/PhotoEditor.js"/>
+      <resource path="~/scripts/classedit.js"/>
+    </resourceSet>
+
+    <resourceSet type="js" name="classAddJs">
+      <!--<resource path="~/scripts/PlugIn/jquery.tagsinput_plus.js"/>-->
+      <resource path="~/scripts/plugIn/jquery.Jcrop.min.js"/>
+      <resource path="~/Scripts/libs/jquery.form.js"/>
+      <resource path="~/Scripts/PhotoEditor.js"/>
+      <resource path="~/scripts/classadd.js"/>
+    </resourceSet>
+
+
+    <resourceSet type="css" name="classDetailCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="classDetailJs">
+      <resource path="~/scripts/classDetail.js"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="classPreviewCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="classProveCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+
+   
+
+    <resourceSet type="css" name="profileCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="profileJs">
+      <resource path="~/scripts/profile.js"/>
+    </resourceSet>
+    
+    <resourceSet type="css" name="messageCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="messageJs">
+      <resource path="~/scripts/Message.js"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="chatCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="chatJs">
+      <resource path="~/scripts/Chat.js"/>
+    </resourceSet>
+
+    <!--Member Related pages -->
+    <resourceSet type="css" name="dashboardCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="dashboardJs">
+      <resource path="~/scripts/dashboard.js"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="memberInfoCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="memberInfoJs">
+      <resource path="~/scripts/memberInfo.js"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="memberLocationCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="memberLocationJs">
+      <resource path="~/scripts/memberLocation.js"/>
+      <resource path="~/scripts/map.js"/>
+    </resourceSet>
+
+
+    <resourceSet type="css" name="memberPhotoCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/jquery.Jcrop.min.css" />
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="memberPhotoJs">
+      <resource path="~/scripts/plugIn/jquery.Jcrop.min.js"/>
+      <resource path="~/Scripts/libs/jquery.form.js"/>
+      <resource path="~/Scripts/PhotoEditor.js"/>
+      <resource path="~/scripts/MemberPhoto.js"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="memberVerificationCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+
+    <resourceSet type="js" name="memberVerificationJs">
+      <resource path="~/scripts/verification.js"/>
+    </resourceSet>
+    
+    <resourceSet type="css" name="memberLearnCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="memberLearnJs">
+      <resource path="~/scripts/MemberLearn.js"/>
+    </resourceSet>
+    
+    <resourceSet type="css" name="memberTeachCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="memberTeachJs">
+      <resource path="~/scripts/MemberTeach.js"/>
+    </resourceSet>
+
+
+    <resourceSet type="css" name="signUpCss">
+      <resource path="~/css/main.css"/>
+      <resource path="~/css/site.css"/>
+    </resourceSet>
+    <resourceSet type="js" name="signUpJs">
+      <resource path="~/scripts/signup.js"/>
+    </resourceSet>
+
+    <resourceSet type="css" name="memberAddCss">
+      <resource path="~/content/styles/Site.css"/>
+      <resource path="~/content/styles/jquery-ui-1.10.4.min.css"/>
+      <resource path="~/content/styles/MemberAdd.css"/>
+    </resourceSet>
+
+    <resourceSet type="js" name="memberAddJs">
+      <resource path="~/scripts/memberedit.js"/>
+    </resourceSet>
+
+    <resourceSet type="js" name="classPublishJs">
+      <resource path="~/scripts/classpublish.js"/>
+    </resourceSet>
+    
+    <resourceSet type="js" name="toolsJs">
+      <resource path="~/scripts/tools.js"/>
+    </resourceSet>
+
+    <resourceSet type="js" name="apiJs">
+      <resource path="~/scripts/api.js"/>
+    </resourceSet>
+
+    <resourceSet name="siteJs" type="js">
+      <resource path="~/Scripts/libs/jquery.min.js"/>
+      <resource path="~/scripts/libs/jquery-ui.min.js"/>
+      <resource path="~/scripts/PlugIn/jquery.cookie.js"/>
+      <resource path="~/js/site.js" />
+      <resource path="~/scripts/common.js" />
+    </resourceSet>
+
+  </resourceSets>
+</combres>

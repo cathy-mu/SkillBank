@@ -1,0 +1,412 @@
+﻿@model SkillBank.Site.Web.ViewModel.ProfilelModel
+@section HeaderStyle {@Html.CombresCustomUrl("profileCss")}
+<!--Member public Profile page / profile -->
+<div class="body">
+    <div class="inner">
+
+        <div class="profile cf">
+
+            <div class="profile-side">
+
+                <div class="profile-user-pane spaced-larger">
+                    <p>
+                        <img src="../mock/avatar-2-180.jpg"></p>
+                    <div class="row-fluid spaced-large">
+                        <div class="span6 tcenter">
+                            <i class="fa fa-comment-o icon-large"></i>
+                            <br>
+                            <span class="gray-light">18 Reviews</span>
+                        </div>
+                        <div class="span6 tcenter">
+                            <i class="fa fa-certificate icon-large"></i>
+                            <br>
+                            <span class="gray-light">18 Reviews</span>
+                        </div>
+                    </div>
+                    <div class="tcenter">
+                        <a href="#">Weibo Account <i class="fa fa-caret-right"></i></a>
+                    </div>
+                </div>
+                <!-- end of user pane -->
+
+                <div class="profile-user-verification">
+                    <div class="hd">
+                        <h4>@ResourceHelper.GetTrans(381)</h4>
+                    </div>
+                    <div class="bd">
+                        <div class="row-fluid">
+                            <div class="span7"><i class="fa fa-check icon-large orange"></i>@ResourceHelper.GetTrans(227)</div>
+                            <div class="span5 tright"><span class="gray-light">@ResourceHelper.GetTrans(235)</span></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span7"><i class="fa fa-check icon-large orange"></i>@ResourceHelper.GetTrans(385)</div>
+                            <div class="span5 tright"><span class="gray-light">*********92</span></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span7"><i class="fa fa-check icon-large orange"></i>Weibo</div>
+                            <div class="span5 tright"><span class="gray-light">@ResourceHelper.GetTrans(388)</span></div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span7"><i class="fa fa-check icon-large orange"></i>@ResourceHelper.GetTrans(387)</div>
+                            <div class="span5 tright"><span class="gray-light">97%</span></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end of trust and verification -->
+
+            </div>
+
+            <div class="profile-main">
+
+                <h2>Sarah Kieser <span class="pink"><i class="fa fa-female"></i></span><span class="theme-blue"><i class="fa fa-male"></i></span></h2>
+                <h4 class="spaced-large"><span class="spaced-right strong"><i class="fa fa-map-marker theme-blue"></i>7 km from you, Shanghai, China.</span> <span>Join Skill Bank since July, 2014</span></h4>
+
+                <div class="profile-user-selfintro cf spaced-larger">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+
+                <div class="profile-user-classes cf spaced-larger">
+                    <div class="hd spaced">
+                        <h3>Classes (3)</h3>
+                    </div>
+                    <div class="bd">
+                        <div id="user-classes" class="carousel slide" data-ride="carousel" data-interval="0">
+
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#user-classes" data-slide-to="0" class="active"></li>
+                                <li data-target="#user-classes" data-slide-to="1"></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <div class="item active">
+
+                                    <ul class="cf user-class-list">
+                                        <li class="row-start">
+                                            <div class="class-item">
+                                                <div class="class-item-hd">
+                                                    <a href="class-detail.html">
+                                                        <img src="../mock/course-1-100.jpg"></a>
+                                                    <div class="class-item-bar">
+                                                        <div class="row-fluid">
+                                                            <div class="span6"><strong>Beginner</strong></div>
+                                                            <div class="span6 tright"><i class="fa fa-thumbs-up icon-large"></i>100%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="class-item-bd">
+                                                    <h3><a href="#">Lorem ipsum dolor sit amet, conse pis icing elit</a></h3>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="class-item">
+                                                <div class="class-item-hd">
+                                                    <a href="class-detail.html">
+                                                        <img src="../mock/course-1-100.jpg"></a>
+                                                    <div class="class-item-bar">
+                                                        <div class="row-fluid">
+                                                            <div class="span6"><strong>Beginner</strong></div>
+                                                            <div class="span6 tright"><i class="fa fa-thumbs-up icon-large"></i>100%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="class-item-bd">
+                                                    <h3><a href="#">Lorem ipsum dolor sit am, ctetur adipisicing elit</a></h3>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="class-item">
+                                                <div class="class-item-hd">
+                                                    <a href="class-detail.html">
+                                                        <img src="../mock/course-1-100.jpg"></a>
+                                                    <div class="class-item-bar">
+                                                        <div class="row-fluid">
+                                                            <div class="span6"><strong>Beginner</strong></div>
+                                                            <div class="span6 tright"><i class="fa fa-thumbs-up icon-large"></i>100%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="class-item-bd">
+                                                    <h3><a href="#">Lorem ipsum dolor sit amet</a></h3>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </div>
+
+                                <div class="item">
+
+                                    <ul class="cf user-class-list">
+                                        <li class="row-start">
+                                            <div class="class-item">
+                                                <div class="class-item-hd">
+                                                    <a href="class-detail.html">
+                                                        <img src="../mock/course-1-100.jpg"></a>
+                                                    <div class="class-item-bar">
+                                                        <div class="row-fluid">
+                                                            <div class="span6"><strong>Beginner</strong></div>
+                                                            <div class="span6 tright"><i class="fa fa-thumbs-up icon-large"></i>100%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="class-item-bd">
+                                                    <h3><a href="#">Lorem ipsum dolor sit amet, conse pis icing elit</a></h3>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div class="class-item">
+                                                <div class="class-item-hd">
+                                                    <a href="class-detail.html">
+                                                        <img src="../mock/course-1-100.jpg"></a>
+                                                    <div class="class-item-bar">
+                                                        <div class="row-fluid">
+                                                            <div class="span6"><strong>Beginner</strong></div>
+                                                            <div class="span6 tright"><i class="fa fa-thumbs-up icon-large"></i>100%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="class-item-bd">
+                                                    <h3><a href="#">Lorem ipsum dolor sit amet</a></h3>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="profile-user-reviews cf spaced-larger">
+                    <div class="hd spaced">
+                        <h3>Reviews (18)</h3>
+                    </div>
+                    <div class="bd">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#review-students" data-toggle="tab">Reviews from students (12)</a></li>
+                            <li><a href="#review-teachers" data-toggle="tab">Reviews from teachers (6)</a></li>
+                        </ul>
+                        <!-- end of tabs -->
+
+                        <div class="tab-content">
+
+                            <div class="tab-pane active padding" id="review-students">
+
+                                <div class="row-fluid form-inline spaced-larger">
+                                    <div class="span4">
+                                        <label for="2390" class="control-label">
+                                            <input type="radio" name="2393" id="2390" checked>
+                                            All Reviews</label>
+                                    </div>
+                                    <div class="span8 tright">
+                                        <label for="5466" class="control-label spaced-right">
+                                            <input type="radio" name="2393" id="5466">
+                                            <span class="label label-warning">Good (10)</span></label>
+                                        <label for="4886" class="control-label spaced-right">
+                                            <input type="radio" name="2393" id="4886">
+                                            <span class="label label-success">Okay (2)</span></label>
+                                        <label for="1563" class="control-label">
+                                            <input type="radio" name="2393" id="1563">
+                                            <span class="label label-default">Bad</span></label>
+                                    </div>
+                                </div>
+                                <!-- end of review filter -->
+
+                                <div class="review-list">
+
+                                    <div class="review-item">
+                                        <div class="row-fluid">
+                                            <div class="span1">
+                                                <img src="../mock/avatar-3-50.jpg" width="40">
+                                            </div>
+                                            <div class="span11">
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                                <div class="row-fluid">
+                                                    <div class="span4"><span class="gray-light">July 15, 2014</span></div>
+                                                    <div class="span8 tright"><a href="#">Lorem ipsum dolor sit amet, consectetuer...</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of review item -->
+
+                                    <div class="review-item">
+                                        <div class="row-fluid">
+                                            <div class="span1">
+                                                <img src="../mock/avatar-3-50.jpg" width="40">
+                                            </div>
+                                            <div class="span11">
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                                <div class="row-fluid">
+                                                    <div class="span4"><span class="gray-light">July 15, 2014</span></div>
+                                                    <div class="span8 tright"><a href="#">Lorem ipsum dolor sit amet, consectetuer...</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of review item -->
+
+                                    <div class="review-item">
+                                        <div class="row-fluid">
+                                            <div class="span1">
+                                                <img src="../mock/avatar-3-50.jpg" width="40">
+                                            </div>
+                                            <div class="span11">
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                                <div class="row-fluid">
+                                                    <div class="span4"><span class="gray-light">July 15, 2014</span></div>
+                                                    <div class="span8 tright"><a href="#">Lorem ipsum dolor sit amet, consectetuer...</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of review item -->
+
+                                    <div class="review-item">
+                                        <div class="row-fluid">
+                                            <div class="span1">
+                                                <img src="../mock/avatar-3-50.jpg" width="40">
+                                            </div>
+                                            <div class="span11">
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                                <div class="row-fluid">
+                                                    <div class="span4"><span class="gray-light">July 15, 2014</span></div>
+                                                    <div class="span8 tright"><a href="#">Lorem ipsum dolor sit amet, consectetuer...</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of review item -->
+
+                                </div>
+                                <!-- end of review list -->
+
+                                <a href="#" class="btn btn-default btn-block">More reviews...</a>
+
+                            </div>
+                            <!-- end of tab pane -->
+
+                            <div class="tab-pane padding" id="review-teachers">
+                                <div class="row-fluid form-inline spaced-larger">
+                                    <div class="span4">
+                                        <label for="4009" class="control-label">
+                                            <input type="radio" name="2394" id="4009" checked>
+                                            All Reviews</label>
+                                    </div>
+                                    <div class="span8 tright">
+                                        <label for="6122" class="control-label spaced-right">
+                                            <input type="radio" name="2394" id="6122">
+                                            <span class="label label-warning">Good (10)</span></label>
+                                        <label for="1622" class="control-label spaced-right">
+                                            <input type="radio" name="2394" id="1622">
+                                            <span class="label label-success">Okay (2)</span></label>
+                                        <label for="6324" class="control-label">
+                                            <input type="radio" name="2394" id="6324">
+                                            <span class="label label-default">Bad</span></label>
+                                    </div>
+                                </div>
+                                <!-- end of review filter -->
+
+                                <div class="review-list">
+
+                                    <div class="review-item">
+                                        <div class="row-fluid">
+                                            <div class="span1">
+                                                <img src="../mock/avatar-4-50.jpg" width="40">
+                                            </div>
+                                            <div class="span11">
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliqua diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                                <div class="row-fluid">
+                                                    <div class="span4"><span class="gray-light">July 15, 2014</span></div>
+                                                    <div class="span8 tright"><a href="#">Lorem ipsum dolor sit amet, consectetuer...</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of review item -->
+
+                                    <div class="review-item">
+                                        <div class="row-fluid">
+                                            <div class="span1">
+                                                <img src="../mock/avatar-4-50.jpg" width="40">
+                                            </div>
+                                            <div class="span11">
+                                                <p>Lorem ipsum dolor sit amet, co ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliqua ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquansectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                                <div class="row-fluid">
+                                                    <div class="span4"><span class="gray-light">July 15, 2014</span></div>
+                                                    <div class="span8 tright"><a href="#">Lorem ipsum dolor sit amet, consectetuer...</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of review item -->
+
+                                    <div class="review-item">
+                                        <div class="row-fluid">
+                                            <div class="span1">
+                                                <img src="../mock/avatar-4-50.jpg" width="40">
+                                            </div>
+                                            <div class="span11">
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliqua ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliqua ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                                <div class="row-fluid">
+                                                    <div class="span4"><span class="gray-light">July 15, 2014</span></div>
+                                                    <div class="span8 tright"><a href="#">Lorem ipsum dolor sit amet, consectetuer...</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of review item -->
+
+                                    <div class="review-item">
+                                        <div class="row-fluid">
+                                            <div class="span1">
+                                                <img src="../mock/avatar-4-50.jpg" width="40">
+                                            </div>
+                                            <div class="span11">
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                                <div class="row-fluid">
+                                                    <div class="span4"><span class="gray-light">July 15, 2014</span></div>
+                                                    <div class="span8 tright"><a href="#">Lorem ipsum dolor sit amet, consectetuer...</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of review item -->
+
+                                </div>
+                                <!-- end of review list -->
+
+                                <a href="#" class="btn btn-default btn-block">More reviews...</a>
+                            </div>
+                            <!-- end of tab pane -->
+
+                        </div>
+                        <!-- end of tab content -->
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+

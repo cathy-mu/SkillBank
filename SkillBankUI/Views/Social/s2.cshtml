@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "q2";
+    Layout = "~/Views/Shared/_3rdLayout.cshtml";
+}
+<html xmlns:wb="http://open.weibo.com/wb">
+<head>
+    <title>Sina</title>
+    <meta http-equiv="content-script-type" content="text/javascript" />  
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=111240964" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        WB2.anyWhere(function (W) {
+            W.widget.connectButton({
+                id: "wb_connect_btn",
+                type: "3,2",
+                callback: {
+                    login: function (o) {	//登录后的回调函数
+                    },
+                    logout: function () {	//退出后的回调函数
+                    }
+                }
+            });
+        });
+
+        function Share() {
+            var title = "Here is title";
+            var imgPath = "http://www.skillbank.cn/img/logo-115.png";
+            var sharePath = "http://v.t.sina.com.cn/share/share.php?title=" + encodeURIComponent(title) + "&url=" + encodeURIComponent(location.href) + '&rcontent=testcontent' + '&pic=' + imgPath;
+            window.open(sharePath, '_blank', 'scrollbars=no,width=600,height=450,left=75,top=20,status=no,resizable=yes');
+        }
+    </script>
+</head>
+<body>
+    <div id="wb_connect_btn"></div>
+    <!--<wb:login-button type="1,2" onlogin="login" onlogout="logout">登录按钮</wb:login-button>-->
+    
+    <a href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://v.t.sina.com.cn/share/share.php?',u=d.location.href,p=['url=',e(u),'&title=',e(d.title),'&appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));">
+      share
+    </a>
+
+    <a href="javascript:Share();">Share to Sina blog</a>
+</body>
+
+</html>

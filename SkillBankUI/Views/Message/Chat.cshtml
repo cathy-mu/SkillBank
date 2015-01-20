@@ -1,0 +1,165 @@
+﻿@model SkillBank.Site.Web.ViewModel.MessageDetailModel
+@section HeaderStyle
+{@Html.CombresCustomUrl("chatCss")}
+@section FooterJs
+{@Html.CombresCustomUrl("chatJs")}
+<!--Member self view only / mypage-->
+<div class="body">
+    <div class="inner">
+
+        <div class="conversation">
+
+            <div class="conversation-hd">
+                <h2>@Html.GetTrans(460)</h2>
+            </div>
+
+            <div class="conversation-bd cf">
+                @if (Model != null)
+                {
+                    <div class="conversation-main">
+                        <div class="conversation-form">
+                            <div class="row-fluid">
+                                <div class="span1">
+                                    <img src="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "m")">
+                                </div>
+                                <div class="span11">
+                                    <textarea name="" rows="6" class="form-control span12" placeholder="@ResourceHelper.GetTransText(461).Trim()" id="message-content"></textarea>
+                                </div>
+                            </div>
+                            <div class="sendmessage-btn">
+                                <button class="btn btn-primary" id="chat-sendmessagebtn" type="button">@Html.GetTrans(462)</button>
+                            </div>
+                        </div>
+                        @if (Model.Messages != null && ViewBag.MemberInfo != null)
+                        {
+
+                            foreach (var message in Model.Messages)
+                            {
+                            <div class="conversation-history" id="message-detail-@message.MessageId">
+                                @if (message.From_Id == ViewBag.MemberInfo.MemberId)
+                                {
+                                    <div class="conversation-item me cf pull-left">
+                                        <div class="row-fluid">
+                                            <div class="span2">
+                                                <img src="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "m")" class="avatar-m" />
+                                            </div>
+                                            <div class="span10">@message.MessageText</div>
+                                        </div>
+                                        <div class="post-time">@TextContentHelper.GetDateString(message.CreatedDate, true)</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="conversation-item cf pull-right">
+                                        @if (!message.IsRead)
+                                        {<span class="label label-msg label-msgr">1</span>}
+                                        <div class="row-fluid">
+                                            <div class="span10">@message.MessageText</div>
+                                            <div class="span2 tright">
+                                                <img src="@ContentHelper.GetAvatarPath(Model.Contact.Avatar, "s")" style="width:40px" />
+                                            </div>
+                                        </div>
+                                        <div class="post-time">@TextContentHelper.GetDateString(message.CreatedDate, true)</div>
+                                    </div>
+                                }
+                            </div>
+                            }
+                            <input type="hidden" id="chat-hidmessageid" value="@Model.MaxMessageId"/>
+                        }
+                        <!-- end of main conversation box -->
+                    </div>
+                    <div class="conversation-side">
+
+                        <div class="conversation-user">
+                            <div class="row-fluid">
+                                <div class="span5">
+                                    <a href="@Url.Action("index", "profile", new { id = Model.Contact.MemberId })">
+                                        <img src="@ContentHelper.GetAvatarPath(Model.Contact.Avatar, "b")" class="avatar-b"></a>
+                                </div>
+                                <div class="span7">
+                                    <h3><a href="@Url.Action("index", "profile", new { id = Model.Contact.MemberId })">@Model.Contact.Name</a></h3>
+                                    <h4>@TagHelper.GetCityName(Model.Contact.CityId)</h4>
+                                    <div class="gray-light">
+                                        <!--<i class="fa fa-map-marker"></i>@Html.GetTrans(464)-->
+                                        <br>
+                                        @TextContentHelper.ReplaeceBlurbParameterWithText(465, Model.Contact.CreatedDate.ToString("yyyy, MMM"))
+                                    </div>
+                                </div>
+                            </div>
+                            <h5>@Html.GetTrans(226)</h5>
+                            <!--<div class="row-fluid verification-item">
+                            <div class="span6"><span>Email</span></div>
+                            <div class="span6 tright"><span class="gray-light">Verified</span></div>
+                        </div>
+                        <div class="row-fluid verification-item">
+                            <div class="span6"><span>Phone</span></div>
+                            <div class="span6 tright"><span class="gray-light">*********92</span></div>
+                        </div>-->
+                            <div class="row-fluid verification-item">
+                                <div class="span6"><span>@TextContentHelper.GetSocialAccoutName(Model.Contact.SocialType)</span></div>
+                                <div class="span6 tright">
+                                    <span class="gray-light">
+                                        <!--305 followers-->
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row-fluid verification-item">
+                                <div class="span6"><span>@Html.GetTrans(230)</span></div>
+                                <div class="span6 tright"><span class="gray-light">0%</span></div>
+                            </div>
+
+                        </div>
+                        <!-- end of user profile -->
+                        <!--
+                    <div class="conversation-user-cases">
+                        <h3>@Html.GetTrans(467)</h3>
+
+                        <div class="case-item">
+                            <h5><a href="#">Lettering for designer: One Drop Cap Letterform at a ...</a></h5>
+                            <div class="row-fluid">
+                                <div class="span5">
+                                    <a href="#">
+                                        <img src="../img/default_cover.png"></a>
+                                </div>
+                                <div class="span7">
+                                    <div class="spaced-larger">
+                                        <span class="gray-light spaced-right">Beginner</span> <span class="gray-light"><i class="fa fa-thumbs-up"></i>100%
+                                                   
+                                    </div>
+                                    <div class="tright"><a href="#" class="btn btn-warning">Book Class</a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="case-item">
+                            <h5><a href="#">Lettering for designer: One Drop Cap</a></h5>
+                            <div class="row-fluid">
+                                <div class="span5">
+                                    <a href="#">
+                                        <img src="../img/default_cover.png"></a>
+                                </div>
+                                <div class="span7">
+                                    <div class="spaced-larger">
+                                        <span class="gray-light spaced-right">Beginner</span> <span class="gray-light"><i class="fa fa-thumbs-up"></i>100%</span>
+                                    </div>
+                                    <div class="tright"><a href="#" class="btn btn-warning">Book Class</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                        <!-- end of cases -->
+
+                    </div>
+                    <input type="hidden" id="chat-hidcontactorid" value="@Model.Contact.MemberId"/>
+                    <input type="hidden" name="" id="classdetail-hidmrname" value="@(Model.Contact == null ? "" : Model.Contact.Name)" />
+                    <input type="hidden" name="" id="classdetail-hidmremail" value="@(Model.Contact == null ? "" : Model.Contact.Email)" />
+                    <input type="hidden" name="" id="classdetail-hidmsname" value="@(ViewBag.MemberInfo == null ? "" : ViewBag.MemberInfo.Name)" />
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

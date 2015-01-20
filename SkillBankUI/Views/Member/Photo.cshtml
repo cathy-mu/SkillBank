@@ -1,0 +1,81 @@
+﻿@section HeaderStyle {@Html.CombresCustomUrl("memberPhotoCss")}
+@section FooterJs {@Html.CombresCustomUrl("memberPhotoJs")}
+<form>
+    <div class="body">
+        <div class="inner">
+
+            <div class="profile-edit">
+
+                <div class="profile-edit-hd">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <h2>@Html.GetTrans(407)</h2>
+                        </div>
+                        <div class="span6 tright"><a href="@Url.Action("Index","Profile",new { id = ViewBag.MemberId })" class="btn btn-default pull-right"><i class="fa fa-eye"></i>@Html.GetTrans(408)</a></div>
+                    </div>
+                </div>
+                @if(ViewBag.MemberInfo!=null)
+                {
+                <div class="profile-edit-bd">
+                    <table class="table-layout">
+                        <tr>
+                            <td class="profile-edit-side">
+
+                                <ul class="nav nav-stacked nav-inverse">
+                                    <li><a href="@Url.Action("Info", "Member")"><i class="fa fa-pencil-square icon-large"></i>&nbsp; @Html.GetTrans(409)</a></li>
+                                    <li class="active"><a href="#"><i class="fa fa-user icon-large"></i>&nbsp; @Html.GetTrans(410)</a></li>
+                                    <li><a href="@Url.Action("Location", "Member")"><i class="fa fa-map-marker icon-large"></i>&nbsp; @Html.GetTrans(411)</a></li>
+                                    <li><a href="@Url.Action("Verification", "Member")"><i class="fa fa-check-circle icon-large"></i>&nbsp; @Html.GetTrans(412)</a></li>
+                                </ul>
+                            </td>
+
+                            <td class="profile-edit-main">
+
+                                <h4 class="spaced-larger">@Html.GetTrans(426)</h4>
+                                <div class="gray-light">@Html.GetTrans(602)<br /><br /></div>
+                                <div class="row-fluid">
+                                    <div class="span7">
+                                        <div class="upload-box spaced-larger" id="preview-placeholder">
+                                            <p class="spaced-larger">@Html.GetTrans(292)</p>
+                                            <!--<p><a href="#" class="btn btn-primary" id="profile-uploadavatar"><i class="fa fa-cloud-upload"></i>@Html.GetTrans(427)</a></p>-->
+                                            <br />
+                                        </div>
+                                        <div id="preview-holder"></div>
+                                    </div>
+                                    <div class="span4">
+                                        <p id="preview_m_holder">
+                                            <img src="@(!String.IsNullOrEmpty(ViewBag.MemberInfo.Avatar)?ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar,"h",ViewBag.MemberInfo.SocialType):"")" class="avatarsize">
+                                        </p>
+
+                                        <span class="gray-light">@Html.GetTrans(428)</span>
+                                        <p id="preview_s_holder">
+                                            <img id="crop_preview_s" src="@(!String.IsNullOrEmpty(ViewBag.MemberInfo.Avatar)?ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar,"m",ViewBag.MemberInfo.SocialType):"")"  class="avatarsize">
+                                        </p>
+                                        <span class="gray-light">@Html.GetTrans(429)</span>
+                                        <p id="imgupload-error"></p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <a href="#" class="btn btn-primary" id="profile-uploadavatar"><i class="fa fa-cloud-upload"></i>@Html.GetTrans(427)</a>
+                                    <button type="button" class="btn btn-primary" id="btnimg-upload"><i class="fa fa-save"></i><span>@Html.GetTrans(425)</span></button>
+                                    <!--<a href="#" class="btn btn-default">@Html.GetTrans(430)</a>-->
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="fileinfo">
+                        <input type="file" id="profile-uploadavatar-file" name="profile-uploadavatar-file" />
+                        <input type="hidden" id="imagefilesetting" name="imagefilesetting" value="0,0,180,180"/>
+                        <input type="hidden" id="imagefileext" name="imagefileext" />
+                        <input type="hidden" id="imagefilename" name="imagefilename" value="@ViewBag.MemberInfo.MemberId"/>
+                   </div>
+
+                </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</form>

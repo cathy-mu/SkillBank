@@ -1,0 +1,66 @@
+﻿@model SkillBank.Site.DataSource.Data.MemberInfo
+
+@section HeaderStyle
+{
+    @Html.CombresCustomUrl("contentCss")}
+@section FooterJs
+{@Html.CombresCustomUrl("toolsJs")}
+<div class="body">
+    <div style="margin: 50px 0 70px 200px">
+        @if (ViewBag.Type == 3)
+        {
+            <p>
+                社交账号为 @ViewBag.Key 的用户
+            </p>
+        }
+        else if (ViewBag.Type == 4)
+        {
+            <p>
+                Email 里面包含 @ViewBag.Key 的用户
+            </p>
+        }
+        else if (ViewBag.Type == 5)
+        {
+            <p>
+                名字 里面包含 @ViewBag.Key 的用户
+            </p>
+        }
+        else if (ViewBag.Type == 6)
+        {
+            <p>
+                电话 里面包含 @ViewBag.Key 的用户
+            </p>
+        }
+    </div>
+    <div style="margin: 50px 0 70px 200px">
+        <table>
+            <tr>
+                <td style="width:200px;">MemberId</td>
+                <td style="width:200px;">Name</td>
+                <td style="width:200px;">Email</td>
+                <td style="width:200px;">Phone</td>
+                <td style="width:200px;">IsMale</td>
+                <td style="width:200px;">Coins</td>
+                <td style="width:200px;">CoinsLocked</td>
+                <td style="width:200px;">SocialAccount</td>
+            </tr>
+            @foreach (var item in ViewBag.MemberInfos)
+            {
+                <tr>
+                <td>@item.MemberId</td>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@item.Gender</td>
+                <td>@item.Coins</td>
+                <td>@item.CoinsLocked</td>
+                <td>@item.Phone</td>
+                <td>@item.SocialAccount</td>
+            </tr>
+                
+            }
+        </table>
+    </div>
+
+</div>
+<!-- end of body -->

@@ -1,0 +1,256 @@
+﻿@model SkillBank.Site.Web.ViewModel.HomePageModel
+@section HeaderStyle
+{<meta name="robots" content="index,follow" />
+    <meta property="wb:webmaster" content="d0f4e6210a10a7ec" />
+    <meta property="qc:admins" content="23027507526331442163636" />
+    @Html.CombresCustomUrl("homeCss")
+    <link rel="stylesheet" href="../js/plugins/mediaelement/mediaelementplayer.min.css">
+}
+@section FooterJs
+{
+    @Html.CombresCustomUrl("homeJs")}
+<div class="body">
+    <div class="home-headline">
+        <div class="inner tcenter">
+
+            <div class="home-logo spaced-larger"></div>
+
+            <div class="spaced-larger">
+                <h1>@Html.GetTrans(123)</h1>
+                <h3>@Html.GetTrans(124)</h3>
+            </div>
+
+            <div class="home-playvideo spaced-larger tcenter">
+                <a class="home-videobtn" href="#modal-video" data-toggle="modal"></a>
+            </div>
+
+
+            <div class="spaced tcenter">
+                @if (ViewBag.MemberInfo == null)
+                {
+                    <a href="#modal-login" class="btn btn-warning btn-lg btn-flat spaced-right home-joinusbtn" data-toggle="modal">@Html.GetTrans(483)</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("beteacher", "class")" class="btn btn-warning btn-lg btn-flat spaced-right home-joinusbtn">@Html.GetTrans(125)</a>
+                }
+                <a href="@Url.Action("intro", "home")" class="btn btn-default btn-lg">@Html.GetTrans(126)</a>
+            </div>
+        </div>
+        <div class="cf">
+        </div>
+    </div>
+    
+    @if (Model.MasterClassList != null)
+    {
+        <div class="home-classlist" id="home-classlist-master">
+            <div class="inner">
+                <div class="home-classlist-head1 row-fluid">
+                    <div class="span10">
+                        <div class="home-classlist-title">
+                            <h3>@Html.GetTrans(686)</h3>
+                        </div>
+                        <div class="home-classlist-subtitle">
+                            <h5>@Html.GetTrans(687)</h5>
+                        </div>
+
+                    </div>
+                    <div class="span2 tright">
+                        <a class="home-classlistlink" href="@Url.Action("index", "class", new { tabid = 1 })" data-id="1">@Html.GetTrans(692)</a>
+                    </div>
+                </div>
+                <ul class="cf">
+
+                    @foreach (var classItem in Model.MasterClassList)
+                    {
+                        var index = (Model.MasterClassList.IndexOf(classItem));
+                        <li>
+                            <div class="class-item">
+                                <div class="class-item-hd">
+                                    <a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" data-code="vip @index">
+                                        <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "b")"></a>
+                                    <div class="class-item-bar">
+                                        <div class="row-fluid">
+                                            <div class="span6">@TextContentHelper.GetLevelName(classItem.Level)</div>
+                                            <div class="span6 tright"><i class="fa fa-comment icon-large"></i>&nbsp;@classItem.ReviewNum&nbsp;&nbsp;&nbsp;<i class="class-list-linkicon fa fa-heart icon-large @(classItem.IsLike ? "fa-heart-like" : "")" data-id="@classItem.ClassId"></i>&nbsp;<label class="class-list-linknum">@classItem.LikeNum</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="class-item-bd">
+                                    <h3><a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" data-code="vip @index">@classItem.Title</a></h3>
+                                </div>
+                                <div class="class-item-ft">
+                                    <div class="row-fluid">
+                                        <div class="span2">
+                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">
+                                                <img src="@ContentHelper.GetAvatarPath(classItem.Avatar, "m")" class="avatar-m"></a>
+                                        </div>
+                                        <div class="span10">
+                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">@classItem.Name<br>
+                                                <span class="gray-light"><i class="fa fa-map-marker icon-large"></i>
+                                                    @Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(0, classItem.CityId, 0, 0))
+                                                </span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+
+    @if (Model.LatestClassList != null)
+    {
+        <div class="home-classlist" id="home-classlist-latest">
+            <div class="inner">
+                <div class="home-classlist-head2 row-fluid">
+                    <div class="span10">
+                        <div class="home-classlist-title">
+                            <h3>@Html.GetTrans(688)</h3>
+                        </div>
+                        <div class="home-classlist-subtitle">
+                            <h5>@Html.GetTrans(689)</h5>
+                        </div>
+
+                    </div>
+                    <div class="span2 tright">
+                        <a class="home-classlistlink" href="@Url.Action("index", "class")" data-id="2">@Html.GetTrans(692)</a>
+                    </div>
+                </div>
+                <ul class="cf">
+                    @foreach (var classItem in Model.LatestClassList)
+                    {
+                        var index = (Model.LatestClassList.IndexOf(classItem));
+                        <li>
+                            <div class="class-item">
+                                <div class="class-item-hd">
+                                    <a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" data-code="lastest @index">
+                                        <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "b")"></a>
+                                    <div class="class-item-bar">
+                                        <div class="row-fluid">
+                                            <div class="span6">@TextContentHelper.GetLevelName(classItem.Level)</div>
+                                            <div class="span6 tright"><i class="fa fa-comment icon-large"></i>&nbsp;@classItem.ReviewNum&nbsp;&nbsp;&nbsp;<i class="class-list-linkicon fa fa-heart icon-large @(classItem.IsLike ? "fa-heart-like" : "")" data-id="@classItem.ClassId"></i>&nbsp;<label class="class-list-linknum">@classItem.LikeNum</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="class-item-bd">
+                                    <h3><a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" data-code="lastest @index">@classItem.Title</a></h3>
+                                </div>
+                                <div class="class-item-ft">
+                                    <div class="row-fluid">
+                                        <div class="span2">
+                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">
+                                                <img src="@ContentHelper.GetAvatarPath(classItem.Avatar, "m")" class="avatar-m"></a>
+                                        </div>
+                                        <div class="span10">
+                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">@classItem.Name<br>
+                                                <span class="gray-light"><i class="fa fa-map-marker icon-large"></i>
+                                                    @Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(0, classItem.CityId, 0, 0))
+                                                </span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    @if (Model.OddClassList != null)
+    {
+        <div class="home-classlist" id="home-classlist-odd">
+            <div class="inner">
+                <div class="home-classlist-head1 row-fluid">
+                    <div class="span10">
+                        <div class="home-classlist-title">
+                            <h3>@Html.GetTrans(690)</h3>
+                        </div>
+                        <div class="home-classlist-subtitle">
+                            <h5>@Html.GetTrans(691)</h5>
+                        </div>
+
+                    </div>
+                    <div class="span2 tright">
+                        <a class="home-classlistlink" href="@Url.Action("index", "class", new { tabid = 3 })" data-id="3">@Html.GetTrans(692)</a>
+                    </div>
+                </div>
+                <ul class="cf">
+                    @foreach (var classItem in Model.OddClassList)
+                    {
+                        var index = (Model.OddClassList.IndexOf(classItem));
+                        <li>
+                            <div class="class-item">
+                                <div class="class-item-hd">
+                                    <a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" data-code="minority @index">
+                                        <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "b")"></a>
+                                    <div class="class-item-bar">
+                                        <div class="row-fluid">
+                                            <div class="span6">@TextContentHelper.GetLevelName(classItem.Level)</div>
+                                            <div class="span6 tright"><i class="fa fa-comment icon-large"></i>&nbsp;@classItem.ReviewNum&nbsp;&nbsp;&nbsp;<i class="class-list-linkicon fa fa-heart icon-large @(classItem.IsLike ? "fa-heart-like" : "")" data-id="@classItem.ClassId"></i>&nbsp;<label class="class-list-linknum">@classItem.LikeNum</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="class-item-bd">
+                                    <h3><a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" data-code="minority @index">@classItem.Title</a></h3>
+                                </div>
+                                <div class="class-item-ft">
+                                    <div class="row-fluid">
+                                        <div class="span2">
+                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">
+                                                <img src="@ContentHelper.GetAvatarPath(classItem.Avatar, "m")" class="avatar-m"></a>
+                                        </div>
+                                        <div class="span10">
+                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">@classItem.Name<br>
+                                                <span class="gray-light"><i class="fa fa-map-marker icon-large"></i>
+                                                    @Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(0, classItem.CityId, 0, 0))
+                                                </span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    <div class="home-joinus" id="home-joinus">
+        <div class="inner">
+            <div class="home-joinus-box">
+                <div class="home-joinus-text">
+                    <p>@Html.GetTrans(693)</p>
+                    <span>@Html.GetTrans(694)</span>
+                </div>
+                <div class="home-joinus-arrow">
+                    <i class="fa fa-angle-double-right"></i>
+                </div>
+                <div class="cf">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end of body -->
+
+@section HomeVideo
+{
+    <div class="modal fade modal-video" id="modal-video" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    <div class="bd">
+
+                        <video src="~/img/sample-video.mp4" width="854" height="480"></video>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

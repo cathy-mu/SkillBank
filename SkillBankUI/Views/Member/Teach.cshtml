@@ -1,0 +1,226 @@
+﻿@model SkillBank.Site.Web.ViewModel.MemberTeachModel
+@section HeaderStyle
+{@Html.CombresCustomUrl("memberTeachCss")}
+@section FooterJs {@Html.CombresCustomUrl("memberTeachJs")}
+<div class="body">
+    <div class="inner">
+
+        <div class="myclass">
+
+            <div class="myclass-hd">
+                <h2>@Html.GetTrans(447)</h2>
+            </div>
+
+            <div class="myclass-bd">
+
+                <div class="myclass-teaching">
+
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#teaching" data-toggle="tab">@Html.GetTrans(448)</a></li>
+                        <li><a href="#class-manage" data-toggle="tab">@Html.GetTrans(384)</a></li>
+                        <a href="@Url.Action("edit", "class")" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i>@Html.GetTrans(449)</a>
+                    </ul>
+                    <!-- end of tabs -->
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="teaching">
+                            <!-- active -->
+
+                            <table class="table table-striped table-class-list">
+                                <thead>
+                                    <tr>
+                                        <th class="col-status">@Html.GetTrans(438)</th>
+                                        <th class="col-teacher">@Html.GetTrans(324)</th>
+                                        <th class="col-name">@Html.GetTrans(116)</th>
+                                        <th class="col-message">@Html.GetTrans(439)</th>
+                                        <th class="col-date">@Html.GetTrans(440)</th>
+                                        <th class="col-action">@Html.GetTrans(441)</th>
+                                        <th class="col-remark">@Html.GetTrans(314)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Orders != null)
+                                    {
+                                        foreach (var order in Model.Orders)
+                                        {
+                                        <tr>
+                                            <td class="tcenter" data-orderid="@order.OrderId">
+                                                <p>
+                                                    @if (order.OrderStatus == 1)
+                                                    { 
+                                                        <span class="label label-warning label-booking">@Html.GetTrans(396)</span>
+                                                    }
+                                                    else if (order.OrderStatus == 2)
+                                                    {   
+                                                        <span class="label label-default">@Html.GetTrans(607)</span>
+                                                    }
+                                                    else if (order.OrderStatus == 3)
+                                                    {   
+                                                        <span class="label label-default">@Html.GetTrans(445)</span>
+                                                    }
+                                                    else if (order.OrderStatus == 4)
+                                                    {
+                                                        <span class="label label-success label-accepted">@Html.GetTrans(394)</span>
+                                                    }
+                                                    else if (order.OrderStatus == 5 || order.OrderStatus == 9 || order.OrderStatus == 10)
+                                                    {   
+                                                        <span class="label label-default">@Html.GetTrans(446)</span><!--Finish-->
+                                                    }
+                                                    else if (order.OrderStatus == 6)
+                                                    {   
+                                                        <span class="label label-danger label-refund">@Html.GetTrans(398)</span>
+                                                    }
+                                                    else if (order.OrderStatus == 7 || order.OrderStatus == 11)
+                                                    {   
+                                                        <span class="label label-default">@Html.GetTrans(457)</span>
+                                                    }
+                                                    else if (order.OrderStatus == 8)
+                                                    {   
+                                                        <span class="label label-default">@Html.GetTrans(604)</span>
+                                                    }
+                                                </p>
+                                                <span class="gray-light">@TextContentHelper.GetDateString(order.LastUpdateDate)</span>
+                                            </td>
+                                            <td>
+                                                <p><a href="@Url.Action("index", "profile", new { id = order.MemberId })">@order.MemberName</a></p>
+                                                <!--<span class="gray-light"><i class="fa fa-map-marker icon-large"></i>Shanghai, China</span>-->
+                                            </td>
+                                            <td><a href="@Url.Action("detail", "class", new { id = order.ClassId })">@order.Title</a></td>
+                                            <td><a href="@Url.Action("chat", "message", new { id = order.MemberId })">@Html.GetTrans(442)</a></td>
+                                            <td><span class="gray-light">@TextContentHelper.GetDateString(order.BookedDate)</span></td>
+                                            <td class="tcenter" data-mailaddr="@order.Email" data-title="@order.Title" data-name="@order.MemberName" data-studentid="@order.MemberId">
+                                                @if (order.OrderStatus == 1)
+                                                { 
+                                                    <a href="#modal-accept-booking" class="btn btn-block btn-warning spaced teach-accept" data-toggle="modal" data-orderid="@order.OrderId" data-date="@TextContentHelper.GetDateString(order.BookedDate)" data-studentid="@order.MemberId">@Html.GetTrans(454)</a>
+                                                    <a href="#" data-orderid="@order.OrderId" class="orderstatus-reject teach-reject">@Html.GetTrans(455)</a>
+                                                }
+                                                else if (order.OrderStatus == 4)
+                                                {
+                                                    <div class="btn-group pull-right tleft">
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                            @Html.GetTrans(443) <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu contact-infopop" role="menu">
+                                                            <li class="contact-title"><b>@Html.GetTrans(588)</b></li>
+                                                            <li><b>@Html.GetTrans(317) :</b>@order.MemberName</li>
+                                                            <li><b>@Html.GetTrans(318) :</b>@order.Phone</li>
+                                                            <li><b>@Html.GetTrans(227) :</b>@order.Email</li>
+                                                            <li><b>@Html.GetTrans(314) :</b>@order.Remark</li>
+                                                        </ul>
+                                                    </div>
+                                                }
+                                                else if (order.OrderStatus == 5 || order.OrderStatus == 9 || order.OrderStatus == 10)
+                                                {
+                                                    if (!order.HasReview)
+                                                    {
+                                                    <a class="btn btn-block btn-primary teach-review" href="#modal-feedback-student" data-toggle="modal" data-orderid="@order.OrderId" data-avatar="@ContentHelper.GetAvatarPath(order.Avatar, "m")" data-date="@TextContentHelper.GetDateString(order.BookedDate)">@Html.GetTrans(402)</a>
+                                                    }
+                                                }
+                                                else if (order.OrderStatus == 6)
+                                                {
+                                                    <a href="#" data-orderid="@order.OrderId" data-studentid="@order.MemberId" class="btn btn-block btn-warning spaced orderstatus-approve teach-refundprove">@Html.GetTrans(456)</a>
+                                                    <a href="#" data-orderid="@order.OrderId" class="orderstatus-rejectrefund teach-refundreject">@Html.GetTrans(455)</a>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if(!String.IsNullOrEmpty(order.Remark))
+                                                {
+                                                <div class="dropdown teach-remarkpop">
+                                                    <a data-toggle="dropdown" href="#">@Html.GetTrans(652)<i class="fa fa-envelope-o">&nbsp;</i></a>
+                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                                        <li>@order.Remark</li>
+                                                    </ul>
+                                                </div>
+                                                }
+                                            </td>
+                                        </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- end of tab pane -->
+
+                        <div class="tab-pane" id="class-manage">
+
+                            <table class="table table-striped table-class-manage">
+                                <tbody>
+                                    @if (Model != null && Model.ClassEditList != null)
+                                    {
+                                        foreach (var classItem in Model.ClassEditList)
+                                        {
+                                        <tr>
+                                            <td class="col-cover tcenter">
+                                                <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "s")" class="classcover-s">
+                                            </td>
+                                            <td class="col-name">
+                                                <h4>@(String.IsNullOrEmpty(classItem.Title) ? ResourceHelper.GetTransText(560) : classItem.Title)</h4>
+                                                <!---->
+                                                <div>
+                                                    @if (classItem.IsProved.Equals(3))
+                                                    {
+                                                        <a href="#" class="btn btn-default disabled"><i class="fa fa-pencil"></i>@Html.GetTrans(451)</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="@Url.Action("edit", "class", new { id = classItem.ClassId })" class="btn btn-default"><i class="fa fa-pencil"></i>@Html.GetTrans(451)</a>
+                                                    }
+                                                    <a href="@Url.Action("preview", "class", new { id = classItem.ClassId })" class="btn btn-default"><i class="fa fa-eye"></i>@Html.GetTrans(452)</a>
+                                                    @if (classItem.PublishStatus.Equals(1))
+                                                    {   
+                                                        <a href="#" class="btn btn-default class-share" data-title="@classItem.Title" data-classid="@classItem.ClassId"><i class="fa fa-share-alt"></i><strong>@Html.GetTrans(453)</strong></a>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td class="col-action tright vmiddle">
+                                                @if (classItem.IsProved.Equals(2))
+                                                {  
+                                                    <!--rejected-->
+                                                    <span class="label label-default">@Html.GetTrans(592)</span>
+                                                }
+                                                else if (classItem.IsProved.Equals(3))
+                                                {  
+                                                    <!--waiting for prove-->
+                                                    <span class="label label-default">@Html.GetTrans(586)</span>
+                                                }
+                                                else if (classItem.PublishStatus.Equals(0))
+                                                {   
+                                                    <!--new class-->
+                                                    <a href="@Url.Action("edit", "class", new { id = classItem.ClassId })" class="btn btn-primary">@TextContentHelper.GetClassStepText(classItem, Model.IsMemberInfoCompleted)</a>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- end of tab pane -->
+
+
+                    </div>
+                    <!-- end of tab content -->
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+@if (Model != null)
+{
+    <input type="hidden" id="share-text1" value="@ViewBag.ShareText1" />
+    <input type="hidden" id="share-text2" value="@ViewBag.ShareText2" />
+    <input type="hidden" id="share-socialtype" value="@ViewBag.MemberInfo.SocialType" />
+    <input type="hidden" id="loginstatus-social" value="@ViewBag.IsSocialLogin" />
+    @Html.Partial("_AcceptBookingPartial", Model)
+    @Html.Partial("_FeedBackStudentPartial")
+}
+<!-- end of body -->

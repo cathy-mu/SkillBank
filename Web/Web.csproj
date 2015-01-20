@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{97ED241F-9284-4EA6-87B7-AFAEE1095019}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SkillBank.Site.Web</RootNamespace>
+    <AssemblyName>SkillBank.Site.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Services.Logging.Log4netIntegration">
+      <HintPath>..\packages\Castle.Services.Logging.Log4netIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Combres">
+      <HintPath>..\packages\combres.2.2.2.18\lib\net40\Combres.dll</HintPath>
+    </Reference>
+    <Reference Include="Combres.Mvc">
+      <HintPath>..\packages\combres.mvc.2.2.2.18\lib\net40\Combres.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EF.Frameworks.Common, Version=2.0.4064.30623, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EF.Frameworks.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="NetDimension.Weibo">
+      <HintPath>..\packages\SocialNetwork\NetDimension.Weibo.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CDN\ImageUploadManager.cs" />
+    <Compile Include="CDN\UpYunLibrary.cs" />
+    <Compile Include="ContentConfiguration\IContext.cs" />
+    <Compile Include="ContentConfiguration\ILanguageContext.cs" />
+    <Compile Include="ContentConfiguration\IMarketContext.cs" />
+    <Compile Include="ContentConfiguration\IMemberTypeContext.cs" />
+    <Compile Include="ContentConfiguration\IServerContext.cs" />
+    <Compile Include="Context\Cookie\CookieManager.cs" />
+    <Compile Include="Social\SinaHelper.cs" />
+    <Compile Include="UIHelper\CombresHelper.cs" />
+    <Compile Include="Social\SocialHelper.cs" />
+    <Compile Include="UIHelper\ContentHelper.cs" />
+    <Compile Include="UIHelper\PagingHelper.cs" />
+    <Compile Include="UIHelper\TagHelper.cs" />
+    <Compile Include="UtilitiesModule.cs" />
+    <Compile Include="ViewModel\CategoryItem.cs" />
+    <Compile Include="ViewModel\ClassEditModel.cs" />
+    <Compile Include="UIHelper\ClassHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Context\ContextManager.cs" />
+    <Compile Include="Context\WebContext.cs" />
+    <Compile Include="Context\WebContextBase.cs" />
+    <Compile Include="Context\WebContextBuilder.cs" />
+    <Compile Include="Context\WebContextBuilderBase.cs" />
+    <Compile Include="Context\WebContextModule.cs" />
+    <Compile Include="Context\WebContextModuleBase.cs" />
+    <Compile Include="ViewModel\ClassListModel.cs" />
+    <Compile Include="ViewModel\ClassDetailModel.cs" />
+    <Compile Include="ViewModel\ClassPreviewModel.cs" />
+    <Compile Include="ViewModel\ClassSkillModel.cs" />
+    <Compile Include="ViewModel\ClassProveModel.cs" />
+    <Compile Include="ViewModel\ClassAddModel.cs" />
+    <Compile Include="ViewModel\HomePageModel.cs" />
+    <Compile Include="ViewModel\ReportNumModel.cs" />
+    <Compile Include="ViewModel\ProfileModel.cs" />
+    <Compile Include="ViewModel\MessageDetailModel.cs" />
+    <Compile Include="ViewModel\DashboardModel.cs" />
+    <Compile Include="ViewModel\MessageListModel.cs" />
+    <Compile Include="ViewModel\MemberLearnModel.cs" />
+    <Compile Include="ViewModel\MemberTeachModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj">
+      <Project>{e6ec48c1-e69b-4fbb-9dde-8256cb319103}</Project>
+      <Name>Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{19835b64-d9fd-417e-b24b-5fb606ea90c9}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\DataSource.csproj">
+      <Project>{7d49e64b-6df5-4b06-a2d6-7a9759fec527}</Project>
+      <Name>DataSource</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SkillBank.Site.DataSource.Data" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BlurbsMain" EntityType="SkillBank.Site.DataSource.Data.BlurbsMain" />
+    <EntitySet Name="CategoryPopTag" EntityType="SkillBank.Site.DataSource.Data.CategoryPopTag" />
+    <EntitySet Name="CityInfo" EntityType="SkillBank.Site.DataSource.Data.CityInfo" />
+    <EntitySet Name="ClassInfo" EntityType="SkillBank.Site.DataSource.Data.ClassInfo" />
+    <EntitySet Name="CoinsHistory" EntityType="SkillBank.Site.DataSource.Data.CoinsHistory" />
+    <EntitySet Name="EmailAccount" EntityType="SkillBank.Site.DataSource.Data.EmailAccount" />
+    <EntitySet Name="EmailTemplate" EntityType="SkillBank.Site.DataSource.Data.EmailTemplate" />
+    <EntitySet Name="MemberInfo" EntityType="SkillBank.Site.DataSource.Data.MemberInfo" />
+    <EntitySet Name="Message" EntityType="SkillBank.Site.DataSource.Data.Message" />
+    <EntitySet Name="MetaTag" EntityType="SkillBank.Site.DataSource.Data.MetaTag" />
+    <EntitySet Name="Notification" EntityType="SkillBank.Site.DataSource.Data.Notification" />
+    <EntitySet Name="Order" EntityType="SkillBank.Site.DataSource.Data.Order" />
+    <EntitySet Name="SkillCategory" EntityType="SkillBank.Site.DataSource.Data.SkillCategory" />
+    <EntitySet Name="StudentReview" EntityType="SkillBank.Site.DataSource.Data.StudentReview" />
+    <EntitySet Name="TeacherReview" EntityType="SkillBank.Site.DataSource.Data.TeacherReview" />
+    <FunctionImport Name="Blurbs_LoadByLanguageSiteVersion_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Blurbs_LoadByLanguageSiteVersion_p_Result)">
+      <Parameter Name="Language" Mode="In" Type="String" />
+      <Parameter Name="Version" Mode="In" Type="Byte" />
+    </FunctionImport>
+    <FunctionImport Name="CategoryPopTag_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.CategoryPopTag_Load_p_Result)" />
+    <FunctionImport Name="CategoryPopTag_Save_p">
+      <Parameter Name="MinToAdd" Mode="In" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="CityInfo_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.CityInfo_LoadAll_p_Result)" />
+    <FunctionImport Name="ClassInfo_Add_p">
+      <Parameter Name="MemberId" Mode="In" Type="Int32" />
+      <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+      <Parameter Name="Teache" Mode="In" Type="Byte" />
+      <Parameter Name="Skill" Mode="In" Type="Byte" />
+      <Parameter Name="ParaId" Mode="InOut" Type="Int32" />
+      <Parameter Name="IsExist" Mode="InOut" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="ClassInfo_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ClassInfo_Load_p_Result)">
+      <Parameter Name="LoadBy" Mode="In" Type="Byte" />
+      <Parameter Name="ParaId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ClassInfo_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ClassInfo_LoadAll_p_Result)">
+      <Parameter Name="LoadBy" Mode="In" Type="Byte" />
+      <Parameter Name="CategoryId" Mode="In" Type="Byte" />
+      <Parameter Name="ParaId" Mode="In" Type="Int32" />
+      <Parameter Name="City" Mode="In" Type="Int32" />
+      <Parameter Name="Keyword" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="ClassInfo_Save_p">
+      <Parameter Name="ParaId" Mode="In" Type="Int32" />
+      <Parameter Name="TxtValue" Mode="In" Type="String" />
+      <Parameter Name="ParaValue" Mode="In" Type="Byte" />
+      <Parameter Name="IsValue" Mode="In" Type="Boolean" />
+      <Parameter Name="SaveType" Mode="In" Type="Byte" />
+    </FunctionImport>
+    <FunctionImport Name="ClassNum_Load_p">
+      <Parameter Name="Member" Mode="In" Type="Int32" />
+      <Parameter Name="Class" Mode="In" Type="Int32" />
+      <Parameter Name="ClassNum" Mode="InOut" Type="Int16" />
+      <Parameter Name="Result1" Mode="InOut" Type="Int16" />
+      <Parameter Name="Result2" Mode="InOut" Type="Int16" />
+    </FunctionImport>
+    <FunctionImport Name="EmailAccount_Save_p">
+      <Parameter Name="Mail" Mode="In" Type="String" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="MemberInfo_Add_p">
+      <Parameter Name="SocialId" Mode="In" Type="String" />
+      <Parameter Name="SType" Mode="In" Type="Byte" />
+      <Parameter Name="Id" Mode="InOut" Type="Int32" />
+      <Parameter Name="City" Mode="In" Type="Int32" />
+      <Parameter Name="Mail" Mode="In" Type="String" />
+      <Parameter Name="MemberName" Mode="In" Type="String" />
+      <Parameter Name="AvatarPath" Mode="In" Type="String" />
+      <Parameter Name="Result" Mode="InOut" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="MemberInfo_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result)">
+      <Parameter Name="LoadBy" Mode="In" Type="Byte" />
+      <Parameter Name="Account" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="Byte" />
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="MemberInfo_Save_p">
+      <Parameter Name="SaveType" Mode="In" Type="Byte" />
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="IsMale" Mode="In" Type="Boolean" />
+      <Parameter Name="Mail" Mode="In" Type="String" />
+      <Parameter Name="PhoneNo" Mode="In" Type="String" />
+      <Parameter Name="City" Mode="In" Type="Int32" />
+      <Parameter Name="MemberName" Mode="In" Type="String" />
+      <Parameter Name="Intro" Mode="In" Type="String" />
+      <Parameter Name="Result" Mode="InOut" Type="Byte" />
+      <Parameter Name="X" Mode="In" Type="Decimal" />
+      <Parameter Name="Y" Mode="In" Type="Decimal" />
+      <Parameter Name="Birthday" Mode="In" Type="DateTime" />
+      <Parameter Name="Img" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Message_LoadByFromAndToId_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Message_LoadByFromAndToId_p_Result)">
+      <Parameter Name="MemberId1" Mode="In" Type="Int32" />
+      <Parameter Name="MemberId2" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Message_LoadByMemberId_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Message_LoadByMemberId_p_Result)">
+      <Parameter Name="ParaId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Message_LoadUnReadNo_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Message_LoadUnReadNo_p_Result)">
+      <Parameter Name="MemberId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Message_Save_p">
+      <Parameter Name="FromId" Mode="In" Type="Int32" />
+      <Parameter Name="ToId" Mode="In" Type="Int32" />
+      <Parameter Name="Message" Mode="In" Type="String" />
+      <Parameter Name="SaveType" Mode="In" Type="Byte" />
+      <Parameter Name="Id" Mode="InOut" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Order_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Order_Load_p_Result)">
+      <Parameter Name="loadType" Mode="In" Type="Byte" />
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Order_LoadByStudent_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Order_LoadByStudent_p_Result)">
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Order_LoadByTeacher_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Order_LoadByTeacher_p_Result)">
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Order_Save_p">
+      <Parameter Name="studentId" Mode="In" Type="Int32" />
+      <Parameter Name="classId" Mode="In" Type="Int32" />
+      <Parameter Name="status" Mode="In" Type="Int32" />
+      <Parameter Name="classDate" Mode="In" Type="DateTime" />
+      <Parameter Name="comment" Mode="In" Type="String" />
+      <Parameter Name="saveType" Mode="In" Type="Byte" />
+      <Parameter Name="paraId" Mode="InOut" Type="Int32" />
+      <Parameter Name="result" Mode="InOut" Type="Byte" />
+    </FunctionImport>
+    <FunctionImport Name="OrderCoin_Update_p">
+      <Parameter Name="studentId" Mode="In" Type="Int32" />
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
+      <Parameter Name="status" Mode="In" Type="Byte" />
+      <Parameter Name="result" Mode="InOut" Type="Byte" />
+    </FunctionImport>
+    <FunctionImport Name="SkillCategory_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.SkillCategory_LoadAll_p_Result)" />
+    <FunctionImport Name="StudentReview_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.StudentReview_Load_p_Result)">
+      <Parameter Name="loadBy" Mode="In" Type="Byte" />
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="StudentReview_LoadByClass_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.StudentReview_LoadByClass_p_Result)">
+      <Parameter Name="loadBy" Mode="In" Type="Byte" />
+      <Parameter Name="classId" Mode="In" Type="Int32" />
+      <Parameter Name="memberId" Mode="In" Type="Byte" />
+      <Parameter Name="maxId" Mode="In" Type="Byte" />
+    </FunctionImport>
+    <FunctionImport Name="StudentReview_Save_p">
+      <Parameter Name="orderId" Mode="In" Type="Int32" />
+      <Parameter Name="scoreA" Mode="In" Type="Int32" />
+      <Parameter Name="scoreB" Mode="In" Type="Int32" />
+      <Parameter Name="scoreC" Mode="In" Type="Int32" />
+      <Parameter Name="feedBack" Mode="In" Type="Byte" />
+      <Parameter Name="comment" Mode="In" Type="String" />
+      <Parameter Name="paraId" Mode="InOut" Type="Int32" />
+      <Parameter Name="priComment" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="TeacherReview_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.TeacherReview_Load_p_Result)">
+      <Parameter Name="loadBy" Mode="In" Type="Int32" />
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="TeacherReview_Save_p">
+      <Parameter Name="orderId" Mode="In" Type="Int32" />
+      <Parameter Name="feedBack" Mode="In" Type="Byte" />
+      <Parameter Name="comment" Mode="In" Type="String" />
+      <Parameter Name="paraId" Mode="InOut" Type="Int32" />
+      <Parameter Name="priComment" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="BlurbsMain">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="BlurbId" />
+      <PropertyRef Name="BlurbText" />
+      <PropertyRef Name="SiteVersion" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BlurbId" Type="Int32" Nullable="false" />
+    <Property Name="BlurbText" Type="String" Nullable="false" MaxLength="2000" Unicode="true" FixedLength="false" />
+    <Property Name="SiteVersion" Type="Byte" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="CategoryPopTag">
+    <Key>
+      <PropertyRef Name="CategoryTagId" />
+    </Key>
+    <Property Name="CategoryTagId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Category_Id" Type="Byte" Nullable="false" />
+    <Property Name="TagText" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="RankNo" Type="Int16" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="CityInfo">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Type="Int32" Nullable="false" />
+    <Property Name="LocaleCode" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="false" />
+    <Property Name="CityName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="CityKey" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="ClassInfo">
+    <Key>
+      <PropertyRef Name="ClassId" />
+    </Key>
+    <Property Name="ClassId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Category_Id" Type="Byte" Nullable="false" />
+    <Property Name="Member_Id" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Level" Type="Byte" Nullable="false" />
+    <Property Name="SkillLevel" Type="Byte" Nullable="false" />
+    <Property Name="TeacheLevel" Type="Byte" Nullable="false" />
+    <Property Name="Summary" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="Detail" Type="String" MaxLength="2000" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+    <Property Name="CompleteStatus" Type="Byte" />
+    <Property Name="IsProved" Type="Boolean" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Rank" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Cover" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="CoinsHistory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Member_Id" Type="Int32" Nullable="false" />
+    <Property Name="CoinsToAdd" Type="Int32" Nullable="false" />
+    <Property Name="AddType" Type="Byte" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="EmailAccount">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Email" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="EmailTemplate">
+    <Key>
+      <PropertyRef Name="TemplateId" />
+    </Key>
+    <Property Name="TemplateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TemplateName" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="Content" Type="String" MaxLength="2000" Unicode="true" FixedLength="false" />
+    <Property Name="SiteVersion" Type="Byte" />
+    <Property Name="LastUpdateDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="MemberInfo">
+    <Key>
+      <PropertyRef Name="MemberId" />
+    </Key>
+    <Property Name="MemberId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Social1" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Social2" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Social3" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="SocialType" Type="Byte" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="CityId" Type="Int32" Nullable="false" />
+    <Property Name="PosX" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
+    <Property Name="PosY" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
+    <Property Name="TeachTag" Type="Byte" Nullable="false" />
+    <Property Name="LearnTag" Type="Byte" Nullable="false" />
+    <Property Name="Phone" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Gender" Type="Boolean" Nullable="false" />
+    <Property Name="Coins" Type="Int32" Nullable="false" />
+    <Property Name="CoinsLocked" Type="Int32" Nullable="false" />
+    <Property Name="Avatar" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+    <Property Name="SelfIntro" Type="String" Nullable="false" MaxLength="800" Unicode="true" FixedLength="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="OpenId" Type="String" Nullable="false" MaxLength="70" Unicode="true" FixedLength="false" />
+    <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Etag" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Address" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="MessageId" />
+    </Key>
+    <Property Name="MessageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="From_Id" Type="Int32" Nullable="false" />
+    <Property Name="To_Id" Type="Int32" Nullable="false" />
+    <Property Name="MessageText" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="Show4From" Type="Boolean" Nullable="false" />
+    <Property Name="Show4To" Type="Boolean" Nullable="false" />
+    <Property Name="IsRead" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsLatest" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MetaTag">
+    <Key>
+      <PropertyRef Name="MetaId" />
+    </Key>
+    <Property Name="MetaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MetaKey" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="TitleBlurb" Type="Int32" Nullable="false" />
+    <Property Name="KeywordsBlurb" Type="Int32" Nullable="false" />
+    <Property Name="DescriptionBlurb" Type="Int32" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="NotificationId" />
+    </Key>
+    <Property Name="NotificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TypeId" Type="Byte" Nullable="false" />
+    <Property Name="Member_Id" Type="Int32" Nullable="false" />
+    <Property Name="RelatedMemberId" Type="Int32" Nullable="false" />
+    <Property Name="IsRead" Type="Byte" Nullable="false" />
+    <Property Name="IsPop" Type="Boolean" Nullable="false" />
+    <Property Name="ClassOrderId" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Student_Id" Type="Int32" Nullable="false" />
+    <Property Name="Class_Id" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="Remark" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="OrderStatus" Type="Byte" />
+    <Property Name="BookedDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="SkillCategory">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Blurb_Id" Type="Int32" Nullable="false" />
+    <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="Parent_CategoryId" Type="Int32" />
+  </EntityType>
+  <EntityType Name="StudentReview">
+    <Key>
+      <PropertyRef Name="ReviewId" />
+    </Key>
+    <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Order_Id" Type="Int32" Nullable="false" />
+    <Property Name="Score1" Type="Byte" />
+    <Property Name="Score2" Type="Byte" />
+    <Property Name="Score3" Type="Byte" />
+    <Property Name="FeedBack" Type="Byte" />
+    <Property Name="Comment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PrivateComment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TeacherReview">
+    <Key>
+      <PropertyRef Name="ReviewId" />
+    </Key>
+    <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Order_Id" Type="Int32" Nullable="false" />
+    <Property Name="FeedBack" Type="Byte" />
+    <Property Name="Comment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="PrivateComment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <ComplexType Name="Blurbs_LoadByLanguageSiteVersion_p_Result">
+    <Property Type="Int32" Name="BlurbId" Nullable="false" />
+    <Property Type="String" Name="BlurbText" Nullable="false" MaxLength="2000" />
+  </ComplexType>
+  <ComplexType Name="CategoryPopTag_Load_p_Result">
+    <Property Type="Byte" Name="Category_Id" Nullable="false" />
+    <Property Type="String" Name="TagText" Nullable="false" MaxLength="50" />
+    <Property Type="Int16" Name="RankNo" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="CityInfo_LoadAll_p_Result">
+    <Property Type="Int32" Name="CityId" Nullable="false" />
+    <Property Type="String" Name="LocaleCode" Nullable="false" MaxLength="2" />
+    <Property Type="String" Name="CityName" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="CityKey" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="ClassInfo_Load_p_Result">
+    <Property Type="Int32" Name="ClassId" Nullable="false" />
+    <Property Type="Byte" Name="Category_Id" Nullable="false" />
+    <Property Type="Int32" Name="Member_Id" Nullable="false" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+    <Property Type="Byte" Name="Level" Nullable="false" />
+    <Property Type="Byte" Name="SkillLevel" Nullable="false" />
+    <Property Type="Byte" Name="TeacheLevel" Nullable="false" />
+    <Property Type="String" Name="Summary" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="Detail" Nullable="true" MaxLength="2000" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+    <Property Type="Byte" Name="CompleteStatus" Nullable="true" />
+    <Property Type="Boolean" Name="IsProved" Nullable="false" />
+    <Property Type="Boolean" Name="IsActive" Nullable="false" />
+    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+    <Property Type="Decimal" Name="Rank" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
+  </ComplexType>
+  <ComplexType Name="ClassInfo_LoadAll_p_Result">
+    <Property Type="Int32" Name="ClassId" Nullable="false" />
+    <Property Type="Byte" Name="Category_Id" Nullable="false" />
+    <Property Type="Int32" Name="Member_Id" Nullable="false" />
+    <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="CityId" Nullable="true" />
+    <Property Type="Decimal" Name="PosX" Nullable="true" Precision="10" Scale="6" />
+    <Property Type="Decimal" Name="PosY" Nullable="true" Precision="10" Scale="6" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+    <Property Type="Decimal" Name="Rank" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+    <Property Type="Byte" Name="Level" Nullable="false" />
+    <Property Type="Byte" Name="CompleteStatus" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="MemberInfo_Load_p_Result">
+    <Property Type="Int32" Name="MemberId" Nullable="false" />
+    <Property Type="String" Name="Social1" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Social2" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Social3" Nullable="true" MaxLength="50" />
+    <Property Type="Byte" Name="SocialType" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="CityId" Nullable="false" />
+    <Property Type="Decimal" Name="PosX" Nullable="false" Precision="10" Scale="6" />
+    <Property Type="Decimal" Name="PosY" Nullable="false" Precision="10" Scale="6" />
+    <Property Type="Byte" Name="TeachTag" Nullable="false" />
+    <Property Type="Byte" Name="LearnTag" Nullable="false" />
+    <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+    <Property Type="Boolean" Name="Gender" Nullable="false" />
+    <Property Type="Int32" Name="Coins" Nullable="false" />
+    <Property Type="Int32" Name="CoinsLocked" Nullable="false" />
+    <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
+    <Property Type="String" Name="SelfIntro" Nullable="false" MaxLength="800" />
+    <Property Type="Boolean" Name="IsActive" Nullable="false" />
+    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="OpenId" Nullable="false" MaxLength="70" />
+    <Property Type="DateTime" Name="BirthDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Etag" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="Message_LoadByFromAndToId_p_Result">
+    <Property Type="Int32" Name="MessageId" Nullable="false" />
+    <Property Type="Int32" Name="From_Id" Nullable="false" />
+    <Property Type="Int32" Name="To_Id" Nullable="false" />
+    <Property Type="String" Name="MessageText" Nullable="false" MaxLength="300" />
+    <Property Type="Boolean" Name="Show4From" Nullable="false" />
+    <Property Type="Boolean" Name="Show4To" Nullable="false" />
+    <Property Type="Boolean" Name="IsRead" Nullable="false" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+    <Property Type="Boolean" Name="IsLatest" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="Message_LoadByMemberId_p_Result">
+    <Property Type="Int32" Name="MessageId" Nullable="false" />
+    <Property Type="Int32" Name="From_Id" Nullable="false" />
+    <Property Type="Int32" Name="To_Id" Nullable="false" />
+    <Property Type="String" Name="MessageText" Nullable="false" MaxLength="300" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
+  </ComplexType>
+  <ComplexType Name="Message_LoadUnReadNo_p_Result">
+    <Property Type="Int32" Name="From_Id" Nullable="false" />
+    <Property Type="Int32" Name="Num" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="Order_Load_p_Result">
+    <Property Type="Int32" Name="OrderId" Nullable="false" />
+    <Property Type="Int32" Name="Student_Id" Nullable="false" />
+    <Property Type="Int32" Name="Class_Id" Nullable="false" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Remark" Nullable="true" MaxLength="300" />
+    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+    <Property Type="Byte" Name="OrderStatus" Nullable="true" />
+    <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
+  </ComplexType>
+  <ComplexType Name="Order_LoadByStudent_p_Result">
+    <Property Type="Int32" Name="OrderId" Nullable="false" />
+    <Property Type="Int32" Name="ClassId" Nullable="false" />
+    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+    <Property Type="Byte" Name="OrderStatus" Nullable="true" />
+    <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="MemberName" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="MemberId" Nullable="false" />
+    <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="Order_LoadByTeacher_p_Result">
+    <Property Type="Int32" Name="OrderId" Nullable="false" />
+    <Property Type="Int32" Name="ClassId" Nullable="false" />
+    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+    <Property Type="Byte" Name="OrderStatus" Nullable="true" />
+    <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="MemberName" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="MemberId" Nullable="false" />
+    <Property Type="String" Name="Phone" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="SkillCategory_LoadAll_p_Result">
+    <Property Type="Byte" Name="CategoryId" Nullable="false" />
+    <Property Type="Int32" Name="Blurb_Id" Nullable="false" />
+    <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="1" />
+    <Property Type="Int32" Name="Parent_CategoryId" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="StudentReview_Load_p_Result">
+    <Property Type="Int32" Name="ReviewId" Nullable="false" />
+    <Property Type="Int32" Name="Order_Id" Nullable="false" />
+    <Property Type="Byte" Name="Score1" Nullable="true" />
+    <Property Type="Byte" Name="Score2" Nullable="true" />
+    <Property Type="Byte" Name="Score3" Nullable="true" />
+    <Property Type="Byte" Name="FeedBack" Nullable="true" />
+    <Property Type="String" Name="Comment" Nullable="false" MaxLength="300" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="PrivateComment" Nullable="false" MaxLength="300" />
+  </ComplexType>
+  <ComplexType Name="StudentReview_LoadByClass_p_Result">
+    <Property Type="Int32" Name="ReviewId" Nullable="false" />
+    <Property Type="Int32" Name="Order_Id" Nullable="false" />
+    <Property Type="Byte" Name="Score1" Nullable="true" />
+    <Property Type="Byte" Name="Score2" Nullable="true" />
+    <Property Type="Byte" Name="Score3" Nullable="true" />
+    <Property Type="Byte" Name="FeedBack" Nullable="true" />
+    <Property Type="String" Name="Comment" Nullable="false" MaxLength="300" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="PrivateComment" Nullable="false" MaxLength="300" />
+  </ComplexType>
+  <ComplexType Name="TeacherReview_Load_p_Result">
+    <Property Type="Int32" Name="ReviewId" Nullable="false" />
+    <Property Type="Int32" Name="Order_Id" Nullable="false" />
+    <Property Type="Byte" Name="FeedBack" Nullable="true" />
+    <Property Type="String" Name="Comment" Nullable="false" MaxLength="300" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="PrivateComment" Nullable="false" MaxLength="300" />
+  </ComplexType>
+</Schema>

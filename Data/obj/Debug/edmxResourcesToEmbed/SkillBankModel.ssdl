@@ -1,0 +1,418 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SkillBankModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="SkillBankModelStoreContainer">
+    <EntitySet Name="BlurbsMain" EntityType="SkillBankModel.Store.BlurbsMain" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="CityInfo" EntityType="SkillBankModel.Store.CityInfo" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="ClassInfo" EntityType="SkillBankModel.Store.ClassInfo" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="ClassTag" EntityType="SkillBankModel.Store.ClassTag" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="CoinsHistory" EntityType="SkillBankModel.Store.CoinsHistory" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="EmailTemplate" EntityType="SkillBankModel.Store.EmailTemplate" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="MemberInfo" EntityType="SkillBankModel.Store.MemberInfo" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="Message" EntityType="SkillBankModel.Store.Message" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="MetaTag" EntityType="SkillBankModel.Store.MetaTag" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="Order" EntityType="SkillBankModel.Store.Order" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="SkillCategory" EntityType="SkillBankModel.Store.SkillCategory" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="StudentReview" EntityType="SkillBankModel.Store.StudentReview" store:Type="Tables" Schema="skillbank" />
+    <EntitySet Name="TeacherReview" EntityType="SkillBankModel.Store.TeacherReview" store:Type="Tables" Schema="skillbank" />
+    <AssociationSet Name="IDX_Message_FromId" Association="SkillBankModel.Store.IDX_Message_FromId">
+      <End Role="MemberInfo" EntitySet="MemberInfo" />
+      <End Role="Message" EntitySet="Message" />
+    </AssociationSet>
+    <AssociationSet Name="IDX_Order_ClassId" Association="SkillBankModel.Store.IDX_Order_ClassId">
+      <End Role="ClassInfo" EntitySet="ClassInfo" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="IDX_Order_MemberId" Association="SkillBankModel.Store.IDX_Order_MemberId">
+      <End Role="MemberInfo" EntitySet="MemberInfo" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="BlurbsMain">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BlurbId" Type="int" Nullable="false" />
+    <Property Name="BlurbText" Type="varchar" Nullable="false" MaxLength="2000" />
+    <Property Name="SiteVersion" Type="tinyint" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CityInfo">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="LocaleCode" Type="varchar" Nullable="false" MaxLength="2" />
+    <Property Name="CityName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="CityKey" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ClassInfo">
+    <Key>
+      <PropertyRef Name="ClassId" />
+    </Key>
+    <Property Name="ClassId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Category_Id" Type="tinyint" Nullable="false" />
+    <Property Name="Member_Id" Type="int" Nullable="false" />
+    <Property Name="Title" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="Level" Type="tinyint" Nullable="false" />
+    <Property Name="SkillLevel" Type="tinyint" Nullable="false" />
+    <Property Name="TeacheLevel" Type="tinyint" Nullable="false" />
+    <Property Name="Summary" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="Detail" Type="varchar" MaxLength="2000" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="CompleteStatus" Type="tinyint" Nullable="false" />
+    <Property Name="IsProved" Type="bool" Nullable="false" />
+    <Property Name="IsActive" Type="bool" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Rank" Type="decimal" Nullable="false" Precision="5" Scale="2" />
+    <Property Name="Cover" Type="varchar" Nullable="false" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="ClassTag">
+    <Key>
+      <PropertyRef Name="TagId" />
+    </Key>
+    <Property Name="TagId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Class_Id" Type="int" Nullable="false" />
+    <Property Name="TagText" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="CoinsHistory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Member_Id" Type="int" Nullable="false" />
+    <Property Name="CoinsToAdd" Type="smallint" Nullable="false" />
+    <Property Name="AddType" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EmailTemplate">
+    <Key>
+      <PropertyRef Name="TemplateId" />
+    </Key>
+    <Property Name="TemplateId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="TemplateName" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="Content" Type="varchar" Nullable="false" />
+    <Property Name="SiteVersion" Type="tinyint" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="MemberInfo">
+    <Key>
+      <PropertyRef Name="MemberId" />
+    </Key>
+    <Property Name="MemberId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Social1" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Social2" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Social3" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="SocialType" Type="tinyint" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="CityId" Type="int" Nullable="false" />
+    <Property Name="PosX" Type="decimal" Nullable="false" Scale="6" />
+    <Property Name="PosY" Type="decimal" Nullable="false" Scale="6" />
+    <Property Name="TeachTag" Type="tinyint" Nullable="false" />
+    <Property Name="LearnTag" Type="tinyint" Nullable="false" />
+    <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Email" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Gender" Type="bool" Nullable="false" />
+    <Property Name="Coins" Type="smallint" Nullable="false" />
+    <Property Name="CoinsLocked" Type="int" Nullable="false" />
+    <Property Name="Avatar" Type="varchar" Nullable="false" MaxLength="150" />
+    <Property Name="SelfIntro" Type="varchar" Nullable="false" MaxLength="800" />
+    <Property Name="IsActive" Type="bool" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="OpenId" Type="varchar" Nullable="false" MaxLength="70" />
+    <Property Name="BirthDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="MessageId" />
+    </Key>
+    <Property Name="MessageId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="From_Id" Type="int" Nullable="false" />
+    <Property Name="To_Id" Type="int" Nullable="false" />
+    <Property Name="MessageText" Type="varchar" Nullable="false" MaxLength="300" />
+    <Property Name="Show4From" Type="bool" Nullable="false" />
+    <Property Name="Show4To" Type="bool" Nullable="false" />
+    <Property Name="IsRead" Type="bool" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="IsLatest" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MetaTag">
+    <Key>
+      <PropertyRef Name="MetaId" />
+    </Key>
+    <Property Name="MetaId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="MetaKey" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="TitleBlurb" Type="int" Nullable="false" />
+    <Property Name="KeywordsBlurb" Type="int" Nullable="false" />
+    <Property Name="DescriptionBlurb" Type="int" Nullable="false" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Student_Id" Type="int" Nullable="false" />
+    <Property Name="Class_Id" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Remark" Type="varchar" MaxLength="300" />
+    <Property Name="LastUpdateDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="OrderStatus" Type="tinyint" />
+    <Property Name="BookedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SkillCategory">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Blurb_Id" Type="int" Nullable="false" />
+    <Property Name="CategoryName" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="Parent_CategoryId" Type="int" />
+  </EntityType>
+  <EntityType Name="StudentReview">
+    <Key>
+      <PropertyRef Name="ReviewId" />
+    </Key>
+    <Property Name="ReviewId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Order_Id" Type="int" Nullable="false" />
+    <Property Name="Score1" Type="tinyint" />
+    <Property Name="Score2" Type="tinyint" />
+    <Property Name="Score3" Type="tinyint" />
+    <Property Name="FeedBack" Type="tinyint" />
+    <Property Name="Comment" Type="varchar" Nullable="false" MaxLength="300" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PrivateComment" Type="varchar" Nullable="false" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="TeacherReview">
+    <Key>
+      <PropertyRef Name="ReviewId" />
+    </Key>
+    <Property Name="ReviewId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Order_Id" Type="int" Nullable="false" />
+    <Property Name="FeedBack" Type="tinyint" />
+    <Property Name="Comment" Type="varchar" MaxLength="300" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PrivateComment" Type="varchar" Nullable="false" MaxLength="300" />
+  </EntityType>
+  <Association Name="IDX_Message_FromId">
+    <End Role="MemberInfo" Type="SkillBankModel.Store.MemberInfo" Multiplicity="1" />
+    <End Role="Message" Type="SkillBankModel.Store.Message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MemberInfo">
+        <PropertyRef Name="MemberId" />
+      </Principal>
+      <Dependent Role="Message">
+        <PropertyRef Name="From_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="IDX_Order_ClassId">
+    <End Role="ClassInfo" Type="SkillBankModel.Store.ClassInfo" Multiplicity="1" />
+    <End Role="Order" Type="SkillBankModel.Store.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClassInfo">
+        <PropertyRef Name="ClassId" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="Class_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="IDX_Order_MemberId">
+    <End Role="MemberInfo" Type="SkillBankModel.Store.MemberInfo" Multiplicity="1" />
+    <End Role="Order" Type="SkillBankModel.Store.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MemberInfo">
+        <PropertyRef Name="MemberId" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="Student_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="Blurbs_LoadByLanguageSiteVersion_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="Version" Type="tinyint" Mode="In" />
+    <Parameter Name="Language" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="CategoryPopTag_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank" />
+  <Function Name="CityInfo_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank" />
+  <Function Name="ClassInfo_Add_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="MemberId" Type="int" Mode="In" />
+    <Parameter Name="CategoryId" Type="int" Mode="In" />
+    <Parameter Name="Teache" Type="tinyint" Mode="In" />
+    <Parameter Name="Skill" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="Out" />
+    <Parameter Name="IsExist" Type="tinyint" Mode="Out" />
+  </Function>
+  <Function Name="ClassInfo_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="CategoryId" Type="int" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+    <Parameter Name="City" Type="int" Mode="In" />
+    <Parameter Name="TimeStamp" Type="datetime" Mode="In" />
+  </Function>
+  <Function Name="ClassInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ClassInfo_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+    <Parameter Name="TxtValue" Type="varchar" Mode="In" />
+    <Parameter Name="ParaValue" Type="tinyint" Mode="In" />
+    <Parameter Name="IsValue" Type="tinyint" Mode="In" />
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+  </Function>
+  <Function Name="ClassInfo_Save_p1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="CategoryId" Type="int" Mode="In" />
+    <Parameter Name="MemberId" Type="int" Mode="In" />
+    <Parameter Name="Name" Type="varchar" Mode="In" />
+    <Parameter Name="Level" Type="tinyint" Mode="In" />
+    <Parameter Name="Summary" Type="varchar" Mode="In" />
+    <Parameter Name="Description" Type="varchar" Mode="In" />
+    <Parameter Name="IsProved" Type="tinyint" Mode="In" />
+    <Parameter Name="IsActive" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="Out" />
+    <Parameter Name="Teache" Type="tinyint" Mode="In" />
+    <Parameter Name="Skill" Type="tinyint" Mode="In" />
+  </Function>
+  <Function Name="ClassTag_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ClassTag_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="ClassId" Type="int" Mode="In" />
+    <Parameter Name="TagsText" Type="varchar" Mode="In" />
+    <Parameter Name="TagsDelimiter" Type="char" Mode="In" />
+  </Function>
+  <Function Name="Coins_Update_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="StudentId" Type="int" Mode="In" />
+    <Parameter Name="TeacherId" Type="int" Mode="In" />
+    <Parameter Name="Amount" Type="tinyint" Mode="In" />
+    <Parameter Name="Result" Type="tinyint" Mode="Out" />
+  </Function>
+  <Function Name="EmailTemplate_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="version" Type="tinyint" Mode="In" />
+  </Function>
+  <Function Name="MemberInfo_Add_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="SocialId" Type="varchar" Mode="In" />
+    <Parameter Name="SType" Type="tinyint" Mode="In" />
+    <Parameter Name="Id" Type="int" Mode="InOut" />
+    <Parameter Name="City" Type="int" Mode="In" />
+    <Parameter Name="Mail" Type="varchar" Mode="In" />
+    <Parameter Name="MemberName" Type="varchar" Mode="In" />
+    <Parameter Name="Result" Type="int" Mode="Out" />
+  </Function>
+  <Function Name="MemberInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="Account" Type="varchar" Mode="In" />
+    <Parameter Name="Type" Type="tinyint" Mode="In" />
+    <Parameter Name="Id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="MemberInfo_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="IsMale" Type="tinyint" Mode="In" />
+    <Parameter Name="Mail" Type="varchar" Mode="InOut" />
+    <Parameter Name="PhoneNo" Type="varchar" Mode="In" />
+    <Parameter Name="City" Type="int" Mode="In" />
+    <Parameter Name="MemberName" Type="varchar" Mode="In" />
+    <Parameter Name="Intro" Type="varchar" Mode="In" />
+    <Parameter Name="Result" Type="tinyint" Mode="Out" />
+    <Parameter Name="X" Type="decimal" Mode="In" />
+    <Parameter Name="Y" Type="decimal" Mode="In" />
+    <Parameter Name="Birthday" Type="date" Mode="In" />
+    <Parameter Name="Img" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="Message_LoadByFromAndToId_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="MemberId1" Type="int" Mode="In" />
+    <Parameter Name="MemberId2" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Message_LoadByMemberId_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Message_LoadUnReadNo_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="MemberId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Message_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="MemberId1" Type="int" Mode="In" />
+    <Parameter Name="MemberId2" Type="int" Mode="In" />
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+  </Function>
+  <Function Name="Message_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="FromId" Type="int" Mode="In" />
+    <Parameter Name="ToId" Type="int" Mode="In" />
+    <Parameter Name="Message" Type="varchar" Mode="In" />
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="Id" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="MetaTag_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank" />
+  <Function Name="OrderCoin_Update_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="StudentId" Type="int" Mode="In" />
+    <Parameter Name="ClassId" Type="int" Mode="In" />
+    <Parameter Name="Status" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="InOut" />
+    <Parameter Name="Result" Type="tinyint" Mode="InOut" />
+  </Function>
+  <Function Name="Order_LoadByStudent_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Order_LoadByTeacher_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Order_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="LoadType" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Order_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="StudentId" Type="int" Mode="In" />
+    <Parameter Name="ClassId" Type="int" Mode="In" />
+    <Parameter Name="Status" Type="tinyint" Mode="In" />
+    <Parameter Name="ClassDate" Type="datetime" Mode="In" />
+    <Parameter Name="Comment" Type="varchar" Mode="In" />
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="InOut" />
+    <Parameter Name="Result" Type="tinyint" Mode="InOut" />
+  </Function>
+  <Function Name="SkillCategory_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank" />
+  <Function Name="StudentReview_LoadByClass_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="ClassId" Type="int" Mode="In" />
+    <Parameter Name="MemberId" Type="tinyint" Mode="In" />
+    <Parameter Name="MaxId" Type="tinyint" Mode="In" />
+  </Function>
+  <Function Name="StudentReview_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="StudentReview_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="OrderId" Type="int" Mode="In" />
+    <Parameter Name="ScoreA" Type="int" Mode="In" />
+    <Parameter Name="ScoreB" Type="int" Mode="In" />
+    <Parameter Name="ScoreC" Type="int" Mode="In" />
+    <Parameter Name="FeedBack" Type="tinyint" Mode="In" />
+    <Parameter Name="Comment" Type="varchar" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="Out" />
+    <Parameter Name="PriComment" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="TeacherReview_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="LoadBy" Type="int" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="TeacherReview_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="OrderId" Type="int" Mode="In" />
+    <Parameter Name="FeedBack" Type="tinyint" Mode="In" />
+    <Parameter Name="Comment" Type="varchar" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="Out" />
+    <Parameter Name="PriComment" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="TestHelper_DataCleanUp_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="skillbank">
+    <Parameter Name="CleanType" Type="tinyint" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+    <Parameter Name="IsExist" Type="tinyint" Mode="Out" />
+  </Function>
+</Schema>

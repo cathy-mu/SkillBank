@@ -1,0 +1,236 @@
+﻿@{
+    ViewBag.Title = "AMap";
+}
+<link rel="stylesheet" type="text/css" href="http://api.amap.com/Public/css/demo.Default.css" />
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.2&key=7f937514830a46ce132a30aa3253073d"></script>
+<script type="text/javascript" src="/Scripts/libs/jquery.min.js"></script>
+
+
+<div id="iCenter"></div>
+
+    <div class="demo_box">
+        <b>请输入关键字：</b><input type="button" value="查询" onclick="placeSearch()" /><br />
+        <input type="text" id="keyword" name="keyword" value="中山公园"/>
+        <input type="text" id="map_posx" name="map_posx" />
+        <input type="text" id="map_posy" name="map_posy" />
+        <input type="text" id="map_address" name="map_address" />
+        <input type="text" id="map_markid" name="map_markid" />
+        <div id="result1" name="result1" style="overflow: auto; width: 95%; border: 1px solid gray;display: none;"></div>
+        <div id="result"></div>
+    </div>
+
+   <div class="tesp_panel">
+        <b>Member Id：</b><input type="button" id="update_memberinfo" value="Update member position" /><br />
+        <input type="text" id="member_id" name="member_id" value="1"/>
+   </div>
+    
+
+<script language="javascript">
+    var mapOptCity = "上海";
+    var mapObj;
+    var marker = new Array();
+    var windowsArr = new Array();
+    //基本地图加载
+    function mapInit() {
+        var mapCity = $("#classf-hidcityname").val();
+        mapObj = new AMap.Map("iCenter", {
+            city: mapCity,
+            level: 13  //地图显示的比例尺级别  
+        }
+       );
+
+        if (navigator.userAgent.indexOf("MSIE") > 0) {
+            document.getElementById("keyword").onpropertychange = autoSearch;
+        }
+        else {
+            document.getElementById("keyword").oninput = autoSearch;
+        }
+    }
+
+    //输入提示
+    function autoSearch() {
+        var keywords = document.getElementById("keyword").value;
+        var auto;
+        //加载输入提示插件
+        mapObj.plugin(["AMap.Autocomplete"], function () {
+            var autoOptions = {
+                city: $("#classf-hidcityname").val()
+            };
+            auto = new AMap.Autocomplete(autoOptions);
+            //查询成功时返回查询结果
+            if (keywords.length > 0) {
+                AMap.event.addListener(auto, "complete", autocomplete_CallBack);
+                auto.search(keywords);
+            }
+            else {
+                document.getElementById("result1").style.display = "none";
+            }
+        });
+    }
+
+    function autocomplete_CallBack(data) {
+        var resultStr = "";
+        var tipArr = [];
+        tipArr = data.tips;
+        if (tipArr != null && tipArr!= "undefined" && tipArr.length > 0) {
+            for (var i = 0; i < tipArr.length; i++) {
+                resultStr += "<div id='divid" + (i + 1) + "' onmouseover='openMarkerTipById1(" + (i + 1)
+                            + ",this)' onclick='selectResult(" + i + ")' onmouseout='onmouseout_MarkerStyle(" + (i + 1)
+                            + ",this)' style=\"font-size: 13px;cursor:pointer;padding:5px 5px 5px 5px;\">" + tipArr[i].name + "<span style='color:#C1C1C1;'>" + tipArr[i].district + "</span></div>";
+            }
+        }
+        else {
+            resultStr = " π__π 亲,人家找不到结果!<br />要不试试：<br />1.请确保所有字词拼写正确。<br />2.尝试不同的关键字。<br />3.尝试更宽泛的关键字。";
+        }
+        document.getElementById("result1").innerHTML = resultStr;
+        document.getElementById("result1").style.display = "block";
+        
+    }
+    //鼠标移入时样式
+    function openMarkerTipById1(pointid, thiss) {
+        thiss.style.background = '#CAE1FF';
+    }
+    //鼠标移开后样式恢复
+    function onmouseout_MarkerStyle(pointid, thiss) {
+        thiss.style.background = "";
+    }
+    //选择输入提示关键字
+    function selectResult(index) {
+        if (navigator.userAgent.indexOf("MSIE") > 0) {
+            document.getElementById("keyword").onpropertychange = null;
+            document.getElementById("keyword").onfocus = focus_callback;
+        }
+        //截取输入提示的关键字部分
+        var text = document.getElementById("divid" + (index + 1)).innerHTML.replace(/<[^>].*?>.*<\/[^>].*?>/g, "");
+        document.getElementById("keyword").value = text;
+        document.getElementById("result1").style.display = "none";
+        placeSearch();//call search on map by keyword
+    }
+
+    function focus_callback() {
+        if (navigator.userAgent.indexOf("MSIE") > 0) {
+            document.getElementById("keyword").onpropertychange = autoSearch;
+        }
+    }
+    
+    function placeSearch() {
+        var MSearch;
+        mapObj.plugin(["AMap.PlaceSearch"], function () {
+            MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                pageSize: 10,
+                pageIndex: 1,
+                city: mapOptCity 
+            });
+            AMap.event.addListener(MSearch, "complete", keywordSearch_CallBack);//返回地点查询结果
+            MSearch.search($("#keyword").val()); //关键字查询
+        });
+    }
+    //添加marker&infowindow    
+    function addmarker(i, d, sum) {
+        var lngX = d.location.getLng();
+        var latY = d.location.getLat();
+        var markerOption = {
+            map: mapObj,
+            icon: "http://webapi.amap.com/images/" + (i + 1) + ".png",
+            position: new AMap.LngLat(lngX, latY),
+            extData: { address: d.address, id: d.id }
+        };
+        var mar = new AMap.Marker(markerOption);
+        marker.push(new AMap.LngLat(lngX, latY));
+
+        var infoWindow = new AMap.InfoWindow({
+            content: "<h3><font color=\"#00a6ac\">&nbsp;&nbsp;" + (i + 1) + ". " + d.name + "</font></h3>" + TipContents(d.address),
+            size: new AMap.Size(300, 0),
+            autoMove: true,
+            offset: new AMap.Pixel(0, -30)
+        });
+        windowsArr.push(infoWindow);
+        if (sum == 1) {
+            $("#map_address").val(d.address);
+            $("#map_markid").val(d.id);
+        }
+        var aa = function (e) {
+            var posInfo = mar.getPosition();
+            infoWindow.open(mapObj, mar.getPosition());
+            var addressInfo = mar.getExtData()
+            $("#map_address").val(addressInfo.address);
+            $("#map_markid").val(addressInfo.id);
+            $("#map_posx").val(posInfo.lng);
+            $("#map_posy").val(posInfo.lat);
+        };
+        AMap.event.addListener(mar, "click", aa);
+    }
+
+    function clearMapMarks()
+    {
+        mapObj.clearMap();
+        $("#map_address").val("");
+        $("#map_markid").val("");
+        $("#map_posx").val("");
+        $("#map_posy").val("");
+
+    }
+    
+    //回调函数
+    function keywordSearch_CallBack(data) {
+        clearMapMarks();
+        var resultStr = "";
+        var poiArr = data.poiList.pois;
+        var resultCount = poiArr.length;
+        for (var i = 0; i < resultCount; i++) {
+            //resultStr += "<div id='divid" + (i + 1) + "' onmouseover='openMarkerTipById1(" + i + ",this)' onmouseout='onmouseout_MarkerStyle(" + (i + 1) + ",this)' style=\"font-size: 12px;cursor:pointer;padding:0px 0 4px 2px; border-bottom:1px solid #C1FFC1;\"><table><tr><td><img src=\"http://webapi.amap.com/images/" + (i + 1) + ".png\"></td>" + "<td><h3><font color=\"#00a6ac\">名称: " + poiArr[i].name + "</font></h3>";
+            //resultStr += TipContents(poiArr[i].address) + "</td></tr></table></div>";
+            addmarker(i, poiArr[i], resultCount);
+        }
+        mapObj.setFitView();
+        //document.getElementById("result").innerHTML = resultStr;
+    }
+
+    //Address tip box
+    function TipContents(address) {  //窗体内容
+        if (address == "" || address == "undefined" || address == null || typeof address == "undefined") {
+            address = "暂无";
+        }
+        var str = "&nbsp;&nbsp;地址：<span class='address'>" + address+"</span>";
+        return str;
+    }
+
+    function openMarkerTipById1(pointid, thiss) {  //根据id 打开搜索结果点tip
+        thiss.style.background = '#CAE1FF';
+        //windowsArr[pointid].open(mapObj, marker[pointid]);
+    }
+    function onmouseout_MarkerStyle(pointid, thiss) { //鼠标移开后点样式恢复
+        thiss.style.background = "";
+    }
+
+    function updateMemberInfo() {
+        var paraData = { saveType: 8, saveValue: $("#map_posx").val() + "," + $("#map_posy").val() };
+        console.log($("#map_posx").val());
+        console.log($("#map_posy").val());
+        console.log($("#keyword").val());
+        console.log(paraData);
+        $.ajax({
+            url: "/MemberHelper/UpdateMemberInfo",
+            type: "POST",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                console.log(data);
+                //update saved infor message, or show error message if can't save
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        mapInit();
+        $("#update_memberinfo").click(function () { updateMemberInfo(); });
+    });
+</script>
+
+
+
+
+
+
+

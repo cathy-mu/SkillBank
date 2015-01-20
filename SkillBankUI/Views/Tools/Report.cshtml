@@ -1,0 +1,52 @@
+﻿@model SkillBank.Site.Web.ViewModel.ReportNumModel
+@section HeaderStyle
+{
+@Html.CombresCustomUrl("contentCss")}
+
+
+<h2>Report</h2>
+@if (Model.ReportNumList != null)
+{
+    <table>
+    @foreach (var reportItem in Model.ReportNumList)
+    {
+        <tr style="width:800px;"><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td></tr>
+        if (reportItem.RowNum.Equals(1))
+        {
+        <tr style="width:800px;">
+             <td></td><td style="width:200px;">开课的</td><td style="width:200px;">注册的</td><td style="width:200px;">百分比</td>
+        </tr>
+        }else if (reportItem.RowNum.Equals(2)){
+            <tr>
+             <td></td><td>分享的</td><td>开课的</td><td>百分比</td>
+        </tr>}
+        else if (reportItem.RowNum.Equals(3)){
+             <tr><td></td><td>完成的</td><td>没有取消和拒绝的订单数</td><td>百分比</td></tr>
+        } 
+        else if (reportItem.RowNum.Equals(4)){
+             <tr><td></td><td>拒绝的订单</td><td>总订单</td><td>百分比</td></tr>
+        } 
+        else if (reportItem.RowNum.Equals(5)){
+             <tr><td></td><td>上完课的学生</td><td>预定课的学生</td><td>百分比</td></tr>
+        } 
+        else if (reportItem.RowNum.Equals(6)){
+             <tr><td></td><td>接受预定订老师</td><td>被订课老师</td><td>百分比</td></tr>
+        } 
+        else if (reportItem.RowNum.Equals(7)){
+             <tr><td></td><td>课程总数</td><td> </td><td> </td></tr>
+        } 
+        else if (reportItem.RowNum.Equals(8)){
+             <tr><td></td><td>注册男生数</td><td>注册女生数</td><td>男生所占百分比</td></tr>
+        } 
+        else if (reportItem.RowNum.Equals(9)){
+             <tr><td></td><td>开课男生数</td><td>开课女生数</td><td>男生所占百分比</td></tr>
+        }   
+            
+            <tr><td></td><td>@reportItem.Num1</td><td>@reportItem.Num2</td><td>@reportItem.Percentage</td>
+        
+        </tr>
+    }
+
+    </table>
+}
+

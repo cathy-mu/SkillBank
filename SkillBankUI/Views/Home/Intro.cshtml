@@ -1,0 +1,230 @@
+﻿@section HeaderStyle
+{<meta name="robots" content="index,follow" /> 
+ <meta property="wb:webmaster" content="d0f4e6210a10a7ec" />
+@Html.CombresCustomUrl("homeCss")
+<link rel="stylesheet" href="../js/plugins/mediaelement/mediaelementplayer.min.css">
+}
+@section FooterJs
+{
+    @Html.CombresCustomUrl("homeJs")}
+<div class="body">
+    <!--
+    <div class="home-headline">
+        <div class="inner tcenter">
+
+            <div class="home-logo spaced-larger">
+                <img src="../img/logo-115.png">
+            </div>
+
+            <div class="spaced-larger">
+                <h1>@Html.GetTrans(123)</h1>
+                <h3>@Html.GetTrans(124)</h3>
+            </div>
+
+            <div class="home-playvideo spaced-larger tcenter">
+                <a href="#modal-video" data-toggle="modal">
+                    <img src="../img/btn-playvideo.png"></a>
+            </div>
+
+
+            <div class="spaced tcenter">
+                @if (ViewBag.MemberInfo == null)
+                {
+                <a href="#modal-login" class="btn btn-warning btn-lg btn-flat spaced-right" data-toggle="modal">@Html.GetTrans(483)</a>
+                }else{
+                <a href="@Url.Action("beteacher", "class")" class="btn btn-warning btn-lg btn-flat spaced-right">@Html.GetTrans(125)</a>
+                }
+                <a href="#home-about" class="btn btn-default btn-lg">@Html.GetTrans(126)</a>
+            </div>
+        </div>
+    </div>
+    -->
+    <div class="home-about" id="home-about">
+        <div class="inner">
+            <div class="row-fluid tcenter">
+                <div class="span3">
+                    <a href="#home-theory">
+                        <div class="circle spaced-large">
+                            <div class="bd">@Html.Raw(Html.GetTrans(127))</div>
+                        </div>
+                        <div class="spaced-larger">@Html.GetTrans(131)</div>
+                    </a>
+                </div>
+                <div class="span3">
+                    <a href="#home-features">
+                        <div class="circle alt spaced-large">
+                            <div class="bd">@Html.GetTrans(128)</div>
+                        </div>
+                        <div class="spaced-larger">@Html.GetTrans(132)</div>
+                    </a>
+                </div>
+                <div class="span3">
+                    <a href="#home-platform">
+                        <div class="circle spaced-large">
+                            <div class="bd">@Html.GetTrans(129)</div>
+                        </div>
+                        <div class="spaced-larger">@Html.GetTrans(133)</div>
+                    </a>
+                </div>
+                <div class="span3">
+                    <a href="#home-howtouse">
+                        <div class="circle alt spaced-large">
+                            <div class="bd">@Html.GetTrans(130)</div>
+                        </div>
+                        <div class="spaced-larger">@Html.GetTrans(134)</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-theory" id="home-theory">
+        <div class="inner">
+            <h2>@Html.GetTrans(135)</h2>
+
+            <div class="spaced-larger">
+                <p>@Html.GetTrans(136)</p>
+            </div>
+
+            <div class="tcenter">
+                <img src="../../img/graph-skillbank.png">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="home-features" id="home-features">
+        <div class="inner">
+            <h2>@Html.GetTrans(137)</h2>
+            <div class="row-fluid spaced-larger">
+                <div class="span4">
+                    <h3>
+                        <img src="../img/icon-badge.png">&nbsp; @Html.GetTrans(138)</h3>
+                    <p>@Html.GetTrans(141)</p>
+                </div>
+                <div class="span4">
+                    <h3>
+                        <img src="../img/icon-stages.png">&nbsp; @Html.GetTrans(139)</h3>
+                    <p>@Html.GetTrans(142)</p>
+                </div>
+                <div class="span4">
+                    <h3>
+                        <img src="../img/icon-fortune.png">&nbsp; @Html.GetTrans(140)</h3>
+                    <p>@Html.GetTrans(143)</p>
+                </div>
+            </div>
+            <div class="row-fluid spaced-larger">
+                <div class="span4">
+                    <h3>
+                        <img src="../img/icon-one-one.png">&nbsp; @Html.GetTrans(144)</h3>
+                    <p>@Html.GetTrans(147)</p>
+                </div>
+                <div class="span4">
+                    <h3>
+                        <img src="../img/icon-star.png">&nbsp; @Html.GetTrans(145)</h3>
+                    <p>@Html.GetTrans(148)</p>
+                </div>
+                <div class="span4">
+                    <h3>
+                        <img src="../img/icon-usergroup.png">&nbsp; @Html.GetTrans(146)</h3>
+                    <p>@Html.GetTrans(149)</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="home-platform" id="home-platform">
+        <div class="inner">
+            <h2>@Html.GetTrans(150)</h2>
+            <div class="row-fluid tcenter spaced-larger">
+                <div class="span4">
+                    <h3>@Html.GetTrans(151)</h3>
+                </div>
+                <div class="span4">
+                    <h3>@Html.GetTrans(152)</h3>
+                </div>
+                <div class="span4">
+                    <h3>@Html.GetTrans(153)</h3>
+                </div>
+            </div>
+            <div class="row-fluid tcenter spaced-larger">
+                <div class="span4">
+                    <p>
+                        <img src="../../img/icon-map-b.png">
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        <img src="../../img/icon-coins-b.png">
+                    </p>
+                </div>
+                <div class="span4">
+                    <p>
+                        <img src="../../img/icon-sns-b.png">
+                    </p>
+                </div>
+            </div>
+            <div class="row-fluid tcenter">
+                <div class="span4">
+                    <p>@Html.GetTrans(154)</p>
+                </div>
+                <div class="span4">
+                    <p>@Html.GetTrans(155)</p>
+                </div>
+                <div class="span4">
+                    <p>@Html.GetTrans(156)</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="home-howtouse" id="home-howtouse">
+        <div class="inner">
+            <h2>@Html.GetTrans(353)</h2>
+            <div class="row-fluid">
+                <div class="span3">
+                    <h3><em>1</em> @Html.GetTrans(354)</h3>
+                    <p>@Html.GetTrans(355)</p>
+                    <p><a href="@Url.Action("beteacher", "class")" class="btn btn-warning btn-lg btn-flat">@Html.GetTrans(356)</a></p>
+                </div>
+                <div class="span3">
+                    <h3><em>2</em> @Html.GetTrans(357)</h3>
+                    <p>@Html.GetTrans(358)</p>
+                </div>
+                <div class="span3">
+                    <h3><em>3</em> @Html.GetTrans(359)</h3>
+                    <p>@Html.GetTrans(360)</p>
+                </div>
+                <div class="span3">
+                    <h3><em>4</em> @Html.GetTrans(362)</h3>
+                    <p>@Html.GetTrans(363)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- end of body -->
+
+@section HomeVideo
+{
+    <div class="modal fade modal-video" id="modal-video" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    <div class="bd">
+
+                        <video src="~/img/sample-video.mp4" width="854" height="480"></video>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
