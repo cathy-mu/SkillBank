@@ -40,26 +40,22 @@ namespace SkillBank.Site.Web
             string domain;
             if (string.IsNullOrEmpty(host))
             {
-                domain = "skill-bank.com";
+                domain = "skillbank.cn";
             }
             else
             {
                 domain = host.ToLowerInvariant();
-                if (domain.EndsWith(".skill-bank.com", System.StringComparison.OrdinalIgnoreCase))
+                if (domain.EndsWith(".skillbank.cn", System.StringComparison.OrdinalIgnoreCase))
                 {
-                    domain = "skill-bank.com";
+                    domain = ".skillbank.cn";
+                }
+                else if (domain.EndsWith(".skill-bank.com", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    domain = ".skill-bank.com";
                 }
                 else
                 {
-                    if (domain.ToLowerInvariant() == "localhost")
-                    {
-                        //domain = null;
-                        domain = "localhost";
-                    }
-                    else
-                    {
-                        domain = null;
-                    }
+                    domain = null;
                 }
             }
             return domain;

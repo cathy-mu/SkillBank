@@ -63,6 +63,10 @@ namespace SkillBank.Site.Web
         {
             HttpCookie cookie = new HttpCookie(cookieName);
             cookie.Value = cookieValue;
+            if (!String.IsNullOrEmpty(domainName))
+            {
+                cookie.Domain = domainName;
+            }
             cookie.Expires = DateTime.Now.Add(cookieTimeSpan);
             context.Response.SetCookie(cookie);
         }
