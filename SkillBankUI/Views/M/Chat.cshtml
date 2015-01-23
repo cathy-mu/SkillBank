@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SkillBank.Site.Web.ViewModel.MessageDetailModel
+@{
     ViewBag.Title = "Chat";
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
@@ -14,30 +15,42 @@
 </div>
 <div class="chat-page content">
     <a href="message.html" class="icon icomoon icon-arrow-left nav-inner nav-left grey" data-transition="slide-out"></a>
-    <div class="h3" align="center">麻团儿</div>
-    <div class="chat-content">
+    @if (Model != null)
+    {
+        <div class="h3" align="center">@(Model.Contact == null ? "没有私信记录" : Model.Contact.Name)</div>
+        <div class="chat-content">
+            @if (Model.Messages != null && ViewBag.MemberInfo != null)
+            {
+                foreach (var message in Model.Messages)
+                {
+                    if (message.To_Id == ViewBag.MemberInfo.MemberId)
+                    {
+                <div class="sender box">
+                    <div class="time">@TextContentHelper.GetDateString(message.CreatedDate, true)</div>
+                    <img src="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mm")" class="avatar">
+                    <div class="popover-chat left">
+                        <div class="arrow"></div>
+                        <span>@message.MessageText</span>
+                    </div>
+                </div>
+                    }
+                    else
+                    {
+                <div class="receiver box">
+                    <div class="time">@TextContentHelper.GetDateString(message.CreatedDate, true)</div>
+                    <div class="receiver-img">
+                        <img src="@ContentHelper.GetAvatarPath(Model.Contact.Avatar, "mm")" class="avatar">
+                    </div>
+                    <div class="popover-chat right">
+                        <div class="arrow"></div>
+                        <span>@message.MessageText</span>
+                    </div>
+                </div>
+                    }
+                }
+            }
 
-        <div class="receiver box">
-            <div class="time">1分钟前</div>
-            <div class="receiver-img">
-                <img src="images/favicon.png" class="avatar">
-            </div>
-            <div class="popover-chat right">
-                <div class="arrow"></div>
-                <span>TT我好不容易想到个~可以正常上课的Topic,TT我好不容易想到个~可以正常上课的Topic[英语口语练习课] </span>
-            </div>
-        </div>
-
-        <div class="sender box">
-            <div class="time">9月5日下午2:501</div>
-            <img src="images/avatar.png" class="avatar">
-            <div class="popover-chat left">
-                <div class="arrow"></div>
-                <span>TT我好不容易想到个~可以正常上课的Topic,TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]</span>
-            </div>
-        </div>
-
-        <script type="text/template" id="chat-detail-tpl">
+            <script type="text/template" id="chat-detail-tpl">
           <div class="box sender">
             <div class="time">刚才</div>
             <img src="images/avatar.png" class="avatar">
@@ -48,8 +61,8 @@
           </div>
         </script>
 
-    </div>
-
+        </div>
+    }
 </div>
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="/bower_components/lodash/dist/lodash.min.js"></script>

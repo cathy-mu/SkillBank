@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SkillBank.Site.Web.ViewModel.MessageListModel
+@{
     ViewBag.Title = "Message";
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
@@ -62,35 +63,28 @@
         </div>
         <div id="item2mobile" class="control-content">
             <ul class="avatar-text">
-                <li class="card">
-                    <a href="/chat.html#7" data-transition="slide-in">
-                        <div class="pull-left flag-num">
-                            <img class="avatar" src="/images/avatar.png">
-                            <span class="badge">1</span>
-                        </div>
-                        <div class="msg-title">
-                            <time class="pull-right">3小时 之前</time>
-                            <h4 class="flag-num">Jason Wu
-                  </h4>
-                        </div>
-                        <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]</p>
-                    </a>
-                </li>
-                <li class="card">
-                    <div class="pull-left flag-num">
-                        <img class="avatar" src="/images/avatar.png">
-                        <span class="badge">1</span>
-                    </div>
-                    <div class="msg-title">
-                        <time class="pull-right">3小时 之前</time>
-                        <h4 class="flag-num">Jason Wu
-                </h4>
-                    </div>
-                    <p>
-                        TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-             
-                    </p>
-                </li>
+
+                @if (Model.Messages != null && ViewBag.MemberInfo != null)
+                {
+                    foreach (var message in Model.Messages)
+                    {
+                        var contactId = (message.From_Id == ViewBag.MemberInfo.MemberId) ? message.To_Id : message.From_Id;
+
+                    <li class="card">
+                        <a href="/chat.html#7" data-transition="slide-in">
+                            <div class="pull-left flag-num">
+                                <img class="avatar" src="@ContentHelper.GetAvatarPath(message.Avatar, "mm")">
+                                <span class="badge">@Html.Raw(TagHelper.GetNewMessageTag(Model.UnReadMessageNumDic, message.From_Id))</span>
+                            </div>
+                            <div class="msg-title">
+                                <time class="pull-right">@TextContentHelper.GetDateString(message.CreatedDate)</time>
+                                <h4 class="flag-num">@message.Name</h4>
+                            </div>
+                            <p>@Html.Raw(TagHelper.GetTextSubSting(message.MessageText, 20, true))</p>
+                        </a>
+                    </li>
+                    }
+                }
             </ul>
         </div>
     </div>

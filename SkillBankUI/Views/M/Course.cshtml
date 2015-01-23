@@ -33,9 +33,9 @@
                 <span>23</span>
                 <span>留言</span>
             </a>
-            <a href="#" class="favorite">
-                <span class="icon icomoon icon-heart"></span>
-                <span>6</span>
+            <a href="#" class="favorite" data-classid="@Model.ClassInfo.ClassId">
+                <span class="icon icomoon icon-heart @(Model.ClassInfo.PublishStatus.Equals(1) ? "liked" : "")"></span>
+                <span>@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["like"])</span>
                 <span>赞</span>
             </a>
             <a href="#" class="olive">
@@ -53,7 +53,7 @@
         </a>
         <h3>@Model.MemberInfo.Name</h3>
         <p>6km . 上海</p>
-        <a href="#">
+        <a href="#" data-memberid="@Model.MemberInfo.MemberId">
             <button class="btn btn-olive">关注</button></a>
         <div class="evaluation">
             <h5>老师自评</h5>
@@ -146,22 +146,22 @@
                 <h6>用户留言</h6>
             </a>
             <a class="control-item" href="#item2mobile">
-                <h3>1</h3>
+                <h3>@Model.ClassNumDic["sum0"]</h3>
                 <h6>学生评价</h6>
             </a>
             <a class="side-item" href="#">
                 <table>
                     <tr>
                         <td>综合评价</td>
-                        <td>100%</td>
+                        <td>@Model.ClassNumDic["rank"]@Html.Raw("%")</td>
                     </tr>
                     <tr>
                         <td>开课次数</td>
-                        <td>1</td>
+                        <td>@Model.ClassNumDic["class"]</td>
                     </tr>
                     <tr>
                         <td>学生人数</td>
-                        <td>1</td>
+                        <td>@Model.ClassNumDic["student"]</td>
                     </tr>
                 </table>
             </a>
@@ -175,59 +175,13 @@
                 <ul class="comment-text">
                     <li class="card">
                         <div class="pull-left flag-num">
-                            <img class="avatar" src="images/avatar.png">
+                           <a href="@Url.Action("m", "personal", new { id = 1 })"><img class="avatar" src="images/avatar.png"></a>
                         </div>
                         <div class="msg-title">
                             <span class="time pull-right">3小时 之前</span>
-                            <h4 class="flag-num">Jason Wu
-                  </h4>
+                            <h4 class="flag-num"><a href="@Url.Action("m", "personal", new { id = 1 })">Jason Wu</a></h4>
                         </div>
-                        <p>
-                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-               
-                        </p>
-                    </li>
-                    <li class="card">
-                        <div class="pull-left flag-num">
-                            <img class="avatar" src="images/avatar.png">
-                        </div>
-                        <div class="msg-title">
-                            <span class="time pull-right">3小时 之前</span>
-                            <h4 class="flag-num">Jason Wu
-                  </h4>
-                        </div>
-                        <p>
-                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-               
-                        </p>
-                    </li>
-                    <li class="card">
-                        <div class="pull-left flag-num">
-                            <img class="avatar" src="images/avatar.png">
-                        </div>
-                        <div class="msg-title">
-                            <span class="time pull-right">3小时 之前</span>
-                            <h4 class="flag-num">Jason Wu
-                  </h4>
-                        </div>
-                        <p>
-                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-               
-                        </p>
-                    </li>
-                    <li class="card">
-                        <div class="pull-left flag-num">
-                            <img class="avatar" src="images/avatar.png">
-                        </div>
-                        <div class="msg-title">
-                            <span class="time pull-right">3小时 之前</span>
-                            <h4 class="flag-num">Jason Wu
-                  </h4>
-                        </div>
-                        <p>
-                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-               
-                        </p>
+                        <p>测试内容，添加了到个人页面的link,名字的a标签颜色要加下</p>
                     </li>
                     <li class="card">
                         <div class="pull-left flag-num">
@@ -247,34 +201,23 @@
             </div>
             <div id="item2mobile" class="control-content">
                 <ul class="comment-text">
-                    <li class="card">
-                        <div class="pull-left flag-num">
-                            <img class="avatar" src="images/avatar.png">
-                        </div>
-                        <div class="msg-title">
-                            <span class="time pull-right">3小时 之前</span>
-                            <h4 class="flag-num">Jason Wu
-                  </h4>
-                        </div>
-                        <p>
-                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-               
-                        </p>
-                    </li>
-                    <li class="card">
-                        <div class="pull-left flag-num">
-                            <img class="avatar" src="images/avatar.png">
-                        </div>
-                        <div class="msg-title">
-                            <span class="time pull-right">3小时 之前</span>
-                            <h4 class="flag-num">Jason Wu
-                  </h4>
-                        </div>
-                        <p>
-                            TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-               
-                        </p>
-                    </li>
+                    @if (Model.ClassReview != null)
+                    {
+                        foreach (var reviewItem in Model.ClassReview)
+                        {
+                        <li class="card">
+                            <div class="pull-left flag-num">
+                                <a href="@Url.Action("m", "personal", new { id = reviewItem.MemberId })"><img class="avatar" src="@ContentHelper.GetAvatarPath(reviewItem.Avatar, "ms")"></a>
+                            </div>
+                            <div class="msg-title">
+                                <span class="time pull-right">@reviewItem.CreatedDate</span>
+                                <h4 class="flag-num"><a href="@Url.Action("m", "personal", new { id = reviewItem.MemberId })">@reviewItem.Name</a></h4>
+                  
+                            </div>
+                            <p>@reviewItem.Comment</p>
+                        </li>
+                        }
+                    }
                 </ul>
 
             </div>
