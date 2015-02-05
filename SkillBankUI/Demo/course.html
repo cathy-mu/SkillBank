@@ -18,7 +18,7 @@
 
     <!-- Include the compiled Ratchet JS -->
     <script src="bower_components/ratchet/dist/js/ratchet.min.js"></script>
-    
+
   </head>
   <body>
 
@@ -51,7 +51,7 @@
             <span>23</span>
             <span>留言</span>
           </a>
-          <a href="#" class="favorite">
+          <a href="#" class="favorite toggle-like" data-Member_Id="332">
             <span class="icon icomoon icon-heart"></span>
             <span>6</span>
             <span>赞</span>
@@ -63,13 +63,11 @@
         </div>
       </div>
 
-      
-
       <div class="info">
         <img src="images/avatar.png" alt="" class="avatar">
         <h3>Jason Wu</h3>
         <p>6km . 上海</p>
-        <a href="#"><button class="btn btn-olive">关注</button></a>
+        <a href="#" class="follow btn btn-olive">关注</a>
         <div class="evaluation">
           <h5>老师自评</h5>
           <div class="table">
@@ -153,9 +151,9 @@
         </div>
         <div class="comment-content">
           <div id="item1mobile" class="control-content active">
-            <form class="liuyan-form">
-              <span class="icon icomoon icon-heart pull-right"></span>
-              <input type="text" placeholder="我要留言" id="commentff" >
+            <form id="comment-form">
+              <button class="icon icomoon icon-heart pull-right"></button>
+              <input type="text" placeholder="我要留言">
             </form>
             <ul class="comment-text">
               <li class="card">
@@ -268,14 +266,16 @@
         <div class="content">
           <div class="content-inner">
             <div class="content-padded">
-              <input placeholder="授课日期" type="text" onfocus="(this.type='date')" onblur="(this.type='text')">
-              <textarea name="" id="" cols="30" rows="2" placeholder="留言"></textarea>
-              <h5>你的联系信息</h5>
-              <p class="lightGrey">老师在确认之后才能看到你的联系信息</p>
-              <input type="text" placeholder="姓名">
-              <input type="tel" placeholder="手机">
-              <p class="alarm">请在提交订课申请之前先与老师私信沟通细节</p>
-              <button  class="btn btn-primary btn-block">确认订课</button>
+              <form>
+                <input placeholder="授课日期" type="text" name="date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                <textarea name="message" id="" cols="30" rows="2" placeholder="留言"></textarea>
+                <h5>你的联系信息</h5>
+                <p class="lightGrey">老师在确认之后才能看到你的联系信息</p>
+                <input type="text" name="name" placeholder="姓名">
+                <input type="tel" name="phone" placeholder="手机">
+                <p class="alarm">请在提交订课申请之前先与老师私信沟通细节</p>
+                <button  class="btn btn-primary btn-block">确认订课</button>
+              </form>
             </div>
           </div>
         </div>
@@ -285,16 +285,18 @@
           <a class="icon icon-close pull-right grey" href="#privateMsg"></a>
           <h1 class="title">私信老师</h1>
         </header>
-
         <div class="content">
           <div class="content-inner">
             <div class="content-padded">
-              <textarea name="" id="" cols="30" rows="6" placeholder="输入你的私信内容，向老师咨询关于课程的各种问题"></textarea>
-              <button  class="btn btn-primary btn-block">发送私信</button>
+              <form id="form-write">
+                <textarea name="" id="" cols="30" rows="6" placeholder="输入你的私信内容，向老师咨询关于课程的各种问题"></textarea>
+                <button  class="btn btn-primary btn-block">发送私信</button>
+              </form>
             </div>
           </div>
         </div>
       </div>
+
       <div id="getCoins" class="modal toBeRemoved">
         <header class="bar bar-nav">
           <a class="icon icon-close pull-right grey" href="#getCoins"></a>
@@ -340,7 +342,25 @@
           </div>
         </div>
       </div>
+
+      <script type="text/template" id="comment-tpl">
+        <li class="card">
+          <div class="pull-left flag-num">
+            <img class="avatar" src="images/avatar.png">
+          </div>
+          <div class="msg-title">
+            <span class="time pull-right">刚刚</span>
+            <h4 class="flag-num">
+              Jason Wu
+            </h4>
+          </div>
+          <p><%- item.CommentText %></p>
+        </li>
+      </script>
+
     </div>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
     <script src="js/common.js"></script>
   </body>
 </html>
