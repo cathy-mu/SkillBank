@@ -82,17 +82,17 @@ var checkPage = function(){
   }
 
   // course page
-  if( $('.course-page').length ){
+  if ($('.course-page').length) {
 
-    // go for comment
-    $('.goto').on('click', function(event){
-      event.preventDefault();
-      location.href = '#' + this.dataset.for;
-    });
+      // go for comment
+      $('.goto').on('click', function (event) {
+          event.preventDefault();
+          location.href = '#' + this.dataset.for;
+      });
 
-    commentForm();
-    followMember();
-
+      commentForm();
+      followMember();
+      chatForm();
   }
 
   // chat page
@@ -157,10 +157,11 @@ function switchCourseCat(){
         maximumAge        : 30000, 
         timeout           : 27000
       };
+    alert(this.dataset.by);
 
     // nearby skill
-    if(this.dataset.by == 0){
-      navigator.geolocation.getCurrentPosition(function (position) {
+    if (this.dataset.by == 0) {
+       navigator.geolocation.getCurrentPosition(function (position) {
         var url = ENV.host + '/api/ClassList?' + 'by=' + self.dataset.by + '&type=' + self.dataset.type +
                   '&PosY=' + position.coords.latitude + '&PosX=' + position.coords.longitude;
         getCourses(url, self);
