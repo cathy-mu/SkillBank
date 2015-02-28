@@ -13,7 +13,7 @@ namespace SkillBank.Site.Web.ViewModel
         public List<ClassInfo> ClassList;
         public List<MemberReviewItem> StuentReview;
         public List<MemberReviewItem> TeacherReview;
-        public Dictionary<String, int> ProfileNumDic;
+        public Dictionary<Enum, int> ProfileNumDic;
         public Dictionary<Byte, String> MasterInfos;
     }
 }

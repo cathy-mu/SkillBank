@@ -71,6 +71,27 @@ namespace SkillBank.Site.Web
             context.Response.SetCookie(cookie);
         }
 
+        public static void SetCookie(string cookieName, string cookieValue, bool isPersistent, string domainName, HttpResponseBase response)
+        {
+            System.TimeSpan cookieTimeSpan = default(System.TimeSpan); 
+            if (isPersistent)
+            {
+                cookieTimeSpan = new System.TimeSpan(1000, 0, 0, 0);
+            }
+            else
+            {
+                cookieTimeSpan = System.TimeSpan.Zero;
+            }
+            HttpCookie cookie = new HttpCookie(cookieName);
+            cookie.Value = cookieValue;
+            if (!String.IsNullOrEmpty(domainName))
+            {
+                cookie.Domain = domainName;
+            }
+            cookie.Expires = DateTime.Now.Add(cookieTimeSpan);
+            response.SetCookie(cookie);
+        }
+
         public static Byte GetCookieByteValue(string cookieName, HttpRequestBase request)
         {
             Byte result = 0;

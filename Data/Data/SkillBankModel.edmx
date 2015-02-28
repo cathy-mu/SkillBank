@@ -244,7 +244,7 @@
           <Property Name="Score2" Type="tinyint" />
           <Property Name="Score3" Type="tinyint" />
           <Property Name="FeedBack" Type="tinyint" />
-          <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="300" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="400" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="PrivateComment" Type="nvarchar" Nullable="false" MaxLength="300" />
         </EntityType>
@@ -255,7 +255,7 @@
           <Property Name="ReviewId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Order_Id" Type="int" Nullable="false" />
           <Property Name="FeedBack" Type="tinyint" />
-          <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="300" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="400" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="PrivateComment" Type="nvarchar" Nullable="false" MaxLength="300" />
         </EntityType>
@@ -324,6 +324,7 @@
           <Parameter Name="keyword" Type="nvarchar" Mode="In" />
           <Parameter Name="posX" Type="decimal" Mode="In" />
           <Parameter Name="posY" Type="decimal" Mode="In" />
+          <Parameter Name="cityId" Type="int" Mode="In" />
           <Parameter Name="memberId" Type="int" Mode="In" />
         </Function>
         <Function Name="ClassInfo_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -366,6 +367,7 @@
           <Parameter Name="ParaId" Type="int" Mode="In" />
           <Parameter Name="MemberId" Type="int" Mode="In" />
           <Parameter Name="CommentText" Type="varchar" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="InOut" />
         </Function>
         <Function Name="EmailAccount_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Mail" Type="nvarchar" Mode="In" />
@@ -436,9 +438,11 @@
         <Function Name="Message_LoadByFromAndToId_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MemberId1" Type="int" Mode="In" />
           <Parameter Name="MemberId2" Type="int" Mode="In" />
+          <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
         </Function>
         <Function Name="Message_LoadByMemberId_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ParaId" Type="int" Mode="In" />
+          <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
         </Function>
         <Function Name="Message_LoadUnReadNo_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MemberId" Type="int" Mode="In" />
@@ -659,9 +663,11 @@
           <FunctionImport Name="Message_LoadByFromAndToId_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Message_LoadByFromAndToId_p_Result)">
             <Parameter Name="MemberId1" Mode="In" Type="Int32" />
             <Parameter Name="MemberId2" Mode="In" Type="Int32" />
+            <Parameter Name="LoadBy" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Message_LoadByMemberId_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Message_LoadByMemberId_p_Result)">
-          <Parameter Name="ParaId" Mode="In" Type="Int32" />
+            <Parameter Name="ParaId" Mode="In" Type="Int32" />
+            <Parameter Name="LoadBy" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Message_LoadUnReadNo_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Message_LoadUnReadNo_p_Result)">
           <Parameter Name="MemberId" Mode="In" Type="Int32" />
@@ -874,6 +880,7 @@
             <Parameter Name="ParaId" Mode="In" Type="Int32" />
             <Parameter Name="MemberId" Mode="In" Type="Int32" />
             <Parameter Name="CommentText" Mode="In" Type="String" />
+            <Parameter Name="Id" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Master_Save_p">
             <Parameter Name="MemberId" Mode="In" Type="Int32" />
@@ -894,6 +901,7 @@
             <Parameter Name="keyword" Mode="In" Type="String" />
             <Parameter Name="posX" Mode="In" Type="Decimal" />
             <Parameter Name="posY" Mode="In" Type="Decimal" />
+            <Parameter Name="cityId" Mode="In" Type="Int32" />
             <Parameter Name="memberId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
@@ -1034,7 +1042,7 @@
           <Property Name="Score2" Type="Byte" />
           <Property Name="Score3" Type="Byte" />
           <Property Name="FeedBack" Type="Byte" />
-          <Property Name="Comment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="Comment" Type="String" MaxLength="400" Unicode="true" FixedLength="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrivateComment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
         </EntityType>
@@ -1045,7 +1053,7 @@
           <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Order_Id" Type="Int32" Nullable="false" />
           <Property Name="FeedBack" Type="Byte" />
-          <Property Name="Comment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="Comment" Type="String" MaxLength="400" Unicode="true" FixedLength="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PrivateComment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
         </EntityType>

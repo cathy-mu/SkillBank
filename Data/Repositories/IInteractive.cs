@@ -54,13 +54,13 @@ namespace SkillBank.Site.DataSource.Data
         private int Comment_Save_p(Byte saveType, int memberId, int paraId, String commentText)
         {
             int id = 0;
-            var saveTypePara = new ObjectParameter("saveType", saveType);
+            var saveTypePara = new ObjectParameter("SaveType", saveType);
             var paraIdPara = new ObjectParameter("paraId", paraId);
-            var memberIdPara = new ObjectParameter("memberId", memberId);
+            var memberIdPara = new ObjectParameter("MemberId", memberId);
             var commentTextPara = new ObjectParameter("CommentText", commentText);
             var idPara = new ObjectParameter("Id", id);
-            
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Comment_Save_p", saveTypePara, paraIdPara, memberIdPara, commentTextPara);
+
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Comment_Save_p", saveTypePara, paraIdPara, memberIdPara, commentTextPara, idPara);
             return (int)idPara.Value;
         }
 

@@ -24,7 +24,7 @@ namespace SkillBank.Site.DataSource.Data
         int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "");
         void LeaveEmailAddress(String name,String mail);
         Boolean CoinUpdate(Byte saveType, int memberId, int classId, int amount);
-        Dictionary<String, int> GetMemberNums(int memberId, int classId = 0);
+        Dictionary<Enum, int> GetMemberNums(int memberId, int classId, Byte loadBy);
         void AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
         Boolean HasShareClassCoin(int memberId);
         Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount, String code);
@@ -135,8 +135,8 @@ namespace SkillBank.Site.DataSource.Data
             var socialTypeParameter = new ObjectParameter("Type", 0);
             var memberIdParameter = new ObjectParameter("Id", 0);
             var relatedIdParameter = new ObjectParameter("RelatedId", 0);
-            
-            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, socialAccountParameter, socialTypeParameter, memberIdParameter);
+
+            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, socialAccountParameter, socialTypeParameter, memberIdParameter, relatedIdParameter);
             return MemberMapper.Map(result);
         }
 
@@ -187,23 +187,15 @@ namespace SkillBank.Site.DataSource.Data
         }
 
 
-        public Dictionary<String, int> GetMemberNums(int memberId, int classId = 0)
+        public Dictionary<Enum, int> GetMemberNums(int memberId, int classId, Byte loadBy)
         {
-            if (classId == 0)
-            {
-                return MemberNums_Load_p((Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberId, memberId, 0);
+            return MemberNums_Load_p(loadBy, memberId, classId);
+        }                
 
-            }
-            else
-            {
-                return MemberNums_Load_p((Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId, memberId, classId);
-            }
-        }
-                
-
-        private Dictionary<String,int> MemberNums_Load_p(Byte loadType, int memberId, int classId)
+        
+        private Dictionary<Enum, int> MemberNums_Load_p(Byte loadType, int memberId, int classId)
         {
-            Dictionary<String, int> numDic = new Dictionary<string, int>();
+            Dictionary<Enum, int> numDic = new Dictionary<Enum, int>();
             int resultc1 = 0;
             int resultc2 = 0;
             int resultc3 = 0;
@@ -238,27 +230,41 @@ namespace SkillBank.Site.DataSource.Data
             resulto2 = Convert.ToInt32(resulto2Parameter.Value);
             resulto3 = Convert.ToInt32(resulto3Parameter.Value);
 
-            if (loadType.Equals(1))
+            if (loadType.Equals((Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId))
             {
-                numDic.Add("class", Convert.ToInt32(result1Parameter.Value));
-                numDic.Add("student", Convert.ToInt32(result2Parameter.Value));
-                numDic.Add("rank", Convert.ToInt32(result3Parameter.Value));
-                numDic.Add("r11", resulto1 < resultc1 ? 0 : (resulto1 - resultc1));
-                numDic.Add("r12", resulto2 < resultc2 ? 0 : (resulto2 - resultc2));
-                numDic.Add("r13", resulto3 < resultc3 ? 0 : (resulto3 - resultc3));
-                numDic.Add("r01", resultc1);
-                numDic.Add("r02", resultc2);
-                numDic.Add("r03", resultc3);
-                numDic.Add("comment",Convert.ToInt32(resultcParameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Class, Convert.ToInt32(result1Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Student, Convert.ToInt32(result2Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Rank, Convert.ToInt32(result3Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Result01, resultc1);
+                numDic.Add(Enums.NumberDictionaryKey.Result02, resultc2);
+                numDic.Add(Enums.NumberDictionaryKey.Result03, resultc3);
+                numDic.Add(Enums.NumberDictionaryKey.Result11, resulto1 < resultc1 ? 0 : (resulto1 - resultc1));
+                numDic.Add(Enums.NumberDictionaryKey.Result12, resulto2 < resultc2 ? 0 : (resulto2 - resultc2));
+                numDic.Add(Enums.NumberDictionaryKey.Result13, resulto3 < resultc3 ? 0 : (resulto3 - resultc3));
+                numDic.Add(Enums.NumberDictionaryKey.Comment, Convert.ToInt32(resultcParameter.Value));
             }
-            else
+            else if (loadType.Equals((Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberId))
             {
-                numDic.Add("r01", resultc1);
-                numDic.Add("r02", resultc2);
-                numDic.Add("r03", resultc3);
-                numDic.Add("r11", resulto1);
-                numDic.Add("r12", resulto2);
-                numDic.Add("r13", resulto3);
+                numDic.Add(Enums.NumberDictionaryKey.Result01, resultc1);
+                numDic.Add(Enums.NumberDictionaryKey.Result02, resultc2);
+                numDic.Add(Enums.NumberDictionaryKey.Result03, resultc3);
+                numDic.Add(Enums.NumberDictionaryKey.Result11, resulto1);
+                numDic.Add(Enums.NumberDictionaryKey.Result12, resulto2);
+                numDic.Add(Enums.NumberDictionaryKey.Result13, resulto3);
+            }
+            else if (loadType.Equals((Byte)Enums.DBAccess.MemberNumsLoadType.ByClassSummary))
+            {
+                numDic.Add(Enums.NumberDictionaryKey.Class, Convert.ToInt32(result1Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Student, Convert.ToInt32(result2Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Rank, Convert.ToInt32(result3Parameter.Value));
+            }
+            else if (loadType.Equals((Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberSummary))
+            {
+                numDic.Add(Enums.NumberDictionaryKey.Class, Convert.ToInt32(result1Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Student, Convert.ToInt32(result2Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Certification, Convert.ToInt32(result3Parameter.Value)+1);
+                numDic.Add(Enums.NumberDictionaryKey.Follow, Convert.ToInt32(resulto1Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Fans, Convert.ToInt32(resulto2Parameter.Value));
             }
 
             return numDic;

@@ -19,8 +19,8 @@ namespace SkillBank.Site.DataSource.Data
     {
         int UpdateMessage(Byte saveType, int id, int fromId, int toId, String messageText);
 
-        List<MessageListItem> GetLastestMessagesByMemberId(int memberId);
-        List<Message> GetMessagesByFromToId(int memberId1, int memberId2);
+        List<MessageListItem> GetLastestMessagesByMemberId(int memberId, Byte loadBy);
+        List<Message> GetMessagesByFromToId(int memberId1, int memberId2, Byte loadBy);
         List<MessageUnReadItem> GetMessageUnReadNum(int memberId);
     }
 
@@ -40,11 +40,12 @@ namespace SkillBank.Site.DataSource.Data
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<MessageListItem> GetLastestMessagesByMemberId(int memberId)
+        public List<MessageListItem> GetLastestMessagesByMemberId(int memberId, Byte loadBy)
         {
             var paraIdPara = new ObjectParameter("ParaId", memberId);
+            var loadByPara = new ObjectParameter("LoadBy", loadBy);
 
-            ObjectResult<Message_LoadByMemberId_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Message_LoadByMemberId_p_Result>("Message_LoadByMemberId_p", MergeOption.NoTracking, paraIdPara);
+            ObjectResult<Message_LoadByMemberId_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Message_LoadByMemberId_p_Result>("Message_LoadByMemberId_p", MergeOption.NoTracking, paraIdPara, loadByPara);
             return MessageMapper.Map(result);
         }
 
@@ -52,13 +53,14 @@ namespace SkillBank.Site.DataSource.Data
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Message> GetMessagesByFromToId(int memberId1, int memberId2)
+        public List<Message> GetMessagesByFromToId(int memberId1, int memberId2, Byte loadBy)
         {
             var memberId1Para = new ObjectParameter("MemberId1", memberId1);
             var memberId2Para = new ObjectParameter("MemberId2", memberId2);
+            var loadByPara = new ObjectParameter("LoadBy", loadBy);
 
             var Context = ((IObjectContextAdapter)this).ObjectContext;
-            var result = Context.ExecuteFunction<Message_LoadByFromAndToId_p_Result>("Message_LoadByFromAndToId_p", MergeOption.NoTracking, memberId1Para, memberId2Para);
+            var result = Context.ExecuteFunction<Message_LoadByFromAndToId_p_Result>("Message_LoadByFromAndToId_p", MergeOption.NoTracking, memberId1Para, memberId2Para, loadByPara);
 
             return MessageMapper.Map(result);
         }

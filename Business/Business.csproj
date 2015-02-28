@@ -77,8 +77,6 @@
     <Compile Include="Managers\OrderManager.cs" />
     <Compile Include="Managers\FeedBackManager.cs" />
     <Compile Include="Managers\MemberManager.cs" />
-    <Compile Include="Map\AMap.cs" />
-    <Compile Include="Map\BaiDuDMap.cs" />
     <Compile Include="Managers\ContentManager.cs" />
     <Compile Include="Models\CategoryLkpItem.cs" />
     <Compile Include="Net\Mail\EmailManager.cs" />

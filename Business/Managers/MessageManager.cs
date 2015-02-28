@@ -15,8 +15,8 @@ namespace SkillBank.Site.Services.Managers
         Boolean SetMessageAsRead(int maxId, int memberId, int contactorId);
         Boolean SetMessageAsDeleted(int maxId, int memberId, int contactorId);
 
-        List<MessageListItem> GetLastestMessagesByMemberId(int memberId, int pageSize);
-        List<Message> GetMessagesByFromToId(int memberId1, int memberId2);
+        List<MessageListItem> GetLastestMessagesByMemberId(int memberId, int pageSize, Byte loadBy);
+        List<Message> GetMessagesByFromToId(int memberId1, int memberId2, Byte loadBy);
         Dictionary<int, int> GetMessagesUnReadNum(int memberId);
     }
 
@@ -72,10 +72,10 @@ namespace SkillBank.Site.Services.Managers
         /// </summary>
         /// <param name="memberId"></param>
         /// <returns></returns>
-        public List<MessageListItem> GetLastestMessagesByMemberId(int memberId)
+        public List<MessageListItem> GetLastestMessagesByMemberId(int memberId, Byte loadBy)
         {
-            var messages = _messageRep.GetLastestMessagesByMemberId(memberId);
-            if(messages!=null && messages.Count>0)
+            var messages = _messageRep.GetLastestMessagesByMemberId(memberId, loadBy);
+            if (messages != null && messages.Count > 0)
             {
                 return messages.OrderByDescending(m => m.MessageId).ToList();
             }
@@ -88,13 +88,13 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="memberId"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public List<MessageListItem> GetLastestMessagesByMemberId(int memberId, int pageSize = 0)
+        public List<MessageListItem> GetLastestMessagesByMemberId(int memberId, int pageSize = 0, Byte loadBy = 1)
         {
-            var messages = GetLastestMessagesByMemberId(memberId);
-            if (messages!=null && pageSize!=0 && messages.Count > pageSize)
+            var messages = GetLastestMessagesByMemberId(memberId, loadBy);
+            if (messages != null && pageSize != 0 && messages.Count > pageSize)
             {
-                var count = messages.Count - pageSize+1;
-                messages.RemoveRange(pageSize-1, count);
+                var count = messages.Count - pageSize + 1;
+                messages.RemoveRange(pageSize - 1, count);
             }
 
             return messages;
@@ -106,9 +106,9 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="memberId1"></param>
         /// <param name="memberId2"></param>
         /// <returns></returns>
-        public List<Message> GetMessagesByFromToId(int memberId1, int memberId2)
+        public List<Message> GetMessagesByFromToId(int memberId1, int memberId2, Byte loadBy)
         {
-            return _messageRep.GetMessagesByFromToId(memberId1, memberId2);
+            return _messageRep.GetMessagesByFromToId(memberId1, memberId2, loadBy);
         }
                
         /// <summary>

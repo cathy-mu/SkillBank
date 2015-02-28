@@ -313,6 +313,25 @@ namespace SkillBank.FunctionTests
             Assert.AreEqual(0, result);
         }
 
+        [TestMethod]
+        public void Should_ValidMemberInfo()
+        {
+            String mobile1 = "14512345678";
+            String code1 = "123456";
+            String mobile2 = "12000000000";
+            String code2 = "eerrty";
+            var result = System.Text.RegularExpressions.Regex.IsMatch(mobile1, @"^[1]+[3,4,5,8]+\d{9}");
+            Assert.AreEqual(true, result);
+            result = System.Text.RegularExpressions.Regex.IsMatch(mobile2, @"^[1]+[3,4,5,8]+\d{9}");
+            Assert.AreEqual(false, result);
+            result = System.Text.RegularExpressions.Regex.IsMatch(code1, @"^\d{6}$");
+            Assert.AreEqual(true, result);
+            result = System.Text.RegularExpressions.Regex.IsMatch(code2, @"^\d{6}$");
+            Assert.AreEqual(false, result);
+           
+        }
+
+
         #endregion
     }
 }

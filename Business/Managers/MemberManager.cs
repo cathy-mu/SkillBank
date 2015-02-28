@@ -16,8 +16,8 @@ namespace SkillBank.Site.Services.Managers
         MemberInfo GetMemberInfo(String socialAccount, Byte socialType);
         List<MemberInfo> GetMemberInfos(Byte loadType, String searchKey);
 
-        Dictionary<String, int> GetNumsByMember(int memberId);
-        Dictionary<String, int> GetNumsByMemberClass(int memberId, int classId);
+        Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy);
+        Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId);
 
         int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "");
         Boolean UpdateMemberInfo(Byte saveType, MemberInfo memberInfo);
@@ -30,6 +30,7 @@ namespace SkillBank.Site.Services.Managers
         Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS);
         Byte VerifyMobile(int memberId, String mobile, String verifyCode);
         Byte CheckIsMobileVerified(int memberId);
+        Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount);
 
         void UpdateMemberLikeTag(int memberId, int relatedId, bool isLike);
     }
@@ -49,14 +50,22 @@ namespace SkillBank.Site.Services.Managers
             _intRep.UpdateLike((Byte)Enums.DBAccess.FavoriteSaveType.SaveFavoriteTag, (Byte)Enums.FavoriteType.LikeMember, memberId, relatedId, isLike);
         }
 
+        /// <summary>
+        /// Generate mobile verify code and send SMS
+        /// </summary>
+        /// <param name="memberId"></param>
+        /// <param name="mobile"></param>
+        /// <param name="sendSMS"></param>
+        /// <returns>0 号码被验证   1 发送成功</returns>
         public Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS = true)
         {
             Random rd = new Random();
-            String code = rd.Next(0, 99999).ToString().PadLeft(6,'0');
+            String code = rd.Next(0, 999999).ToString().PadLeft(6,'0');
 
             Byte saveType = memberId.Equals(0) ? (Byte)Enums.DBAccess.MobileVerificationSaveType.NewMember : (Byte)Enums.DBAccess.MobileVerificationSaveType.OldMember;
             var result = _repository.UpdateVerification(saveType, memberId, mobile, code);
-            if (sendSMS)// && result != 0
+　　　　　　 //号码未被占用
+            if (sendSMS　&& !result.Equals(0))
             {
                 YunPianSMS.SendMobileValidationCodeSms(mobile, code);
             }
@@ -74,6 +83,12 @@ namespace SkillBank.Site.Services.Managers
         {
             Byte saveType = (Byte)Enums.DBAccess.MobileVerificationSaveType.Verify;
             var result = _repository.UpdateVerification(saveType, memberId, mobile, verifyCode);
+            return result;
+        }
+
+        public Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount)
+        {
+            var result = _repository.UpdateVerification(saveType, memberId, verifyAccount, "");
             return result;
         }
 
@@ -112,7 +127,7 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="socialType"></param>
         /// <param name="memberName"></param>
         /// <param name="email"></param>
-        /// <returns>1 exists member, 0 new member</returns>
+        /// <returns>1 new member, 0 exists member</returns>
         public int CreateMember(out int memberId, String socialId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "")
         {
             int result = _repository.CreateMember(out memberId, socialId, socialType, memberName, email, avatar, mobile, code, etag);
@@ -146,14 +161,14 @@ namespace SkillBank.Site.Services.Managers
             return _repository.CoinUpdate(updateType, memberId, classId, coinsToAdd);
         }
 
-        public Dictionary<String, int> GetNumsByMember(int memberId)
+        public Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy)
         {
-            return _repository.GetMemberNums(memberId);
+            return _repository.GetMemberNums(memberId, 0, loadBy);
         }
 
-        public Dictionary<String, int> GetNumsByMemberClass(int memberId, int classId)
+        public Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId)
         {
-            return _repository.GetMemberNums(memberId, classId);
+            return _repository.GetMemberNums(memberId, classId, loadBy);
         }
 
         public void AddMembersCoin(int memberId, int coinsToAdd, Byte addType)

@@ -124,13 +124,13 @@ namespace SkillBank.Site.Services.Net.Mail
             multipartEntity.AddBody(new StringBody(Encoding.UTF8, "fromname", ConfigConstants.SendCloudMailSetting.Sender_Name));
             multipartEntity.AddBody(new StringBody(Encoding.UTF8, "use_maillist", "true"));
 
-            multipartEntity.AddBody(new StringBody(Encoding.UTF8, "to", "monkey3@maillist.sendcloud.org"));//pioneer2@maillist.sendcloud.org//promofreecoin@skillbank.sendcloud.org//test@skillbank.sendcloud.org
-            multipartEntity.AddBody(new StringBody(Encoding.UTF8, "template_invoke_name", "dotnet"));
-            multipartEntity.AddBody(new StringBody(Encoding.UTF8, "subject", "程序员，我们需要你啊"));
+            //multipartEntity.AddBody(new StringBody(Encoding.UTF8, "to", "monkey4@maillist.sendcloud.org"));//pioneer2@maillist.sendcloud.org//promofreecoin@skillbank.sendcloud.org//test@skillbank.sendcloud.org
+            //multipartEntity.AddBody(new StringBody(Encoding.UTF8, "template_invoke_name", "dotnet"));
+            //multipartEntity.AddBody(new StringBody(Encoding.UTF8, "subject", "程序员，我们需要你啊"));
 
-            //multipartEntity.AddBody(new StringBody(Encoding.UTF8, "to", "skillex22@maillist.sendcloud.org"));//pioneer2@maillist.sendcloud.org//promofreecoin@skillbank.sendcloud.org//test@skillbank.sendcloud.org
-            //multipartEntity.AddBody(new StringBody(Encoding.UTF8, "template_invoke_name", "skill_exchange"));
-            //multipartEntity.AddBody(new StringBody(Encoding.UTF8, "subject", "技能交换－新平台，新玩法"));
+            multipartEntity.AddBody(new StringBody(Encoding.UTF8, "to", "skillex25@maillist.sendcloud.org"));//pioneer2@maillist.sendcloud.org//promofreecoin@skillbank.sendcloud.org//test@skillbank.sendcloud.org
+            multipartEntity.AddBody(new StringBody(Encoding.UTF8, "template_invoke_name", "skill_exchange"));
+            multipartEntity.AddBody(new StringBody(Encoding.UTF8, "subject", "技能交换－新平台，新玩法"));
             ////multipartEntity.AddBody(new StringBody(Encoding.UTF8, "to", "pioneer5@maillist.sendcloud.org"));////promofreecoin@skillbank.sendcloud.org//test@skillbank.sendcloud.org
             //multipartEntity.AddBody(new StringBody(Encoding.UTF8, "template_invoke_name", "skill_pioneer"));
             //multipartEntity.AddBody(new StringBody(Encoding.UTF8, "subject", "不一样的校园生活从技能先锋开始"));

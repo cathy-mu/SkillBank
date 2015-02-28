@@ -12,7 +12,7 @@ namespace SkillBank.Site.Web.ViewModel
     {
         public ClassEditItem ClassInfo;
         public MemberInfo MemberInfo;
-        public MemberInfo MyInfo;
+        //public MemberInfo MyInfo;
         public List<MemberReviewItem> OtherClassReview;
         public List<MemberReviewItem> ClassReview;
         public List<MemberReviewItem> ClassComment;
@@ -21,6 +21,6 @@ namespace SkillBank.Site.Web.ViewModel
         public Boolean IsOwner;
         public Boolean IsLogin;
         public int[] ClassNums;//0Class:Finished Orders, 1Student:Finished Order Related Number, 2 Rank, 3 Review Review nums for current class
-        public Dictionary<String, int> ClassNumDic;
+        public Dictionary<Enum, int> ClassNumDic;
     }
 }

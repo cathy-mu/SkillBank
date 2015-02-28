@@ -5,10 +5,10 @@ Thumb.db
 /SkillBankUI/web.config
 /SkillBankUI/example
 /SkillBankUI/images
-/SkillBankUI/mock
 /SkillBankUI/bower_components
 /Common
 /packages
-/SkillBankWeb.Tests
 /SkillBankUI/bin
-/SkillBankUI/Demo
+/SkillBankUI/Demo/images
+/SkillBankUI/Demo/bower_components
+/SkillBankUI/Demo/islider

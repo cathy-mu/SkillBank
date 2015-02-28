@@ -92,7 +92,8 @@ namespace SkillBank.FunctionTests
         public void Should_GetLatestMessage_ByMemberId()
         {
             MessageRepository repository = new MessageRepository();
-            List<MessageListItem> messages = repository.GetLastestMessagesByMemberId(_memberAId);
+            Byte loadBy = 1;
+            List<MessageListItem> messages = repository.GetLastestMessagesByMemberId(_memberAId, loadBy);
 
             Assert.IsNotNull(messages);
             messages.Count.AssertIsGreaterThan(0);
@@ -102,7 +103,8 @@ namespace SkillBank.FunctionTests
         public void Should_GetLatestMessageCorrectly_ByMemberId()
         {
             MessageRepository repository = new MessageRepository();
-            List<MessageListItem> messages = repository.GetLastestMessagesByMemberId(_memberAId);
+            Byte loadBy = 1;
+            List<MessageListItem> messages = repository.GetLastestMessagesByMemberId(_memberAId, loadBy);
             foreach (MessageListItem messageItem in messages)
             {
                 Assert.IsNotNull(messageItem.MessageText);
@@ -116,7 +118,8 @@ namespace SkillBank.FunctionTests
         public void ShouldNot_GetLatestMessage_ByInvalidMemberId()
         {
             MessageRepository repository = new MessageRepository();
-            var result = repository.GetLastestMessagesByMemberId(invalidMemberAId);
+            Byte loadBy = 1;
+            var result = repository.GetLastestMessagesByMemberId(invalidMemberAId, loadBy);
             Assert.IsNull(result);
         }
 
@@ -124,7 +127,8 @@ namespace SkillBank.FunctionTests
         public void Should_GetMessages_ByFromAndToId()
         {
             MessageRepository repository = new MessageRepository();
-            List<Message> messages = repository.GetMessagesByFromToId(_memberAId ,_memberBId);
+            Byte loadBy = 1;
+            List<Message> messages = repository.GetMessagesByFromToId(_memberAId, _memberBId, loadBy);
 
             Assert.IsNotNull(messages);
             messages.Count.AssertIsGreaterThan(0);
@@ -134,8 +138,9 @@ namespace SkillBank.FunctionTests
         public void Should_GetMessagesCorrectly_ByFromAndToId()
         {
             MessageRepository repository = new MessageRepository();
-            List<Message> messagesA = repository.GetMessagesByFromToId(_memberAId, _memberBId);
-            List<Message> messagesB = repository.GetMessagesByFromToId(_memberBId, _memberAId);
+            Byte loadBy = 1;
+            List<Message> messagesA = repository.GetMessagesByFromToId(_memberAId, _memberBId, loadBy);
+            List<Message> messagesB = repository.GetMessagesByFromToId(_memberBId, _memberAId, loadBy);
 
             Assert.IsNotNull(messagesA);
             Assert.IsNotNull(messagesB);
@@ -161,7 +166,8 @@ namespace SkillBank.FunctionTests
         public void ShouldNot_GetMessages_ByInvalidFromAndToMemberId()
         {
             MessageRepository repository = new MessageRepository();
-            List<Message> messages = repository.GetMessagesByFromToId(invalidMemberAId, invalidMemberBId);
+            Byte loadBy = 1;
+            List<Message> messages = repository.GetMessagesByFromToId(invalidMemberAId, invalidMemberBId, loadBy);
 
             Assert.IsNull(messages);
         }
@@ -170,7 +176,8 @@ namespace SkillBank.FunctionTests
         public void Should_GetOneLatestMessagesWithOtherMembers_ByMemberId()
         {
             MessageRepository repository = new MessageRepository();
-            List<MessageListItem> messages = repository.GetLastestMessagesByMemberId(_memberAId);
+            Byte loadBy = 1;
+            List<MessageListItem> messages = repository.GetLastestMessagesByMemberId(_memberAId, loadBy);
             int messageNo = messages.Count;
             //messages.Distinct(m => m.From_Id);
             var _memberIds = messages.Select(m => m.From_Id).Union(messages.Select(m => m.To_Id)).Distinct().Count()-1;
@@ -184,7 +191,8 @@ namespace SkillBank.FunctionTests
         public void ShouldNot_GetCorrectMessages_ByFromAndToMemberId()
         {
             MessageRepository repository = new MessageRepository();
-            List<Message> messages = repository.GetMessagesByFromToId(_memberAId, _memberBId);
+            Byte loadBy = 1;
+            List<Message> messages = repository.GetMessagesByFromToId(_memberAId, _memberBId, loadBy);
             foreach (Message messageItem in messages)
             {
                 Assert.IsNotNull(messageItem.MessageText);
@@ -198,7 +206,8 @@ namespace SkillBank.FunctionTests
         public void ShouldNot_GetMessages_ByFromAndToMemberId_InCorrectOrder()
         {
             MessageRepository repository = new MessageRepository();
-            List<Message> messages = repository.GetMessagesByFromToId(_memberAId, _memberBId);
+            Byte loadBy = 1;
+            List<Message> messages = repository.GetMessagesByFromToId(_memberAId, _memberBId, loadBy);
             List<Message> reorderMessages = messages.OrderByDescending(m => m.CreatedDate).ToList();
             for (int i = 0; i < messages.Count; i++)
             {

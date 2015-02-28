@@ -25,13 +25,14 @@ namespace SkillBank.Site.Services
         Boolean UpdateMemberProfile(MemberInfo memberInfo);
         void SaveEmailAccount(String name, String email);
         Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd);//tool
-        Dictionary<String, int> GetNumsByMember(int memberId);
-        Dictionary<String, int> GetNumsByMemberClass(int memberId, int classId);
+        Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberId);
+        Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId);
         void AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
         Boolean HasShareClassCoin(int memberId);
         Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS = true);
         Byte VerifyMobile(int memberId, String mobile, String verifyCode);
         Byte CheckIsMobileVerified(int memberId);
+        Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount); 
         void UpdateMemberLikeTag(int memberId, int relatedId, Boolean isLike);
         
         //Class
@@ -86,8 +87,8 @@ namespace SkillBank.Site.Services
         Boolean SetMessageAsRead(int maxId, int memberId, int contactorId);
         Boolean SetMessageAsDeleted(int maxId, int memberId, int contactorId);
 
-        List<MessageListItem> GetMessageList(int memberId, int pageSize = 0);
-        List<Message> GetMessageDetail(int memberId, int friendId);
+        List<MessageListItem> GetMessageList(int memberId, int pageSize = 0, Byte loadBy = 1);
+        List<Message> GetMessageDetail(int memberId, int contactId, Byte loadBy = 1);
         Dictionary<int, int> GetMessageUnReadNum(int memberId);
 
         //Notification
@@ -168,6 +169,11 @@ namespace SkillBank.Site.Services
         {
             return _memberMgr.CheckIsMobileVerified(memberId);
         }
+
+        public Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount)
+        {
+            return _memberMgr.UpdateVerification(saveType, memberId, verifyAccount);
+        }        
 
         public Byte VerifyMobile(int memberId, String mobile, String verifyCode)
         {
@@ -320,9 +326,9 @@ namespace SkillBank.Site.Services
         /// </summary>
         /// <param name="memberId"></param>
         /// <returns></returns>
-        public Dictionary<String, int> GetNumsByMember(int memberId)
+        public Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberId)
         {
-            return this._memberMgr.GetNumsByMember(memberId);
+            return this._memberMgr.GetNumsByMember(memberId, loadBy);
         }
 
         /// <summary>
@@ -331,9 +337,9 @@ namespace SkillBank.Site.Services
         /// <param name="memberId"></param>
         /// <param name="classId"></param>
         /// <returns></returns>
-        public Dictionary<String, int> GetNumsByMemberClass(int memberId, int classId)
+        public Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId)
         {
-            return this._memberMgr.GetNumsByMemberClass(memberId, classId);
+            return this._memberMgr.GetNumsByMemberClass(memberId, classId, loadBy);
         }
         
         public void AddMembersCoin(int memberId, int coinsToAdd, Byte addType)
@@ -784,14 +790,14 @@ namespace SkillBank.Site.Services
             return _messageMgr.SetMessageAsDeleted(maxId, memberId, contactorId);
         }
 
-        public List<MessageListItem> GetMessageList(int memberId, int pageSize = 0)
+        public List<MessageListItem> GetMessageList(int memberId, int pageSize = 0, Byte loadBy = 1)
         {
-            return _messageMgr.GetLastestMessagesByMemberId(memberId, pageSize);
+            return _messageMgr.GetLastestMessagesByMemberId(memberId, pageSize, loadBy);
         }
 
-        public List<Message> GetMessageDetail(int memberId, int friendId)
+        public List<Message> GetMessageDetail(int memberId, int contactId, Byte loadBy = 1)
         {
-            return _messageMgr.GetMessagesByFromToId(memberId, friendId);
+            return _messageMgr.GetMessagesByFromToId(memberId, contactId, loadBy);
         }
 
         public Dictionary<int, int> GetMessageUnReadNum(int memberId)

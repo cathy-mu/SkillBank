@@ -52,6 +52,9 @@
     <Reference Include="Combres.Mvc">
       <HintPath>..\packages\combres.mvc.2.2.2.18\lib\net40\Combres.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="dotNetDR_OAuth2">
+      <HintPath>..\packages\SocialNetwork\dotNetDR_OAuth2.dll</HintPath>
+    </Reference>
     <Reference Include="EF.Frameworks.Common, Version=2.0.4064.30623, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EF.Frameworks.Common.dll</HintPath>
@@ -84,9 +87,11 @@
     <Compile Include="ContentConfiguration\IMemberTypeContext.cs" />
     <Compile Include="ContentConfiguration\IServerContext.cs" />
     <Compile Include="Context\Cookie\CookieManager.cs" />
-    <Compile Include="Social\SinaHelper.cs" />
-    <Compile Include="UIHelper\CombresHelper.cs" />
+    <Compile Include="Social\SinaHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Social\SocialHelper.cs" />
+    <Compile Include="UIHelper\CombresHelper.cs" />
     <Compile Include="UIHelper\ContentHelper.cs" />
     <Compile Include="UIHelper\PagingHelper.cs" />
     <Compile Include="UIHelper\TagHelper.cs" />
