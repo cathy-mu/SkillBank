@@ -90,7 +90,7 @@ namespace SkillBank.Controllers
             ClassListModel classListModel = new ClassListModel();
 
             int cityId = CookieManager.GetCookieIntValue(Constants.CookieKeys.ClassListCity, Request);
-            int pageSize = 30;
+            int pageSize = 36;
             int pageId = id;
             int classNum = 0;//out parameter, get result number for paging
 
@@ -221,7 +221,7 @@ namespace SkillBank.Controllers
                             minId2 = classDetailModel.ClassComment.Min(i => i.ReviewId);
                         }
                     }
-                    
+
 
                     var classList = _commonService.GetClassInfoByTeacherId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
                     if (classList != null && classList.Count > 0)
@@ -235,32 +235,27 @@ namespace SkillBank.Controllers
 
                     classDetailModel.IsLogin = (currMemberId > 0);
                     classDetailModel.IsOwner = memberId.Equals(currMemberId);
-                    if (!classDetailModel.IsOwner)
-                    {
-                        var myInfo = _commonService.GetMemberInfo(currMemberId);
-                        classDetailModel.MyInfo = myInfo;
-                    }
-                    
+                    //if (!classDetailModel.IsOwner)
+                    //{
+                    //    var myInfo = _commonService.GetMemberInfo(currMemberId);
+                    //    classDetailModel.MyInfo = myInfo;
+                    //}
+
                     //init numbers on page
                     var numDic = _commonService.GetNumsByMemberClass(memberId, id);
-                    int sum0 = numDic["r01"] + numDic["r02"] + numDic["r03"];
-                    int sum1 = numDic["r11"] + numDic["r12"] + numDic["r13"];
-                    numDic.Add("sum0", sum0);
-                    numDic.Add("sum1", sum1);
-                    numDic.Add("min0", minId0);
-                    numDic.Add("max0", maxId0);
-                    numDic.Add("min1", minId1);
-                    numDic.Add("max1", maxId1);
-                    numDic.Add("min2", minId2);
-                    numDic.Add("max2", maxId2);
-                    numDic.Add("like", likeNum);
+                    int sum0 = numDic[Enums.NumberDictionaryKey.Result01] + numDic[Enums.NumberDictionaryKey.Result02] + numDic[Enums.NumberDictionaryKey.Result03];
+                    int sum1 = numDic[Enums.NumberDictionaryKey.Result11] + numDic[Enums.NumberDictionaryKey.Result12] + numDic[Enums.NumberDictionaryKey.Result13];
+                    numDic.Add(Enums.NumberDictionaryKey.Sum0, sum0);
+                    numDic.Add(Enums.NumberDictionaryKey.Sum1, sum1);
+                    numDic.Add(Enums.NumberDictionaryKey.Min0, minId0);
+                    numDic.Add(Enums.NumberDictionaryKey.Max0, maxId0);
+                    numDic.Add(Enums.NumberDictionaryKey.Min1, minId1);
+                    numDic.Add(Enums.NumberDictionaryKey.Max1, maxId1);
+                    numDic.Add(Enums.NumberDictionaryKey.Min2, minId2);
+                    numDic.Add(Enums.NumberDictionaryKey.Max2, maxId2);
+                    numDic.Add(Enums.NumberDictionaryKey.Like, likeNum);
 
                     classDetailModel.ClassNumDic = numDic;
-                    //Dictionary<String,int> classNumList
-                    //classDetailModel.ClassNums = _commonService.GetNumsByMemberClass(memberId, id);
-                    
-                    //classDetailModel.ClassRank = Convert.ToInt32(classRank);
-                    //classDetailModel.ClassCounter = new int[4] { classNum, studentNum, reviewNum, otherReviewNum };//Order, stdent, review
                 }
                 else
                 {
@@ -303,10 +298,18 @@ namespace SkillBank.Controllers
             classEditModel.isEdit = (edit == 1);//0 new class, 1 edit class
 
             var classInfo = _commonService.GetClassEditInfo(id, memberId);//.GetClassInfoByClassId(id);
+
+            List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
+            var IsAdmin = whiteListMem.Contains(memberId.ToString());
+            //classPreviewModel.IsOwner = memberId.Equals(currMemberId);
             
-            if (classInfo != null && classInfo.Member_Id.Equals(memberId))
+            if (classInfo != null && (classInfo.Member_Id.Equals(memberId) || IsAdmin))
             {
-                if (memberInfo != null)
+                if (classInfo.IsProved.Equals(3) && !IsAdmin)
+                {
+                    Response.Redirect("/class/publish");
+                }
+                else if (memberInfo != null)
                 {
                     classEditModel.MyInfo = memberInfo;
                     if (id.Equals(0))
@@ -330,6 +333,7 @@ namespace SkillBank.Controllers
                         classEditModel.ParentCategoryName = categoryLkp.ContainsKey(classEditModel.ParentCategoryId) ? categoryLkp[classEditModel.ParentCategoryId].CategoryInfo.CategoryName : "";
                     }
                     ViewBag.ClassId = id;
+                    
                 }
 
                 ViewBag.CharacterCountText = ResourceHelper.GetTransText(283).Replace("{0}", ";").Split(';');

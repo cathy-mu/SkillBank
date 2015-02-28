@@ -1,4 +1,5 @@
 ﻿@model SkillBank.Site.Web.ViewModel.ClassDetailModel
+@using SkillBank.Site.Common
 @section HeaderStyle{<meta name="robots" content="index,follow" />@Html.CombresCustomUrl("classDetailCss")}
 @section FooterJs{@Html.CombresCustomUrl("classDetailJs")}
 <div class="body">
@@ -71,10 +72,10 @@
                     <div class="class-reviews">
 
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#review-current" data-toggle="tab">@Html.GetTrans(210) (@Model.ClassNumDic["sum0"])</a></li>
-                            <li><a href="#review-other" data-toggle="tab">@Html.GetTrans(211) (@Model.ClassNumDic["sum1"])</a></li>
+                            <li class="active"><a href="#review-current" data-toggle="tab">@Html.GetTrans(210) (@Model.ClassNumDic[Enums.NumberDictionaryKey.Sum0])</a></li>
+                            <li><a href="#review-other" data-toggle="tab">@Html.GetTrans(211) (@Model.ClassNumDic[Enums.NumberDictionaryKey.Sum1])</a></li>
                             <!-- Begin of comment test html -->
-                            <!--<li><a href="#review-comment" data-toggle="tab">评论 (@Model.ClassNumDic["comment"])</a></li>-->
+                            <!--<li><a href="#review-comment" data-toggle="tab">评论 (@Model.ClassNumDic[Enums.NumberDictionaryKey.Comment])</a></li>-->
                         </ul>
                         <!-- end of tabs -->
 
@@ -82,7 +83,7 @@
                             <div class="tab-pane active padding" id="review-current">
 
                                 <div class="row-fluid form-inline spaced-larger">
-                                    <div class="span4 review-filter-class" id="review-tabsum00" data-value="@Model.ClassNumDic["sum0"]">
+                                    <div class="span4 review-filter-class" id="review-tabsum00" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Sum0]">
                                         <label for="2390" class="control-label radio" data-value="0">
                                             <input type="radio" name="class-reviewrad0" id="2390" checked="checked">
                                             @Html.GetTrans(212)
@@ -91,15 +92,15 @@
                                     <div class="span8 tright review-filter-class">
                                         <label for="5466" class="control-label spaced-right" data-value="3">
                                             <input type="radio" name="class-reviewrad0" id="5466">
-                                            <span class="label label-warning label-good" id="review-tabsum03" data-value="@Model.ClassNumDic["r03"]">@Html.GetTrans(213) (@Model.ClassNumDic["r03"])</span>
+                                            <span class="label label-warning label-good" id="review-tabsum03" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Result03]">@Html.GetTrans(213) (@Model.ClassNumDic[Enums.NumberDictionaryKey.Result03])</span>
                                         </label>
                                         <label for="4886" class="control-label spaced-right" data-value="2">
                                             <input type="radio" name="class-reviewrad0" id="4886">
-                                            <span class="label label-success label-okay" id="review-tabsum02" data-value="@Model.ClassNumDic["r02"]">@Html.GetTrans(214) (@Model.ClassNumDic["r02"])</span>
+                                            <span class="label label-success label-okay" id="review-tabsum02" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Result02]">@Html.GetTrans(214) (@Model.ClassNumDic[Enums.NumberDictionaryKey.Result02])</span>
                                         </label>
                                         <label for="1563" class="control-label" data-value="1">
                                             <input type="radio" name="class-reviewrad0" id="1563">
-                                            <span class="label label-default label-bad" id="review-tabsum01" data-value="@Model.ClassNumDic["r01"]">@Html.GetTrans(215) (@Model.ClassNumDic["r01"])</span>
+                                            <span class="label label-default label-bad" id="review-tabsum01" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Result01]">@Html.GetTrans(215) (@Model.ClassNumDic[Enums.NumberDictionaryKey.Result01])</span>
                                         </label>
                                     </div>
                                 </div>
@@ -147,7 +148,7 @@
 
                             <div class="tab-pane padding" id="review-other">
                                 <div class="row-fluid form-inline spaced-larger">
-                                    <div class="span4 review-filter-other" id="review-tabsum10" data-value="@Model.ClassNumDic["sum1"]">
+                                    <div class="span4 review-filter-other" id="review-tabsum10" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Sum1]">
                                         <label for="4009" class="control-label" data-value="0">
                                             <input type="radio" name="class-reviewrad1" id="4009" checked="checked">
                                             @Html.GetTrans(212)</label>
@@ -155,15 +156,15 @@
                                     <div class="span8 tright review-filter-other">
                                         <label for="6122" class="control-label spaced-right" data-value="3">
                                             <input type="radio" name="class-reviewrad1" id="6122">
-                                            <span class="label label-warning label-good" id="review-tabsum13" data-value="@Model.ClassNumDic["r13"]">@Html.GetTrans(213) (@Model.ClassNumDic["r13"])</span>
+                                            <span class="label label-warning label-good" id="review-tabsum13" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Result13]">@Html.GetTrans(213) (@Model.ClassNumDic[Enums.NumberDictionaryKey.Result13])</span>
                                         </label>
                                         <label for="1622" class="control-label spaced-right" data-value="2">
                                             <input type="radio" name="class-reviewrad1" id="1622">
-                                            <span class="label label-success label-okay" id="review-tabsum12" data-value="@Model.ClassNumDic["r12"]">@Html.GetTrans(214) (@Model.ClassNumDic["r12"])</span>
+                                            <span class="label label-success label-okay" id="review-tabsum12" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Result12]">@Html.GetTrans(214) (@Model.ClassNumDic[Enums.NumberDictionaryKey.Result12])</span>
                                         </label>
                                         <label for="6324" class="control-label" data-value="1">
                                             <input type="radio" name="class-reviewrad1" id="6324">
-                                            <span class="label label-default label-bad" id="review-tabsum11" data-value="@Model.ClassNumDic["r11"]">@Html.GetTrans(215) (@Model.ClassNumDic["r11"])</span>
+                                            <span class="label label-default label-bad" id="review-tabsum11" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Result11]">@Html.GetTrans(215) (@Model.ClassNumDic[Enums.NumberDictionaryKey.Result11])</span>
                                         </label>
                                     </div>
                                 </div>
@@ -212,7 +213,7 @@
                             <!-- Begin of comment test html -->
                             <!--
                             <div class="tab-pane padding" id="review-comment">
-                                <div class="row-fluid form-inline spaced-larger"  id="review-tabsum20" data-value="@Model.ClassNumDic["comment"]">
+                                <div class="row-fluid form-inline spaced-larger"  id="review-tabsum20" data-value="@Model.ClassNumDic[Enums.NumberDictionaryKey.Comment]">
                                 </div>
                                 
 
@@ -358,21 +359,21 @@
 
                     <div class="class-user-popularity">
                         <div class="hd">
-                            <h3>@Model.ClassNumDic["rank"]@Html.Raw("%")</h3>
+                            <h3>@Model.ClassNumDic[Enums.NumberDictionaryKey.Rank]@Html.Raw("%")</h3>
                             <p>@Html.GetTrans(206)</p>
                         </div>
                         <div class="bd">
                             <div class="row-fluid">
                                 <div class="span4">
-                                    <h4>@Model.ClassNumDic["class"]</h4>
+                                    <h4>@Model.ClassNumDic[Enums.NumberDictionaryKey.Class]</h4>
                                     <p>@Html.GetTrans(207)</p>
                                 </div>
                                 <div class="span4">
-                                    <h4>@Model.ClassNumDic["student"]</h4>
+                                    <h4>@Model.ClassNumDic[Enums.NumberDictionaryKey.Student]</h4>
                                     <p>@Html.GetTrans(208)</p>
                                 </div>
                                 <div class="span4">
-                                    <h4>@Model.ClassNumDic["sum0"]</h4>
+                                    <h4>@Model.ClassNumDic[Enums.NumberDictionaryKey.Sum0]</h4>
                                     <p>@Html.GetTrans(209)</p>
                                 </div>
                             </div>
@@ -383,12 +384,12 @@
 
                 </div>
             </div>
-            <input type="hidden" id="classdetail-hidmaxid0" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["max0"])" />
-            <input type="hidden" id="classdetail-hidmaxid1" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["max1"])" />
-            <input type="hidden" id="classdetail-hidmaxid2" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["max2"])" />
-            <input type="hidden" id="classdetail-hidminid0" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["min0"])" />
-            <input type="hidden" id="classdetail-hidminid1" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["min1"])" />
-            <input type="hidden" id="classdetail-hidminid2" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["min2"])" />
+            <input type="hidden" id="classdetail-hidmaxid0" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Max0])" />
+            <input type="hidden" id="classdetail-hidmaxid1" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Max1])" />
+            <input type="hidden" id="classdetail-hidmaxid2" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Max2])" />
+            <input type="hidden" id="classdetail-hidminid0" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Min0])" />
+            <input type="hidden" id="classdetail-hidminid1" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Min1])" />
+            <input type="hidden" id="classdetail-hidminid2" value="@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Min2])" />
             <input type="hidden" id="classdetail-hidclassid" value="@(Model.ClassInfo == null ? 0 : Model.ClassInfo.ClassId)" />
             <input type="hidden" id="classdetail-hidmemberid" value="@(Model.MemberInfo == null ? 0 : Model.MemberInfo.MemberId)" />
             <input type="hidden" id="classdetail-hidmrname" value="@(Model.MemberInfo == null ? "" : Model.MemberInfo.Name)" />
@@ -420,7 +421,7 @@
                   <a href="#"><img src="../img/icon-share-douban-2.png"></a> 
                 </span>-->
                 <span class="high-light spaced-right">@Html.GetTrans(285)</span>
-                <span class="spaced-right"><i id="class-detail-linkicon" class="fa fa-heart icon-large @(Model.ClassInfo.PublishStatus.Equals(1) ? "fa-heart-like" : "")"></i> <span id="class-detail-linknum" class="gray-light bold">@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic["like"])</span></span>
+                <span class="spaced-right"><i id="class-detail-linkicon" class="fa fa-heart icon-large @(Model.ClassInfo.PublishStatus.Equals(1) ? "fa-heart-like" : "")"></i> <span id="class-detail-linknum" class="gray-light bold">@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Like])</span></span>
               </div>
             </div>
           </div>

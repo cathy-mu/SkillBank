@@ -56,11 +56,31 @@ namespace SkillBankWeb.API
         //    return null;
         //}
 
+        //public Boolean UpdateLikeTag(LikeClassItem item)
+        //{
+        //    _commonService.UpdateClassLikeTag(item.MemberId, item.ClassId, item.IsLike);
+        //    return true;
+        //}
+
         public Boolean UpdateLikeTag(LikeClassItem item)
         {
-            _commonService.UpdateClassLikeTag(item.MemberId, item.ClassId, item.IsLike);
-            return true;
+            int memberId = WebContext.Current.MemberId;
+            if (memberId > 0)
+            {
+                _commonService.UpdateClassLikeTag(memberId, item.ClassId, item.IsLike);
+                return true;
+            }
+            else
+            {
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.StatusCode = 401;
+                HttpContext.Current.Response.End();
+            }
+            return false;
+        
         }
+
+        
 
 
     }

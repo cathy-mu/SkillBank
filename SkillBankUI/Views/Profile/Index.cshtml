@@ -1,4 +1,5 @@
 ﻿@model SkillBank.Site.Web.ViewModel.ProfilelModel
+@using SkillBank.Site.Common
 @section HeaderStyle
 {<meta name="robots" content="index,follow" />@Html.CombresCustomUrl("profileCss")}
 @section FooterJs
@@ -20,9 +21,9 @@
 
                     <div class="row-fluid spaced-large">
                         <div class="span6 tcenter">
-                            <div class="profile-badge-review"><span>@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic["sum"])</span></div>
+                            <div class="profile-badge-review"><span>@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum2])</span></div>
                             <br>
-                            <span class="gray-light">@TextContentHelper.ReplaeceBlurbParameterWithNumber(223, (Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic["sum"]))</span>
+                            <span class="gray-light">@TextContentHelper.ReplaeceBlurbParameterWithNumber(223, (Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum2]))</span>
                         </div>
                         <div class="span6 tcenter">
                             <div class="profile-badge-verification"><span>1</span></div>
@@ -31,13 +32,13 @@
                         </div>
                     </div>
                     <div class="tcenter">
-                        @if (@Model.MemberInfo.SocialType == 1)
+                        @if (ViewBag.MemberInfo != null && Model.MemberInfo.SocialType == 1)
                         {<a href="http://weibo.com/@Model.MemberInfo.SocialAccount">查看微博   <i class="fa fa-caret-right"></i></a>}
                         else
                         {@TextContentHelper.GetSocialAccoutName(Model.MemberInfo.SocialType)}
                     </div>
                     <!--<div class="tcenter"> 
-                        <i class="profile-linkicon fa fa-heart icon-large @(Model.MemberInfo.IsLike ? "fa-heart-like" : "")" data-id="@Model.MemberInfo.MemberId"></i>&nbsp;<label class="profile-linknum">@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic["like"])</label>
+                        <i class="profile-linkicon fa fa-heart icon-large @(Model.MemberInfo.IsLike ? "fa-heart-like" : "")" data-id="@Model.MemberInfo.MemberId"></i>&nbsp;<label class="profile-linknum">@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic[Enums.NumberDictionaryKey.Like])</label>
                     </div>-->
                 </div>
                 <!-- end of user pane -->
@@ -153,13 +154,13 @@
 
                 <div class="profile-user-reviews cf spaced-larger">
                     <div class="hd spaced">
-                        <h3>@Html.GetTrans(232) (@Model.ProfileNumDic["sum"])</h3>
+                        <h3>@Html.GetTrans(232) (@(Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum0]+Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum1]))</h3>
                     </div>
                     <div class="bd">
 
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#review-students" data-toggle="tab" id="review-tabsum0" data-value="@Model.ProfileNumDic["sum0"]">@Html.GetTrans(233) (@Model.ProfileNumDic["sum0"])</a></li>
-                            <li><a href="#review-teachers" data-toggle="tab" id="review-tabsum1" data-value="@Model.ProfileNumDic["sum1"]">@Html.GetTrans(234) (@Model.ProfileNumDic["sum1"])</a></li>
+                            <li class="active"><a href="#review-students" data-toggle="tab" id="review-tabsum0" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum0]">@Html.GetTrans(233) (@Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum0])</a></li>
+                            <li><a href="#review-teachers" data-toggle="tab" id="review-tabsum1" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum1]">@Html.GetTrans(234) (@Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum1])</a></li>
                         </ul>
                         <!-- end of tabs -->
 
@@ -168,7 +169,7 @@
                             <div class="tab-pane active padding" id="review-students">
 
                                 <div class="row-fluid form-inline spaced-larger">
-                                    <div class="span4 review-filter-students" id="review-tabsum00" data-value="@Model.ProfileNumDic["sum0"]">
+                                    <div class="span4 review-filter-students" id="review-tabsum00" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum0]">
                                         <label for="2390" class="control-label radio" data-value="0">
                                             <input type="radio" name="class-reviewrad0" id="2390" checked="checked">
                                             @Html.GetTrans(212)
@@ -177,15 +178,15 @@
                                     <div class="span8 tright review-filter-students">
                                         <label for="5466" class="control-label spaced-right" data-value="3">
                                             <input type="radio" name="class-reviewrad0">
-                                            <span class="label label-warning label-good" id="review-tabsum03" data-value="@Model.ProfileNumDic["r03"]">@Html.GetTrans(213) (@Model.ProfileNumDic["r03"])</span>
+                                            <span class="label label-warning label-good" id="review-tabsum03" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result03]">@Html.GetTrans(213) (@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result03])</span>
                                         </label>
                                         <label for="4886" class="control-label spaced-right" data-value="2">
                                             <input type="radio" name="class-reviewrad0">
-                                            <span class="label label-success label-okay" id="review-tabsum02" data-value="@Model.ProfileNumDic["r02"]">@Html.GetTrans(214) (@Model.ProfileNumDic["r02"])</span>
+                                            <span class="label label-success label-okay" id="review-tabsum02" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result02]">@Html.GetTrans(214) (@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result02])</span>
                                         </label>
                                         <label for="1563" class="control-label" data-value="1">
                                             <input type="radio" name="class-reviewrad0">
-                                            <span class="label label-default label-bad" id="review-tabsum01" data-value="@Model.ProfileNumDic["r01"]">@Html.GetTrans(215) (@Model.ProfileNumDic["r01"])</span>
+                                            <span class="label label-default label-bad" id="review-tabsum01" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result01]">@Html.GetTrans(215) (@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result01])</span>
                                         </label>
                                     </div>
                                 </div>
@@ -236,22 +237,22 @@
 
                             <div class="tab-pane padding" id="review-teachers">
                                 <div class="row-fluid form-inline spaced-larger">
-                                    <div class="span4 review-filter-teachers" id="review-tabsum10" data-value="@Model.ProfileNumDic["sum1"]">
+                                    <div class="span4 review-filter-teachers" id="review-tabsum10" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Sum1]">
                                         <label for="4009" class="control-label" data-value="0">
                                             <input type="radio" name="class-reviewrad1" id="4009" checked>@Html.GetTrans(212)</label>
                                     </div>
                                     <div class="span8 tright review-filter-teachers">
                                         <label for="5466" class="control-label spaced-right" data-value="3">
                                             <input type="radio" name="class-reviewrad1">
-                                            <span class="label label-warning label-good" id="review-tabsum13" data-value="@Model.ProfileNumDic["r13"]">@Html.GetTrans(213) (@Model.ProfileNumDic["r13"])</span>
+                                            <span class="label label-warning label-good" id="review-tabsum13" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result13]">@Html.GetTrans(213) (@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result13])</span>
                                         </label>
                                         <label for="4886" class="control-label spaced-right" data-value="2">
                                             <input type="radio" name="class-reviewrad1">
-                                            <span class="label label-success label-okay" id="review-tabsum12" data-value="@Model.ProfileNumDic["r12"]">@Html.GetTrans(214) (@Model.ProfileNumDic["r12"])</span>
+                                            <span class="label label-success label-okay" id="review-tabsum12" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result12]">@Html.GetTrans(214) (@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result12])</span>
                                         </label>
                                         <label for="1563" class="control-label" data-value="1">
                                             <input type="radio" name="class-reviewrad1">
-                                            <span class="label label-default label-bad" id="review-tabsum11" data-value="@Model.ProfileNumDic["r11"]">@Html.GetTrans(215) (@Model.ProfileNumDic["r11"])</span>
+                                            <span class="label label-default label-bad" id="review-tabsum11" data-value="@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result11]">@Html.GetTrans(215) (@Model.ProfileNumDic[Enums.NumberDictionaryKey.Result11])</span>
                                         </label>
                                     </div>
                                 </div>
@@ -331,10 +332,10 @@
         </div>
     </div>
     <input type="hidden" id="profile-hidmemberid" value="@((Model.MemberInfo == null) ? 0 : Model.MemberInfo.MemberId)" />
-    <input type="hidden" id="profile-hidmaxid0" value="@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic["max0"])" />
-    <input type="hidden" id="profile-hidmaxid1" value="@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic["max1"])" />
-    <input type="hidden" id="profile-hidminid0" value="@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic["min0"])" />
-    <input type="hidden" id="profile-hidminid1" value="@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic["min1"])" />
+    <input type="hidden" id="profile-hidmaxid0" value="@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic[Enums.NumberDictionaryKey.Max0])" />
+    <input type="hidden" id="profile-hidmaxid1" value="@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic[Enums.NumberDictionaryKey.Max1])" />
+    <input type="hidden" id="profile-hidminid0" value="@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic[Enums.NumberDictionaryKey.Min0])" />
+    <input type="hidden" id="profile-hidminid1" value="@(Model.ProfileNumDic == null ? 0 : Model.ProfileNumDic[Enums.NumberDictionaryKey.Min1])" />
     <input type="hidden" id="classlist-mycityid" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.CityId)"/>
     <input type="hidden" id="profile-myposx" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.PosX)"/>
     <input type="hidden" id="profile-myposy" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.PosY)"/>

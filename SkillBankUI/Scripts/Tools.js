@@ -41,7 +41,7 @@
         $('#setmemberid').click(function () {
             var memberId = $('#memberId').val();
             if (memberId != "") {
-                $.cookie(memberIdCookieName, memberId, { expires: 30, path: '/' });
+                sitecommon.setCookie(memberIdCookieName, memberId);
             }
         });
 
@@ -181,5 +181,105 @@
             });
         });
 
+        $("#logoutbtn").click(function () {
+            $.ajax({
+                url: "/SignUp/LogOutSocialAccount",
+                type: "POST",
+                dataType: "Json",
+                cache: false,
+                success: function (data) {
+                    alert("退出登录");
+                }, error: function (e) {
+                    //consoleLog(e);
+                }
+            });
+
+            sitecommon.setCookie(sitecommon.memberIdCookieName, 0);
+            sitecommon.removeCookie("sai");
+            sitecommon.removeCookie("sid");
+            sitecommon.removeCookie(sitecommon.socialIdCookieName);
+            sitecommon.removeCookie(sitecommon.socialTypeCookieName);
+
+        });
+
+
+        $("#unbindmobile").click(function () {
+           var mobile = $('#mobile').val();
+            var patten = new RegExp(/^[1]+[3,4,5,8]+\d{9}/);
+            if (mobile=="" || !patten.test(mobile)) {
+                alert("我读书少你不要骗我，你填的是手机号吗？");
+                return;
+            }
+            var paraData = { "type":11, "account": mobile };
+            $.ajax({
+                url: "/Tools/UnbindAccount",
+                type: "POST",
+                dataType: "Json",
+                data: paraData,
+                cache: false,
+                async: false,
+                success: function (data) {
+                    alert("Oh Yeah! 手机解绑了呢 , 好嗨森");
+                }
+            });
+
+        });
+
+        $("#unbindsid").click(function () {
+            var pass = $('#passcode').val();
+            var sid = $('#accountsid').val();
+            var patten = new RegExp(/^[2,3,6,8,0]+\d{3}/);
+            if (pass == "" || !patten.test(pass)) {
+                alert("我只想做一段安静的程序，麻烦你填对码，确认你是认真的好吗");
+                return;
+            }
+            if (sid == "") {
+                alert("你不确定不想告诉我你的社交账户id？");
+                return;
+            }
+            var paraData = { "type": 13, "account": sid };
+            $.ajax({
+                url: "/Tools/UnbindAccount",
+                type: "POST",
+                dataType: "Json",
+                data: paraData,
+                cache: false,
+                async: false,
+                success: function (data) {
+                    alert("痛哭着通知你，你的社交账号自由了");
+                }
+            });
+
+        });
+
+        $("#unbindmid").click(function () {
+            var pass = $('#passcode').val();
+            var mid = $('#accountmid').val();
+            var patten = new RegExp(/^[1,3,5,7,9]+\d{3}/);
+            if (pass == "" || !patten.test(pass)) {
+                alert("我只想做一段乖巧的程序，麻烦你填对码，发誓你是认真的好吗");
+                return;
+            }
+            if (mid == "") {
+                alert("你不确定不想告诉我你的用户id？");
+                return;
+            }
+            var paraData = { "type": 12, "account": mid };
+            $.ajax({
+                url: "/Tools/UnbindAccount",
+                type: "POST",
+                dataType: "Json",
+                data: paraData,
+                cache: false,
+                async: false,
+                success: function (data) {
+                    alert("好吧，我放你走，别再理我");
+                }
+            });
+
+
+
+        });
     }
+
 });

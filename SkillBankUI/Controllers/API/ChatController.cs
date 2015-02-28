@@ -20,7 +20,7 @@ namespace SkillBankWeb.API
         public readonly ICommonService _commonService;
         public class ChatItem
         {
-            public int FromId { get; set; }
+            //public int FromId { get; set; }
             public int ToId { get; set; }
             public String MessageText { get; set; }
         }
@@ -78,15 +78,32 @@ namespace SkillBankWeb.API
             return null;
         }
 
-        public int AddMessage(ChatItem chatItem)
+        public Boolean AddMessage(ChatItem chatItem)
         {
-            int fromId = chatItem.FromId;
-            int toId = chatItem.ToId;
-            String messageText = chatItem.MessageText;
-            var result = _commonService.AddMessage(fromId, toId, messageText);
-            return result;
+            int memberId = GetMemberId(true);
+            if (memberId > 0)
+            {
+                int toId = chatItem.ToId;
+                String messageText = chatItem.MessageText;
+                var result = _commonService.AddMessage(memberId, toId, messageText);
+                return true;
+            }
+            return false;
         }
 
+
+        private int GetMemberId(Boolean shouldAuthorize)
+        {
+
+            int memberId = WebContext.Current.MemberId;
+            if (shouldAuthorize && memberId == 0)
+            {
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.StatusCode = 401;
+                HttpContext.Current.Response.End();
+            }
+            return memberId;
+        }
 
     }
 }

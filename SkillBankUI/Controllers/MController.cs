@@ -13,12 +13,28 @@ using SkillBank.Site.Web.ViewModel;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.DataSource.Data;
 
+using dotNetDR_OAuth2;
+using dotNetDR_OAuth2.AccessToken;
+using dotNetDR_OAuth2.APIs;
+using dotNetDR_OAuth2.Net;
+using dotNetDR_OAuth2.JSON;
+using System.Net;
+
 namespace SkillBank.Controllers
 {
     public class MController : Controller
     {
         public readonly IContentService _contentService;
         public readonly ICommonService _commonService;
+
+        private IAuthorizationCodeBase _authCode = Uf.C(CtorAT.Tencent);
+        private TencentError _err = null;
+        private IApi apit = Uf.C(CtorApi.Tencent);
+
+        private IAuthorizationCodeBase _authCodes = Uf.C(CtorAT.Sina);
+        private SinaError _errs = null;
+        private IApi apis = Uf.C(CtorApi.Sina);
+
 
         public MController(IContentService contentService, ICommonService commonService)
         {
@@ -38,6 +54,12 @@ namespace SkillBank.Controllers
 
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+
         // GET: /M/
 
         /// <summary>
@@ -46,9 +68,8 @@ namespace SkillBank.Controllers
         /// <param name="by">默认 1</param>
         /// <param name="type">默认 1</param>
         /// <returns></returns>
-        public ActionResult Index(Byte by = 1, Byte type = 1, String key = "", String city = "")
+        public ActionResult Index(Byte by = 1, Byte type = 2, String key = "", String city = "")
         {
-            //TO DO:Test data
             int cityId = 0;
             Decimal x = Convert.ToDecimal(121.4165);
             Decimal y = Convert.ToDecimal(31.2190);
@@ -59,17 +80,21 @@ namespace SkillBank.Controllers
             ViewBag.MetaTagKeyWords = metaTags[1];
             ViewBag.MetaTagDescription = metaTags[2];
 
-            int memberId = WebContext.Current.MemberId;
-            var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
-            ViewBag.MemberInfo = memberInfo;
+            int memberId = GetCurrentMemberInfo(false);
+            ViewBag.ActiveTab = 0;
             //LoadNotificationAlert(memberId);
 
-            
+            if (!String.IsNullOrEmpty(key))
+            {
+                by = 3;
+                ViewBag.SearchKey = key;
+            }
+
             ClassListModel classListModel = new ClassListModel();
 
             var categories = _contentService.GetAllCategories();
             classListModel.CategoryLkp = LookupHelper.GetCatagory4Picker(categories);
-            
+
             var cityDic = _contentService.GetCities("cn");
             if (by.Equals((Byte)Enums.DBAccess.ClassTabListLoadType.NearBy) && !String.IsNullOrEmpty(city))
             {
@@ -86,65 +111,63 @@ namespace SkillBank.Controllers
             return View(classListModel);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">Class Id</param>
+        /// <returns></returns>
         public ActionResult Course(int id = 0)
         {
             String className = "";
             ClassDetailModel classDetailModel = new ClassDetailModel();
 
-            int currMemberId = WebContext.Current.MemberId;
-            ViewBag.MemberInfo = currMemberId > 0 ? _commonService.GetMemberInfo(currMemberId) : null;
+            int memberId = GetCurrentMemberInfo(false);
             //LoadNotificationAlert(currMemberId);
 
             if (id > 0)
             {
-                var classInfo = _commonService.GetClassEditInfo(id, currMemberId, false);
+                var classInfo = _commonService.GetClassEditInfo(id, memberId, false);
                 if (classInfo != null)
                 {
-                    int maxId0 = 0, minId0 = 0, maxId1 = 0, minId1 = 0, maxId2 = 0, minId2 = 0, likeNum = 0;
+                    int reviewNum = 0, commentNum = 0, likeNum = 0;//current class, member other class, comment, like num
                     likeNum = classInfo.ClassId;
                     classInfo.ClassId = id;
                     classDetailModel.ClassInfo = classInfo;
-                    int memberId = classInfo.Member_Id;
-                    ViewBag.ContactorId = memberId;
+                    int teacherId = classInfo.Member_Id;
+                    ViewBag.ContactorId = teacherId;
                     //class owner
                     className = String.IsNullOrEmpty(classInfo.Title) ? ResourceHelper.GetTransText(560) : classInfo.Title;
 
-                    var memberInfo = _commonService.GetMemberInfo(memberId);
-                    classDetailModel.MemberInfo = memberInfo;
+                    //TO DO : Update data model add like number later
+                    var teacherInfo = _commonService.GetMemberInfo(teacherId, memberId);
+                    teacherInfo.MemberId = teacherId;
+                    classDetailModel.MemberInfo = teacherInfo;
 
-                    var studentReview = _commonService.GetClassReviews((Byte)Enums.DBAccess.ReviewLoadType.ByClass, memberId, id, 0, 0);
+                    var studentReview = _commonService.GetClassReviews((Byte)Enums.DBAccess.ReviewLoadType.ByClass, teacherId, id, 0, 0);
                     if (studentReview != null && studentReview.Count > 0)
                     {
-                        classDetailModel.ClassReview = studentReview.Where(r => r.TabId == 0).ToList();
-                        if (classDetailModel.ClassReview != null && classDetailModel.ClassReview.Count() != 0)
+                        var classReviews = studentReview.Where(r => r.TabId == 0).ToList();
+                        if (classReviews != null && classReviews.Count() != 0)
                         {
-                            maxId0 = classDetailModel.ClassReview.Max(i => i.ReviewId);
-                            minId0 = classDetailModel.ClassReview.Min(i => i.ReviewId);
+                            classDetailModel.ClassReview = classReviews;
+                            reviewNum = classReviews.Count();
                         }
-                        classDetailModel.OtherClassReview = studentReview.Where(r => r.TabId == 1).ToList();
-                        if (classDetailModel.OtherClassReview != null && classDetailModel.OtherClassReview.Count() != 0)
-                        {
-                            maxId1 = classDetailModel.OtherClassReview.Max(i => i.ReviewId);
-                            minId1 = classDetailModel.OtherClassReview.Min(i => i.ReviewId);
-                        }
+                        //var otherClassReviews = studentReview.Where(r => r.TabId == 1).ToList();
+                        //if (otherClassReviews != null && otherClassReviews.Count() != 0)
+                        //{
+                        //    classDetailModel.OtherClassReview = otherClassReviews;
+                        //    sum1 = otherClassReviews.Count();
+                        //}
 
-                        classDetailModel.OtherClassReview = studentReview.Where(r => r.TabId == 1).ToList();
-                        if (classDetailModel.OtherClassReview != null && classDetailModel.OtherClassReview.Count() != 0)
+                        var classComments = studentReview.Where(r => r.TabId == 2).ToList();
+                        if (classComments != null && classComments.Count() != 0)
                         {
-                            maxId1 = classDetailModel.OtherClassReview.Max(i => i.ReviewId);
-                            minId1 = classDetailModel.OtherClassReview.Min(i => i.ReviewId);
-                        }
-
-                        classDetailModel.ClassComment = studentReview.Where(r => r.TabId == 2).ToList();
-                        if (classDetailModel.ClassComment != null && classDetailModel.ClassComment.Count() != 0)
-                        {
-                            maxId2 = classDetailModel.ClassComment.Max(i => i.ReviewId);
-                            minId2 = classDetailModel.ClassComment.Min(i => i.ReviewId);
+                            classDetailModel.ClassComment = classComments;
+                            commentNum = classComments.Count();
                         }
                     }
 
-
-                    var classList = _commonService.GetClassInfoByTeacherId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
+                    var classList = _commonService.GetClassInfoByTeacherId(teacherId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
                     if (classList != null && classList.Count > 0)
                     {
                         classDetailModel.ClassList = classList.Where(c => c.ClassId != id).ToList();
@@ -154,34 +177,16 @@ namespace SkillBank.Controllers
                         classDetailModel.ClassList = null;
                     }
 
-                    classDetailModel.IsLogin = (currMemberId > 0);
-                    classDetailModel.IsOwner = memberId.Equals(currMemberId);
-                    if (!classDetailModel.IsOwner)
-                    {
-                        var myInfo = _commonService.GetMemberInfo(currMemberId);
-                        classDetailModel.MyInfo = myInfo;
-                    }
+                    classDetailModel.IsLogin = (memberId > 0);
+                    classDetailModel.IsOwner = memberId.Equals(teacherId);
 
+
+                    var numDic = _commonService.GetNumsByMemberClass(teacherId, id, (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassSummary);
                     //init numbers on page
-                    var numDic = _commonService.GetNumsByMemberClass(memberId, id);
-                    int sum0 = numDic["r01"] + numDic["r02"] + numDic["r03"];
-                    int sum1 = numDic["r11"] + numDic["r12"] + numDic["r13"];
-                    numDic.Add("sum0", sum0);
-                    numDic.Add("sum1", sum1);
-                    numDic.Add("min0", minId0);
-                    numDic.Add("max0", maxId0);
-                    numDic.Add("min1", minId1);
-                    numDic.Add("max1", maxId1);
-                    numDic.Add("min2", minId2);
-                    numDic.Add("max2", maxId2);
-                    numDic.Add("like", likeNum);
-
+                    numDic.Add(Enums.NumberDictionaryKey.StudentReview, reviewNum);
+                    numDic.Add(Enums.NumberDictionaryKey.Comment, commentNum);
+                    numDic.Add(Enums.NumberDictionaryKey.Like, likeNum);
                     classDetailModel.ClassNumDic = numDic;
-                    //Dictionary<String,int> classNumList
-                    //classDetailModel.ClassNums = _commonService.GetNumsByMemberClass(memberId, id);
-
-                    //classDetailModel.ClassRank = Convert.ToInt32(classRank);
-                    //classDetailModel.ClassCounter = new int[4] { classNum, studentNum, reviewNum, otherReviewNum };//Order, stdent, review
                 }
                 else
                 {
@@ -202,15 +207,15 @@ namespace SkillBank.Controllers
         public ActionResult Message()
         {
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("message");
+            ViewBag.ActiveTab = 1;
 
-            var memberId = WebContext.Current.MemberId;
-            ViewBag.MemberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
+            int memberId = GetCurrentMemberInfo(true);
+            //LoadNotificationAlert(currMemberId);
 
             MessageListModel messageListModel = new MessageListModel();
             if (memberId > 0)
             {
-                //LoadNotificationAlert(memberId);
-                var messages = _commonService.GetMessageList(memberId);
+                var messages = _commonService.GetMessageList(memberId, 0, (Byte)Enums.DBAccess.MessageLoadType.DateAsc);
                 messageListModel.Messages = messages;
 
                 var unReadMessageNum = _commonService.GetMessageUnReadNum(memberId);
@@ -224,14 +229,14 @@ namespace SkillBank.Controllers
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("chat");
 
             int contactId = id;
-            var memberId = WebContext.Current.MemberId;
-            ViewBag.MemberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
+            int memberId = GetCurrentMemberInfo(true);
+            //LoadNotificationAlert(currMemberId);
+
 
             MessageDetailModel messageDetailModel = new MessageDetailModel();
             if (memberId > 0 && memberId != contactId && contactId > 0)
             {
-                //LoadNotificationAlert(memberId);
-                var messages = _commonService.GetMessageDetail(memberId, contactId);
+                var messages = _commonService.GetMessageDetail(memberId, contactId, (Byte)Enums.DBAccess.MessageLoadType.DateAsc);
                 messageDetailModel.Messages = messages;
                 messageDetailModel.Contact = _commonService.GetMemberInfo(contactId);
                 messageDetailModel.ContactClass = _commonService.GetClassInfoByTeacherId(contactId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
@@ -239,28 +244,28 @@ namespace SkillBank.Controllers
 
                 //TO DO : Move to client side with set max message id
                 _commonService.SetMessageAsRead(0, memberId, contactId);
-                return View(messageDetailModel);
             }
-            else
-            {
-                return View();
-            }
-        }
+            return View(messageDetailModel);
+         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Personal(int id = 0)
         {
             String userName = "";
-            int likeNum = 0;
+            int likeNum = 0, sReviewNum = 0, tReviewNum = 0, certificateNum = 0;
+            int currMemberId = GetCurrentMemberInfo(false);
+            //LoadNotificationAlert(currMemberId);
+
             ProfilelModel profileModel = new ProfilelModel();
-            var currMemberId = WebContext.Current.MemberId;
-            var currMemberInfo = currMemberId > 0 ? _commonService.GetMemberInfo(currMemberId) : null;
-            ViewBag.MemberInfo = currMemberInfo;
 
             int memberId = 0;
             //view other member's page
             if (id > 0)
             {
-                //LoadNotificationAlert(memberId);
                 memberId = id;
                 var memberInfo = _commonService.GetMemberInfo(memberId, currMemberId);
                 if (memberInfo != null)
@@ -273,46 +278,40 @@ namespace SkillBank.Controllers
                 {
                     return View();
                 }
-                userName = memberInfo == null ? "" : memberInfo.Name;
+                userName = (memberInfo == null ? "" : memberInfo.Name);
             }
             else if (id == 0)
             {
                 memberId = currMemberId;
-                profileModel.MemberInfo = currMemberInfo;
-                userName = currMemberInfo.Name;
+                profileModel.MemberInfo = ViewBag.MemberInfo;
+                userName = ViewBag.MemberInfo.Name;
             }
             profileModel.ClassList = _commonService.GetClassInfoByTeacherId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
+
+            //Get reviews
             if (memberId > 0)
             {
-                int maxId0 = 0, minId0 = 0, maxId1 = 0, minId1 = 0;
-                var reviews = _commonService.GetMemberReviews((Byte)Enums.DBAccess.ReviewLoadType.ByMember, memberId, 0, 0);
+                var reviews = _commonService.GetMemberReviews((Byte)Enums.DBAccess.ReviewLoadType.ByMemberAll, memberId, 0, 0);
                 if (reviews != null && reviews.Count > 0)
                 {
-                    profileModel.StuentReview = reviews.Where(r => r.TabId == 0).ToList();
-                    if (profileModel.StuentReview != null && profileModel.StuentReview.Count() != 0)
+                    var stuentReview = reviews.Where(r => r.TabId == 0).ToList();
+                    if (stuentReview != null && stuentReview.Count() != 0)
                     {
-                        maxId0 = profileModel.StuentReview.Max(i => i.ReviewId);
-                        minId0 = profileModel.StuentReview.Min(i => i.ReviewId);
+                        profileModel.StuentReview = stuentReview;
+                        sReviewNum = stuentReview.Count();
                     }
-                    profileModel.TeacherReview = reviews.Where(r => r.TabId == 1).ToList();
-                    if (profileModel.TeacherReview != null && profileModel.TeacherReview.Count() != 0)
+
+                    var teacherReview = reviews.Where(r => r.TabId == 1).ToList();
+                    if (teacherReview != null && teacherReview.Count() != 0)
                     {
-                        maxId1 = profileModel.TeacherReview.Max(i => i.ReviewId);
-                        minId1 = profileModel.TeacherReview.Min(i => i.ReviewId);
+                        profileModel.TeacherReview = teacherReview;
+                        tReviewNum = teacherReview.Count();
                     }
                 }
 
-                var numDic = _commonService.GetNumsByMember(memberId);
-                int sum0 = numDic["r01"] + numDic["r02"] + numDic["r03"];
-                int sum1 = numDic["r11"] + numDic["r12"] + numDic["r13"];
-                numDic.Add("sum0", sum0);
-                numDic.Add("sum1", sum1);
-                numDic.Add("sum", sum0 + sum1);
-                numDic.Add("max0", maxId0);
-                numDic.Add("max1", maxId1);
-                numDic.Add("min0", minId0);
-                numDic.Add("min1", minId1);
-                numDic.Add("like", likeNum);
+                var numDic = _commonService.GetNumsByMember(memberId, (Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberSummary);
+                numDic.Add(Enums.NumberDictionaryKey.StudentReview, sReviewNum);
+                numDic.Add(Enums.NumberDictionaryKey.TeacherReview, tReviewNum);
 
                 profileModel.ProfileNumDic = numDic;
             }
@@ -326,5 +325,140 @@ namespace SkillBank.Controllers
         }
 
 
+        public ActionResult Register(string code = "", string openid = "", string openkey = "")
+        {
+            ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("sinup");
+            ViewBag.MemberInfo = null;
+
+            Byte socialType = 0;
+
+            //OAuth2
+            if (!String.IsNullOrEmpty(code))
+            {
+                //Tencent
+                if (!String.IsNullOrEmpty(openid))
+                {
+                    socialType = 3;
+                    if (Session["accessToken"] == null && !string.IsNullOrEmpty(code))
+                    {
+                        var redirectUrl = AccessTokenToolkit.GenerateHostPath(Request.Url) + Url.Action("Index", "SignUp");
+                        ViewBag.SocialInfo = _authCode.GenerateAccessTokenUrl(redirectUrl, code);
+                        var accessToken = _authCode.GetResult(_authCode.GenerateAccessTokenUrl(redirectUrl, code));
+
+                        /*if (apit.WasError(accessToken, out _err))
+                        {
+                            Session["err"] = _err;
+                            return RedirectToAction("Error");
+                        }
+
+                        accessToken.openid = openid; //注意腾讯微创新
+                        accessToken.openkey = openkey; //注意腾讯微创新
+                        Session.Add("accessToken", accessToken);
+
+                        WebContext.Current.SocialAccount = openid;
+                        WebContext.Current.SocialAccessInfo = String.Format("{0};{1}", accessToken.access_token, openkey);*/
+                        WebContext.Current.SocialType = (Byte)Enums.SocialTpye.QQ;
+                    }
+                }
+                //Sina
+                else
+                {
+                    socialType = 1;
+                    if (Session["accessToken"] == null && !string.IsNullOrEmpty(code))
+                    {
+                        var redirectUrl = AccessTokenToolkit.GenerateHostPath(Request.Url) + Url.Action("Index", "SignUp");
+                        var accessToken = _authCodes.GetResult(_authCodes.GenerateAccessTokenUrl(redirectUrl, code));
+
+                        if (apis.WasError(accessToken, out _errs))
+                        {
+                            Session["err"] = _errs;
+                            return RedirectToAction("Error");
+                        }
+                        Session.Add("accessToken", accessToken);
+                        WebContext.Current.SocialAccount = accessToken.uid;
+                        WebContext.Current.SocialAccessInfo = accessToken.access_token;
+                        WebContext.Current.SocialType = (Byte)Enums.SocialTpye.Sina;
+                    }
+
+                }
+
+                if (socialType > 0)
+                {
+                    GetUserInfo(socialType);
+                }
+            }
+            return View();
+        }
+
+        [NonAction]
+        private void GetUserInfo(Byte socialType)
+        {
+            String socialAccount = "";
+            var accessTokenObj = Session["accessToken"] as dynamic;
+            var accessToken = accessTokenObj.access_token;
+
+            //Sina
+            if (socialType == 1)
+            {
+                var uid = accessTokenObj.uid;
+                var model = apis.CallGet("users/show.json?uid=" + uid, accessToken);
+
+                if (apis.WasError(model, out _err))
+                {
+                    Session["err"] = _err;
+                }
+                else
+                {
+                    ViewBag.SocialName = model.screen_name;
+                    ViewBag.SocialAvatar = model.avatar_large;
+                    socialAccount = uid;
+                    //var blogStatus = apis.CallGet("statuses/user_timeline/ids.json?uid=" + uid, accessToken);
+                    //ViewBag.SocialInfo = blogStatus.total_number;
+                }
+            }
+            //Tencent
+            else if (socialType == 3)
+            {
+            }
+
+            ViewBag.SocialType = (Byte)socialType;
+            if (!String.IsNullOrEmpty(socialAccount))
+            {
+                ViewBag.SocialAccount = socialAccount;
+                WebContext.Current.SocialAccount = socialAccount;
+
+                var memberInfo = _commonService.GetMemberInfo(socialAccount, (Byte)socialType);
+                int memberId = (memberInfo == null ? 0 : memberInfo.MemberId);
+                WebContext.Current.MemberId = memberId;
+                ViewBag.MemberId = memberId;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shouldLogin"></param>
+        /// <returns></returns>
+        private int GetCurrentMemberInfo(Boolean shouldLogin)
+        {
+            int memberId = WebContext.Current.MemberId;
+            var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
+            if (memberInfo != null)
+            {
+                ViewBag.MemberInfo = memberInfo;
+                ViewBag.IsLogin = true;
+            }
+            else
+            {
+                ViewBag.IsLogin = false;
+                if (shouldLogin)
+                {
+                    Response.Redirect("/m/login");
+                }
+            }
+            return memberId;
+        }
+        
     }
 }

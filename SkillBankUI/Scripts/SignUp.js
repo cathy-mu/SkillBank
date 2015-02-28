@@ -55,10 +55,13 @@ function signup_Class() {
             $("#signup-hidavatar").val(sitecommon.getMemberSocialAvatar());
             $("#signup-hidsid").val(sitecommon.getMemberSocialId());
             $("#signup-hidtype").val(sitecommon.getMemberSocialType());
-        } else if ($("#signup-mid").val() != undefined) {
+        }
+        //Redirect if user already log in
+        else if ($("#signup-mid").val() != undefined)
+        {
             var memberId = $("#signup-mid").val();
             if (memberId != "" && memberId > 0) {
-                signup.redirectAfterLogin();
+                //signup.redirectAfterLogin();
             } else {
                 if (typeof (mixpanel) != "undefined") {
                     mixpanel.track("signup page");
@@ -113,7 +116,13 @@ function signup_Class() {
             backUrl = decodeURIComponent(backUrl);
         }
 
-        if (backUrl == "" || backUrl.indexOf("/signup") > 0) {
+        if ($.getUrlParam("code") == "y") {
+            alert("mobile");
+        }/*
+        else if (backUrl.indexOf("/login") > 0) {
+            location.href = "/m/register";
+        }*/
+        else if (backUrl == "" || backUrl.indexOf("/signup") > 0) {
             location.href = "/";
         }
         else {

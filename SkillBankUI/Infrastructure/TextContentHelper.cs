@@ -225,11 +225,18 @@ namespace SkillBank.Site.Web
             return socialName;
         }
 
-        public static String GetTextContent(String content)
+        public static String GetTextContent(String content, int emptyTextBlurbId = 0)
         {
             if (String.IsNullOrEmpty(content))
             {
-                return "";
+                if (emptyTextBlurbId.Equals(0))
+                {
+                    return "";
+                }
+                else
+                {
+                    return ResourceHelper.GetTransText(emptyTextBlurbId); 
+                }
             }
             else
             {

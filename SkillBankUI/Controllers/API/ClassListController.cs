@@ -45,18 +45,18 @@ namespace SkillBankWeb.API
         /// <param name="key"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="city"></param>
+        /// <param name="city">City Name Keywords</param>
         /// <returns></returns>
-        public List<ClassListItem> GetClassList(Byte by, Byte type, int mid = 0, String key = "", Decimal x = 0, Decimal y = 0, String city = "")
+        public List<ClassListItem> GetClassList(Byte by, Byte type, int mid = 0, String key = "", Double x = 0, Double y = 0, String city = "")
         {
-            //x = Convert.ToDecimal(121.4165);
-            //y = Convert.ToDecimal(31.2190);
+            mid = WebContext.Current.MemberId;
             //city = "上海市";
             int coverw = 600;
             int avatarw = 150;
             key = String.IsNullOrEmpty(key) ? "" : key;
             var cityDic = _contentService.GetCities("cn");
             int cityId = 0;
+            //If can get user position for query near by classes
             if (by.Equals((Byte)Enums.DBAccess.ClassTabListLoadType.NearBy) && !String.IsNullOrEmpty(city))
             {
                 city = city.Replace("市", "");
@@ -67,7 +67,7 @@ namespace SkillBankWeb.API
                 }
             }
 
-            var result = _commonService.GetClassTabList(by, type, mid, key, x, y, cityId);
+            var result = _commonService.GetClassTabList(by, type, mid, key, (Decimal)x, (Decimal)y, cityId);
 
             List<ClassListItem> classList = result.Select(c => new ClassListItem()
             {

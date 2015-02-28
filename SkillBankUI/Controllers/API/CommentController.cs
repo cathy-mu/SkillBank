@@ -20,7 +20,7 @@ namespace SkillBankWeb.API
         public readonly ICommonService _commonService;
         public class CommentItem
         {
-            public int MemberId { get; set; }
+            //public int MemberId { get; set; }
             public int ClassId { get; set; }
             public String CommentText { get; set; }
         }
@@ -35,10 +35,22 @@ namespace SkillBankWeb.API
         }
         
         
-        public int AddComment(CommentItem item)
+        public Boolean AddComment(CommentItem item)
         {
-            var result = _commonService.AddComment(item.MemberId, item.ClassId, item.CommentText);
-            return result;
+            int memberId = WebContext.Current.MemberId;
+            if (memberId > 0)
+            {
+                var result = _commonService.AddComment(memberId, item.ClassId, item.CommentText);
+                if (result>0) 
+                return true;
+            }
+            else
+            {
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.StatusCode = 401;
+                HttpContext.Current.Response.End();
+            }
+            return false;
         }
 
 

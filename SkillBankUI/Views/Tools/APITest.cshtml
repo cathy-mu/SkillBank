@@ -1,62 +1,108 @@
 ﻿@section HeaderStyle
 {
-@Html.CombresCustomUrl("contentCss")}
+    @Html.CombresCustomUrl("contentCss")}
 @section FooterJs
 {@Html.CombresCustomUrl("apiJs")}
 <div class="body">
-    <div style="margin:50px 0 50px 200px">
-    1 获得课程测试 :   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Get Class List" id="getclassbtn"/>
-    </div>
-    
-    <div style="margin:50px 0 50px 200px">
-    2 点赞<br />
-    点赞者 :   <input type="text" value="1" id="like-mid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被点赞的课 :   <input type="text" value="2" id="like-cid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    是否点赞:   <input type="text" value="1" id="like-isl"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Update Like Tag" id="likebtn"/>
+    <div style="margin: 50px 0 50px 200px">
+        1 获得课程测试 :   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Get Class List" id="getclassbtn" />
     </div>
 
-    <div style="margin:50px 0 50px 200px">
-    3 关注<br />
-    关注者 :   <input type="text" value="1" id="follow-mid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被关注者 :   <input type="text" value="2" id="follow-fid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        是否关注:   <input type="text" value="1" id="follow-isf"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Update Follow Tag" id="followbtn"/>
+    <div style="margin: 50px 0 50px 200px">
+        2 点赞<br />
+        点赞者 :  
+        <input type="text" value="1" id="like-mid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被点赞的课 :  
+        <input type="text" value="2" id="like-cid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    是否点赞:  
+        <input type="text" value="1" id="like-isl" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Update Like Tag" id="likebtn" />
     </div>
 
-    <div style="margin:50px 0 50px 200px">
-    4 私信<br />
-    发送者 :   <input type="text" value="1" id="chat-fid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接受者 :   <input type="text" value="2" id="chat-tid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Add Chat Message" id="addchatbtn"/>
-    <br /><br />
-    消息内容 :   <input type="text" value="我是一条测试消息，我的id是0" id="chat-message" style="width:300px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div style="margin: 50px 0 50px 200px">
+        3 关注<br />
+        关注者 :  
+        <input type="text" value="1" id="follow-mid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被关注者 :  
+        <input type="text" value="2" id="follow-fid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        是否关注:  
+        <input type="text" value="1" id="follow-isf" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Update Follow Tag" id="followbtn" />
+    </div>
+
+    <div style="margin: 50px 0 50px 200px">
+        4 私信<br />
+        发送者 :  
+        <input type="text" value="1" id="chat-fid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接受者 :  
+        <input type="text" value="2" id="chat-tid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Add Chat Message" id="addchatbtn" />
+        <br />
+        <br />
+        消息内容 :  
+        <input type="text" value="我是一条测试消息，我的id是0" id="chat-message" style="width: 300px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
     </div>
 
-    
-    
-    <div style="margin:50px 0 50px 200px">
-    5 订课<br />
-    订课者 :   <input type="text" value="1" id="order-mid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;课程id :   <input type="text" value="7" id="order-cid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    订课时间 :  <input type="text" value="2015-01-08" id="order-date"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <br /><br />订课人名字:  <input type="text" value="我是订课人" id="order-name"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    订课人手机:  <input type="text" value="13564813923" id="order-mobile"/>
-    <br /><br />
-    备注 :   <input type="text" value="我是一条测试备注" id="order-remark" style="width:300px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Add Order" id="addorderbtn"/>
+
+
+    <div style="margin: 50px 0 50px 200px">
+        5 订课<br />
+        订课者 :  
+        <input type="text" value="1" id="order-mid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;课程id :  
+        <input type="text" value="7" id="order-cid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    订课时间 : 
+        <input type="text" value="2015-01-08" id="order-date" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <br />
+        <br />
+        订课人名字: 
+        <input type="text" value="我是订课人" id="order-name" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        订课人手机: 
+        <input type="text" value="13564813923" id="order-mobile" />
+        <br />
+        <br />
+        备注 :  
+        <input type="text" value="我是一条测试备注" id="order-remark" style="width: 300px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Add Order" id="addorderbtn" />
     </div>
 
-    <div style="margin:50px 0 50px 200px">
-    6 发送验证码到手机:   <input type="text" value="13564813923" id="valid-mobile"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="send" id="sendcodebtn"/>
+    <div style="margin: 50px 0 50px 200px">
+        6 发送验证码到手机:  
+        <input type="text" value="13564813923" id="valid-mobile" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="send" id="sendcodebtn" />
     </div>
 
-    <div style="margin:50px 0 50px 200px">
-    7 设备测试: @ViewBag.Agent  测试1 ： @ViewBag.Divice1 <br /><br /> 测试2 ： @ViewBag.Divice2<br /><br /> 测试3 ： @ViewBag.Divice3 <br /><br /> 测试4 ： @ViewBag.Divice4
+
+    <div style="margin: 50px 0 50px 200px">
+        7 用户注册<br />
+        名字 : 
+        <input type="text" value="用户名字" id="member-name" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;头像 : 
+        <input type="text" value="test.jpg" id="member-avatar" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <br />
+        手机号码 :  
+        <input type="text" value="13000000000" id="member-mobile" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;验证码 : 
+        <input type="text" value="999999" id="member-code" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <br />
+        社交账号 :  
+        <input type="text" value="0000000000" id="member-account" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;账号类型 : 
+        <input type="text" value="1" id="member-type" />
+        <br />
+        <input type="button" value="send" id="creatememberbtn" />
     </div>
 
-        
-    
-        
-        
-        
-        
-        
-   
-    
-    
-</div>    
+    <div style="margin: 50px 0 50px 200px">
+        8 设备测试: @ViewBag.Agent  测试1 ： @ViewBag.Divice1
+        <br />
+        <br />
+        测试2 ： @ViewBag.Divice2  (选为手机判断)<br />
+        <br />
+        测试3 ： @ViewBag.Divice3
+        <br />
+        <br />
+        测试4 ： @ViewBag.Divice4
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
 <!-- end of body -->

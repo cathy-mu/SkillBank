@@ -37,11 +37,23 @@ namespace SkillBankWeb.API
         }
    
 
-        //Byte VerifyMobile(int memberId, String mobile, String verifyCode);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <returns>0号码已占用　１验证码发送  2手机格式不对</returns>
         public Byte SendMobileVerifyCode(String mobile)
         {
-            var result = _commonService.SendMobileVerifyCode(0, mobile, true);
+            Byte result;
+            var isMobileValid = System.Text.RegularExpressions.Regex.IsMatch(mobile, Constants.ValidationExpressions.Mobile);
+            if (isMobileValid)
+            {
+                result = _commonService.SendMobileVerifyCode(0, mobile, true);
+            }
+            else
+            {
+                result = 2;
+            }
             return result;
         }
 

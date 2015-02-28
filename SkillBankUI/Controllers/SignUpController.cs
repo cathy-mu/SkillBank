@@ -39,9 +39,31 @@ namespace SkillBankWeb.Controllers
 
         public ActionResult Index(string code = "", string openid = "", string openkey = "")
         {
+            int memberId = 0;
+            //TO DO：Temp for testing server
+            var backCookie = Request.Cookies["burl"];
+            String backUrl = (backCookie == null || string.IsNullOrEmpty(backCookie.Value)) ? "" : backCookie.Value;
+            //if (string.IsNullOrEmpty(backUrl))
+            //{
+            //    //    String backUrl = backCookie.Value;
+            //    //ViewBag.isMobile = backCookie.Value.Contains("m.skill");
+            //    ViewBag.isMobile = true;
+            //Response.Redirect("/m/register?code=" + code + "&openid=" + openid + "&openkey=" + openkey);
+            //}
+            if (!String.IsNullOrEmpty(Request.QueryString["mb"]))
+            {
+                ViewBag.isMobile = true;
+                backUrl = Request.QueryString["mb"];
+            }
+            else
+            {
+                ViewBag.isMobile = false;
+                backUrl = String.IsNullOrEmpty(backUrl) ? "/" : HttpUtility.UrlDecode(backUrl);
+            }
+
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("sinup");
             ViewBag.MemberInfo = null;
-
+            
             Byte socialType = 0;
 
             //OAuth2
@@ -71,10 +93,7 @@ namespace SkillBankWeb.Controllers
                         WebContext.Current.SocialAccessInfo = String.Format("{0};{1}", accessToken.access_token, openkey);*/
                         WebContext.Current.SocialType = (Byte)Enums.SocialTpye.QQ;
                     }
-                    
-                    GetUserInfo(socialType);
                 }
-
                 //Sina
                 else
                 {
@@ -91,18 +110,35 @@ namespace SkillBankWeb.Controllers
                         }
                         Session.Add("accessToken", accessToken);
                         WebContext.Current.SocialAccount = accessToken.uid;
-                        WebContext.Current.SocialAccessInfo =  accessToken.access_token;
+                        WebContext.Current.SocialAccessInfo = accessToken.access_token;
                         WebContext.Current.SocialType = (Byte)Enums.SocialTpye.Sina;
                     }
-                    GetUserInfo(socialType);
+                }
+
+                if (socialType > 0)
+                {
+                    memberId = GetUserInfo(socialType);
+                    if (memberId > 0)
+                    {
+                        WebContext.Current.MemberId = memberId;
+                        String domain = UtilitiesModule.GetCookieDomain(Request.Url.Host);
+                        CookieManager.SetCookie(Constants.CookieKeys.MemberId, memberId.ToString(), /*isPersistent*/ true, domain, Response);
+                        if (!string.IsNullOrEmpty(backUrl))
+                        {
+                            Response.Redirect(backUrl);
+                        }
+                        
+                    }
+                    ViewBag.MemberId = memberId;
                 }
             }
             return View();
         }
 
         [NonAction]
-        private void GetUserInfo(Byte socialType)
+        private int GetUserInfo(Byte socialType)
         {
+            int memberId = 0;
             String socialAccount = "";
             var accessTokenObj = Session["accessToken"] as dynamic;
             var accessToken = accessTokenObj.access_token;
@@ -127,7 +163,7 @@ namespace SkillBankWeb.Controllers
                 }
             }
             //Tencent
-            else
+            else if (socialType == 3)
             {
                 var model = apit.CallGet("user/info?format=json", accessToken, false, GetOpenidOpenkeyParamsExt());
 
@@ -148,12 +184,11 @@ namespace SkillBankWeb.Controllers
             {
                 ViewBag.SocialAccount = socialAccount;
                 WebContext.Current.SocialAccount = socialAccount;
-                
+
                 var memberInfo = _commonService.GetMemberInfo(socialAccount, (Byte)socialType);
-                int memberId = (memberInfo == null ? 0 : memberInfo.MemberId);
-                WebContext.Current.MemberId = memberId;
-                ViewBag.MemberId = memberId;
+                memberId = (memberInfo == null ? 0 : memberInfo.MemberId);
             }
+            return memberId;
         }
 
         [NonAction]
@@ -291,13 +326,17 @@ namespace SkillBankWeb.Controllers
                 WebContext.Current.MemberId = 0;
                 WebContext.Current.SocialType = Constants.DefaultSetting.SocialType;
 
+                Request.Cookies.Clear();
+                Response.Cookies.Clear();
                 return rs;
             }
             else
             {
+                Response.Cookies.Clear();
                 return Json("NoLoginInfo", JsonRequestBehavior.AllowGet);
             }
 
+            
         }
 
 

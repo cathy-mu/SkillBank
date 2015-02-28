@@ -3,33 +3,16 @@
     ViewBag.Title = "Message";
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
-<nav class="bar bar-tab">
-    <a class="tab-item active" href="index.html" data-transition="slide-in">
-        <span class="icon icon-search"></span>
-        <span class="tab-label">发现</span>
-    </a>
-    <a class="tab-item " href="#" data-transition="slide-in">
-        <span class="icon icomoon icon-comment2"></span>
-        <span class="tab-label">消息</span>
-    </a>
-    <a class="tab-item" href="course.html" data-transition="slide-in" data-ignore="pushY">
-        <span class="icon icomoon icon-text"></span>
-        <span class="tab-label">课程</span>
-    </a>
-    <a class="tab-item" href="personal.html" data-transition="slide-in">
-        <span class="icon icomoon icon-user"></span>
-        <span class="tab-label">个人</span>
-    </a>
-</nav>
+@Html.Partial("_MobileMenuPartial")
 <div class="content" id="message-page">
     <div class="segmented-control card">
-        <a class="control-item active" href="#item1mobile">通知
+        <a class="control-item" href="#item1mobile">通知
         </a>
-        <a class="control-item" href="#item2mobile">私信
+        <a class="control-item active" href="#item2mobile">私信
         </a>
     </div>
     <div>
-        <div id="item1mobile" class="control-content active">
+        <div id="item1mobile" class="control-content">
             <ul class="avatar-text">
                 <li class="card">
                     <div class="msg-title">
@@ -42,26 +25,12 @@
                     <p>
                         欢迎加入技能银行，欢迎加入技能银行，开始分享你欢迎加入技能银行，
                 欢迎加入技能银行，全新的生活欢迎加入技能银行，欢技能银行，方式吧 ...
-             
                     </p>
                 </li>
-                <li class="card">
-                    <div class="msg-title">
-                        <time class="pull-right">3小时 之前</time>
-                        <h4 class="flag-num">通知标题
-                 
-                            <span class="badge">1</span>
-                        </h4>
-                    </div>
-                    <p>
-                        欢迎加入技能银行，欢迎加入技能银行，开始分享你欢迎加入技能银行，
-                欢迎加入技能银行，全新的生活欢迎加入技能银行，欢技能银行，方式吧 ...
-             
-                    </p>
-                </li>
+
             </ul>
         </div>
-        <div id="item2mobile" class="control-content">
+        <div id="item2mobile" class="control-content active">
             <ul class="avatar-text">
 
                 @if (Model.Messages != null && ViewBag.MemberInfo != null)
@@ -69,18 +38,21 @@
                     foreach (var message in Model.Messages)
                     {
                         var contactId = (message.From_Id == ViewBag.MemberInfo.MemberId) ? message.To_Id : message.From_Id;
-
                     <li class="card">
-                        <a href="/chat.html#7" data-transition="slide-in">
+                        <a href="" data-transition="slide-in">
                             <div class="pull-left flag-num">
-                                <img class="avatar" src="@ContentHelper.GetAvatarPath(message.Avatar, "mm")">
+                                <a href="@Url.Action("personal", "m", new { id = contactId } )">
+                                    <img class="avatar" src="@ContentHelper.GetAvatarPath(message.Avatar, "mm")">
+                                </a>
                                 <span class="badge">@Html.Raw(TagHelper.GetNewMessageTag(Model.UnReadMessageNumDic, message.From_Id))</span>
                             </div>
                             <div class="msg-title">
-                                <time class="pull-right">@TextContentHelper.GetDateString(message.CreatedDate)</time>
-                                <h4 class="flag-num">@message.Name</h4>
+                                <a href="/m/chat/@Html.Raw(contactId)#end">
+                                    <time class="pull-right">@TextContentHelper.GetDateString(message.CreatedDate)</time>
+                                    <h4 class="flag-num">@message.Name</h4>
+                                </a>
                             </div>
-                            <p>@Html.Raw(TagHelper.GetTextSubSting(message.MessageText, 20, true))</p>
+                            <a href="/m/chat/@Html.Raw(contactId)#end"><p>@Html.Raw(TagHelper.GetTextSubSting(message.MessageText, 20, true))</p></a>
                         </a>
                     </li>
                     }
@@ -91,3 +63,4 @@
 
 </div>
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/lodash/dist/lodash.min.js"></script>

@@ -23,11 +23,6 @@ function classedit_Class() {
             this.cateIdPrefix = "#class-category-list";
             this.subCateIdPrefix = "#class-subcategory-list";
             this.initCategory();
-            //disable edit if publish and wiating for prove
-            var classProveTagCtl = $("#classf-hidisproved");
-            if (classProveTagCtl.length > 0 && classProveTagCtl.val() == 3) {
-                window.location = "/class/publish";
-            }
         }
 
         this.initEvents();

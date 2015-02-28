@@ -138,9 +138,11 @@ ol, ul {
     position: absolute;
     top: -10px;
     right: -22px; }
+  .flag-num a {
+    color: #116f8f; }
 
 body > .bar-nav {
-  background: rgba(0, 0, 0, 0); }
+  background: transparent; }
   body > .bar-nav ~ .content {
     padding-top: 0; }
 
@@ -253,7 +255,7 @@ body > .bar-nav {
   font-family: 'icomoon'; }
 
 .modal {
-  background-color: rgba(0, 0, 0, 0); }
+  background-color: transparent; }
   .modal header {
     background: #eaeaea; }
     .modal header h1 {
@@ -362,7 +364,7 @@ body > .bar-nav {
       position: relative;
       display: table-cell;
       color: #13404c;
-      padding: 1.2em 0.7em 0.1em;
+      padding: 1.2em 0.7em .1em;
       height: 100%;
       margin: 0 1em;
       border: none; }
@@ -385,24 +387,24 @@ body > .bar-nav {
     .course-list .course .title-bar {
       position: absolute;
       height: 100px;
-      background: rgba(16, 46, 62, 0.8);
+      background-image: linear-gradient(-180deg, rgba(16, 47, 63, 0.50) 0%, rgba(16, 47, 63, 0) 100%);
       padding: 1em 1em 0;
       left: 0;
       top: 0; }
-      .course-list .course .title-bar p.pull-left {
+      .course-list .course .title-bar .pull-left {
         color: #fff;
         text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
         font-size: 18px;
         line-height: 24px;
-        width: 70%; }
+        width: 66%; }
       .course-list .course .title-bar .pull-right a {
         position: relative;
         display: inline-block;
         color: #fff;
-        margin-left: 0.5em; }
+        margin-left: .5em; }
         .course-list .course .title-bar .pull-right a .num {
           position: absolute;
-          top: 0.6em;
+          top: .6em;
           left: 0;
           width: 100%;
           text-align: center;
@@ -416,7 +418,7 @@ body > .bar-nav {
 
 nav.bar.bar-tab .tab-item .icon {
   display: inline;
-  opacity: 0.6;
+  opacity: .6;
   font-size: 19px; }
   nav.bar.bar-tab .tab-item .icon img {
     width: 22px; }
@@ -428,8 +430,7 @@ nav.bar.bar-tab .tab-item.active .icon {
 
 @media (min-width: 400px) {
   #search-cat.segmented-control {
-    font-size: 18px; }
- }
+    font-size: 18px; } }
 
 .padded-text {
   font-size: 12px;
@@ -502,13 +503,13 @@ nav.bar.bar-tab .tab-item.active .icon {
 #personal-page.content .info {
   background-color: #FFD048;
   text-align: center;
-  padding-top: 0.5em; }
+  padding-top: .5em; }
   #personal-page.content .info .btn-set .btn {
     width: 125px;
     margin: 0 3px; }
   #personal-page.content .info .nums {
     background: #fff;
-    padding: 0.5em 0;
+    padding: .5em 0;
     border-bottom: 1px solid #999; }
     #personal-page.content .info .nums table {
       margin: 0; }
@@ -613,24 +614,24 @@ nav.bar.bar-tab .tab-item.active .icon {
           right: 0px;
           top: -3px;
           font-size: 12px; }
-  #comment .comment-content .control-content .liuyan-form {
+  #comment .comment-content .control-content #comment-form {
     margin-bottom: 0;
     padding: 10px;
     overflow: hidden;
     background-color: #f2f2f2; }
-    #comment .comment-content .control-content .liuyan-form input {
+    #comment .comment-content .control-content #comment-form input {
       margin-bottom: 0;
       width: 82%;
       border-radius: 6px;
       height: 32px; }
-    #comment .comment-content .control-content .liuyan-form .icon-heart {
+    #comment .comment-content .control-content #comment-form .icon-heart {
       border: 1px solid #a6afb2;
       border-radius: 23px;
       padding: 7px;
       background-color: #fff;
       font-size: 16px;
       margin-top: -2px; }
-      #comment .comment-content .control-content .liuyan-form .icon-heart:before {
+      #comment .comment-content .control-content #comment-form .icon-heart:before {
         color: #a6afb2;
         position: relative;
         top: 1px; }
@@ -704,7 +705,7 @@ nav.bar.bar-tab .tab-item.active .icon {
         border-left-width: 0; }
 
 .chat-page.content {
-  padding-top: 0.5em; }
+  padding-top: .5em; }
   .chat-page.content .popover {
     position: relative;
     display: block;
@@ -840,7 +841,7 @@ nav.bar.bar-tab .tab-item.active .icon {
     .course-page.content .cover-box .title-list a {
       display: inline-block;
       background-color: #fff;
-      opacity: 0.8;
+      opacity: .8;
       border-radius: 15px;
       font-size: 12px;
       width: 28%;
@@ -910,3 +911,10 @@ nav.bar.bar-tab .tab-item.active .icon {
   #message-page.content .segmented-control .control-item.active {
     color: #fff;
     background: #666; }
+input.error, textarea.error  {
+    border:solid 1px red;
+}
+
+.title-list .liked .num {
+color:#F76033!important;
+}

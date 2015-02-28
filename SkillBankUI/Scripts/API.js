@@ -29,6 +29,10 @@ function apitest_Class() {
             apitest.sendValidCode();
         });
 
+        $("#creatememberbtn").click(function () {
+            apitest.createMember();
+        });
+
 
     };
 
@@ -150,6 +154,28 @@ function apitest_Class() {
             cache: false,
             success: function (data) {
                 alert(data);
+            }
+        });
+    }
+
+    this.createMember = function () {
+        var name = $("#member-name").val();
+        var code = $("#member-code").val();
+        var mobile = $("#member-mobile").val();
+        var account = $("#member-account").val();
+        var avatar = $("#member-avatar").val();
+        var type = 1;
+        var paraData = { "Mobile": mobile, "Name": name, "Type": type, "Account": account, "Avatar": avatar, "Code": code };
+        var savePath = "/API/Member";
+        console.log(paraData);
+        $.ajax({
+            url: savePath,
+            type: "POST",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                //alert(data);
             }
         });
     }

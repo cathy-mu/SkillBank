@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Http;
+using System.Net.Http;
+using System.Net;
+using System.Net.Http;
 
 using SkillBank.Site.DataSource.Data;
 using SkillBank.Site.Services;
@@ -20,7 +23,7 @@ namespace SkillBankWeb.API
         public readonly ICommonService _commonService;
         public class FollowMemberItem
         {
-            public int MemberId { get; set; }
+            //public int MemberId { get; set; }
             public int FollowingId { get; set; }
             public Boolean IsFollow { get; set; }
         }
@@ -32,11 +35,22 @@ namespace SkillBankWeb.API
             //_contentService = contentService;
             _commonService = commonService;
         }
-             
+
         public Boolean UpdateFollowMember(FollowMemberItem item)
         {
-            _commonService.UpdateMemberLikeTag(item.MemberId, item.FollowingId, item.IsFollow);
-            return true;
+            int memberId = WebContext.Current.MemberId;
+            if (memberId > 0)
+            {
+                _commonService.UpdateMemberLikeTag(memberId, item.FollowingId, item.IsFollow);
+                return true;
+            }
+            else
+            {
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.StatusCode = 401;
+                HttpContext.Current.Response.End();
+            }
+            return false;
         }
 
 

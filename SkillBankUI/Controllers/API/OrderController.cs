@@ -21,11 +21,12 @@ namespace SkillBankWeb.Controllers.API
 
         public class OrderItem
         {
-            public int MemberId { get; set; }
+            //public int MemberId { get; set; }
             public int ClassId { get; set; }
             public DateTime BookDate { get; set; }
             public String Remark { get; set; }
             public String Name { get; set; }
+            //public String Phone { get; set; }
         }
         //public String Mobile { get; set; }
         //
@@ -40,12 +41,35 @@ namespace SkillBankWeb.Controllers.API
 
         public Boolean AddOrder(OrderItem item)//Boolean
         {
-            item.Name = String.IsNullOrEmpty(item.Name) ? "" : item.Name;
-            //item.Mobile = String.IsNullOrEmpty(item.Mobile) ? "" : item.Mobile;
-
-            var result = _commonService.AddOrder(item.MemberId, item.ClassId, item.BookDate, item.Remark, item.Name);
+            Boolean result = false;
+            try
+            {
+                int memberId = GetMemberId(true);
+                item.Remark = String.IsNullOrEmpty(item.Remark) ? "" : item.Remark;
+                item.Name = String.IsNullOrEmpty(item.Name) ? "" : item.Name;
+                if (item.BookDate > DateTime.Now.Date)
+                {
+                    result = _commonService.AddOrder(memberId, item.ClassId, item.BookDate, item.Remark, item.Name);
+                }
+            }
+            catch
+            {
+                return result;
+            }
             return result;
         }
 
+        private int GetMemberId(Boolean shouldAuthorize)
+        {
+
+            int memberId = WebContext.Current.MemberId;
+            if (shouldAuthorize && memberId == 0)
+            {
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.StatusCode = 401;
+                HttpContext.Current.Response.End();
+            }
+            return memberId;
+        }
     }
 }

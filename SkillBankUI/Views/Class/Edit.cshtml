@@ -346,6 +346,7 @@
     <input type="hidden" id="classf-hidcatename" value="@((Model != null && !String.IsNullOrEmpty(Model.ParentCategoryName)) ? Model.ParentCategoryName : "default")" />
     <input type="hidden" id="classf-hidclassid" value="@ViewBag.ClassId" />
     <input type="hidden" id="classf-hidclasslevel" value="2" />
+    <!--remove later-->
     <input type="hidden" id="classf-hidisproved" value="@(Model.ClassInfo == null ? 0 : Model.ClassInfo.IsProved)" />
 </div>
 <!-- end of body -->

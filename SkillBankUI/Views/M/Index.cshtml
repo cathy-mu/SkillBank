@@ -6,26 +6,9 @@
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
 <!-- bug hack -->
-<header class="bar-nav"></header>
+<header class="bar-nav" data-ismember="@ViewBag.IsLogin"></header>
 
-<nav class="bar bar-tab">
-    <a class="tab-item active" href="#" data-transition="slide-in">
-        <span class="icon icon-search"></span>
-        <span class="tab-label">发现</span>
-    </a>
-    <a class="tab-item " href="message.html" data-transition="slide-in">
-        <span class="icon icomoon icon-comment2"></span>
-        <span class="tab-label">消息</span>
-    </a>
-    <a class="tab-item" href="course.html" data-transition="slide-in" data-ignore="pushY">
-        <span class="icon icomoon icon-text"></span>
-        <span class="tab-label">课程</span>
-    </a>
-    <a class="tab-item" href="personal.html" data-transition="slide-in">
-        <span class="icon icomoon icon-user"></span>
-        <span class="tab-label">个人</span>
-    </a>
-</nav>
+@Html.Partial("_MobileMenuPartial")
 
 <div class="content" id="course-search">
     <div class="search-bar">
@@ -36,7 +19,7 @@
                     <div class="input-group-addon">
                         <span class="icon icon-search"></span>
                     </div>
-                    <input type="search" placeholder="搜索技能" class="icon icon-search">
+                    <input name="key" id="key" type="search" placeholder="搜索技能" class="icon icon-search" maxlength="50">
                 </div>
             </div>
         </form>
@@ -44,15 +27,20 @@
     <div id="search-cat">
         <div class="search-cat-wrap toBeRemoved">
             <div class="inner">
-                <a class="active" href="#" data-by="0" data-type="1">附近技能 </a>
-                <a class="" href="#" data-by="1" data-type="1">达人技能 </a>
-                <a class="" href="#" data-by="1" data-type="3">奇葩课程 </a>
-            @if (Model.CategoryLkp != null)
+                @if (!String.IsNullOrEmpty(ViewBag.SearchKey))
                 {
-                   foreach (var item in Model.CategoryLkp)
-                   {        
-                       <a class="" href="#" data-by="2" data-type="@item.CateId">@Html.GetTrans(item.BlubId)</a>
-                   }
+                <a class="active" href="#" data-by="3" data-type="1" data-key="@ViewBag.SearchKey">搜索"@(ViewBag.SearchKey.Length>4?ViewBag.SearchKey.Substring(0,4)+"...":ViewBag.SearchKey)" </a>
+                }
+                <a href="#" data-by="0" data-type="1">附近技能 </a>
+                <a class="@(String.IsNullOrEmpty(ViewBag.SearchKey)?"active":"")" href="#" data-by="1" data-type="2">最新技能 </a>
+                <a href="#" data-by="1" data-type="1">达人技能 </a>
+                <a href="#" data-by="1" data-type="3">小众奇葩 </a>
+                @if (Model.CategoryLkp != null)
+                {
+                    foreach (var item in Model.CategoryLkp)
+                    {        
+                    <a class="" href="#" data-by="2" data-type="@item.CateId">@Html.GetTrans(item.BlubId)</a>
+                    }
                 }
 
             </div>
@@ -64,53 +52,70 @@
         {
             foreach (var classItem in Model.ClassList)
             {
-           <div class="course card">
-            <div class="title-bar u-full-width">
-                <p class="pull-left">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 20, true))</p>
-                <div class="pull-right">
-                    <a href="#" class="icon icomoon icon-comment">
-                        <span class="num">@classItem.ReviewNum</span>
+            <div class="course card" id="class-@classItem.ClassId">
+
+                <div class="title-bar u-full-width">
+                    <a href="@Url.Action("course", "m", new { id = classItem.ClassId })">
+                        <p class="pull-left">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 20, true))</p>
                     </a>
-                    <a href="#" class="icon icomoon icon-heart @(classItem.IsLike ? "liked" : "")" data-classid="@classItem.ClassId">
-                        <span class="num">@classItem.LikeNum</span>
+                    <a href="@Url.Action("course", "m", new { id = classItem.ClassId })">
+                        <div class="pull-right">
+                            <a href="#" class="icon icomoon icon-comment">
+                                <span class="num">@classItem.ReviewNum</span>
+                            </a>
+                            <a href="#" class="icon icomoon icon-heart toggle-like @(classItem.IsLike ? "liked" : "")" data-classid="@classItem.ClassId">
+                                <span class="num">@classItem.LikeNum</span>
+                            </a>
+                        </div>
                     </a>
                 </div>
+                <a href="@Url.Action("course", "m", new { id = classItem.ClassId })">
+                    <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "mm")" alt="" class="cover">
+                </a>
+                <div class="info">
+                    <a href="@Url.Action("personal", "m", new { id = classItem.Member_Id })">
+                        <img src="@ContentHelper.GetAvatarPath(classItem.Avatar, "mb")" alt="" class="avatar">
+                    </a>
+                    <h4>@classItem.Name</h4>
+                    <p>@(classItem.CityId.HasValue?TagHelper.GetCityName(classItem.CityId.Value) : "")</p>
+                </div>
             </div>
-            <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "mm")" alt="" class="cover">
-            <div class="info">
-                <img src="@ContentHelper.GetAvatarPath(classItem.Avatar,"mb")" alt="" class="avatar">
-                <h4>@classItem.Name</h4>
-                <p>64km 上海</p>
-            </div>
-        </div>
             }
         }
     </div>
 
     <script type="text/template" id="course-tpl">
-        <% _.forEach(courses, function(course) { %>
-          <div class="course card">
+        <% _.forEach(courses, function(course) {%>
+          <div class="course card" id="class-<%- course.ClassId %>">
             <div class="title-bar u-full-width">
-              <p class="pull-left"><%- course.Title %></p>
+              <a href="/m/course/<%- course.ClassId %>">
+                  <p class="pull-left"><%- course.Title %></p>
+              </a>
               <div class="pull-right">
                 <a href="#" class="icon icomoon icon-comment">
                   <span class="num"><%- course.ReviewNum %></span>
                 </a>
-                <a href="#" class="icon icomoon icon-heart <%- course.IsLike ? 'liked' : '' %>">
+                <a href="#" class="icon icomoon icon-heart toggle-like <%- course.IsLike?"liked":"" %> data-classid="<%- course.ClassId %>">
                   <span class="num"><%- course.LikeNum %></span>
                 </a>
               </div>
+              </a>
             </div>
-            <img src="<%- checkImgHost(imgHost, course.Cover) %>" alt="" class="cover">
+            <a href="/m/course/<%- course.ClassId %>">
+              <img src="<%- checkImgHost(imgHost, course.Cover) %>" alt="" class="cover">
+            </a>
             <div class="info">
+              <a href="/m/personal/<%- course.Member_Id %>">
               <img src="<%- checkImgHost(imgHost, course.Avatar) %>" alt="" class="avatar">
+              </a>
               <h4><%- course.Name %></h4>
-              <p>64km <%- course.CityName %></p>
+              <p><%- course.CityName %></p>
             </div>
           </div>
         <% }); %>
-      </script>
+    </script>
 
 </div>
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="/bower_components/lodash/dist/lodash.min.js"></script>
+    

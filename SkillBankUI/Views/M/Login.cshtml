@@ -2,8 +2,9 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
-<div class="content has-header">
-      <a href="index.html" class="icon icomoon icon-arrow-left nav-inner nav-left" data-transition="slide-out"></a>
+
+<div class="login-page content has-header">
+      <a href="#" class="icon icomoon icon-arrow-left nav-inner nav-left nav-back" data-transition="slide-out"></a>
 
       <div class="contend-padded" align="center">
           <p class="padded-tit">
@@ -24,21 +25,21 @@
 
 
       <div class="content-btn">
-        <a href="https://api.weibo.com/oauth2/authorize?client_id=111240964&response_type=code&redirect_uri=http%3A%2F%2Fwww.skillbank.cn%2Fsignup%3Fm%3Dy">
+        <a href="#" id="sinaloginbtn">
           <button class="btn btn-negative btn-block">
-            <span class="icon icon-weibo"></span>
+            <span class="icon icomoon icon-weibo"></span>
              新浪微博登录
           </button>
         </a>
         <a href="#">
           <button class="btn btn-primary btn-block">
-            <span class="icon icon-qq"></span>
+            <span class="icon icomoon icon-qq"></span>
             QQ账号登录
           </button>
         </a>
       </div>
     </div>
-<!--
-<script src="/scripts/Libs/jquery.min.js"></script>    
-<script src="/scripts/PlugIn/jquery.cookie.js"></script>   -->
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/lodash/dist/lodash.min.js"></script>
+    
   

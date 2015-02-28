@@ -76,7 +76,7 @@ namespace SkillBankUI.Controllers
             profileModel.ClassList = _commonService.GetClassInfoByTeacherId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
             if (memberId > 0)
             {
-                int maxId0 = 0, minId0 = 0, maxId1 = 0, minId1 = 0;
+                int sum0 = 0, sum1 = 0, maxId0 = 0, minId0 = 0, maxId1 = 0, minId1 = 0;
                 var reviews = _commonService.GetMemberReviews((Byte)Enums.DBAccess.ReviewLoadType.ByMember, memberId, 0, 0);
                 if (reviews != null && reviews.Count > 0)
                 {
@@ -95,16 +95,19 @@ namespace SkillBankUI.Controllers
                 }
 
                 var numDic = _commonService.GetNumsByMember(memberId);
-                int sum0 = numDic["r01"] + numDic["r02"] + numDic["r03"];
-                int sum1 = numDic["r11"] + numDic["r12"] + numDic["r13"];
-                numDic.Add("sum0", sum0);
-                numDic.Add("sum1", sum1);
-                numDic.Add("sum", sum0 + sum1);
-                numDic.Add("max0", maxId0);
-                numDic.Add("max1", maxId1);
-                numDic.Add("min0", minId0);
-                numDic.Add("min1", minId1);
-                numDic.Add("like", likeNum);
+                if (numDic != null && numDic.ContainsKey(Enums.NumberDictionaryKey.Result01))
+                {
+                    sum0 = numDic[Enums.NumberDictionaryKey.Result01] + numDic[Enums.NumberDictionaryKey.Result02] + numDic[Enums.NumberDictionaryKey.Result03];
+                    sum1 = numDic[Enums.NumberDictionaryKey.Result11] + numDic[Enums.NumberDictionaryKey.Result12] + numDic[Enums.NumberDictionaryKey.Result13];
+                }
+                numDic.Add(Enums.NumberDictionaryKey.Sum0, sum0);
+                numDic.Add(Enums.NumberDictionaryKey.Sum1, sum1);
+                numDic.Add(Enums.NumberDictionaryKey.Sum2, (sum0 + sum1));
+                numDic.Add(Enums.NumberDictionaryKey.Min0, minId0);
+                numDic.Add(Enums.NumberDictionaryKey.Max0, maxId0);
+                numDic.Add(Enums.NumberDictionaryKey.Min1, minId1);
+                numDic.Add(Enums.NumberDictionaryKey.Max1, maxId1);
+                numDic.Add(Enums.NumberDictionaryKey.Like, likeNum);
 
                 profileModel.ProfileNumDic = numDic;
             }

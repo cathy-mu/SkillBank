@@ -5,7 +5,7 @@
 {@Html.CombresCustomUrl("toolsJs")}
 <div class="body">
     <div style="margin:50px 0 50px 200px">
-     <a href="@Url.Action("prove", "tools")" target="_blank">@Html.GetTrans(572)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("rejected", "tools")" target="_blank">查看被拒绝的课程</a>
+     <a href="@Url.Action("prove", "tools")" target="_blank">@Html.GetTrans(572)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("rejected", "tools")" target="_blank">查看被拒绝的课程</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="退出登录" id="logoutbtn"/>
     </div>
     @if (ViewBag.IsAdmin)
     {
@@ -19,6 +19,16 @@
     </div>
     }
    
+    <div style="margin:50px 0 50px 200px">
+        Pass :   <input type="text" value="" id="passcode"/><br />
+        解除手机验证<br />
+        Mobile :   <input type="text" value="" id="mobile"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Mobile" id="unbindmobile"/>
+        <br /><br />
+        根据用户ID/社交账号解绑账户<br />
+        MemberId :   <input type="text" value="" id="accountmid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Member Id" id="unbindmid"/><br /><br />
+        SocialId :   <input type="text" value="" id="accountsid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Social Id" id="unbindsid"/>
+    </div>
+    
     <div style="margin:50px 0 50px 200px">
         Check Blurb Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Show Blurb Id" id="showll"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Hide Blurb Id" id="hidell"/>
     </div>

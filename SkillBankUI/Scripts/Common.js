@@ -23,8 +23,10 @@ function sitecommon_Class() {
     this.shareCookieName = "sshare";
     this.backurl = "burl";
     this.checkCoinInterval;
+    this.siteDomain;
 
     this.init = function () {
+        this.siteDomain = sitecommon.getDomain();
         $("#sociallogin-logoutbtn").click(function () { sitecommon.socialLogout(); });
         this.initSearchClass();
         $("#sociallogin-sinabtn").click(function () { sitecommon.oAuthLogin(1); });
@@ -37,10 +39,23 @@ function sitecommon_Class() {
         $("#header-findclass").click(function () { sitecommon.gotoClassPage(""); });
 
         this.initTrackEvent();
-
+        if (this.siteDomain != "") {
+            this.restoreCookie();
+        }
     };
 
-    this.initTrackEvent = function () {
+    this.restoreCookie = function () {
+        sitecommon.resetCookie(sitecommon.memberIdCookieName);
+        sitecommon.resetCookie("sai");
+        sitecommon.resetCookie("sid");
+        sitecommon.resetCookie("stype");
+        //sitecommon.resetCookie("mtype");
+        //sitecommon.resetCookie("ohdate");
+        //sitecommon.resetCookie("ctr");
+        //sitecommon.resetCookie("lng");
+    }
+        
+    this.initTrackEvent = function () {  
         if (typeof (mixpanel) != "undefined") {
             $("#header-membermenu-dashboard").click(function () { sitecommon.addTrackEvent("menu dashboard"); });
             $("#header-membermenu-profile").click(function () { sitecommon.addTrackEvent("menu edit profile"); });
@@ -168,29 +183,67 @@ function sitecommon_Class() {
     }
 
     this.setCookie = function (cookieName, cookieValue) {
-        $.cookie(cookieName, cookieValue, { expires: 30, path: '/' });
+        consoleLog(sitecommon.siteDomain);
+        if (sitecommon.siteDomain == "") {
+            $.cookie(cookieName, cookieValue, { expires: 30, path: '/' });
+        } else {
+            $.cookie(cookieName, cookieValue, { expires: 30, path: '/', domain: sitecommon.getDomain() });
+        }
     }
 
     this.setCookie = function (cookieName, cookieValue, expireMins) {
+        consoleLog(sitecommon.siteDomain);
         var date = new Date();
         date.setTime(date.getTime() + (expireMins * 60 * 1000));
-        $.cookie(cookieName, cookieValue, { expires: date, path: '/' });
+        if (sitecommon.siteDomain == "") {
+            $.cookie(cookieName, cookieValue, { expires: date, path: '/' });
+        } else {
+            $.cookie(cookieName, cookieValue, { expires: date, path: '/', domain: sitecommon.siteDomain });
+        }
     }
 
     this.removeCookie = function (cookieName) {
+        consoleLog(sitecommon.siteDomain);
         $.cookie(cookieName, "", { expires: -1, path: '/' });
+        if (sitecommon.siteDomain != "") {
+            $.cookie(cookieName, "", { expires: -1, path: '/', domain: sitecommon.siteDomain });
+        }
     }
+
+    this.resetCookie = function (cookieName) {
+        var value = sitecommon.getCookie(cookieName);
+        if (value != null) {
+            consoleLog("clear" + cookieName);
+            $.cookie(cookieName, "", { expires: -1, path: '/', domain: "www" + sitecommon.siteDomain });
+            $.cookie(cookieName, "", { expires: -1, path: '/' });
+            $.cookie(cookieName, value, { expires: 30, path: '/', domain: sitecommon.siteDomain });
+        }
+    }
+
+    this.getDomain = function () {
+        var currDomain = window.location.host;
+        if (window.location.host.indexOf("www.") == 0) {
+            currDomain = currDomain.replace("www.", ".");
+        } else if (window.location.host.indexOf("m.") == 0) {
+            currDomain = currDomain.replace("m.", ".");
+        } else if (window.location.host.indexOf("localhost") == 0) {
+            currDomain = "";
+        }  
+        
+        return currDomain;
+    }
+
 
     this.getCookie = function (cookieName) {
         return $.cookie(cookieName);
     }
 
-    this.initMemberInfoBySocial = function (socialType, socialId, socialName, socialAvatar) {
-        this.setCookie(sitecommon.socialTypeCookieName, socialType);
-        this.setCookie(sitecommon.socialIdCookieName, socialId);
-        this.setCookie(sitecommon.socialNameCookieName, decodeURIComponent(socialName));
-        this.setCookie(sitecommon.socialAvatarCookieName, decodeURIComponent(socialAvatar));
-    }
+    //this.initMemberInfoBySocial = function (socialType, socialId, socialName, socialAvatar) {
+    //    this.setCookie(sitecommon.socialTypeCookieName, socialType);
+    //    this.setCookie(sitecommon.socialIdCookieName, socialId);
+    //    this.setCookie(sitecommon.socialNameCookieName, decodeURIComponent(socialName));
+    //    this.setCookie(sitecommon.socialAvatarCookieName, decodeURIComponent(socialAvatar));
+    //}
 
     this.getMemberSocialName = function () {
         return this.getCookie(sitecommon.socialNameCookieName);
@@ -357,19 +410,27 @@ function sitecommon_Class() {
             dataType: "Json",
             cache: false,
             success: function (data) {
-                console.log(data);
+                //consoleLog(data);
             }, error: function (e) {
-                console.log(e);
+                //consoleLog(e);
             }
         });
 
         $("#header-membermenu").addClass("hide");
         $("#header-loginbtn").removeClass("hide");
-        //sitecommon.setCookie(sitecommon.memberIdCookieName, 0);
-        //sitecommon.removeCookie(sitecommon.socialIdCookieName);
-        //sitecommon.removeCookie(sitecommon.socialTypeCookieName);
+        sitecommon.setCookie(sitecommon.memberIdCookieName, 0);
+        sitecommon.removeCookie("sai");
+        sitecommon.removeCookie("sid");
+        sitecommon.removeCookie(sitecommon.socialIdCookieName);
+        sitecommon.removeCookie(sitecommon.socialTypeCookieName);
 
-        window.location = "/";
+        var currHost = window.location.host;
+        //if (currHost.indexOf("m.skillbank.cn") > 0 || currHost.indexOf("/m/") > 0)
+        //{
+        //    window.location.href = "/m/";
+        //} else {
+        //    window.location.href = "/";
+        //}
     }
 
 }
