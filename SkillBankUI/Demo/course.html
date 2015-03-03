@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -16,8 +16,7 @@
     <link href="bower_components/ratchet/dist/css/ratchet.min.css" rel="stylesheet">
     <link href="css/common.css" rel="stylesheet">
 
-    <!-- Include the compiled Ratchet JS -->
-    <script src="bower_components/ratchet/dist/js/ratchet.min.js"></script>
+    
 
   </head>
   <body>
@@ -41,7 +40,7 @@
           <hr>
           <span>1课币</span>
         </a>
-
+        <div class="cover-filter"></div>
         <img src="images/e.jpeg" alt="" class="cover pull-left">
 
         <h3 class="white">魔方进阶教程</h3>
@@ -65,9 +64,9 @@
 
       <div class="info">
         <a href="#"><img src="images/avatar.png" alt="" class="avatar"></a>
-        <h3>Jason Wu</h3>
-        <p>6km . 上海</p>
-        <a href="#" class="follow btn btn-olive">关注</a>
+        <h5>Jason Wu <span class="icon icomoon icon-female"></span></h5>
+        <p><small>6km . 上海</small></p>
+        <a href="#" class="follow btn btn-olive border-none">关注</a>
         <div class="evaluation">
           <h5>老师自评</h5>
           <div class="table">
@@ -84,9 +83,7 @@
       </div>
 
       <div class="course-detail">
-        <h3>
-          课程介绍
-        </h3>
+        <h3> 课程介绍 </h3>
         <p class="padded-tex">
           找到运动的乐趣。实战演练，轻松快乐！教一个朋友，或一份快乐。具体分为三步：首先是  发球，一个好的发球能让你后续的打球得心应手。然后是接球，让你找到接球的感觉，不看着来球惊慌失措。最后是细节，常言道：细节决定成败，让你摆脱接不到球或者犯规的瞬间。come on , anybody !
         </p>
@@ -128,8 +125,8 @@
             <h3>23</h3>
             <h6>用户留言</h6>
           </a>
-          <a class="control-item" href="#item2mobile">
-            <h3>1</h3>
+          <a class="control-item-no-js" href="#item2mobile">
+            <h3>0</h3>
             <h6>学生评价</h6>
           </a>
           <a class="side-item" href="#">
@@ -152,91 +149,63 @@
         <div class="comment-content">
           <div id="item1mobile" class="control-content active">
             <form id="comment-form">
-              <button class="icon icomoon icon-heart pull-right"></button>
+              <button class="btn btn-link olive pull-right"> 发送</button>
               <input type="text" placeholder="我要留言">
             </form>
             <ul class="comment-text">
               <li class="card">
-                <div class="pull-left flag-num">
+                <div class="comment-avatar flag-num">
                   <a href="#"><img class="avatar" src="images/avatar.png"></a>
                 </div>
-                <div class="msg-title">
-                  <span class="time pull-right">3小时 之前</span>
-                  <h4 class="flag-num">
-                    <a href="#">Jason Wu</a>
-                  </h4>
-                </div>
-                <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-                </p>
-              </li>
-              <li class="card">
-                <div class="pull-left flag-num">
-                  <a href="#"><img class="avatar" src="images/avatar.png"></a>
-                </div>
-                <div class="msg-title">
-                  <span class="time pull-right">3小时 之前</span>
-                  <h4 class="flag-num">
-                    <a href="#">Jason Wu</a>
-                  </h4>
-                </div>
-                <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-                </p>
-              </li>
-              <li class="card">
-                <div class="pull-left flag-num">
-                  <a href="#"><img class="avatar" src="images/avatar.png"></a>
-                </div>
-                <div class="msg-title">
-                  <span class="time pull-right">3小时 之前</span>
-                  <h4 class="flag-num">
-                    <a href="#">Jason Wu</a>
-                  </h4>
-                </div>
-                <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-                </p>
-              </li>
-              <li class="card">
-                <div class="pull-left flag-num">
-                  <a href="#"><img class="avatar" src="images/avatar.png"></a>
-                </div>
-                <div class="msg-title">
-                  <span class="time pull-right">3小时 之前</span>
-                  <h4 class="flag-num">
-                    <a href="#">Jason Wu</a>
-                  </h4>
-                </div>
-                <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-                </p>
+                  <!--
+                <div class="comment-content">
+                  <div class="msg-title">
+                    <span class="time pull-right">3小时 之前</span>
+                    <h4 class="flag-num">
+                      <a href="#">Jason Wu</a>
+                    </h4>
+                  </div>
+                  <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课] </p>
+                </div>-->
+                  <div class="comment-content">
+                                    <div class="msg-title">
+                                        <span class="time pull-right">03.02.2015</span>
+                                        <h4 class="flag-num"><a href="/m/personal/6">周妮妮</a></h4>
+                                    </div>
+                                    <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]</p>
+                 </div>
               </li>
             </ul>
           </div>
           <div id="item2mobile" class="control-content">
             <ul class="comment-text">
               <li class="card">
-                <div class="pull-left flag-num">
+                <div class="comment-avatar flag-num">
                   <a href="#"><img class="avatar" src="images/avatar.png"></a>
                 </div>
-                <div class="msg-title">
-                  <span class="time pull-right">3小时 之前</span>
-                  <h4 class="flag-num">
-                    <a href="#">Jason Wu</a>
-                  </h4>
+                <div class="comment-content">
+                  <div class="msg-title">
+                    <span class="time pull-right">3小时 之前</span>
+                    <h4 class="flag-num">
+                      <a href="#">Jason Wu</a>
+                    </h4>
+                  </div>
+                  <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课] </p>
                 </div>
-                <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-                </p>
               </li>
               <li class="card">
-                <div class="pull-left flag-num">
+                <div class="comment-avatar flag-num">
                   <a href="#"><img class="avatar" src="images/avatar.png"></a>
                 </div>
-                <div class="msg-title">
-                  <span class="time pull-right">3小时 之前</span>
-                  <h4 class="flag-num">
-                    <a href="#">Jason Wu</a>
-                  </h4>
+                <div class="comment-content">
+                  <div class="msg-title">
+                    <span class="time pull-right">3小时 之前</span>
+                    <h4 class="flag-num">
+                      <a href="#">Jason Wu</a>
+                    </h4>
+                  </div>
+                  <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课] </p>
                 </div>
-                <p>TT我好不容易想到个~可以正常上课的Topic[英语口语练习课]
-                </p>
               </li>
             </ul>
 
@@ -254,12 +223,19 @@
           <div class="content-inner">
             <div class="content-padded">
               <form>
-                <input placeholder="授课日期" type="text" name="date" onfocus="(this.type='date')" onblur="(this.type='text')">
-                <textarea name="remark" id="" cols="30" rows="2" placeholder="留言"></textarea>
+                <input 
+                  placeholder="授课日期" 
+                  type="text" 
+                  name="date" 
+                  minx="1979-12-31"
+                  max="2018-01-02"
+                  onfocus="(this.type='date')" 
+                  onblur="(this.type='text')">
+                <textarea name="message" id="" cols="30" rows="2" placeholder="留言"></textarea>
                 <h5>你的联系信息</h5>
                 <p class="lightGrey">老师在确认之后才能看到你的联系信息</p>
                 <input type="text" name="name" placeholder="姓名">
-                <input type="tel" name="phone" placeholder="手机">
+                <input type="text" name="phone" placeholder="手机">
                 <p class="alarm">请在提交订课申请之前先与老师私信沟通细节</p>
                 <button  class="btn btn-primary btn-block">确认订课</button>
               </form>
@@ -346,6 +322,7 @@
       </script>
 
     </div>
+    <script src="bower_components/ratchet/dist/js/ratchet.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/lodash/dist/lodash.min.js"></script>
     <script src="js/common.js"></script>

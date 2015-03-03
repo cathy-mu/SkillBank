@@ -70,6 +70,9 @@ var checkPage = function(){
   hackForModals();
   privateMsgForm();
   reservationForm();
+  followMember();
+
+  bindCloseEventToModal();
 
 
   // course search
@@ -78,21 +81,20 @@ var checkPage = function(){
     affix();
 
 
-
   }
 
   // course page
-  if ($('.course-page').length) {
+  if( $('.course-page').length ){
 
-      // go for comment
-      $('.goto').on('click', function (event) {
-          event.preventDefault();
-          location.href = '#' + this.dataset.for;
-      });
+    // go for comment
+    $('.goto').on('click', function(event){
+      event.preventDefault();
+      location.href = '#' + this.dataset.for;
+    });
 
-      commentForm();
-      followMember();
-      chatForm();
+    commentForm();
+    
+
   }
 
   // chat page
@@ -105,6 +107,15 @@ var checkPage = function(){
 
     // init textrea auto size
     jQuery('#write-box').textareaAutoSize();
+
+    $('#write-box')[0].on('keyup', function(event){
+      var $submit = $('#form-write button')[0];
+      if ( this.value.length ){
+        $submit.removeAttribute('disabled');
+      } else{
+        $submit.setAttribute('disabled', '');
+      }
+    })
 
     // bind add msg
     chatForm();
@@ -157,11 +168,10 @@ function switchCourseCat(){
         maximumAge        : 30000, 
         timeout           : 27000
       };
-    alert(this.dataset.by);
 
     // nearby skill
-    if (this.dataset.by == 0) {
-       navigator.geolocation.getCurrentPosition(function (position) {
+    if(this.dataset.by == 0){
+      navigator.geolocation.getCurrentPosition(function (position) {
         var url = ENV.host + '/api/ClassList?' + 'by=' + self.dataset.by + '&type=' + self.dataset.type +
                   '&PosY=' + position.coords.latitude + '&PosX=' + position.coords.longitude;
         getCourses(url, self);
@@ -177,23 +187,37 @@ function switchCourseCat(){
 }
 
 function getCourses(url, el){
+  var $loading = $('.loading');
+  $loading[0].style.display = 'block';
   get(url, function(fb){
     if( !_.isArray(fb) ) return;
     // insert html
     var tpl = $('#course-tpl')[0].innerHTML;
     $('.course-list')[0].innerHTML = _.template(tpl, {courses: fb, imgHost: ENV.imgHost});
     // active tab
-    [].forEach.call($('#search-cat a'), function (el) {
+    [].forEach.call($('.search-cat-wrap a'), function (el) {
       el.classList.remove('active');
     });
     el.classList.add('active');
+    $loading[0].style.display = 'none';
   });
+}
+
+function bindCloseEventToModal(){
+  if( !$('.modal').length ) return;
+  // jQuery(document).on('touchend click', function(e){
+  document.body.addEventListener('touchend', function(e){
+    if( e.target.classList.contains('content') ) {
+      var $modal = e.target.parentNode;
+      $modal.classList.remove('active');
+    }
+  })
 }
 
 function toggleLike(){
   if( !$('.toggle-like').length ) return;
   document.body.addEventListener('click', function(e){
-    if( e.target.matches('.toggle-like, .toggle-like *') ) {
+    if( e.target.classList.contains('toggle-like') ) {
       // e.stopPropagation();
       var $heart = e.target;
       while( !$heart.matches('.toggle-like') ){
@@ -248,15 +272,25 @@ function addBulletsWeget(){
 
 function affix(){
   var $searchCat = document.getElementById('search-cat');
-  var $wrap = $('#search-cat .search-cat-wrap')[0]
-  var offTop = $searchCat.offsetTop
+  var $wrap = jQuery('.search-cat-wrap');
+  var offTop = $searchCat.offsetTop;
+  var toLeft;
+
   $('.content')[0].onscroll = function (event) {
     if( this.scrollTop >= offTop ){
-      $wrap.classList.add('affix');
-      document.body.appendChild( $wrap )
+      $wrap.addClass('affix');
+
+      // to left as the same after append
+      toLeft = jQuery('.search-cat-wrap .inner')[0].scrollLeft;
+      if( !jQuery('body > .search-cat-wrap').length ) $wrap.detach().appendTo( 'body' );
+      jQuery('.search-cat-wrap .inner')[0].scrollLeft = toLeft;
     } else{
-      $wrap.classList.remove('affix')
-      $searchCat.appendChild( $wrap )
+      $wrap.removeClass('affix')
+
+      // to left as the same after append
+      toLeft = jQuery('.search-cat-wrap .inner')[0].scrollLeft;
+      if( jQuery('body > .search-cat-wrap').length ) $wrap.detach().appendTo( $searchCat );
+      jQuery('.search-cat-wrap .inner')[0].scrollLeft = toLeft;
     }
   }
 }
@@ -310,6 +344,9 @@ function chatForm(){
         _.template($('#chat-detail-tpl')[0].innerHTML, {item: data}) );
       $input.value = '';
       $input.focus();
+
+      // scroll to newest msg
+      $('.content')[0].scrollTop = 1000000;
     });
 
   });
@@ -320,6 +357,7 @@ function privateMsgForm(){
   if( !$modal.length ) return;
   var $form = $modal[0].querySelectorAll('form');
   var $input = $form[0].querySelector('textarea');
+
   $form[0].on('submit', function(event){
     event.preventDefault();
     var data = {
@@ -330,7 +368,7 @@ function privateMsgForm(){
     post(ENV.host + '/api/chat', data, function(fb){
       // if( !_.isNumber(fb) ) return;
     });
-    $modal[0].style.display = 'none';
+    $modal[0].classList.remove('active');
 
   });
 }
@@ -352,8 +390,7 @@ function reservationForm(){
     post(ENV.host + '/api/Order', data, function(fb){
       if( !fb ) return;
     });
-    $modal[0].style.display = 'none';
-
+    $modal[0].classList.remove('active');
   });
 }
 
@@ -379,15 +416,20 @@ function commentForm(){
 }
 
 function followMember(){
+  if( !$('.follow').length ) return;
   $('.follow')[0].on('click', function(event){
     event.preventDefault();
+    var self = this;
+    var toggleName = 'btn-olive'
+    var isFollow = !self.classList.contains(toggleName);
     var data = {
       MemberId: 1,
       FollowingId: 7,
-      IsFollow: true
+      IsFollow: isFollow
     };
     post(ENV.host + '/api/followmember', data, function(fb){
       console.log(fb);
+      self.classList[isFollow ? 'addClass' : 'removeClass'](toggleName);
     });
 
   })
