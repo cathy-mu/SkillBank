@@ -33,5 +33,15 @@ namespace SkillBank.Site.DataSource.Mapper
             return null;
         }
 
+        public static List<ReportOrderStatus_Load_p_Result> Map(ObjectResult<ReportOrderStatus_Load_p_Result> objItems)
+        {
+            if (objItems != null)
+            {
+                var items = objItems.Select(item => new ReportOrderStatus_Load_p_Result() { GroupId = item.GroupId,  BookedDate = item.BookedDate, CreatedDate = item.CreatedDate, Class_Id = item.Class_Id,Member_Id = item.Member_Id, Student_Id = item.Student_Id, Title=item.Title, StudentReview = item.StudentReview, TeacherReview = item.TeacherReview}).ToList();
+                return (items.Count > 0) ? items : null;
+            }
+            return null;
+        }
+
     }
 }

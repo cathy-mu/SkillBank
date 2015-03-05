@@ -2,51 +2,64 @@
 @section HeaderStyle
 {
 @Html.CombresCustomUrl("contentCss")}
+<style type="text/css">
+    .rep {
+        margin:30px 0 100px 100px;
+    }
+    .reptitle {
+        width:800px;height:80px;font-weight:900;color:#1f0463;font-size:18px;
+    }
+    .repcol1 {
+        width: 200px;
+    }
+    
+</style>
 
-
-<h2>Report</h2>
-@if (Model.ReportNumList != null)
+<div class="rep">
+@if (ViewBag.IsAdmin)
 {
+    <h2>用户数据Report</h2>
     <table>
     @foreach (var reportItem in Model.ReportNumList)
-    {
-        <tr style="width:800px;"><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td></tr>
-        if (reportItem.RowNum.Equals(1))
-        {
-        <tr style="width:800px;">
-             <td></td><td style="width:200px;">开课的</td><td style="width:200px;">注册的</td><td style="width:200px;">百分比</td>
-        </tr>
+    {   <tr style="width:800px;"><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td><td style="width:200px;">&nbsp;</td></tr>
+       
+        <tr class="reptitle">
+        @if (reportItem.RowNum.Equals(0))
+        {     <td style="width:200px;">2小时注册</td><td style="width:200px;">4小时注册</td><td style="width:200px;">8小时注册</td>
+        }else if (reportItem.RowNum.Equals(1))
+        {     <td style="width:200px;">开课的</td><td style="width:200px;">注册的</td><td style="width:200px;">百分比</td>
         }else if (reportItem.RowNum.Equals(2)){
-            <tr>
-             <td></td><td>分享的</td><td>开课的</td><td>百分比</td>
-        </tr>}
+             <td>分享的</td><td>开课的</td><td>百分比</td>
+        }
         else if (reportItem.RowNum.Equals(3)){
-             <tr><td></td><td>完成的</td><td>没有取消和拒绝的订单数</td><td>百分比</td></tr>
+             <td>完成的</td><td>没有取消和拒绝的订单数</td><td>百分比</td>
         } 
         else if (reportItem.RowNum.Equals(4)){
-             <tr><td></td><td>拒绝的订单</td><td>总订单</td><td>百分比</td></tr>
+             <td>拒绝的订单</td><td>总订单</td><td>百分比</td>
         } 
         else if (reportItem.RowNum.Equals(5)){
-             <tr><td></td><td>上完课的学生</td><td>预定课的学生</td><td>百分比</td></tr>
+             <td>上完课的学生</td><td>预定课的学生</td><td>百分比</td>
         } 
         else if (reportItem.RowNum.Equals(6)){
-             <tr><td></td><td>接受预定订老师</td><td>被订课老师</td><td>百分比</td></tr>
+             <td>接受预定订老师</td><td>被订课老师</td><td>百分比</td>
         } 
         else if (reportItem.RowNum.Equals(7)){
-             <tr><td></td><td>课程总数</td><td> </td><td> </td></tr>
+             <td>课程总数</td><td></td><td></td><td></td>
         } 
         else if (reportItem.RowNum.Equals(8)){
-             <tr><td></td><td>注册男生数</td><td>注册女生数</td><td>男生所占百分比</td></tr>
+             <td>注册男生数</td><td>注册女生数</td><td>男生所占百分比</td>
         } 
         else if (reportItem.RowNum.Equals(9)){
-             <tr><td></td><td>开课男生数</td><td>开课女生数</td><td>男生所占百分比</td></tr>
+             <td>开课男生数</td><td>开课女生数</td><td>男生所占百分比</td>
         }   
-            
-            <tr><td></td><td>@reportItem.Num1</td><td>@reportItem.Num2</td><td>@reportItem.Percentage</td>
-        
+        </tr>
+        <tr>
+            <td>@reportItem.Num1</td><td>@reportItem.Num2</td><td>@(reportItem.RowNum.Equals(0)?Convert.ToInt16(reportItem.Percentage):reportItem.Percentage)</td><td></td>
         </tr>
     }
-
     </table>
+    }else{
+  <p>Sorry,您没有查看权限</p>
 }
+</div>
 

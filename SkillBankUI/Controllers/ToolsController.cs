@@ -181,11 +181,66 @@ namespace SkillBank.Controllers
             List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
             if (whiteListMem.Contains(memberId.ToString()))
             {
+                ViewBag.IsAdmin = true;
                 repModel.ReportNumList = _commonService.GetReportClassMemberNum();
                 return View(repModel);
             }
+            else
+            {
+                ViewBag.IsAdmin = false;
+            }
             return View();
         }
+
+        public ActionResult OrderReport(String b = "", String e = "", Byte t = 0)
+        {
+            DateTime beginDate = String.IsNullOrEmpty(b) ? DateTime.Now.AddMonths(-1) : Convert.ToDateTime(b);
+            DateTime endDate = String.IsNullOrEmpty(e) ? DateTime.Now.Date : Convert.ToDateTime(e);
+
+            ReportOrderStatusModel repModel = new ReportOrderStatusModel();
+            var memberId = WebContext.Current.MemberId;
+            List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
+            if (whiteListMem.Contains(memberId.ToString()))
+            {
+                ViewBag.IsAdmin = true;
+                var result = _commonService.GetReportClassMemberNum(t, beginDate, endDate);
+                if (t.Equals(0))
+                {
+                    repModel.RejectOrderList = result.Where(a => a.GroupId == 1).ToList();
+                    repModel.FinshOrderList = result.Where(a => a.GroupId == 2).ToList();
+                    repModel.WaitingOrderList = result.Where(a => a.GroupId == 3).ToList();
+                    repModel.CancelOrderList = result.Where(a => a.GroupId == 4).ToList();
+                    repModel.InprogressOrderList = result.Where(a => a.GroupId == 5).ToList();
+                }
+                else if (t.Equals(1))
+                {
+                    repModel.RejectOrderList = result;
+                }
+                else if (t.Equals(2))
+                {
+                    repModel.FinshOrderList = result;
+                }
+                else if (t.Equals(3))
+                {
+                    repModel.WaitingOrderList = result;
+                }
+                else if (t.Equals(4))
+                {
+                    repModel.CancelOrderList = result.Where(a => a.GroupId == 4).ToList();
+                }
+                else if (t.Equals(5))
+                {
+                    repModel.InprogressOrderList = result.Where(a => a.GroupId == 4).ToList();
+                }
+                return View(repModel);
+            }
+            else
+            {
+                ViewBag.IsAdmin = false;
+            }
+            return View();
+        }
+         
 
         public ActionResult MemberProfile(int id = 0)
         {

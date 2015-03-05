@@ -1516,8 +1516,8 @@
     <Content Include="Views\M\Message.cshtml" />
     <Content Include="Views\M\Chat.cshtml" />
     <Content Include="Views\M\Login.cshtml" />
-    <Content Include="Views\M\Register.cshtml" />
     <Content Include="Views\Shared\_MobileMenuPartial.cshtml" />
+    <Content Include="Views\Shared\_TrackingBaiDuPartial.cshtml" />
     <None Include="Views\Tools\ClassView.cshtml" />
     <Content Include="Views\Class\Rejected.cshtml" />
     <Content Include="Views\Member\Teach.cshtml" />
@@ -1525,6 +1525,7 @@
     <Content Include="Views\Tools\Report.cshtml" />
     <Content Include="Views\Tools\SearchMemeber.cshtml" />
     <Content Include="Views\Tools\MemberProfile.cshtml" />
+    <Content Include="Views\Tools\OrderReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\images\" />

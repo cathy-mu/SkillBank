@@ -26,7 +26,7 @@ namespace SkillBankWeb.Controllers.API
             public DateTime BookDate { get; set; }
             public String Remark { get; set; }
             public String Name { get; set; }
-            //public String Phone { get; set; }
+            public String Phone { get; set; }
         }
         //public String Mobile { get; set; }
         //
@@ -47,9 +47,10 @@ namespace SkillBankWeb.Controllers.API
                 int memberId = GetMemberId(true);
                 item.Remark = String.IsNullOrEmpty(item.Remark) ? "" : item.Remark;
                 item.Name = String.IsNullOrEmpty(item.Name) ? "" : item.Name;
+                item.Phone = String.IsNullOrEmpty(item.Phone) ? "" : item.Phone;
                 if (item.BookDate > DateTime.Now.Date)
                 {
-                    result = _commonService.AddOrder(memberId, item.ClassId, item.BookDate, item.Remark, item.Name);
+                    result = _commonService.AddOrder(memberId, item.ClassId, item.BookDate, item.Remark, item.Name, item.Phone);
                 }
             }
             catch

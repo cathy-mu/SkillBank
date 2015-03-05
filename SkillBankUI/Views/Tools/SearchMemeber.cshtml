@@ -5,8 +5,17 @@
     @Html.CombresCustomUrl("contentCss")}
 @section FooterJs
 {@Html.CombresCustomUrl("toolsJs")}
+<style type="text/css">
+    .toolgroup {
+        margin: 50px 0 50px 100px;
+    }
+
+    table {
+        margin-top: 50px;
+    }
+</style>
 <div class="body">
-    <div style="margin: 50px 0 70px 200px">
+    <div class="toolgroup">
         @if (ViewBag.Type == 3)
         {
             <p>
@@ -31,35 +40,40 @@
                 电话 里面包含 @ViewBag.Key 的用户
             </p>
         }
-    </div>
-    <div style="margin: 50px 0 70px 200px">
-        <table>
-            <tr>
-                <td style="width:200px;">MemberId</td>
-                <td style="width:200px;">Name</td>
-                <td style="width:200px;">Email</td>
-                <td style="width:200px;">Phone</td>
-                <td style="width:200px;">IsMale</td>
-                <td style="width:200px;">Coins</td>
-                <td style="width:200px;">CoinsLocked</td>
-                <td style="width:200px;">SocialAccount</td>
-            </tr>
-            @foreach (var item in ViewBag.MemberInfos)
-            {
-                <tr>
-                <td>@item.MemberId</td>
-                <td>@item.Name</td>
-                <td>@item.Email</td>
-                <td>@item.Phone</td>
-                <td>@item.Gender</td>
-                <td>@item.Coins</td>
-                <td>@item.CoinsLocked</td>
-                <td>@item.SocialAccount</td>
-            </tr>
-                
-            }
-        </table>
-    </div>
 
+        @if (ViewBag.MemberInfos != null)
+        {
+            <table>
+                <tr>
+                    <td style="width: 200px;">MemberId</td>
+                    <td style="width: 200px;">Name</td>
+                    <td style="width: 200px;">Email</td>
+                    <td style="width: 200px;">Phone</td>
+                    <td style="width: 200px;">IsMale</td>
+                    <td style="width: 200px;">Coins</td>
+                    <td style="width: 200px;">CoinsLocked</td>
+                    <td style="width: 200px;">SocialAccount</td>
+                </tr>
+                @foreach (var item in ViewBag.MemberInfos)
+                {
+                    <tr>
+                        <td>@item.MemberId</td>
+                        <td><a href="@Url.Action("index", "profile", new {id = item.MemberId })" target="_blank">@item.Name</a></td>
+                        <td>@item.Email</td>
+                        <td>@item.Phone</td>
+                        <td>@item.Gender</td>
+                        <td>@item.Coins</td>
+                        <td>@item.CoinsLocked</td>
+                        <td>@item.SocialAccount</td>
+                    </tr>
+                
+                }
+            </table>
+        }
+        else
+        {
+            <p>Sorry,没有相关用户</p>
+        }
+    </div>
 </div>
 <!-- end of body -->

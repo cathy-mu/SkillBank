@@ -5,34 +5,33 @@
 }
 @Html.Partial("_MobileMenuPartial")
 <div class="content" id="message-page">
-    <div class="segmented-control card">
-        <a class="control-item" href="#item1mobile">通知
-        </a>
-        <a class="control-item active" href="#item2mobile">私信
-        </a>
-    </div>
+    <nav>
+        <div class="segmented-control card">
+            <a class="control-item active" href="#item1mobile">通知
+          </a>
+            <a class="control-item" href="#item2mobile">私信
+          </a>
+        </div>
+    </nav>
     <div>
-        <div id="item1mobile" class="control-content">
+        <div id="item1mobile" class="control-content active">
             <ul class="avatar-text">
                 <li class="card">
                     <div class="msg-title">
                         <time class="pull-right">3小时 之前</time>
-                        <h4 class="flag-num">通知标题
-                 
-                            <span class="badge">1</span>
+                        <h4 class="flag-num">欢迎使用技能银行手机公测版<!--<span class="badge">1</span>-->
                         </h4>
                     </div>
                     <p>
-                        欢迎加入技能银行，欢迎加入技能银行，开始分享你欢迎加入技能银行，
-                欢迎加入技能银行，全新的生活欢迎加入技能银行，欢技能银行，方式吧 ...
+                       
+目前已开放部分功能的测试，完整版将在近期上线。用户也可以在PC端访问www.skillbank.cn，使用全部功能。
                     </p>
                 </li>
 
             </ul>
         </div>
-        <div id="item2mobile" class="control-content active">
-            <ul class="avatar-text">
-
+        <div id="item2mobile" class="control-content">
+            <ul class="avatar-text private-msg">
                 @if (Model.Messages != null && ViewBag.MemberInfo != null)
                 {
                     foreach (var message in Model.Messages)
@@ -41,18 +40,20 @@
                     <li class="card">
                         <a href="" data-transition="slide-in">
                             <div class="pull-left flag-num">
-                                <a href="@Url.Action("personal", "m", new { id = contactId } )">
+                                <a href="@Url.Action("personal", "m", new { id = contactId })">
                                     <img class="avatar" src="@ContentHelper.GetAvatarPath(message.Avatar, "mm")">
                                 </a>
                                 <span class="badge">@Html.Raw(TagHelper.GetNewMessageTag(Model.UnReadMessageNumDic, message.From_Id))</span>
                             </div>
                             <div class="msg-title">
-                                <a href="/m/chat/@Html.Raw(contactId)#end">
+                                <a href="/m/chat/@Html.Raw(contactId)">
                                     <time class="pull-right">@TextContentHelper.GetDateString(message.CreatedDate)</time>
                                     <h4 class="flag-num">@message.Name</h4>
                                 </a>
                             </div>
-                            <a href="/m/chat/@Html.Raw(contactId)#end"><p>@Html.Raw(TagHelper.GetTextSubSting(message.MessageText, 20, true))</p></a>
+                            <a href="/m/chat/@Html.Raw(contactId)">
+                                <p>@Html.Raw(TagHelper.GetTextSubSting(message.MessageText, 20, true))</p>
+                            </a>
                         </a>
                     </li>
                     }
@@ -62,5 +63,3 @@
     </div>
 
 </div>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/bower_components/lodash/dist/lodash.min.js"></script>

@@ -29,11 +29,11 @@
         }
         else
         {
-        <a href="#reservation">
+        <a class="classdetail-book" href="#reservation">
             <button class="btn btn-yellow">预定课程</button>
         </a>
         }
-        <a href="#privateMsg">
+        <a class="classdetail-chat" href="#privateMsg">
             <button class="btn btn-yellow">私信老师</button>
         </a>
     }
@@ -41,14 +41,14 @@
 @if (Model.ClassInfo != null)
 {
     <div class="course-page content">
-        <a href="index.html" class="icon icomoon icon-arrow-left nav-inner nav-left nav-back" data-transition="slide-out"></a>
+        <a href="@Url.Action("index", "m")" class="icon icomoon icon-arrow-left nav-inner nav-left" data-transition="slide-out"></a>
         <div class="cover-box">
             <a href="#getCoins" class="ico-coin">
                 <span>价格</span>
                 <hr>
                 <span>1课币</span>
             </a>
-
+            <div class="cover-filter"></div>
             <img src="@(!String.IsNullOrEmpty(Model.ClassInfo.Cover) ? ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "mb") : "/img/default_cover.png")" alt="" class="cover pull-left">
 
             <h3 class="white">@Model.ClassInfo.Title</h3>
@@ -63,7 +63,7 @@
                     <a href="#" class="favorite login-trigger">
                         <span class="icon icomoon icon-heart"></span>
                         <span class="num">@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Like])</span>
-                        <span>赞</span>
+                        <span>喜欢</span>
                     </a>
                 }
                 else
@@ -71,7 +71,7 @@
                     <a href="#" class="favorite toggle-like @(Model.ClassInfo.PublishStatus.Equals(1) ? "liked" : "")" data-classid="@Model.ClassInfo.ClassId">
                         <span class="icon icomoon icon-heart"></span>
                         <span class="num">@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Like])</span>
-                        <span>赞</span>
+                        <span>喜欢</span>
                     </a>
                 }
                 <a href="#" class="olive">
@@ -83,20 +83,21 @@
 
 
         <div class="info">
-            <a href="@Url.Action("personal", "m", new { id = Model.MemberInfo.MemberId })">
+            <a class="classdetail-avatar" href="@Url.Action("personal", "m", new { id = Model.MemberInfo.MemberId })">
                 <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "h", Model.MemberInfo.SocialType)" alt="" class="avatar">
             </a>
-            <h3>@Model.MemberInfo.Name</h3>
+            <h5>@Model.MemberInfo.Name<span class="icon icomoon @(Model.MemberInfo.Gender ? "icon-male" : "icon-female")"></span></h5>
             <p>
-                <label class="postag" data-posx="@Model.MemberInfo.PosX" data-posy="@Model.MemberInfo.PosY"></label>@(Model.MemberInfo.CityId > 0 ? TagHelper.GetCityName(Model.MemberInfo.CityId) : "")
+                <small>
+                    <label class="postag" data-posx="@Model.MemberInfo.PosX" data-posy="@Model.MemberInfo.PosY"></label>@(Model.MemberInfo.CityId > 0 ? TagHelper.GetCityName(Model.MemberInfo.CityId) : "")</small>
             </p>
             @if (ViewBag.MemberInfo != null && Model.MemberInfo.IsLike)
             {
-                <a href="#" class="follow btn btn-olive followed" data-memberid="@Model.MemberInfo.MemberId">已关注</a>
+                <a href="#" class="follow btn border-none btn-grey" data-memberid="@Model.MemberInfo.MemberId">已关注</a>
             }
             else
             {
-                <a href="#" class="follow btn btn-olive" data-memberid="@Model.MemberInfo.MemberId">关注</a>
+                <a href="#" class="follow btn border-none btn-olive" data-memberid="@Model.MemberInfo.MemberId">关注</a>
             }
             <div class="evaluation">
                 <h5>老师自评</h5>
@@ -163,7 +164,7 @@
                         <h3 class="comment-num">@Model.ClassNumDic[Enums.NumberDictionaryKey.Comment]</h3>
                         <h6>用户留言</h6>
                     </a>
-                    <a class="control-item" href="#item2mobile">
+                    <a class="@(Model.ClassNumDic[Enums.NumberDictionaryKey.StudentReview].Equals(0) ? "control-item-no-js" : "control-item")" href="#item2mobile">
                         <h3>@Model.ClassNumDic[Enums.NumberDictionaryKey.StudentReview]</h3>
                         <h6>学生评价</h6>
                     </a>
@@ -188,30 +189,29 @@
             <div class="comment-content">
                 <div id="item1mobile" class="control-content active">
                     <form id="comment-form" data-classid="@Model.ClassInfo.ClassId" @(ViewBag.MemberInfo == null ? "" : ("data-name=" + ViewBag.MemberInfo.Name + " data-avatar=" + ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "ms")))>
-                        <!--<button class="icon icomoon icon-heart pull-right"></button>-->
+                        <button class="btn btn-link olive pull-right">发送</button>
                         <input type="text" placeholder="我要留言">
-                        <div class="pull-right">
-                            <button class="btn" type="submit">留言</button>
-                        </div>
                     </form>
-
                     <ul class="comment-text">
                         @if (Model.ClassComment != null)
                         {
                             foreach (var commentItem in Model.ClassComment)
                             {
                             <li class="card">
-                                <div class="pull-left flag-num">
+                                <div class="comment-avatar flag-num">
                                     <a href="@Url.Action("personal", "m", new { id = commentItem.MemberId })">
                                         <img class="avatar" src="@ContentHelper.GetAvatarPath(commentItem.Avatar, "ms")">
                                     </a>
                                 </div>
-                                <div class="msg-title">
-                                    <span class="time pull-right">@commentItem.CreatedDate</span>
-                                    <h4 class="flag-num"><a href="@Url.Action("personal", "m", new { id = commentItem.MemberId })">@commentItem.Name</a></h4>
+                                <div class="comment-content">
+                                    <div class="msg-title">
+                                        <span class="time pull-right">@commentItem.CreatedDate</span>
+                                        <h4 class="flag-num"><a href="@Url.Action("personal", "m", new { id = commentItem.MemberId })">@commentItem.Name</a></h4>
+                                    </div>
+                                    <p>@commentItem.Comment</p>
                                 </div>
-                                <p>@commentItem.Comment</p>
                             </li>
+                            
                             }
 
                         }
@@ -226,23 +226,23 @@
                 <div id="item2mobile" class="control-content">
 
                     <ul class="comment-text">
-
                         @if (Model.ClassReview != null)
                         {
                             foreach (var reviewItem in Model.ClassReview)
                             {
                             <li class="card">
-                                <div class="pull-left flag-num">
+                                <div class="comment-avatar flag-num">
                                     <a href="@Url.Action("personal", "m", new { id = reviewItem.MemberId })">
                                         <img class="avatar" src="@ContentHelper.GetAvatarPath(reviewItem.Avatar, "ms")">
                                     </a>
                                 </div>
-                                <div class="msg-title">
-                                    <span class="time pull-right">@reviewItem.CreatedDate</span>
-                                    <h4 class="flag-num"><a href="@Url.Action("personal", "m", new { id = reviewItem.MemberId })">@reviewItem.Name</a></h4>
-
+                                <div class="comment-content">
+                                    <div class="msg-title">
+                                        <span class="time pull-right">@reviewItem.CreatedDate</span>
+                                        <h4 class="flag-num"><a href="@Url.Action("personal", "m", new { id = reviewItem.MemberId })">@reviewItem.Name</a></h4>
+                                    </div>
+                                    <p>@reviewItem.Comment</p>
                                 </div>
-                                <p>@reviewItem.Comment</p>
                             </li>
                             }
                         }
@@ -270,12 +270,12 @@
                             @if (ViewBag.MemberInfo != null)
                             {
                                 <form data-classid="@Model.ClassInfo.ClassId">
-                                    <input placeholder="授课日期" type="text" name="date" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input placeholder="授课日期" type="text" name="date" onfocus="(this.type='date')" onblur="(this.type='text')" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(1).ToString("yyyy-MM-dd")">
                                     <textarea name="remark" id="" cols="30" rows="2" placeholder="留言"></textarea>
                                     <h5>你的联系信息</h5>
                                     <p class="lightGrey">老师在确认之后才能看到你的联系信息</p>
                                     <input type="text" name="name" placeholder="姓名" value="@ViewBag.MemberInfo.Name">
-                                    <input type="tel" name="phone" placeholder="手机" value="@ViewBag.MemberInfo.Phone" @((ViewBag.MemberInfo.Phone == "") ? "" : "disabled")>
+                                    <input type="text" name="phone" placeholder="手机" value="@ViewBag.MemberInfo.Phone" @((ViewBag.MemberInfo.Phone == "") ? "" : "disabled") maxlength="11">
                                     <p class="alarm">请在提交订课申请之前先与老师私信沟通细节</p>
                                     <button class="btn btn-primary btn-block">确认订课</button>
                                 </form>
@@ -365,22 +365,22 @@
 
         <script type="text/template" id="comment-tpl">
         <li class="card">
-          <div class="pull-left flag-num">
+          <div class="comment-avatar flag-num">
             <a href="#">
             <img class="avatar" src="<%- item.Avatar %>" />
             </a>
           </div>
-          <div class="msg-title">
+          <div class="comment-content">
+            <div class="msg-title">
             <span class="time pull-right">刚刚</span>
-            <h4 class="flag-num">
-              <a href="#"><%- item.Name %></a>
-            </h4>
+              <h4 class="flag-num">
+                <a href="#"><%- item.Name %></a>
+              </h4>
+            </div>
+            <p><%- item.CommentText %></p>
           </div>
-          <p><%- item.CommentText %></p>
         </li>
         </script>
 
     </div>
-    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/bower_components/lodash/dist/lodash.min.js"></script>
 }

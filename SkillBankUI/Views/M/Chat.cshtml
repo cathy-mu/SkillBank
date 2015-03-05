@@ -7,7 +7,7 @@
     <form id="form-write" data-contactid="@Model.Contact.MemberId" data-avatar="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mm")">
         <textarea id="write-box" rows="1"></textarea>
         <div class="pull-right">
-            <button class="btn btn-link">发送</button>
+            <button class="btn btn-link disabled">发送</button>
         </div>
 
     </form>
@@ -67,6 +67,3 @@
         </div>
     }
 </div>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/bower_components/lodash/dist/lodash.min.js"></script>
-<script src="/bower_components/textarea-autosize/dist/jquery.textarea_autosize.js"></script>

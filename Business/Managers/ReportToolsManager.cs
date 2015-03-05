@@ -14,6 +14,7 @@ namespace SkillBank.Site.Services.Managers
     public interface IReportToolsManager
     {
         List<ReportNumItem> GetReportClassMemberNum();
+        List<ReportOrderStatus_Load_p_Result> GetReportClassMemberNum(Byte loadBy, DateTime beginDate, DateTime endDate);
         List<RecommendationItem> GetRecommendation(int classId);
         void SaveMasterMember(int memberId, String paraStr, char split);
         void SaveRecommendationClass(int classId, String paraStr, char split);
@@ -31,6 +32,11 @@ namespace SkillBank.Site.Services.Managers
         public List<ReportNumItem> GetReportClassMemberNum()
         {
             return _repository.GetReportClassMemberNum();
+        }
+
+        public List<ReportOrderStatus_Load_p_Result> GetReportClassMemberNum(Byte loadBy, DateTime beginDate, DateTime endDate)
+        {
+            return _repository.GetReportOrderStatus(loadBy, beginDate, endDate);
         }
 
         public List<RecommendationItem> GetRecommendation(int classId)

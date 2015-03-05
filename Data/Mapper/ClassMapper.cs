@@ -30,7 +30,7 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objClasses != null)
             {
-                var classes = objClasses.Select(item => new ClassInfo() { Category_Id = item.Category_Id, ClassId = item.ClassId, IsActive = item.IsActive, TeacheLevel = item.TeacheLevel,/* CompleteStatus = item.CompleteStatus,*/ Cover = item.Cover, CreatedDate = item.CreatedDate, IsProved = item.IsProved, LastUpdateDate = item.LastUpdateDate, Level = item.Level, Member_Id = item.Member_Id, Rank = item.Rank, SkillLevel = item.SkillLevel, Summary = item.Summary, Title = item.Title, Detail = item.Detail }).ToList<ClassInfo>();
+                var classes = objClasses.Select(item => new ClassInfo() { Category_Id = item.Category_Id, ClassId = item.ClassId, IsActive = item.IsActive, TeacheLevel = item.TeacheLevel,/* CompleteStatus = item.CompleteStatus,*/ Cover = item.Cover, CreatedDate = item.CreatedDate, IsProved = item.IsProved, LastUpdateDate = item.LastUpdateDate, Level = item.Level, Member_Id = item.Member_Id, Rank = item.Rank, SkillLevel = item.SkillLevel, Summary = item.Summary, Title = item.Title, Detail = item.Detail}).ToList<ClassInfo>();
                 return (classes.Count > 0) ? classes : null;
             }
             return null;
@@ -50,7 +50,7 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objClasses != null)
             {
-                var classes = objClasses.Select(item => new ClassListItem() { ClassId = item.ClassId, Cover = item.Cover, Level = item.Level, Member_Id = item.Member_Id, Title = item.Title, Avatar = item.Avatar, Name = item.Name,CityId = item.CityId,  PosX = item.PosX, PosY = item.PosY,ReviewNum = item.ReviewNum, LikeNum = item.LikeNum, IsLike = item.IsLike, ClassNum = item.ClassNum }).ToList<ClassListItem>();
+                var classes = objClasses.Select(item => new ClassListItem() { ClassId = item.ClassId, Cover = item.Cover, Level = item.Level, Member_Id = item.Member_Id, Title = item.Title, Avatar = item.Avatar, Name = item.Name, CityId = item.CityId, PosX = item.PosX, PosY = item.PosY, ReviewNum = item.ReviewNum, LikeNum = item.LikeNum, IsLike = item.IsLike, ClassNum = item.ClassNum }).ToList<ClassListItem>();
                 return (classes.Count > 0) ? classes : null;
             }
             return null;
@@ -60,7 +60,7 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objClasses != null)
             {
-                var classes = objClasses.Select(item => new ClassListItem() { ClassId = item.ClassId, Cover = item.Cover, Level = item.Level, Member_Id = item.Member_Id, Title = item.Title, Avatar = item.Avatar, Name = item.Name, CityId = item.CityId, PosX = item.PosX, PosY = item.PosY, ReviewNum = item.ReviewNum, LikeNum = item.LikeNum, IsLike = item.IsLike, ClassNum = item.ClassNum }).ToList<ClassListItem>();
+                var classes = objClasses.Select(item => new ClassListItem() { ClassId = item.ClassId, Cover = item.Cover, Level = item.Level, Member_Id = item.Member_Id, Title = item.Title, Avatar = item.Avatar, Name = item.Name, CityId = item.CityId, PosX = item.PosX, PosY = item.PosY, ReviewNum = item.ReviewNum, LikeNum = item.LikeNum, IsLike = item.IsLike, ClassNum = 0 }).ToList<ClassListItem>();
                 return (classes.Count > 0) ? classes : null;
             }
             return null;

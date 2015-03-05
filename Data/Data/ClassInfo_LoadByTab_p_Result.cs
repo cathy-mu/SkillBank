@@ -26,6 +26,5 @@ namespace SkillBank.Site.DataSource.Data
         public byte Level { get; set; }
         public string Avatar { get; set; }
         public int ReviewNum { get; set; }
-        public int ClassNum { get; set; }
     }
 }

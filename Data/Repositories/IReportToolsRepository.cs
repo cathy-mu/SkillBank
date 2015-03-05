@@ -18,6 +18,7 @@ namespace SkillBank.Site.DataSource.Data
     public interface IReportToolsRepository
     {
         List<ReportNumItem> GetReportClassMemberNum();
+        List<ReportOrderStatus_Load_p_Result> GetReportOrderStatus(Byte loadType, DateTime beginDate, DateTime endDate);
         void SaveMasterMember(int memberId, String paraStr, char split);
         void SaveRecommendationClass(int classId, String paraStr, char split);
         List<RecommendationItem> GetRecommendation(int classId);
@@ -51,6 +52,12 @@ namespace SkillBank.Site.DataSource.Data
             Recommendation_Save_p(classId, paraStr, split);
         }
 
+        public List<ReportOrderStatus_Load_p_Result> GetReportOrderStatus(Byte loadBy, DateTime beginDate, DateTime endDate)
+        {
+            var result = ReportOrderStatus_Load_p(loadBy, beginDate, endDate);
+            return ReportToolsMapper.Map(result);
+        }
+
         private ObjectResult<ReportClassMemberNum_Load_p_Result> ReportClassMemberNum_Load_p()
         {
             ObjectResult<ReportClassMemberNum_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReportClassMemberNum_Load_p_Result>("ReportClassMemberNum_Load_p", MergeOption.NoTracking);
@@ -79,6 +86,17 @@ namespace SkillBank.Site.DataSource.Data
             var paraStrParameter = new ObjectParameter("ParaStr", paraStr);
             var splitParameter = new ObjectParameter("Split", split);
             ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Master_Save_p", memberIdParameter, paraStrParameter, splitParameter);
+        }
+
+
+
+        private ObjectResult<ReportOrderStatus_Load_p_Result> ReportOrderStatus_Load_p(Byte loadType, DateTime beginDate, DateTime endDate)
+        {
+            var beginDateParameter = new ObjectParameter("BeginDate", beginDate);
+            var endDateParameter = new ObjectParameter("EndDate", endDate);
+            var loadTypeParameter = new ObjectParameter("LoadType", loadType);
+            ObjectResult<ReportOrderStatus_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReportOrderStatus_Load_p_Result>("ReportOrderStatus_Load_p", MergeOption.NoTracking, loadTypeParameter, beginDateParameter, endDateParameter);
+            return result;
         }
 
 

@@ -99,6 +99,7 @@ namespace SkillBank.Site.Services
 
         // report and tools
         List<ReportNumItem> GetReportClassMemberNum();
+        List<ReportOrderStatus_Load_p_Result> GetReportClassMemberNum(Byte loadBy, DateTime beginDate, DateTime endDate);
         List<RecommendationItem> GetRecommendation(int classId);
         void SaveMasterMember(int memberId, String paraStr, char split);
         void SaveRecommendationClass(int classId, String paraStr, char split);
@@ -689,11 +690,11 @@ namespace SkillBank.Site.Services
         public Boolean AddOrder(int studentId, int classId, DateTime bookDate, String remark, String name = "", String phone = "", String email = "")
         {
             var result = _orderMgr.AddOrder(studentId, classId, bookDate, remark);
-            if (!String.IsNullOrEmpty(name) || !String.IsNullOrEmpty(phone) || !String.IsNullOrEmpty(email))
+            if (!String.IsNullOrEmpty(name) || !String.IsNullOrEmpty(phone))
             {
                 MemberInfo studentInfo = new MemberInfo();
                 studentInfo.MemberId = studentId;
-                if (!String.IsNullOrEmpty(phone) && !String.IsNullOrEmpty(name) && !String.IsNullOrEmpty(email))
+                if (!String.IsNullOrEmpty(phone) && !String.IsNullOrEmpty(name))
                 {
                     studentInfo.Name = name;
                     studentInfo.Phone = phone;
@@ -813,6 +814,11 @@ namespace SkillBank.Site.Services
         public List<ReportNumItem> GetReportClassMemberNum()
         {
             return _repMgr.GetReportClassMemberNum();
+        }
+
+        public List<ReportOrderStatus_Load_p_Result> GetReportClassMemberNum(Byte loadBy, DateTime beginDate, DateTime endDate)
+        {
+            return _repMgr.GetReportClassMemberNum(loadBy, beginDate, endDate);
         }
 
         public List<RecommendationItem> GetRecommendation(int classId)

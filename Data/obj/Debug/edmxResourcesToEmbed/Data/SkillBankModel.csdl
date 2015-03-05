@@ -336,6 +336,11 @@
       <Parameter Name="cityId" Mode="In" Type="Int32" />
       <Parameter Name="memberId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="ReportOrderStatus_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ReportOrderStatus_Load_p_Result)">
+      <Parameter Name="LoadType" Mode="In" Type="Byte" />
+      <Parameter Name="BeginDate" Mode="In" Type="DateTime" />
+      <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="CategoryPopTag">
     <Key>
@@ -872,5 +877,16 @@
     <Property Type="Byte" Name="Level" Nullable="false" />
     <Property Type="String" Name="Avatar" Nullable="false" />
     <Property Type="Int32" Name="ReviewNum" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="ReportOrderStatus_Load_p_Result">
+    <Property Type="Int32" Name="GroupId" Nullable="false" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="Class_Id" Nullable="false" />
+    <Property Type="Int32" Name="Member_Id" Nullable="false" />
+    <Property Type="Int32" Name="Student_Id" Nullable="false" />
+    <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+    <Property Type="Boolean" Name="StudentReview" Nullable="false" />
+    <Property Type="Boolean" Name="TeacherReview" Nullable="false" />
   </ComplexType>
 </Schema>

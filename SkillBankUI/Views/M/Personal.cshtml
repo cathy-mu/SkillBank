@@ -10,33 +10,33 @@
 <header class="bar-nav" data-ismember="@ViewBag.IsLogin"></header>
 
 <div class="content personal-page" id="personal-page">
-    <a class="icon icomoon icon-redo pull-right nav-inner nav-right nav-back"></a>
-    <a href="index.html" class="icon icomoon icon-arrow-left nav-inner nav-left" data-transition="slide-out"></a>
+    <!--<a class="icon icomoon icon-redo pull-right nav-inner nav-right nav-back"></a>
+    <a href="#" class="icon icomoon icon-arrow-left nav-inner nav-left nav-back" data-transition="slide-out"></a>-->
 
     <div class="info">
-        <h3>@Model.MemberInfo.Name</h3>
-        <p><small>6km&nbsp;.&nbsp;上海</small></p>
+        <h3>@Model.MemberInfo.Name<span class="icon icomoon @(Model.MemberInfo.Gender ? "icon-male" : "icon-female")"></span></h3>
+        <p><small>@(Model.MemberInfo.CityId>0 ? TagHelper.GetCityName(Model.MemberInfo.CityId) : "")</small></p>
         <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "mb", Model.MemberInfo.SocialType)" alt="" class="avatar">
         <p class="white"><small>@TextContentHelper.GetJoinUsDateText(Model.MemberInfo.CreatedDate)</small></p>
         <div class="btn-set mb-1">
             @if (ViewBag.MemberInfo == null)
             { 
-                <a class="btn btn-default login-trigger">私信 TA</a>
+                <a class="btn btn-default login-trigger border-none">私信 TA</a>
             }
             else
             {
-                <a href="#privateMsg" class="btn btn-default">私信 TA</a>
+                <a href="#privateMsg" class="btn btn-default border-none personal-chat">私信 TA</a>
             }
             @if (ViewBag.MemberInfo != null && Model.MemberInfo.IsLike)
             {
-                <a href="#" class="btn btn-olive follow followed" data-memberid="@Model.MemberInfo.MemberId">已关注</a>
+                <a href="#" class="follow btn border-none btn-grey" data-memberid="@Model.MemberInfo.MemberId">已关注</a>
             }
             else
             {
-                <a href="#" class="btn btn-olive follow" data-memberid="@Model.MemberInfo.MemberId">关注</a>
+                <a href="#" class="follow btn border-none btn-olive" data-memberid="@Model.MemberInfo.MemberId">关注</a>
             } 
         </div>
-        <div class="nums">
+        <div class="statistic">
             <table class="u-full-width">
                 <thead>
                     <tr>
@@ -77,17 +77,17 @@
                         {
                             <div class="slide">
                                 <div class="title-bar u-full-width">
-                                    <a href="@Url.Action("course", "m", new { id = classItem.ClassId })" class="pull-left">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 20, true))</a>
+                                    <a href="@Url.Action("course", "m", new { id = classItem.ClassId })" class="pull-left personal-cover">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 20, true))</a>
                                     <div class="pull-right">
-                                        <!--<a href="#" class="icon icomoon icon-comment">
+                                        <!--<a href="#" class="icon icomoon icon-comment white">
                                             <span class="num">14</span>
                                         </a>
-                                        <a href="#" class="icon icomoon icon-heart">
+                                        <a href="#" class="icon icomoon icon-heart white">
                                             <span class="num">28</span>
                                         </a>-->
                                     </div>
                                 </div>
-                                <a href="@Url.Action("course", "m", new { id = classItem.ClassId })">
+                                <a class="personal-cover" href="@Url.Action("course", "m", new { id = classItem.ClassId })">
                                     <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "ms")"></a>
                             </div>
                         }
@@ -98,7 +98,7 @@
         </div>
                         if (Model.ClassList.Count > 1)
                         {
-        <div id="bullets">
+        <div id="bullets" class="mb-1">
             <ul>
                 @for (int i = 0; i < Model.ClassList.Count; i++)
                 {
@@ -117,11 +117,11 @@
                 <h3>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Certification]</h3>
                 <h6>身份认证</h6>
             </a>
-            <a class="control-item" @(Model.ProfileNumDic[Enums.NumberDictionaryKey.StudentReview] > 0 ? "href=#item2mobile" : "")>
+            <a class="@(Model.ProfileNumDic[Enums.NumberDictionaryKey.StudentReview] > 0 ? "control-item " : "control-item-no-js")" href="#item2mobile">
                 <h3>@Model.ProfileNumDic[Enums.NumberDictionaryKey.StudentReview]</h3>
                 <h6>学生评价</h6>
             </a>
-            <a class="control-item" @(Model.ProfileNumDic[Enums.NumberDictionaryKey.TeacherReview] > 0 ? "href=#item3mobile" : "")>
+            <a class="@(Model.ProfileNumDic[Enums.NumberDictionaryKey.TeacherReview] > 0 ? "control-item " : "control-item-no-js")" href="#item3mobile">
                 <h3>@Model.ProfileNumDic[Enums.NumberDictionaryKey.TeacherReview]</h3>
                 <h6>老师评价</h6>
             </a>
@@ -150,16 +150,18 @@
                         foreach (var reviewItem in Model.StuentReview)
                         {
                         <li class="card">
-                            <div class="pull-left flag-num">
+                            <div class="comment-avatar flag-num">
                                 <a href="@Url.Action("personal", "m", new { id = reviewItem.MemberId })">
                                     <img class="avatar" src="@ContentHelper.GetAvatarPath(reviewItem.Avatar, "ms")">
                                 </a>
                             </div>
-                            <div class="msg-title">
-                                <span class="time pull-right">@reviewItem.CreatedDate</span>
-                                <h4 class="flag-num">@reviewItem.Name</h4>
+                            <div class="comment-content">
+                                <div class="msg-title">
+                                    <span class="time pull-right">@reviewItem.CreatedDate</span>
+                                    <h4 class="flag-num">@reviewItem.Name</h4>
+                                </div>
+                                <p>@reviewItem.Comment</p>
                             </div>
-                            <p>@reviewItem.Comment</p>
                         </li>
                         }
                     }
@@ -172,16 +174,18 @@
                         foreach (var reviewItem in Model.TeacherReview)
                         {
                         <li class="card">
-                            <div class="pull-left flag-num">
+                            <div class="comment-avatar flag-num">
                                 <a href="@Url.Action("personal", "m", new { id = reviewItem.MemberId })">
                                     <img class="avatar" src="@ContentHelper.GetAvatarPath(reviewItem.Avatar, "ms")">
                                 </a>
                             </div>
-                            <div class="msg-title">
-                                <span class="time pull-right">@reviewItem.CreatedDate</span>
-                                <h4 class="flag-num">@reviewItem.Name</h4>
+                            <div class="comment-content">
+                                <div class="msg-title">
+                                    <span class="time pull-right">@reviewItem.CreatedDate</span>
+                                    <h4 class="flag-num">@reviewItem.Name</h4>
+                                </div>
+                                <p>@reviewItem.Comment</p>
                             </div>
-                            <p>@reviewItem.Comment</p>
                         </li>
                         }
                     }
@@ -199,7 +203,7 @@
         <div class="content">
             <div class="content-inner">
                 <div class="content-padded">
-                    <form>
+                    <form data-contactid="@Model.MemberInfo.MemberId">
                         <textarea name="" id="" cols="30" rows="6" placeholder="输入你的私信内容，向老师咨询关于课程的各种问题"></textarea>
                         <button class="btn btn-primary btn-block">发送私信</button>
                     </form>
@@ -209,5 +213,3 @@
     </div>
 
 </div>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/bower_components/lodash/dist/lodash.min.js"></script>

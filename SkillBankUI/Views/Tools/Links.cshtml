@@ -1,55 +1,106 @@
 ﻿@section HeaderStyle
 {
-@Html.CombresCustomUrl("contentCss")}
+    @Html.CombresCustomUrl("contentCss")}
 @section FooterJs
 {@Html.CombresCustomUrl("toolsJs")}
-<div class="body">
-    <div style="margin:50px 0 50px 200px">
-     <a href="@Url.Action("prove", "tools")" target="_blank">@Html.GetTrans(572)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("rejected", "tools")" target="_blank">查看被拒绝的课程</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="退出登录" id="logoutbtn"/>
-    </div>
-    @if (ViewBag.IsAdmin)
-    {
-    <div style="margin:50px 0 50px 200px">
-    根据ID审批/拒绝课程<br />
-    Class Id :   <input type="text" value="" id="classId"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Preview Class" id="previewbtn"/>
-    </div>
-    <div style="margin:30px 0 50px 200px">
-    根据ID上线/下架课程<br />
-    Class Id :   <input type="text" value="" id="classId1"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Change Class Status" id="viewbtn"/>
-    </div>
+<style type="text/css">
+    .toolgroup {
+        margin: 50px 0 50px 100px;
     }
-   
-    <div style="margin:50px 0 50px 200px">
-        Pass :   <input type="text" value="" id="passcode"/><br />
-        解除手机验证<br />
-        Mobile :   <input type="text" value="" id="mobile"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Mobile" id="unbindmobile"/>
-        <br /><br />
-        根据用户ID/社交账号解绑账户<br />
-        MemberId :   <input type="text" value="" id="accountmid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Member Id" id="unbindmid"/><br /><br />
-        SocialId :   <input type="text" value="" id="accountsid"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Social Id" id="unbindsid"/>
-    </div>
-    
-    <div style="margin:50px 0 50px 200px">
-        Check Blurb Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Show Blurb Id" id="showll"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Hide Blurb Id" id="hidell"/>
-    </div>
-    <div style="margin:50px 0 50px 200px">
-        MemberId:<input type="text" value="0" id="memberId"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Set MemberId" id="setmemberid"/>
-    </div>
-      
-    @if (ViewBag.IsAdmin)
-    {
-    <div style="margin:50px 0 50px 200px">
-        MemberId:<input type="text" value="0" id="masterMemberId"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="设置达人" id="setmaster"/>
-    </div>
-    <div style="margin:100px 0 50px 200px">
-      <a href="@Url.Action("coins", "tools")" target="_blank">课币相关的工具</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;收回 @(DateTime.Now.AddDays(-60).ToString("yy-MM-dd")) 至 @(DateTime.Now.AddDays(-30).ToString("yy-MM-dd")) 免费课币&nbsp;&nbsp;<input type="button" value="收回" id="getcoinbackbtn"/>
-    </div>
-    }
-    
-      
 
+    .inputtitle {
+        width: 150px;
+        display: inline-block;
+    }
+    legend {
+        color:#100871;
+    }
+</style>
+<div class="body">
+    <div class="toolgroup">
+        <fieldset>
+            <legend>工具 </legend>
+            <a href="@Url.Action("prove", "tools")" target="_blank">@Html.GetTrans(572)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("rejected", "tools")" target="_blank">查看被拒绝的课程</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="退出登录" id="logoutbtn" />
+            <br />
+            <br />
+            <span class="inputtitle">Show Blurb Id</span><input type="button" value="Show Blurb" id="showll" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Hide Blurb" id="hidell" />
+            <br />
+            <br />
+            <span class="inputtitle">MemberId :</span><input type="text" value="0" id="memberId" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="GO" id="setmemberid" />
+        </fieldset>
+    </div>
+    @if (ViewBag.IsAdmin)
+    {
+        <div style="margin: 50px 0 50px 200px">
+        </div>
+        <div style="margin: 30px 0 50px 200px">
+        </div>
     
-    
-    
-</div>    
+
+        <div class="toolgroup">
+            <fieldset>
+                <legend>社交账号/手机 </legend>
+                <span class="inputtitle">Pass :</span><input type="text" value="" id="passcode" /><br />
+                <br />
+                <span class="inputtitle">解绑手机:</span><input type="text" value="" id="mobile" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Mobile" id="unbindmobile" />
+                <br />
+                <br />
+                根据用户ID/社交账号解绑账户<br />
+                <span class="inputtitle">MemberId :</span><input type="text" value="" id="accountmid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Member Id" id="unbindmid" /><br />
+                <br />
+                <span class="inputtitle">SocialId :</span><input type="text" value="" id="accountsid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Unbind Social Id" id="unbindsid" />
+            </fieldset>
+        </div>
+    }
+
+
+    @if (ViewBag.IsAdmin)
+    {
+        
+        <div class="toolgroup">
+            <fieldset>
+                <legend>课程/用户管理 </legend>
+                <span class="inputtitle">审批/拒绝Class :</span><input type="text" value="" id="classId" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Preview Class" id="previewbtn" />
+                <br />
+                <br />
+                <span class="inputtitle">上线/下架Class :</span><input type="text" value="" id="classId1" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Change Class Status" id="viewbtn" />
+                <br />
+                <br />
+                <span class="inputtitle">MemberId :</span><input type="text" value="0" id="masterMemberId" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="设置达人" id="setmaster" />
+                <br />
+                <br />
+                <p>根据用户信息查找Member Id</p>
+                <span class="inputtitle">Email Keyword :</span><input type="text" value="" id="email" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearche" />
+                <br />
+                <br />
+                <span class="inputtitle">Name Keyword :</span><input type="text" value="" id="name" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchn" />
+                <br />
+                <br />
+                <span class="inputtitle">Phone Keyword :</span><input type="text" value="" id="phone" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchp" />
+                <br />
+                <br />
+                <span class="inputtitle">Social Account :</span><input type="text" value="" id="socail" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchs" />
+
+
+
+            </fieldset>
+        </div>
+        <div class="toolgroup">
+            <fieldset>
+                <legend>课币/报表</legend>
+                <a href="@Url.Action("coins", "tools")" target="_blank">课币</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;收回 @(DateTime.Now.AddDays(-60).ToString("yy-MM-dd")) 至 @(DateTime.Now.AddDays(-30).ToString("yy-MM-dd")) 免费课币&nbsp;&nbsp;<input type="button" value="收回" id="getcoinbackbtn" />
+                <br />
+                <br />
+                <a href="@Url.Action("report", "tools")" target="_blank">用户数据报表</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="@Url.Action("orderreport", "tools", new { b = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd"), e = DateTime.Now.ToString("yyyy-MM-dd") })" target="_blank">订单状态报表</a>
+            </fieldset>
+        </div>
+    }
+
+
+
+
+
+
+</div>
 <!-- end of body -->

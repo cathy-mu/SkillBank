@@ -164,6 +164,9 @@
     <Compile Include="Data\ReportNumItem.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\ReportOrderStatus_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\Review_Load_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>

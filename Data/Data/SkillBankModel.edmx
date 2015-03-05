@@ -516,6 +516,11 @@
           <Parameter Name="Split" Type="varchar" Mode="In" />
         </Function>
         <Function Name="ReportClassMemberNum_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ReportOrderStatus_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LoadType" Type="tinyint" Mode="In" />
+          <Parameter Name="BeginDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="SkillCategory_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="StudentReview_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="loadBy" Type="tinyint" Mode="In" />
@@ -903,6 +908,11 @@
             <Parameter Name="posY" Mode="In" Type="Decimal" />
             <Parameter Name="cityId" Mode="In" Type="Int32" />
             <Parameter Name="memberId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ReportOrderStatus_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ReportOrderStatus_Load_p_Result)">
+            <Parameter Name="LoadType" Mode="In" Type="Byte" />
+            <Parameter Name="BeginDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="CategoryPopTag">
@@ -1440,6 +1450,17 @@
           <Property Type="Byte" Name="Level" Nullable="false" />
           <Property Type="String" Name="Avatar" Nullable="false" />
           <Property Type="Int32" Name="ReviewNum" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="ReportOrderStatus_Load_p_Result">
+          <Property Type="Int32" Name="GroupId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="Class_Id" Nullable="false" />
+          <Property Type="Int32" Name="Member_Id" Nullable="false" />
+          <Property Type="Int32" Name="Student_Id" Nullable="false" />
+          <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="StudentReview" Nullable="false" />
+          <Property Type="Boolean" Name="TeacherReview" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2077,6 +2098,21 @@
                 <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="ReviewNum" ColumnName="ReviewNum" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ReportOrderStatus_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ReportOrderStatus_Load_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ReportOrderStatus_Load_p_Result">
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="Member_Id" ColumnName="Member_Id" />
+                <ScalarProperty Name="Student_Id" ColumnName="Student_Id" />
+                <ScalarProperty Name="BookedDate" ColumnName="BookedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="StudentReview" ColumnName="StudentReview" />
+                <ScalarProperty Name="TeacherReview" ColumnName="TeacherReview" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

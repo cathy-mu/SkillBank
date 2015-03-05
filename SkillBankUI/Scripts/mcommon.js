@@ -52,7 +52,13 @@ function request(type, url, opts, callback) {
 function resError(status){
   if(status == 401){
       //goToLogin();
+      if (typeof (mixpanel) != "undefined") {
+          mixpanel.track("register alert");
+      }
       if (window.confirm("你还没有登陆或注册，现在登录或注册吗？")) {
+          if (typeof (mixpanel) != "undefined") {
+              mixpanel.track("register alert yes");
+          }
           location.href = '/m/login';
       }
   } else if(status == 400){
@@ -79,7 +85,13 @@ function checkLogin() {
 }
 
 function goToLogin() {
+    if (typeof (mixpanel) != "undefined") {
+        mixpanel.track("register alert");
+    }
     if (window.confirm("你还没有登陆或注册，现在登录或注册吗？")) {
+        if (typeof (mixpanel) != "undefined") {
+            mixpanel.track("register alert yes");
+        }
         location.href = '/m/login';
     }
     return;
@@ -95,6 +107,31 @@ var checkPage = function () {
   hackForModals();
   initLogin();
   initBack();
+  bindCloseEventToModal();
+  
+  if (typeof (mixpanel) != "undefined") {
+      mixpanel.track("page view");
+      $(".menutab-find").on('click', function () {
+          mixpanel.track("menu find");
+      });
+      $(".menutab-message").on('click', function () {
+          mixpanel.track("menu message");
+      });
+  }
+
+  $(".menutab-course").on('click', function () {
+      if (typeof (mixpanel) != "undefined") {
+          mixpanel.track("menu course");
+      }
+      alert("此功能将稍后开放");
+  });
+
+  $(".menutab-mypage").on('click', function () {
+      if (typeof (mixpanel) != "undefined") {
+          mixpanel.track("menu mypage");
+      }
+      alert("此功能将稍后开放");
+  });
 
   $(".login-trigger").on('click', function () {
       checkLogin();
@@ -105,6 +142,7 @@ var checkPage = function () {
       switchCourseCat();
       affix();
       toggleLike();
+      bindClassListTrackingEvent();
   }
 
   // course detail page
@@ -125,15 +163,22 @@ var checkPage = function () {
       reservationForm();//book class
       commentForm();
       followMember();
+      bindClassDetailTrackingEvent();
   }
 
   // personal page
   if ($('.personal-page').length) {
       followMember();
+      privateMsgForm();
+      bindPersonalTrackingEvent();
   }
-   
+
+  //login page
   if ($('.login-page').length) {
       $('#sinaloginbtn').on('click', function () {
+          if (typeof (mixpanel) != "undefined") {
+              mixpanel.track("sina signup");
+          }
           var backUrlKey = "backUrl";
           var refPath = sessionStorage.getItem(backUrlKey);
           if (refPath == undefined || refPath == "") {
@@ -149,6 +194,15 @@ var checkPage = function () {
       // init textrea auto size
       jQuery('#write-box').textareaAutoSize();
 
+      $('#write-box')[0].on('keyup', function (event) {
+          var $submit = $('#form-write button')[0];
+          if (this.value.length) {
+              $submit.removeAttribute('disabled');
+          } else {
+              $submit.setAttribute('disabled', '');
+          }
+      })
+
       // bind add msg
       chatForm();
   }
@@ -156,11 +210,15 @@ var checkPage = function () {
   // register page
   //--Update:redirect url ,validation
   if ($('#register-page').length) {
+      if (typeof (mixpanel) != "undefined") {
+          mixpanel.track("signup page");
+      }
+
       var $form = $('form')[0];
       $("#registebtn").on('click', function (event) {
           event.preventDefault();
 
-          var patten = new RegExp(/^[1]+[3,4,5,8]+\d{9}/);
+          var patten = new RegExp(/^[1]+\d{10}/);
           if (!$form.phone.value || !patten.test($form.phone.value)) {
               $form.phone.classList.add("error");//手机号码格式不对
               return;
@@ -182,6 +240,10 @@ var checkPage = function () {
               return;
           }
 
+          if (typeof (mixpanel) != "undefined") {
+              mixpanel.track("click signup");
+          }
+
           var data = {
               Mobile: $form.phone.value,
               Code: $form.code.value,
@@ -196,6 +258,9 @@ var checkPage = function () {
               } else if (fb == 3) {
                   alert("手机号码被占用");
               } else {
+                  if (typeof (mixpanel) != "undefined") {
+                      mixpanel.track("submit signup");
+                  }
                   redirectAfterLogin();
               }
           });
@@ -206,7 +271,7 @@ var checkPage = function () {
       var seconds;
       $verifyBtn.on('click', function () {
           if (seconds > 0) return;
-          var patten = new RegExp(/^[1]+[3,4,5,8]+\d{9}/);
+          var patten = new RegExp(/^[1]+\d{10}/);
           if (!$form.phone.value || !patten.test($form.phone.value)) {
               $form.phone.classList.add('error');//手机号码格式不对
               return;
@@ -214,7 +279,7 @@ var checkPage = function () {
               $form.phone.classList.remove('error');
           }
           var url = ENV.host + '/api/Validation?mobile=' + $form.phone.value;
-          seconds = 10;
+          seconds = 60;
           post(url, function (fb) {
               if (fb == 1) {
                   // timer
@@ -244,6 +309,8 @@ var checkPage = function () {
   }
 
 };
+
+
 
 // start here
 checkPage();
@@ -280,6 +347,9 @@ function switchCourseCat() {
                 console.log("Sorry, no position available.")
             }, geo_opts);
         } else if (this.dataset.by == 3) {// search
+            if (typeof (mixpanel) != "undefined") {
+                mixpanel.track("search");
+            }
             var url = ENV.host + '/api/ClassList?' + 'by=' + self.dataset.by + '&type=' + self.dataset.type + '&key=' + encodeURIComponent(self.dataset.key);
             getCourses(url, self);
         } else {// category ,promote
@@ -291,19 +361,34 @@ function switchCourseCat() {
 }
 
 function getCourses(url, el) {
+    var $loading = $('.loading');
+    $loading[0].style.display = 'block';
+
     get(url, function (fb) {
         if (!_.isArray(fb)) return;
         // insert html
         var tpl = $('#course-tpl')[0].innerHTML;
         $('.course-list')[0].innerHTML = _.template(tpl, { courses: fb, imgHost: ENV.imgHost });
         // active tab
-        [].forEach.call($('#search-cat a'), function (el) {
+        [].forEach.call($('.search-cat-wrap a'), function (el) {
             el.classList.remove('active');
         });
         el.classList.add('active');
-        //bind like class event
+        $loading[0].style.display = 'none';
+
         toggleLike();
     });
+}
+
+function bindCloseEventToModal() {
+    if (!$('.modal').length) return;
+    // jQuery(document).on('touchend click', function(e){
+    document.body.addEventListener('touchend', function (e) {
+        if (e.target.classList.contains('content')) {
+            var $modal = e.target.parentNode;
+            $modal.classList.remove('active');
+        }
+    })
 }
 
 function toggleLike() {
@@ -333,48 +418,17 @@ function toggleLike() {
                 $heart.classList.toggle('liked');
                 linkText.textContent = parseInt(linkText.textContent) + (isLike ? 1 : -1);
             });
+
+            if (typeof (mixpanel) != "undefined") {
+                mixpanel.track("like");
+            }
+
         } else {
             return;
         }
 
     });
 }
-
-//    if (!$('.toggle-like').length) return;
-//    document.body.addEventListener('click', function (e) {
-//        if (e.target.matches('.toggle-like, .toggle-like *')) {
-//            checkLogin();
-//            // e.stopPropagation();
-//            var $heart = e.target;
-//            while (!$heart.matches('.toggle-like')) {
-//                $heart = $heart.parentNode;
-//            }
-
-//            // get card
-//            var $card = e.target;
-//            while (!$card.matches('[data-classid]')) {
-//                $card = $card.parentNode;
-//            }
-//            var linkText = $heart.querySelector(".num");
-//            console.log($heart);
-//            console.log(linkText);
-
-//            var isLike = !$heart.matches('.liked');
-//            var data = {
-//                //MemberId: $card.dataset.member_id,
-//                ClassId: $card.dataset.classid,
-//                IsLike: !$heart.matches('.liked')
-//            }
-
-//            post(ENV.host + '/api/likeclass', data, function (fb) {
-//                if (!fb) return;
-//                $heart.classList.toggle('liked');
-//                linkText.textContent = parseInt(linkText.textContent) + (isLike ? 1 : -1);
-//            });
-
-//        }
-//    });
-//}
 
 function addBulletsWeget(){
   if( !document.getElementById('mySlider') ) return;
@@ -391,31 +445,42 @@ function addBulletsWeget(){
   }
   $('#mySlider')[0].addEventListener('slide', slide);
 
-  // add html
-  for(var i=0;i<len;i++){
-    if(i === 0) {
-      bulletsStr += "<li class='active'></li>\n";
-    } else{
-      bulletsStr += "<li></li>\n";
-    }
+  if ($('#bullets ul').length) {
+      // add html
+      for (var i = 0; i < len; i++) {
+          if (i === 0) {
+              bulletsStr += "<li class='active'></li>\n";
+          } else {
+              bulletsStr += "<li></li>\n";
+          }
+      }
+      $bulletsContainer.innerHTML = bulletsStr;
   }
-  //console.log($('#bullets ul').length);
-  $bulletsContainer.innerHTML = bulletsStr;
 }
 
-function affix(){
-  var $searchCat = document.getElementById('search-cat');
-  var $wrap = $('#search-cat .search-cat-wrap')[0]
-  var offTop = $searchCat.offsetTop
-  $('.content')[0].onscroll = function (event) {
-    if( this.scrollTop >= offTop ){
-      $wrap.classList.add('affix');
-      document.body.appendChild( $wrap )
-    } else{
-      $wrap.classList.remove('affix')
-      $searchCat.appendChild( $wrap )
+function affix() {
+    var $searchCat = document.getElementById('search-cat');
+    var $wrap = jQuery('.search-cat-wrap');
+    var offTop = $searchCat.offsetTop;
+    var toLeft;
+
+    $('.content')[0].onscroll = function (event) {
+        if (this.scrollTop >= offTop) {
+            $wrap.addClass('affix');
+
+            // to left as the same after append
+            toLeft = jQuery('.search-cat-wrap .inner')[0].scrollLeft;
+            if (!jQuery('body > .search-cat-wrap').length) $wrap.detach().appendTo('body');
+            jQuery('.search-cat-wrap .inner')[0].scrollLeft = toLeft;
+        } else {
+            $wrap.removeClass('affix')
+
+            // to left as the same after append
+            toLeft = jQuery('.search-cat-wrap .inner')[0].scrollLeft;
+            if (jQuery('body > .search-cat-wrap').length) $wrap.detach().appendTo($searchCat);
+            jQuery('.search-cat-wrap .inner')[0].scrollLeft = toLeft;
+        }
     }
-  }
 }
 
 function removeTrashes(){
@@ -458,9 +523,9 @@ function chatForm() {
     $form[0].on('submit', function (event) {
         event.preventDefault();
         if (!$input.value) {
-            $input.classList.add("error");//手机号码格式不对
+            $input.classList.add("error");
         } else {
-            $input.classList.remove("error");//手机号码格式不对
+            $input.classList.remove("error");
             var toId = $form[0].dataset.contactid;
             if (toId != undefined) {
                 var data = {
@@ -474,6 +539,12 @@ function chatForm() {
                           _.template($('#chat-detail-tpl')[0].innerHTML, { item: data }));
                     $input.value = "";
                     $input.focus();
+
+                    if (typeof (mixpanel) != "undefined") {
+                        mixpanel.track("chat on chatpage");
+                    }
+                    // scroll to newest msg
+                    $('.content')[0].scrollTop = 1000000;
                 });
             }
         }
@@ -502,7 +573,10 @@ function privateMsgForm() {
                 if (!fb) return;
                 alert("私信已发送");
                 $input.value = "";
-                $modal[0].style.display = 'none';
+                $modal[0].classList.remove('active');
+                if (typeof (mixpanel) != "undefined") {
+                    mixpanel.track("chat");
+                }
             });
         }
     });
@@ -521,16 +595,37 @@ function reservationForm() {
         var currday = d.getDate();
         var str = d.getFullYear() + (currmonth > 9 ? "-" + currmonth : "-0" + currmonth) + (currday > 9 ? "-" + currday : "-0" + currday);
         if (this.date.value <= str) {
+            this.date.classList.add("error");
             alert("请选择今天之后的日期");
             return false;
+        } else {
+            this.date.classList.remove("error");
         }
+
+        if (this.name.value == "") {
+            this.name.classList.add("error");
+            return false;
+        } else {
+            this.name.classList.remove("error");
+        }
+
+        //var patten = new RegExp(/^[1]+[3,4,5,8]+\d{9}/);
+        var patten = new RegExp(/^[1]+\d{10}/);
+        if (!this.phone.value || !patten.test(this.phone.value)) {
+            this.phone.classList.add("error");//手机号码格式不对
+            return;
+        } else {
+            this.phone.classList.remove("error");//手机号码格式不对
+        }
+
         var data = {
             ClassId: $form[0].dataset.classid,
             BookDate: this.date.value,
             Remark: this.remark.value,
-            Name: this.name.value
-            
+            Name: this.name.value,
+            Phone: this.phone.value
         };
+
         post(ENV.host + '/api/Order', data, function(fb){
             if (!fb) {
                 alert("订课请求发送失败");
@@ -538,10 +633,15 @@ function reservationForm() {
             }
             else {
                 alert("订课请求已发送");
-                this.date.value = "";
+                $form[0].date.value = "";
+                if (typeof (mixpanel) != "undefined") {
+                    mixpanel.track("book class");
+                }
             }
         });
-        $modal[0].style.display = 'none';
+        
+        //$modal[0].style.display = 'none';
+        $modal[0].classList.remove('active');
 
     });
 }
@@ -585,7 +685,12 @@ function commentForm() {
             data.Name = $form[0].dataset.name;
             $('.comment-text')[0].insertAdjacentHTML('afterBegin',
               _.template($('#comment-tpl')[0].innerHTML, { item: data }));
-            //$input.focus();
+                //$input.focus();
+
+            if (typeof (mixpanel) != "undefined") {
+                mixpanel.track("leave comment");
+            }
+
             var tagNum = $(".comment-num").length;
             if (tagNum > 0) {
                 var commentNum = parseInt($(".comment-num")[0].innerText) + 1;
@@ -601,40 +706,104 @@ function commentForm() {
 
 //--Update:Add toggle style, check login, fans number
 function followMember() {
-    if ($('.follow').length > 0) {
-        $('.follow')[0].on('click', function (event) {
-            event.preventDefault();
-            var patten = new RegExp(/true/i);
-            if ($('.bar-nav').length > 0 && !patten.test($('.bar-nav')[0].dataset.ismember)) {
-                goToLogin();
-                return false;
-            }
-            var $followbtn = this;
-            var isFollow = !this.matches('.followed');
-            var data = {
-                //MemberId: 1,
-                FollowingId: this.dataset.memberid,
-                IsFollow: isFollow
-            };
-            console.log(data);
-            post(ENV.host + '/api/followmember', data, function (fb) {
-                if (!fb) return;
-                $followbtn.classList.toggle('followed');
-                $followbtn.textContent = isFollow ? "已关注" : "关注";
+    if (!$('.follow').length) return;
+    $('.follow')[0].on('click', function (event) {
+        event.preventDefault();
+                
+        var patten = new RegExp(/true/i);
+        if ($('.bar-nav').length > 0 && !patten.test($('.bar-nav')[0].dataset.ismember)) {
+            goToLogin();
+            return false;
+        }
 
-                var tagNum = $(".fans-num").length;
-                if (tagNum > 0) {
-                    var commentNum = parseInt($(".fans-num")[0].innerText) + (isFollow ? 1 : -1);
-                    for (var i = 0; i < tagNum; i++) {
-                        $(".fans-num")[i].innerText = commentNum;
-                    }
+        var self = this;
+        var toggleName = 'btn-olive';
+        var isFollow = self.classList.contains(toggleName);
+        
+        var data = {
+            //MemberId: 1,
+            FollowingId: this.dataset.memberid,
+            IsFollow: isFollow
+        };
+        post(ENV.host + '/api/followmember', data, function (fb) {
+            if (!fb) return;
+            self.classList.toggle(toggleName);
+            self.classList.toggle("btn-grey");
+            self.textContent = isFollow ? "已关注" : "关注";
+
+            var tagNum = $(".fans-num").length;
+            if (tagNum > 0) {
+                var commentNum = parseInt($(".fans-num")[0].innerText) + (isFollow ? 1 : -1);
+                for (var i = 0; i < tagNum; i++) {
+                    $(".fans-num")[i].innerText = commentNum;
                 }
-            });
-        })
+            }
+        });
+
+        if (typeof (mixpanel) != "undefined") {
+            mixpanel.track("follow");
+        }
+    })
+}
+
+function showRangeVal(el) {
+    var val = el.value;
+    jQuery(el).siblings('.num')
+      .text(val)
+      .css({
+          left: val + '%',
+          marginLeft: -val * 30 * 0.01 + 'px'
+      })
+}
+
+
+
+//Added functioins
+function bindClassListTrackingEvent() {
+    if (typeof (mixpanel) != "undefined") {
+        $(".classlist-avatar").on('click', function () {
+            mixpanel.track("avatar on classlist");
+        });
+
+        $(".classlist-cover").on('click', function () {
+            mixpanel.track("cover on classlist");
+        });
     }
 }
 
-//Add:Init back url and redirect path
+function bindClassDetailTrackingEvent() {
+    if (typeof (mixpanel) != "undefined") {
+        $(".classdetail-avatar").on('click', function () {
+            mixpanel.track("avatar on classlist");
+        });
+
+        $(".ico-coin").on('click', function () {
+            mixpanel.track("popup coin");
+        });
+
+        $(".classdetail-book").on('click', function () {
+            mixpanel.track("popup book");
+        });
+        
+        $(".classdetail-chat").on('click', function () {
+            mixpanel.track("popup chat on classdetail");
+        });
+    }
+}
+
+function bindPersonalTrackingEvent() {
+    if (typeof (mixpanel) != "undefined") {
+        $(".personal-chat").on('click', function () {
+            mixpanel.track("popup chat on personal");
+        });
+
+        $(".personal-cover").on('click', function () {
+            mixpanel.track("cover on personal");
+        });
+    }
+}
+
+
 function initLogin() {
     var backUrlKey = "backUrl";
     var backUrl = window.location.href;

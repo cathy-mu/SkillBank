@@ -9,6 +9,9 @@
 <header class="bar-nav" data-ismember="@ViewBag.IsLogin"></header>
 
 @Html.Partial("_MobileMenuPartial")
+<div class="loading" style="display: none;">
+    <span class="icon icon-refresh spin"></span>
+</div>
 
 <div class="content" id="course-search">
     <div class="search-bar">
@@ -55,29 +58,27 @@
             <div class="course card" id="class-@classItem.ClassId">
 
                 <div class="title-bar u-full-width">
-                    <a href="@Url.Action("course", "m", new { id = classItem.ClassId })">
+                    <a class="classlist-cover" href="@Url.Action("course", "m", new { id = classItem.ClassId })">
                         <p class="pull-left">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 20, true))</p>
                     </a>
-                    <a href="@Url.Action("course", "m", new { id = classItem.ClassId })">
-                        <div class="pull-right">
-                            <a href="#" class="icon icomoon icon-comment">
-                                <span class="num">@classItem.ReviewNum</span>
-                            </a>
-                            <a href="#" class="icon icomoon icon-heart toggle-like @(classItem.IsLike ? "liked" : "")" data-classid="@classItem.ClassId">
-                                <span class="num">@classItem.LikeNum</span>
-                            </a>
-                        </div>
-                    </a>
+                    <div class="pull-right">
+                        <a class="classlist-cover" href="@Url.Action("course", "m", new { id = classItem.ClassId })" class="icon icomoon icon-comment white">
+                            <span class="num">@classItem.ReviewNum</span>
+                        </a>
+                        <a href="#" class="icon icomoon icon-heart toggle-like white @(classItem.IsLike ? "liked" : "")" data-classid="@classItem.ClassId">
+                            <span class="num">@classItem.LikeNum</span>
+                        </a>
+                    </div>
                 </div>
-                <a href="@Url.Action("course", "m", new { id = classItem.ClassId })">
+                <a class="classlist-cover" href="@Url.Action("course", "m", new { id = classItem.ClassId })">
                     <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "mm")" alt="" class="cover">
                 </a>
                 <div class="info">
-                    <a href="@Url.Action("personal", "m", new { id = classItem.Member_Id })">
+                    <a class="classlist-avatar" href="@Url.Action("personal", "m", new { id = classItem.Member_Id })">
                         <img src="@ContentHelper.GetAvatarPath(classItem.Avatar, "mb")" alt="" class="avatar">
                     </a>
                     <h4>@classItem.Name</h4>
-                    <p>@(classItem.CityId.HasValue?TagHelper.GetCityName(classItem.CityId.Value) : "")</p>
+                    <p>@(classItem.CityId.HasValue ? TagHelper.GetCityName(classItem.CityId.Value) : "")</p>
                 </div>
             </div>
             }
@@ -88,24 +89,24 @@
         <% _.forEach(courses, function(course) {%>
           <div class="course card" id="class-<%- course.ClassId %>">
             <div class="title-bar u-full-width">
-              <a href="/m/course/<%- course.ClassId %>">
+              <a class="classlist-cover" href="/m/course/<%- course.ClassId %>">
                   <p class="pull-left"><%- course.Title %></p>
               </a>
               <div class="pull-right">
-                <a href="#" class="icon icomoon icon-comment">
+                <a class="classlist-cover" href="/m/course/<%- course.ClassId %>" class="icon icomoon icon-comment white">
                   <span class="num"><%- course.ReviewNum %></span>
                 </a>
-                <a href="#" class="icon icomoon icon-heart toggle-like <%- course.IsLike?"liked":"" %> data-classid="<%- course.ClassId %>">
+                <a href="#" class="icon icomoon icon-heart toggle-like white <%- course.IsLike?"liked":"" %> data-classid="<%- course.ClassId %>">
                   <span class="num"><%- course.LikeNum %></span>
                 </a>
               </div>
               </a>
             </div>
-            <a href="/m/course/<%- course.ClassId %>">
+            <a class="classlist-cover" href="/m/course/<%- course.ClassId %>">
               <img src="<%- checkImgHost(imgHost, course.Cover) %>" alt="" class="cover">
             </a>
             <div class="info">
-              <a href="/m/personal/<%- course.Member_Id %>">
+              <a class="classlist-avatar" href="/m/personal/<%- course.Member_Id %>">
               <img src="<%- checkImgHost(imgHost, course.Avatar) %>" alt="" class="avatar">
               </a>
               <h4><%- course.Name %></h4>
@@ -116,6 +117,5 @@
     </script>
 
 </div>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/bower_components/lodash/dist/lodash.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=RZG8k5YBPYBRvU64kWTVLDsK"></script>
     

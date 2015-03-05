@@ -113,6 +113,7 @@
     <Compile Include="ViewModel\ClassSkillModel.cs" />
     <Compile Include="ViewModel\ClassProveModel.cs" />
     <Compile Include="ViewModel\ClassAddModel.cs" />
+    <Compile Include="ViewModel\ReportOrderStatusModel.cs" />
     <Compile Include="ViewModel\HomePageModel.cs" />
     <Compile Include="ViewModel\ReportNumModel.cs" />
     <Compile Include="ViewModel\ProfileModel.cs" />

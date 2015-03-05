@@ -56,7 +56,7 @@ namespace SkillBank.Controllers
 
         public ActionResult Index()
         {
-            Boolean isMobile = false;//IsMobile();
+            Boolean isMobile = Request.Url.Host.Contains("m.skill");//IsMobile();
             String envCode = System.Configuration.ConfigurationManager.AppSettings["ENV"];
             if (isMobile || envCode.Equals(ConfigConstants.EnvSetting.Web1EnvName))
             {
