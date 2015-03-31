@@ -33,7 +33,7 @@ function sitecommon_Class() {
         $("#sociallogin-renrenbtn").click(function () { sitecommon.oAuthLogin(2); });
         $("#sociallogin-qqbtn").click(function () { sitecommon.oAuthLogin(3); });
         this.checkShareCoins();
-
+        
         $("#header-alerts-pop").click(function () { sitecommon.setAlertAsPoped(); });
         $("#header-alerts-read").click(function () { sitecommon.setAlertAsRead(); });
         $("#header-findclass").click(function () { sitecommon.gotoClassPage(""); });
@@ -79,6 +79,7 @@ function sitecommon_Class() {
         //window.location = navUrl;
     }
 
+    //Hide alter for top bar, when user click and see the sub menu for alter
     this.setAlertAsPoped = function () {
         $("#header-alerts-pop span.label-msg").fadeOut();
         var savePath = "/MessageHelper/SetAlertAsClicked";
@@ -352,6 +353,16 @@ function sitecommon_Class() {
         return patten.test(email);
     }
 
+    this.limitReviewLength = function (ctrId, len) {
+        var ctrObj = $("#" + ctrId);
+        ctrObj.keyup(function () {
+            var content = ctrObj.val();
+            if (content.length > len) {
+                ctrObj.val(content.substr(0, len));
+            }
+        });
+    }
+    
     this.initSearchClass = function () {
         $("#class-searchkey").keypress(function () {
             var serachKey = $("#class-searchkey").val();

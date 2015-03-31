@@ -15,10 +15,9 @@ namespace SkillBank.Site.Services.Managers
         //void AddNotificationForNewMesage(int toMemberId, int fromMemberId);
         //void AddNotificationForOrderStatusUpdate(Enums.DBAccess.NotificationSaveType statusType, int toMemberId, int orderId);
         //void AddNotificationForClassStatusUpdate(Enums.DBAccess.NotificationSaveType statusType, int toMemberId, int classId);
-        List<NotificationItem> GetNotification(int memberId, bool checkStatus);
-        List<NotificationAlertItem> GetPopNotification(int memberId, bool checkStatus);
-        void SetNotificationAsRead(Byte saveType, int paraId);
-        void SetNotificationAsClicked(int memberId);
+        List<NotificationItem> GetNotification(Byte loadType, int memberId);
+        List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType);
+        void UpdateNotification(Byte saveType, int memberId, int paraId = 0);
     }
 
     public class NotificationManager : INotificationManager
@@ -45,25 +44,20 @@ namespace SkillBank.Site.Services.Managers
         //    _repository.AddNotification((Byte)statusType, toMemberId, 0, classId);
         //}
 
-        public List<NotificationAlertItem> GetPopNotification(int memberId, bool checkStatus)
+        public List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType)
         {
-            return _repository.GetPopNotification(memberId, checkStatus);
+            return _repository.GetPopNotification(memberId, loadType);
         }
 
-        public List<NotificationItem> GetNotification(int memberId, bool checkStatus)
+        public List<NotificationItem> GetNotification(Byte loadType, int memberId)
         {
-            SByte loadBy = 1;
-            return _repository.GetNotification(loadBy, memberId, checkStatus);
+            //SByte loadBy = 1;
+            return _repository.GetNotification(loadType, memberId);
         }
 
-        public void SetNotificationAsRead(Byte saveType, int paraId)
+        public void UpdateNotification(Byte saveType, int memberId, int paraId = 0)
         {
-            _repository.SetNotificationAsRead(saveType, paraId);
-        }
-
-        public void SetNotificationAsClicked(int memberId)
-        {
-            _repository.SetNotificationAsClicked(memberId);
+            _repository.UpdateNotification(saveType, memberId, paraId);
         }
 
 

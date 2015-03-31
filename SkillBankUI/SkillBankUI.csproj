@@ -195,17 +195,48 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AboutController.cs" />
-    <Compile Include="Controllers\API\ClassListController.cs" />
-    <Compile Include="Controllers\API\CommentController.cs" />
-    <Compile Include="Controllers\API\MemberController.cs" />
-    <Compile Include="Controllers\API\OrderController.cs" />
-    <Compile Include="Controllers\API\ValidationController.cs" />
-    <Compile Include="Controllers\API\FollowMemberController.cs" />
-    <Compile Include="Controllers\API\LikeClassController.cs" />
+    <Compile Include="Controllers\API\AlterController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\ChatController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\ClassListController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\CommentController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\OrderReviewController.cs" />
+    <Compile Include="Controllers\API\CourseController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\FollowMemberController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\API\IocInstaller.cs" />
-    <Compile Include="Controllers\API\ChatController.cs" />
-    <Compile Include="Controllers\API\UploadCoverController.cs" />
-    <Compile Include="Controllers\API\ValuesController.cs" />
+    <Compile Include="Controllers\API\LikeClassController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\MemberController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\OrderController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\RegisteController.cs" />
+    <Compile Include="Controllers\API\UploadAvatarController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\UploadCoverController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\ValidationController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\API\ValuesController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\ClassHelperController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -226,10 +257,11 @@
     <Compile Include="Controllers\SocialHelperController.cs" />
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
-    <Compile Include="Controllers\API\UploadAvatarController.cs" />
+    <Compile Include="Controllers\WeChatController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\APIHelper.cs" />
     <Compile Include="Infrastructure\MetaTagHelper.cs" />
     <Compile Include="Infrastructure\OrderHandlerHelper.cs" />
     <Compile Include="Infrastructure\TextContentHelper.cs" />
@@ -496,6 +528,7 @@
     <Content Include="Content\styles\MemberAdd.css" />
     <Content Include="Content\styles\PlugIn.css" />
     <Content Include="Content\styles\Site.css" />
+    <Content Include="Controllers\API\Web.config" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\font-awesome.css" />
     <Content Include="css\common.css" />
@@ -1110,56 +1143,56 @@
     <Content Include="img\sample-video.mp4" />
     <Content Include="img\select2-spinner.gif" />
     <Content Include="img\signup-arrow.png" />
-    <Content Include="js\application.js" />
-    <Content Include="js\bootstrap.js" />
-    <Content Include="js\bootstrap.min.js" />
-    <Content Include="js\create-class.js" />
-    <Content Include="js\html5.js" />
-    <Content Include="js\jquery-1.10.2.min.js" />
-    <Content Include="js\jquery-ui.js" />
-    <Content Include="js\jquery-ui.min.js" />
-    <Content Include="js\less.min.js" />
-    <Content Include="js\plugins\chosen\chosen.jquery.js" />
-    <Content Include="js\plugins\chosen\chosen.jquery.min.js" />
-    <Content Include="js\plugins\gmap\gmap.js" />
-    <Content Include="js\plugins\icheck\icheck.js" />
-    <Content Include="js\plugins\jquery-validate\jquery.validate.js" />
-    <Content Include="js\plugins\jquery-validate\jquery.validate.min.js" />
-    <Content Include="js\plugins\jquery.limit\jquery.limit.js" />
-    <Content Include="js\plugins\mediaelement\background.png" />
-    <Content Include="js\plugins\mediaelement\bigplay.png" />
-    <Content Include="js\plugins\mediaelement\bigplay.svg" />
-    <Content Include="js\plugins\mediaelement\controls-ted.png" />
-    <Content Include="js\plugins\mediaelement\controls-wmp-bg.png" />
-    <Content Include="js\plugins\mediaelement\controls-wmp.png" />
-    <Content Include="js\plugins\mediaelement\controls.png" />
-    <Content Include="js\plugins\mediaelement\controls.svg" />
-    <Content Include="js\plugins\mediaelement\DO NOT CHANGE THESE FILES. USE -src- FOLDER.txt" />
-    <Content Include="js\plugins\mediaelement\flashmediaelement-cdn.swf" />
-    <Content Include="js\plugins\mediaelement\flashmediaelement.swf" />
-    <Content Include="js\plugins\mediaelement\jquery.js" />
-    <Content Include="js\plugins\mediaelement\loading.gif" />
-    <Content Include="js\plugins\mediaelement\mediaelement-and-player.js" />
-    <Content Include="js\plugins\mediaelement\mediaelement-and-player.min.js" />
-    <Content Include="js\plugins\mediaelement\mediaelement.js" />
-    <Content Include="js\plugins\mediaelement\mediaelement.min.js" />
-    <Content Include="js\plugins\mediaelement\mediaelementplayer.css" />
-    <Content Include="js\plugins\mediaelement\mediaelementplayer.js" />
-    <Content Include="js\plugins\mediaelement\mediaelementplayer.min.css" />
-    <Content Include="js\plugins\mediaelement\mediaelementplayer.min.js" />
-    <Content Include="js\plugins\mediaelement\mejs-skins.css" />
-    <Content Include="js\plugins\mediaelement\silverlightmediaelement.xap" />
-    <Content Include="js\plugins\nouislider\jquery.nouislider.js" />
-    <Content Include="js\plugins\scrolltofixed\jquery-scrolltofixed.js" />
-    <Content Include="js\plugins\select2\select2.js" />
-    <Content Include="js\plugins\select2\select2.min.js" />
-    <Content Include="js\plugins\select2\select2_locale_zh-CN.js" />
-    <Content Include="js\plugins\touchpunch\jquery.ui.touch-punch.js" />
-    <Content Include="js\plugins\touchpunch\jquery.ui.touch-punch.min.js" />
-    <Content Include="js\respond.min.js" />
-    <Content Include="js\site.js" />
-    <Content Include="js\site.min.js" />
-    <Content Include="js\underscore.js" />
+    <Content Include="js_o\application.js" />
+    <Content Include="js_o\bootstrap.js" />
+    <Content Include="js_o\bootstrap.min.js" />
+    <Content Include="js_o\create-class.js" />
+    <Content Include="js_o\html5.js" />
+    <Content Include="js_o\jquery-1.10.2.min.js" />
+    <Content Include="js_o\jquery-ui.js" />
+    <Content Include="js_o\jquery-ui.min.js" />
+    <Content Include="js_o\less.min.js" />
+    <Content Include="js_o\plugins\chosen\chosen.jquery.js" />
+    <Content Include="js_o\plugins\chosen\chosen.jquery.min.js" />
+    <Content Include="js_o\plugins\gmap\gmap.js" />
+    <Content Include="js_o\plugins\icheck\icheck.js" />
+    <Content Include="js_o\plugins\jquery-validate\jquery.validate.js" />
+    <Content Include="js_o\plugins\jquery-validate\jquery.validate.min.js" />
+    <Content Include="js_o\plugins\jquery.limit\jquery.limit.js" />
+    <Content Include="js_o\plugins\nouislider\jquery.nouislider.js" />
+    <Content Include="js_o\plugins\scrolltofixed\jquery-scrolltofixed.js" />
+    <Content Include="js_o\plugins\select2\select2.js" />
+    <Content Include="js_o\plugins\select2\select2.min.js" />
+    <Content Include="js_o\plugins\select2\select2_locale_zh-CN.js" />
+    <Content Include="js_o\plugins\touchpunch\jquery.ui.touch-punch.js" />
+    <Content Include="js_o\plugins\touchpunch\jquery.ui.touch-punch.min.js" />
+    <Content Include="js_o\respond.min.js" />
+    <Content Include="js_o\site.js" />
+    <Content Include="js_o\site.min.js" />
+    <Content Include="js_o\underscore.js" />
+    <Content Include="Scripts\PlugIns\mediaelement\background.png" />
+    <Content Include="Scripts\PlugIns\mediaelement\bigplay.png" />
+    <Content Include="Scripts\PlugIns\mediaelement\bigplay.svg" />
+    <Content Include="Scripts\PlugIns\mediaelement\controls-ted.png" />
+    <Content Include="Scripts\PlugIns\mediaelement\controls-wmp-bg.png" />
+    <Content Include="Scripts\PlugIns\mediaelement\controls-wmp.png" />
+    <Content Include="Scripts\PlugIns\mediaelement\controls.png" />
+    <Content Include="Scripts\PlugIns\mediaelement\controls.svg" />
+    <Content Include="Scripts\PlugIns\mediaelement\DO NOT CHANGE THESE FILES. USE -src- FOLDER.txt" />
+    <Content Include="Scripts\PlugIns\mediaelement\flashmediaelement-cdn.swf" />
+    <Content Include="Scripts\PlugIns\mediaelement\flashmediaelement.swf" />
+    <Content Include="Scripts\PlugIns\mediaelement\jquery.js" />
+    <Content Include="Scripts\PlugIns\mediaelement\loading.gif" />
+    <Content Include="Scripts\PlugIns\mediaelement\mediaelement-and-player.js" />
+    <Content Include="Scripts\PlugIns\mediaelement\mediaelement-and-player.min.js" />
+    <Content Include="Scripts\PlugIns\mediaelement\mediaelement.js" />
+    <Content Include="Scripts\PlugIns\mediaelement\mediaelement.min.js" />
+    <Content Include="Scripts\PlugIns\mediaelement\mediaelementplayer.css" />
+    <Content Include="Scripts\PlugIns\mediaelement\mediaelementplayer.js" />
+    <Content Include="Scripts\PlugIns\mediaelement\mediaelementplayer.min.css" />
+    <Content Include="Scripts\PlugIns\mediaelement\mediaelementplayer.min.js" />
+    <Content Include="Scripts\PlugIns\mediaelement\mejs-skins.css" />
+    <Content Include="Scripts\PlugIns\mediaelement\silverlightmediaelement.xap" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\ClassAdd.js" />
     <Content Include="Scripts\ClassEdit.js" />
@@ -1172,6 +1205,7 @@
     <Content Include="Scripts\API.js" />
     <Content Include="Scripts\Home.js" />
     <Content Include="Scripts\mcommon.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Scripts\Verification.js" />
     <Content Include="Scripts\MemberLocation.js" />
     <Content Include="Scripts\Dashboard.js" />
@@ -1180,8 +1214,8 @@
     <Content Include="Scripts\PhotoEditor.js" />
     <Content Include="Scripts\Libs\jquery.form.js" />
     <Content Include="Scripts\Map.js" />
-    <Content Include="Scripts\PlugIn\jquery.fileupload.js" />
-    <Content Include="Scripts\PlugIn\jquery.iframe-transport.js" />
+    <Content Include="Scripts\PlugIns\jquery.fileupload.js" />
+    <Content Include="Scripts\PlugIns\jquery.iframe-transport.js" />
     <Content Include="Scripts\MemberPhoto.js" />
     <Content Include="Scripts\SignUp.js" />
     <Content Include="Scripts\MemberInfo.js" />
@@ -1223,7 +1257,6 @@
     <Content Include="fonts\OpenSans\Semibold\OpenSans-Semibold.ttf" />
     <Content Include="fonts\OpenSans\Semibold\OpenSans-Semibold.woff" />
     <Fakes Include="Fakes\Fasterflect.fakes" />
-    <Content Include="Controllers\API\Web.config" />
     <Content Include="icomoon\fonts\icomoon.eot" />
     <Content Include="icomoon\fonts\icomoon.ttf" />
     <Content Include="icomoon\fonts\icomoon.woff" />
@@ -1414,14 +1447,14 @@
     <Content Include="Scripts\Libs\_references.js" />
     <Content Include="Scripts\MemberEdit.js" />
     <Content Include="Scripts\Message.js" />
-    <Content Include="Scripts\PlugIn\icheck.min.js" />
-    <Content Include="Scripts\PlugIn\jquery.cookie.js" />
-    <Content Include="Scripts\PlugIn\jquery.easing.1.3.min.js" />
-    <Content Include="Scripts\PlugIn\jquery.Jcrop.js" />
-    <Content Include="Scripts\PlugIn\jquery.Jcrop.min.js" />
-    <Content Include="Scripts\PlugIn\jquery.tagsinput.min.js" />
-    <Content Include="Scripts\PlugIn\jquery.tagsinput_plus.js" />
-    <Content Include="Scripts\PlugIn\scrollpagination.js" />
+    <Content Include="Scripts\PlugIns\icheck.min.js" />
+    <Content Include="Scripts\PlugIns\jquery.cookie.js" />
+    <Content Include="Scripts\PlugIns\jquery.easing.1.3.min.js" />
+    <Content Include="Scripts\PlugIns\jquery.Jcrop.js" />
+    <Content Include="Scripts\PlugIns\jquery.Jcrop.min.js" />
+    <Content Include="Scripts\PlugIns\jquery.tagsinput.min.js" />
+    <Content Include="Scripts\PlugIns\jquery.tagsinput_plus.js" />
+    <Content Include="Scripts\PlugIns\scrollpagination.js" />
     <Content Include="Scripts\Profile.js" />
     <Content Include="Scripts\site.min.js" />
     <Content Include="Scripts\Tools.js" />
@@ -1518,6 +1551,8 @@
     <Content Include="Views\M\Login.cshtml" />
     <Content Include="Views\Shared\_MobileMenuPartial.cshtml" />
     <Content Include="Views\Shared\_TrackingBaiDuPartial.cshtml" />
+    <Content Include="Views\M\Favorites.cshtml" />
+    <Content Include="Views\M\Follower.cshtml" />
     <None Include="Views\Tools\ClassView.cshtml" />
     <Content Include="Views\Class\Rejected.cshtml" />
     <Content Include="Views\Member\Teach.cshtml" />
@@ -1526,6 +1561,9 @@
     <Content Include="Views\Tools\SearchMemeber.cshtml" />
     <Content Include="Views\Tools\MemberProfile.cshtml" />
     <Content Include="Views\Tools\OrderReport.cshtml" />
+    <Content Include="Views\WeChat.cshtml" />
+    <Content Include="Views\WeChat\Index.cshtml" />
+    <Content Include="Views\WeChat\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\images\" />

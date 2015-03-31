@@ -20,9 +20,9 @@ namespace SkillBank.Site.Services
         MemberInfo GetMemberInfo(int memberId, int relatedMemberId = 0);
         MemberInfo GetMemberInfo(String openId);
         MemberInfo GetMemberInfo(String socialAccount, Byte socialType);
-        int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile="", string code="", string etag = "");
+        int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", string etag = "");
         Boolean UpdateMemberInfo(int memberId, Byte saveType, String saveValue, String saveValue2 = "");
-        Boolean UpdateMemberProfile(MemberInfo memberInfo);
+        Boolean UpdateMemberProfile(MemberInfo memberInfo,Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile);
         void SaveEmailAccount(String name, String email);
         Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd);//tool
         Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberId);
@@ -32,32 +32,31 @@ namespace SkillBank.Site.Services
         Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS = true);
         Byte VerifyMobile(int memberId, String mobile, String verifyCode);
         Byte CheckIsMobileVerified(int memberId);
-        Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount); 
+        Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount);
         void UpdateMemberLikeTag(int memberId, int relatedId, Boolean isLike);
+        List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId);
         
         //Class
         int CreateClass(int memberId, int categoryId, Byte teacheLevel, Byte skillLevel, out Boolean isExist);
         Boolean UpdateClassInfo(Byte updateType, int classId, Byte paraValue, Byte completeStatus = 1);
         Boolean UpdateClassInfo(Byte updateType, int classId, Boolean paraValue, Byte completeStatus = 1);
         Boolean UpdateClassInfo(Byte updateType, int classId, String paraValue, Byte completeStatus = 1);
+        int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, String paraValue);
         List<ClassEditItem> GetClassEditInfoByMemberId(int memberId, Byte loadType);
-        
+
         List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int resultNum, out int pageNum, Byte OrderByType = (Byte)ClientSetting.ClassListOrderType.ByDisctince, Boolean isAsc = false, Decimal posX = 0, Decimal posY = 0, String searchKey = "");
         List<ClassListItem> GetClassTabList(Byte loadBy, Byte typeId, int memberId, String searchKey = "", Decimal posX = 0, Decimal posY = 0, int cityId = 0);
         List<ClassListItem> GetClassList(Byte loadBy, Byte OrderByType, int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, int memberId, out int totalNum, String searchKey = "", Decimal posX = 0, Decimal posY = 0);
         List<ClassListItem> GetRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum);
         List<ClassListItem> GetRecommendationClassPopList(int memberId);
-        //List<ClassItem> GetMemberClass(int memberId);
         ClassInfo GetClassInfoByClassId(int paraId);
         ClassInfo GetClassInfoByClassMemberId(int paraId, int memberId = 0);
-        ClassEditItem GetClassEditInfo(int classId, int memberId = 0, Boolean isEdit = true);
+        ClassEditItem GetClassInfoItem(Byte loadType, int classId, int memberId = 0);
         List<ClassEditItem> GetClassEditInfoForAdmin(Boolean isRejected);
-
-        List<ClassInfo> GetClassInfoByTeacherId(int memberId, Byte loadType);
-        List<ClassInfo> GetClassInfoByStudentId(int memberId);
+        List<ClassInfo> GetClassInfo(Byte loadType, int paraId, int memberId = 0);
         List<ClassInfo> GetClassInfoForAdmin(Boolean isRejected);
 
         int AddComment(int memberId, int classId, String commentText);
@@ -92,10 +91,9 @@ namespace SkillBank.Site.Services
         Dictionary<int, int> GetMessageUnReadNum(int memberId);
 
         //Notification
-        List<NotificationItem> GetNotification(int memberId, Boolean checkStatus);
-        List<NotificationAlertItem> GetPopNotification(int memberId, Boolean checkStatus);
-        void SetNotificationAsRead(Byte saveType, int paraId);
-        void SetNotificationAsClicked(int memberId);
+        List<NotificationItem> GetNotification(int memberId, Byte loadType);
+        List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType);
+        void UpdateNotification(Byte saveType, int memberId, int paraId = 0);
 
         // report and tools
         List<ReportNumItem> GetReportClassMemberNum();
@@ -103,8 +101,6 @@ namespace SkillBank.Site.Services
         List<RecommendationItem> GetRecommendation(int classId);
         void SaveMasterMember(int memberId, String paraStr, char split);
         void SaveRecommendationClass(int classId, String paraStr, char split);
-    
-
     }
 
     public class CommonService : ICommonService
@@ -137,25 +133,21 @@ namespace SkillBank.Site.Services
         #region Notification Management
 
 
-        public List<NotificationItem> GetNotification(int memberId, Boolean checkStatus)
+        public List<NotificationItem> GetNotification(int memberId, Byte loadType)
         {
-            return _notificationMgr.GetNotification(memberId, checkStatus);
+            return _notificationMgr.GetNotification(loadType, memberId);
         }
 
-        public List<NotificationAlertItem> GetPopNotification(int memberId, Boolean checkStatus)
+        public List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType)
         {
-            return _notificationMgr.GetPopNotification(memberId, checkStatus);
+            return _notificationMgr.GetPopNotification(memberId, loadType);
         }
 
-        public void SetNotificationAsRead(Byte saveType, int paraId)
+        public void UpdateNotification(Byte saveType, int memberId, int paraId = 0)
         {
-            _notificationMgr.SetNotificationAsRead(saveType, paraId);
+            _notificationMgr.UpdateNotification(saveType, memberId, paraId);
         }
 
-        public void SetNotificationAsClicked(int memberId)
-        {
-            _notificationMgr.SetNotificationAsClicked(memberId);
-        }
 
         #endregion
 
@@ -316,9 +308,8 @@ namespace SkillBank.Site.Services
             return result;
         }
 
-        public Boolean UpdateMemberProfile(MemberInfo memberInfo)
+        public Boolean UpdateMemberProfile(MemberInfo memberInfo,Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile)
         {
-            Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile;
             return this._memberMgr.UpdateMemberInfo(saveType, memberInfo);
         }
 
@@ -351,6 +342,11 @@ namespace SkillBank.Site.Services
         public Boolean HasShareClassCoin(int memberId)
         {
             return _memberMgr.HasShareClassCoin(memberId);
+        }
+
+        public List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId)
+        {
+            return _memberMgr.GetFavorites(loadType, memberId, paraId);
         }
 
         /*
@@ -517,16 +513,15 @@ namespace SkillBank.Site.Services
             return _classMgr.UpdateClassEditInfo(updateType, classId, paraValue);
         }
 
-        public ClassEditItem GetClassEditInfo(int classId, int memberId = 0, Boolean isEdit = true)
+        public int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo)
         {
-            return _classMgr.GetClassEditInfo(classId, memberId, isEdit);
+            if (classInfo.Level < 0 || classInfo.Level > 3 || classInfo.SkillLevel < 0 || classInfo.SkillLevel > 100 || classInfo.TeacheLevel < 0 || classInfo.TeacheLevel > 100)
+            {
+                return -1;
+            }
+            return _classMgr.UpdateClassEditInfo(savaType, classInfo);
         }
 
-        public ClassEditItem GetClassEditInfo(int classId, Byte loadType)
-        {
-            return _classMgr.GetClassEditInfo(classId, loadType);
-        }
-        
         public List<ClassEditItem> GetClassEditInfoForAdmin(Boolean isRejected)
         {
             return _classMgr.GetClassEditInfoForAdmin(isRejected);
@@ -535,6 +530,11 @@ namespace SkillBank.Site.Services
         public List<ClassEditItem> GetClassEditInfoByMemberId(int memberId, Byte loadType)
         {
             return _classMgr.GetClassEditInfoByMemberId(memberId, loadType);
+        }
+
+        public ClassEditItem GetClassInfoItem(Byte loadType, int classId,  int memberId)
+        {
+            return _classMgr.GetClassInfoItem(loadType, classId, memberId);
         }
 
         public List<ClassListItem> GetClassTabList(Byte loadBy, Byte typeId, int memberId, String searchKey = "", Decimal posX = 0, Decimal posY = 0, int cityId = 0)
@@ -584,14 +584,9 @@ namespace SkillBank.Site.Services
             return _classMgr.GetClassInfoByClassMemberId(classId, memberId);
         }
 
-        public List<ClassInfo> GetClassInfoByStudentId(int memberId)
+        public List<ClassInfo> GetClassInfo(Byte loadType, int paraId, int memberId = 0)
         {
-            return _classMgr.GetClassInfoByStudentId(memberId);
-        }
-
-        public List<ClassInfo> GetClassInfoByTeacherId(int memberId, Byte getType)
-        {
-            return _classMgr.GetClassInfoByTeacherId(memberId, getType);
+            return _classMgr.GetClassInfo(loadType, paraId, memberId);
         }
 
         public List<ClassInfo> GetClassInfoForAdmin(Boolean isRejected)
@@ -643,11 +638,22 @@ namespace SkillBank.Site.Services
 
         public Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, String privateComment)
         {
+            //invalid data
+            if (orderId <= 0 || feedBack <= 0 || feedBack > 3)
+            {
+                return false;
+            }
+                
             return _feedbackMgr.AddStudentReview(orderId, classId, feedBack, comment, privateComment);
         }
 
         public Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, String privateComment)
         {
+            //invalid data
+            if (orderId <= 0 || feedBack <= 0 || feedBack > 3)
+            {
+                return false;
+            }
             return _feedbackMgr.AddTeacherReview(orderId, feedBack, comment, privateComment);
         }
 

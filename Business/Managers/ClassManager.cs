@@ -20,6 +20,7 @@ namespace SkillBank.Site.Services.Managers
         Boolean UpdateClassInfo(Byte updateType, int classId, Boolean paraValue, Byte completeStatus = 1);
         Boolean UpdateClassInfo(Byte updateType, int classId, String paraValue, Byte completeStatus = 1);
 
+        int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, String paraValue);
@@ -31,13 +32,11 @@ namespace SkillBank.Site.Services.Managers
         List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int totalNum, out int pageNum, Byte OrderByType, Boolean isAsc, Decimal posX = 0, Decimal posY = 0, String searchKey = "");
         ClassInfo GetClassInfoByClassId(int paraId);
         ClassInfo GetClassInfoByClassMemberId(int paraId, int memberId = 0);
-        List<ClassInfo> GetClassInfoByTeacherId(int memberId, Byte loadType);
-        List<ClassInfo> GetClassInfoByStudentId(int memberId);
+        List<ClassInfo> GetClassInfo(Byte loadType, int paraId, int memberId = 0);
         List<ClassInfo> GetClassInfoForAdmin(Boolean isRejected);
         //void AddShareClassCoin(int memberId);
         //Boolean HasShareClassCoin(int memberId);
-        ClassEditItem GetClassEditInfo(int classId, int memberId = 0, Boolean isEdit = true);
-        ClassEditItem GetClassEditInfo(int classId, Byte loadType);
+        ClassEditItem GetClassInfoItem(Byte loadType, int classId, int memberId = 0);
     }
 
     public class ClassManager : IClassManager
@@ -65,22 +64,9 @@ namespace SkillBank.Site.Services.Managers
             _intRep.UpdateComment(saveType, 0, commentId, "");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="classId"></param>
-        /// <param name="memberId"></param>
-        /// <returns></returns>
-        public ClassEditItem GetClassEditInfo(int classId, int memberId = 0, Boolean isEdit = true)
+        public ClassEditItem GetClassInfoItem(Byte loadType, int classId, int memberId = 0)
         {
-            Byte loadType = isEdit ? (Byte)Enums.DBAccess.ClassLoadType.ByClassId : (Byte)Enums.DBAccess.ClassLoadType.ByClassDetail;
             var result = _classRep.GetClassEditInfo(loadType, classId, memberId);
-            return (result != null && result.Count > 0) ? result[0] : null;
-        }
-
-        public ClassEditItem GetClassEditInfo(int classId, Byte loadType)
-        {
-            var result = _classRep.GetClassEditInfo(loadType, classId, 0);
             return (result != null && result.Count > 0) ? result[0] : null;
         }
 
@@ -145,6 +131,13 @@ namespace SkillBank.Site.Services.Managers
             _classRep.UpdateClassEditInfo(updateType, classId, paraValue);
             return true;
         }
+
+        public int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo)
+        {
+            var result = _classRep.UpdateClassEditInfo(savaType, classInfo);
+            return result;
+        }
+        
 
         public List<ClassListItem> GetClassTabList(Byte loadBy, Byte typeId, int memberId, String searchKey = "", Decimal posX = 0, Decimal posY = 0, int cityId = 0)
         {
@@ -273,7 +266,7 @@ namespace SkillBank.Site.Services.Managers
 
         public List<ClassEditItem> GetClassEditInfoByMemberId(int memberId, Byte loadType)
         {
-            return _classRep.GetClassEditInfo(loadType, 0, memberId);
+            return _classRep.GetClassEditInfo(loadType, memberId);
         }
 
         /// <summary>
@@ -282,15 +275,11 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="memberId"></param>
         /// <param name="onlyPublished"></param>
         /// <returns></returns>
-        public List<ClassInfo> GetClassInfoByTeacherId(int memberId, Byte loadType)
+        public List<ClassInfo> GetClassInfo(Byte loadType, int paraId, int memberId = 0)
         {
-            return _classRep.GetClassInfo(loadType, memberId);
+            return _classRep.GetClassInfo(loadType, paraId, memberId);
         }
-
-        public List<ClassInfo> GetClassInfoByStudentId(int memberId)
-        {
-            return _classRep.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByStudentId, memberId);
-        }
+                
 
         #region For class edit page 1.0, old class edit process
 

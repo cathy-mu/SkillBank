@@ -19,6 +19,7 @@ function memberteach_Class() {
         $(".teach-refundreject").click(function () { memberteach.rejectRefund($(this)); });
         $(".teach-refundprove").click(function () { memberteach.proveRefund($(this)); });
         $(".class-share").click(function () { memberteach.shareClass($(this)); });
+        sitecommon.limitReviewLength("feedback-comment", 200);
     }
     
     this.initTabStatus = function () {

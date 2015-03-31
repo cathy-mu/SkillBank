@@ -79,7 +79,7 @@
                 <span class="inputtitle">Phone Keyword :</span><input type="text" value="" id="phone" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchp" />
                 <br />
                 <br />
-                <span class="inputtitle">Social Account :</span><input type="text" value="" id="socail" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchs" />
+                <span class="inputtitle">Social Account :</span><input type="text" value="" id="social" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Search Member Info" id="btnsearchs" />
 
 
 
@@ -92,7 +92,7 @@
                 <br />
                 <br />
                 <a href="@Url.Action("report", "tools")" target="_blank">用户数据报表</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="@Url.Action("orderreport", "tools", new { b = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd"), e = DateTime.Now.ToString("yyyy-MM-dd") })" target="_blank">订单状态报表</a>
+                <a href="@Url.Action("orderreport", "tools", new { b = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd"), e = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd") })" target="_blank">订单状态报表</a>
             </fieldset>
         </div>
     }

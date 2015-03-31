@@ -19,6 +19,7 @@ namespace SkillBank.Site.DataSource.Data
     {
         void UpdateLike(Byte saveType, Byte favoriteType, int memberId, int relatedId, Boolean isLike);
         int UpdateComment(Byte saveType, int memberId, int paraId, String commentText);
+        List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId);
     }
 
     public class InteractiveRepository : Entities, IInteractiveRepository
@@ -37,7 +38,12 @@ namespace SkillBank.Site.DataSource.Data
             return Comment_Save_p(saveType, memberId, paraId, commentText);
         }
 
-
+        public List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId)
+        {
+            var result = Favorite_Load_p(loadType, memberId, paraId);
+            return InteractiveMapper.Map(result);
+        }
+        
         private void Favorite_Save_p(Byte saveType, Byte favoriteType, int memberId, int relatedId, Boolean isLike, Boolean isFavorite)
         {
             var saveTypePara = new ObjectParameter("saveType", saveType);
@@ -50,7 +56,16 @@ namespace SkillBank.Site.DataSource.Data
             ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Favorite_Save_p", saveTypePara, favoritePara, paraIdPara, memberIdPara, isLikePara, isFavoritePara);
         }
 
+        private ObjectResult<Favorite_Load_p_Result> Favorite_Load_p(Byte loadType, int memberId, int paraId)
+        {
+            var loadTypePara = new ObjectParameter("LoadType", loadType);
+            var memberIdPara = new ObjectParameter("MemberId", memberId);
+            var paraIdPara = new ObjectParameter("ParaId", paraId);
 
+            ObjectResult<Favorite_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Favorite_Load_p_Result>("Favorite_Load_p", loadTypePara, memberIdPara, paraIdPara);
+            return result;
+        }
+        
         private int Comment_Save_p(Byte saveType, int memberId, int paraId, String commentText)
         {
             int id = 0;

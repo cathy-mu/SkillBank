@@ -16,42 +16,135 @@ namespace SkillBankWeb.Controllers.API
 {
     public class OrderController : ApiController
     {
-        //public readonly ICommonService _commonService;
         public readonly ICommonService _commonService;
 
         public class OrderItem
         {
-            //public int MemberId { get; set; }
             public int ClassId { get; set; }
             public DateTime BookDate { get; set; }
             public String Remark { get; set; }
             public String Name { get; set; }
             public String Phone { get; set; }
         }
-        //public String Mobile { get; set; }
+
+        public class OrderUpdateItem
+        {
+            public int OrderId { get; set; }
+            public Byte Status { get; set; }
+            public Byte FeedBack { get; set; }
+            public int MemberId { get; set; }
+            public int ClassId { get; set; }
+            public String Title { get; set; }
+            public String Email { get; set; }
+            public String Receiver { get; set; }
+            public String Name { get; set; }
+            public String Phone { get; set; }
+            public String Comment { get; set; }
+        }
+        
         //
         // GET: /Message/
 
         public OrderController(ICommonService commonService)
         {
-            //_contentService = contentService;
             _commonService = commonService;
 
         }
+       
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        /// <returns>-1 error  0 init  2 not enough coin(payment order)/status change(stauts order) 3 status change </returns>
+        public Byte Put(int id, OrderUpdateItem item)
+        {
+            Byte result = 0;
+            try
+            {
+                int memberId = APIHelper.GetMemberId(true);
+                int teacherId;
+                int studentId;
+                String mailText;
+                //item.Comment = String.IsNullOrEmpty(item.Comment) ? "" : item.Comment;
 
-        public Boolean AddOrder(OrderItem item)//Boolean
+                switch (item.Status)
+                {
+                    case (Byte)Enums.OrderStatus.Rejected://2 reject,T
+                        teacherId = memberId;
+                        studentId = item.MemberId;
+                        result = _commonService.UpdateOrderStatus(item.OrderId, item.Status, studentId, teacherId);
+                        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(628, item.Title);
+                        //SendCloudEmail.SendOrderStatusUpdateMail(item.Email, Receiver, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
+                        break;
+                    case (Byte)Enums.OrderStatus.Cancled://3 cancle,S
+                        teacherId = item.MemberId;
+                        studentId = memberId;
+                        result = _commonService.UpdateOrderStatus(item.OrderId, item.Status, studentId, teacherId);
+                        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(627, item.Title);
+                        //SendCloudEmail.SendOrderStatusUpdateMail(item.Email, Receiver, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
+                        break;
+                    case (Byte)Enums.OrderStatus.Accepted://4 accpet order,T
+                        teacherId = memberId;
+                        studentId = item.MemberId;
+                        item.Name = String.IsNullOrEmpty(item.Name) ? "" : item.Name;
+                        item.Phone = String.IsNullOrEmpty(item.Phone) ? "" : item.Phone;
+
+                        result = _commonService.AcceptOrder(item.OrderId, studentId, teacherId, item.Name, item.Phone, item.Email);
+                        //if (!String.IsNullOrEmpty(item.Email))
+                        //{
+                        //    String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(629, item.Title);
+                        //    SendCloudEmail.SendOrderStatusUpdateMail(item.Email, Receiver, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(479));
+                        //}
+                        break;
+                    case (Byte)Enums.OrderStatus.Refund://6 refund
+                        teacherId = item.MemberId;
+                        studentId = memberId;
+                        result = _commonService.UpdateOrderStatus(item.OrderId, item.Status, studentId, teacherId);
+                        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(630, item.Title);
+                        //SendCloudEmail.SendOrderStatusUpdateMail(item.Email, Receiver, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
+                        break;
+                    case (Byte)Enums.OrderStatus.RefundProve:// 7 RefundProve
+                        teacherId = memberId;
+                        studentId = item.MemberId;
+                        result = _commonService.UpdateOrderStatusWithCoins(item.OrderId, item.Status, studentId, teacherId);
+                        break;
+                    case (Byte)Enums.OrderStatus.RefundReject://reject,8
+                        teacherId = memberId;
+                        studentId = item.MemberId;
+                        result = _commonService.UpdateOrderStatus(item.OrderId, item.Status, studentId, teacherId);
+                        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(633, item.Title);
+                        //SendCloudEmail.SendOrderStatusUpdateMail(item.Email, Receiver, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
+                        break;
+                    case (Byte)Enums.OrderStatus.Confirmed://9 confirm
+                        teacherId = item.MemberId;
+                        studentId = memberId;
+                        result = _commonService.UpdateOrderStatusWithCoins(item.OrderId, item.Status, studentId, teacherId);
+                        _commonService.AddStudentReview(item.OrderId, item.ClassId, item.FeedBack, item.Comment, "");
+                        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(632, item.Title);
+                        //SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(480));
+                        break;
+                    default://5 finish 10 autoconfirm 11://autorefund
+                        result = 0;
+                        break;
+                }
+            }
+            catch
+            { }
+            return result;
+        }
+
+        public Boolean Post(OrderItem item)
         {
             Boolean result = false;
             try
             {
-                int memberId = GetMemberId(true);
+                int memberId = APIHelper.GetMemberId(true); 
                 item.Remark = String.IsNullOrEmpty(item.Remark) ? "" : item.Remark;
                 item.Name = String.IsNullOrEmpty(item.Name) ? "" : item.Name;
                 item.Phone = String.IsNullOrEmpty(item.Phone) ? "" : item.Phone;
-                if (item.BookDate > DateTime.Now.Date)
-                {
-                    result = _commonService.AddOrder(memberId, item.ClassId, item.BookDate, item.Remark, item.Name, item.Phone);
-                }
+
+                result = _commonService.AddOrder(memberId, item.ClassId, item.BookDate, item.Remark, item.Name, item.Phone);
             }
             catch
             {
@@ -59,18 +152,6 @@ namespace SkillBankWeb.Controllers.API
             }
             return result;
         }
-
-        private int GetMemberId(Boolean shouldAuthorize)
-        {
-
-            int memberId = WebContext.Current.MemberId;
-            if (shouldAuthorize && memberId == 0)
-            {
-                HttpContext.Current.Response.Clear();
-                HttpContext.Current.Response.StatusCode = 401;
-                HttpContext.Current.Response.End();
-            }
-            return memberId;
-        }
+        
     }
 }

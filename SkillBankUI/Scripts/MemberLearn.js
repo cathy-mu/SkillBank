@@ -9,6 +9,8 @@ function memberlearn_Class() {
         $(".learn-refund").click(function () { memberlearn.refundOrder($(this)); });
         $(".learn-review").click(function () { memberlearn.showStudentReviewPop($(this)); });
         $(".learn-confirm").click(function () { memberlearn.showConfirmPop($(this)); });
+        sitecommon.limitReviewLength("feedback-comment", 200);
+        sitecommon.limitReviewLength("confirm-feedback-comment", 200);
     }
 
     this.cancleBooking = function (btnObj) {
@@ -34,7 +36,7 @@ function memberlearn_Class() {
             memberlearn.updateOrderStatus(paraData);
         }
     }
-
+    
     this.addStudentReview = function (orderId, classId) {
         var feedbackCtl = $(".feedback").find("div.checked");
 

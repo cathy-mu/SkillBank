@@ -194,16 +194,16 @@
       <Parameter Name="result" Mode="InOut" Type="Boolean" />
     </FunctionImport>
     <FunctionImport Name="Notification_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Notification_Load_p_Result)">
-      <Parameter Name="loadBy" Mode="In" Type="Byte" />
+      <Parameter Name="loadType" Mode="In" Type="Byte" />
       <Parameter Name="memberId" Mode="In" Type="Int32" />
-      <Parameter Name="checkStauts" Mode="In" Type="Boolean" />
     </FunctionImport>
     <FunctionImport Name="NotificationAlert_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.NotificationAlert_Load_p_Result)">
       <Parameter Name="memberId" Mode="In" Type="Int32" />
-      <Parameter Name="checkStauts" Mode="In" Type="Boolean" />
+      <Parameter Name="loadType" Mode="In" Type="Byte" />
     </FunctionImport>
     <FunctionImport Name="Notification_Save_p">
       <Parameter Name="saveType" Mode="In" Type="Byte" />
+      <Parameter Name="memberId" Mode="In" Type="Int32" />
       <Parameter Name="paraId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="ClassNums_Load_p">
@@ -340,6 +340,28 @@
       <Parameter Name="LoadType" Mode="In" Type="Byte" />
       <Parameter Name="BeginDate" Mode="In" Type="DateTime" />
       <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="Favorite_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Favorite_Load_p_Result)">
+      <Parameter Name="LoadType" Mode="In" Type="Byte" />
+      <Parameter Name="MemberId" Mode="In" Type="Int32" />
+      <Parameter Name="ParaId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ClassEditInfo_Add_p">
+      <Parameter Name="SaveType" Mode="In" Type="Byte" />
+      <Parameter Name="MemberId" Mode="In" Type="Int32" />
+      <Parameter Name="CategoryId" Mode="In" Type="Byte" />
+      <Parameter Name="Level" Mode="In" Type="Byte" />
+      <Parameter Name="Teach" Mode="In" Type="Byte" />
+      <Parameter Name="Skill" Mode="In" Type="Byte" />
+      <Parameter Name="Title" Mode="In" Type="String" />
+      <Parameter Name="Summary" Mode="In" Type="String" />
+      <Parameter Name="Cover" Mode="In" Type="String" />
+      <Parameter Name="WhyU" Mode="In" Type="String" />
+      <Parameter Name="Period" Mode="In" Type="String" />
+      <Parameter Name="Location" Mode="In" Type="String" />
+      <Parameter Name="Available" Mode="In" Type="String" />
+      <Parameter Name="Remark" Mode="In" Type="String" />
+      <Parameter Name="ClassId" Mode="InOut" Type="Int32" />
     </FunctionImport>
   </EntityContainer>
   <EntityType Name="CategoryPopTag">
@@ -888,5 +910,12 @@
     <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
     <Property Type="Boolean" Name="StudentReview" Nullable="false" />
     <Property Type="Boolean" Name="TeacherReview" Nullable="false" />
+    <Property Type="Int32" Name="OrderId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="Favorite_Load_p_Result">
+    <Property Type="Int32" Name="RelatedId" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
+    <Property Type="Boolean" Name="IsLike" Nullable="false" />
   </ComplexType>
 </Schema>

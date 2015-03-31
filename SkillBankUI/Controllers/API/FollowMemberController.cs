@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Web.Http;
 using System.Net.Http;
 using System.Net;
-using System.Net.Http;
 
 using SkillBank.Site.DataSource.Data;
 using SkillBank.Site.Services;
@@ -19,11 +18,10 @@ namespace SkillBankWeb.API
 {
     public class FollowMemberController : ApiController
     {
-        //public readonly ICommonService _commonService;
         public readonly ICommonService _commonService;
+
         public class FollowMemberItem
         {
-            //public int MemberId { get; set; }
             public int FollowingId { get; set; }
             public Boolean IsFollow { get; set; }
         }
@@ -32,7 +30,6 @@ namespace SkillBankWeb.API
 
         public FollowMemberController(ICommonService commonService)
         {
-            //_contentService = contentService;
             _commonService = commonService;
         }
 

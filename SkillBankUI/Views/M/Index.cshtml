@@ -35,7 +35,7 @@
                 <a class="active" href="#" data-by="3" data-type="1" data-key="@ViewBag.SearchKey">搜索"@(ViewBag.SearchKey.Length>4?ViewBag.SearchKey.Substring(0,4)+"...":ViewBag.SearchKey)" </a>
                 }
                 <a href="#" data-by="0" data-type="1">附近技能 </a>
-                <a class="@(String.IsNullOrEmpty(ViewBag.SearchKey)?"active":"")" href="#" data-by="1" data-type="2">最新技能 </a>
+                <a class="@(String.IsNullOrEmpty(ViewBag.SearchKey)?"active":"")" href="#" data-by="1" data-type="2">最新加入 </a>
                 <a href="#" data-by="1" data-type="1">达人技能 </a>
                 <a href="#" data-by="1" data-type="3">小众奇葩 </a>
                 @if (Model.CategoryLkp != null)
@@ -62,9 +62,9 @@
                         <p class="pull-left">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 20, true))</p>
                     </a>
                     <div class="pull-right">
-                        <a class="classlist-cover" href="@Url.Action("course", "m", new { id = classItem.ClassId })" class="icon icomoon icon-comment white">
+                        <!--<a class="" href="@Url.Action("course", "m", new { id = classItem.ClassId })" class="icon icomoon icon-comment white classlist-cover">
                             <span class="num">@classItem.ReviewNum</span>
-                        </a>
+                        </a>-->
                         <a href="#" class="icon icomoon icon-heart toggle-like white @(classItem.IsLike ? "liked" : "")" data-classid="@classItem.ClassId">
                             <span class="num">@classItem.LikeNum</span>
                         </a>
@@ -93,9 +93,6 @@
                   <p class="pull-left"><%- course.Title %></p>
               </a>
               <div class="pull-right">
-                <a class="classlist-cover" href="/m/course/<%- course.ClassId %>" class="icon icomoon icon-comment white">
-                  <span class="num"><%- course.ReviewNum %></span>
-                </a>
                 <a href="#" class="icon icomoon icon-heart toggle-like white <%- course.IsLike?"liked":"" %> data-classid="<%- course.ClassId %>">
                   <span class="num"><%- course.LikeNum %></span>
                 </a>

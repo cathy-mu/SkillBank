@@ -55,7 +55,7 @@ function resError(status){
       if (typeof (mixpanel) != "undefined") {
           mixpanel.track("register alert");
       }
-      if (window.confirm("你还没有登陆或注册，现在登录或注册吗？")) {
+      if (window.confirm("亲，先来注册一下吧？")) {
           if (typeof (mixpanel) != "undefined") {
               mixpanel.track("register alert yes");
           }
@@ -76,7 +76,7 @@ function checkLogin() {
     var patten = new RegExp(/true/i);
     if (!patten.test(ctlObj.dataset.ismember)) {
         //goToLogin();
-        if (window.confirm("你还没有登陆或注册，现在登录或注册吗？")) {
+        if (window.confirm("亲，先来注册一下吧？")) {
             location.href = '/m/login';
         }
         return false;
@@ -88,7 +88,7 @@ function goToLogin() {
     if (typeof (mixpanel) != "undefined") {
         mixpanel.track("register alert");
     }
-    if (window.confirm("你还没有登陆或注册，现在登录或注册吗？")) {
+    if (window.confirm("亲，先来注册一下吧？")) {
         if (typeof (mixpanel) != "undefined") {
             mixpanel.track("register alert yes");
         }
@@ -188,6 +188,18 @@ var checkPage = function () {
       });
   }
 
+  if ($('#message-page').length) {
+      $('.message-tab').on('click', function () {
+          $('.notification-tab')[0].classList.toggle('active');
+          $('.message-tab')[0].classList.toggle('active');
+          //$('.message-tab')[0].classList.remove("control-item-no-js");
+          //$('.message-tab')[0].classList.add("control-item");
+          $('#item2mobile')[0].classList.toggle('active');
+          $('#item1mobile')[0].classList.toggle('active');
+          post(ENV.host + "/api/alter?id=" + this.dataset.maxid, function () { jQuery(".red-dot").fadeOut(); });
+      });
+  }
+
   // chat page
   if ($('.chat-page').length) {
 
@@ -251,7 +263,7 @@ var checkPage = function () {
               Name: $form.registebtn.dataset.name
           };
           
-          post(ENV.host + '/api/member', data, function (fb) {
+          post(ENV.host + '/api/registe', data, function (fb) {
               console.log(fb);//-1 数据格式不符
               if (fb == 2) {
                   alert("验证失败，请检查验证码或重新发送");
@@ -288,7 +300,7 @@ var checkPage = function () {
                           $verifyBtn[0].innerText = '获得验证码';
                           clearInterval(t);
                       } else {
-                          $verifyBtn[0].innerText = seconds;
+                          $verifyBtn[0].innerText = seconds+"后可重发";
                       }
                       seconds--;
                   }, 1000);
@@ -377,6 +389,7 @@ function getCourses(url, el) {
         $loading[0].style.display = 'none';
 
         toggleLike();
+        bindClassListTrackingEvent();
     });
 }
 

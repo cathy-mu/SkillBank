@@ -66,5 +66,28 @@ namespace SkillBank.Site.Web
             }
             return cityList;
         }
+
+        public static int GetCityIdByName(Dictionary<int,CityInfo> cityDic, String cityName)
+        {
+            if (!String.IsNullOrEmpty(cityName))
+            {
+                cityName = cityName.Replace("市", "");
+                var cityItems = cityDic.Where(c => c.Value.CityName.StartsWith(cityName));
+                if (cityItems.Count() > 0)
+                {
+                    return cityItems.First().Key;
+                }
+            }
+            return 0;//not invalid city
+        }
+        
+        public static String GetCityNameById(Dictionary<int, CityInfo> cityDic, int cityId)
+        {
+            if (cityDic.ContainsKey(cityId))
+            {
+                return cityDic[cityId].CityName;
+            }
+            return "";
+        }
     }
 }

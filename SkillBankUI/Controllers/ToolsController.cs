@@ -226,11 +226,11 @@ namespace SkillBank.Controllers
                 }
                 else if (t.Equals(4))
                 {
-                    repModel.CancelOrderList = result.Where(a => a.GroupId == 4).ToList();
+                    repModel.CancelOrderList = result;
                 }
                 else if (t.Equals(5))
                 {
-                    repModel.InprogressOrderList = result.Where(a => a.GroupId == 4).ToList();
+                    repModel.InprogressOrderList = result;
                 }
                 return View(repModel);
             }
@@ -240,7 +240,7 @@ namespace SkillBank.Controllers
             }
             return View();
         }
-         
+
 
         public ActionResult MemberProfile(int id = 0)
         {
@@ -289,10 +289,8 @@ namespace SkillBank.Controllers
                 profileModel.MemberInfo = currMemberInfo;
                 userName = currMemberInfo.Name;
             }
-            profileModel.ClassList = _commonService.GetClassInfoByTeacherId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
-
+            profileModel.ClassList = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, memberId);
             
-
             var metaTags = MetaTagHelper.GetMetaTags("profile");
             ViewBag.MetaTagTitle = metaTags[0].Replace("{0}", userName);
             ViewBag.MetaTagKeyWords = metaTags[1];

@@ -146,7 +146,7 @@ namespace SkillBank.Controllers
             else
             {
                 //var result = _commonService.GetClassList(1, 0, cityId, categoryId, false, pageSize, pageId, 0, out classNum, k, 0, 0);
-                var result = _commonService.GetRecommendationClassList(tabid, pageSize, pageId, (memberId == null)?0:memberId, out classNum);
+                var result = _commonService.GetRecommendationClassList(tabid, pageSize, pageId, memberId, out classNum);
                 if (result != null && result.Count > 0)
                 {
                     classListModel.ClassList = result;
@@ -173,10 +173,10 @@ namespace SkillBank.Controllers
             int currMemberId = WebContext.Current.MemberId;
             ViewBag.MemberInfo = currMemberId > 0 ? _commonService.GetMemberInfo(currMemberId): null ;
             LoadNotificationAlert(currMemberId);
-            
+
             if (id > 0)
             {
-                var classInfo = _commonService.GetClassEditInfo(id, currMemberId, false);
+                var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassAndCurrMemberId, id, currMemberId);
                 if (classInfo != null)
                 {
                     int maxId0 = 0, minId0 = 0, maxId1 = 0, minId1 = 0, maxId2 = 0, minId2 = 0, likeNum = 0;
@@ -223,7 +223,7 @@ namespace SkillBank.Controllers
                     }
 
 
-                    var classList = _commonService.GetClassInfoByTeacherId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
+                    var classList = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, memberId);
                     if (classList != null && classList.Count > 0)
                     {
                         classDetailModel.ClassList = classList.Where(c => c.ClassId != id).ToList();
@@ -297,7 +297,7 @@ namespace SkillBank.Controllers
             
             classEditModel.isEdit = (edit == 1);//0 new class, 1 edit class
 
-            var classInfo = _commonService.GetClassEditInfo(id, memberId);//.GetClassInfoByClassId(id);
+            var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassEditDetail, id, memberId);
 
             List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
             var IsAdmin = whiteListMem.Contains(memberId.ToString());
@@ -410,7 +410,7 @@ namespace SkillBank.Controllers
             LoadNotificationAlert(currMemberId);
             if (id > 0 && currMemberId > 0)
             {
-                var classInfo = _commonService.GetClassEditInfo(id,0);
+                var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassId, id, 0);
                 if (classInfo != null)
                 {
                     className = classInfo.Title;
@@ -488,7 +488,7 @@ namespace SkillBank.Controllers
         {
             if (memberId > 0)
             {
-                Boolean checkStatus = (Session == null || Session["AlertStatus"] == null);
+                Byte checkStatus = (Byte)((Session == null || Session["AlertStatus"] == null) ? Enums.DBAccess.NotificationAlterLoadType.WebCheckStatus : Enums.DBAccess.NotificationAlterLoadType.Web);
                 var alerts = _commonService.GetPopNotification(memberId, checkStatus);
                 if (alerts != null && alerts.Count() > 0)
                 {
@@ -497,7 +497,7 @@ namespace SkillBank.Controllers
                     ViewBag.NotificationNum = newAlertNum > 0 ? newAlertNum.ToString() : "";
                 }
 
-                if (checkStatus)
+                if (checkStatus.Equals(1))
                 {
                     Session["AlertStatus"] = "1";
                 }

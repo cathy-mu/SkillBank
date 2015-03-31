@@ -41,14 +41,14 @@ namespace SkillBankWeb.Controllers
         public JsonResult SetOrderNotificationAsReadByMemberId()
         {
             var memberId = WebContext.Current.MemberId;
-            _commonService.SetNotificationAsRead((Byte)Enums.DBAccess.NotificationTagUpdateType.SetOrderNotificationAsReadByMemberId, memberId);
+            _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetOrderNotificationAsReadByMemberId, memberId);
             return Json("true", JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult SetOrderNotificationAsReadByNotificationId(int id)
         {
-            _commonService.SetNotificationAsRead((Byte)Enums.DBAccess.NotificationTagUpdateType.SetNotificationAsReadById, id);
+            _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetNotificationAsReadById, 0, id);
             return Json("true", JsonRequestBehavior.AllowGet);
         }
     }

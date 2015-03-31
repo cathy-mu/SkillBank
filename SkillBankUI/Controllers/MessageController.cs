@@ -72,7 +72,7 @@ namespace SkillBankWeb.Controllers
                 var messages = _commonService.GetMessageDetail(memberId, contactId);
                 messageDetailModel.Messages = messages;
                 messageDetailModel.Contact = _commonService.GetMemberInfo(contactId);
-                messageDetailModel.ContactClass = _commonService.GetClassInfoByTeacherId(contactId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
+                messageDetailModel.ContactClass = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, contactId);
                 messageDetailModel.MaxMessageId = (messages == null || messages.Count.Equals(0)) ? 0 : messageDetailModel.Messages.Max(m => m.MessageId);
 
                 //TO DO : Move to client side with set max message id
@@ -89,7 +89,7 @@ namespace SkillBankWeb.Controllers
         {
             if (memberId > 0)
             {
-                Boolean checkStatus = (Session == null || Session["AlertStatus"] == null);
+                Byte checkStatus = (Byte)((Session == null || Session["AlertStatus"] == null) ? Enums.DBAccess.NotificationAlterLoadType.WebCheckStatus: Enums.DBAccess.NotificationAlterLoadType.Web);
                 var alerts = _commonService.GetPopNotification(memberId, checkStatus);
                 if (alerts != null && alerts.Count() > 0)
                 {
@@ -98,7 +98,7 @@ namespace SkillBankWeb.Controllers
                     ViewBag.NotificationNum = newAlertNum > 0 ? newAlertNum.ToString() : "";
                 }
 
-                if (checkStatus)
+                if (checkStatus.Equals(1))
                 {
                     Session["AlertStatus"] = "1";
                 }

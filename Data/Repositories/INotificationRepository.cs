@@ -19,10 +19,9 @@ namespace SkillBank.Site.DataSource.Data
     public interface INotificationRepository
     {
         //void AddNotification(Byte type, int memberId, int relatedMemberId, int classOrderId);
-        void SetNotificationAsRead(Byte saveType, int paraId);
-        void SetNotificationAsClicked(int memberId); 
-        List<NotificationItem> GetNotification(SByte loadBy, int memberId, Boolean isCheckStatus);
-        List<NotificationAlertItem> GetPopNotification(int memberId, Boolean isCheckStatus);
+        void UpdateNotification(Byte saveType, int memberId, int paraId);
+        List<NotificationItem> GetNotification(Byte loadType, int memberId);
+        List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType);
     }
 
     public class NotificationRepository : Entities, INotificationRepository
@@ -34,57 +33,51 @@ namespace SkillBank.Site.DataSource.Data
         {
         }
 
-        public List<NotificationItem> GetNotification(SByte loadBy, int memberId, Boolean isCheckStatus)
+        public List<NotificationItem> GetNotification(Byte loadType, int memberId)
         {
-            var result = Notification_Load(loadBy, memberId, isCheckStatus);
+            var result = Notification_Load(loadType, memberId);
             return NotificationMapper.Map(result);
         }
 
-        public List<NotificationAlertItem> GetPopNotification(int memberId, Boolean isCheckStatus)
+        public List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType)
         {
-            var result = NotificationAlert_Load(memberId, isCheckStatus);
+            var result = NotificationAlert_Load(memberId, loadType);
             return NotificationMapper.Map(result);
         }
 
-        public void SetNotificationAsRead(Byte saveType, int paraId)
+        public void UpdateNotification(Byte saveType, int memberId, int paraId)
         {
-            Notification_Save(saveType, paraId);
-        }
-
-        public void SetNotificationAsClicked(int memberId)
-        {
-            Byte saveType = (Byte)Enums.DBAccess.NotificationTagUpdateType.SetPopTagAsClicked;
-            Notification_Save(saveType, memberId);
-        }  
+            Notification_Save(saveType, memberId, paraId);
+        }        
 
         #endregion
 
 
-        private ObjectResult<Notification_Load_p_Result> Notification_Load(SByte loadBy, int memberId, Boolean checkStauts)
+        private ObjectResult<Notification_Load_p_Result> Notification_Load(Byte loadType, int memberId)
         {
-            var loadTypeParameter = new ObjectParameter("loadBy", loadBy);
             var memberIdParameter = new ObjectParameter("memberId", memberId);
-            var checkStautsParameter = new ObjectParameter("checkStauts", checkStauts);
+            var loadTypeParameter = new ObjectParameter("loadType", loadType);
 
-            ObjectResult<Notification_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Notification_Load_p_Result>("Notification_Load_p", loadTypeParameter, memberIdParameter, checkStautsParameter);
+            ObjectResult<Notification_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Notification_Load_p_Result>("Notification_Load_p", loadTypeParameter, memberIdParameter);
             return result;
         }
 
-        private ObjectResult<NotificationAlert_Load_p_Result> NotificationAlert_Load(int memberId, Boolean checkStauts)
+        private ObjectResult<NotificationAlert_Load_p_Result> NotificationAlert_Load(int memberId, Byte loadType)
         {
             var memberIdParameter = new ObjectParameter("memberId", memberId);
-            var checkStautsParameter = new ObjectParameter("checkStauts", checkStauts);
+            var loadTypeParameter = new ObjectParameter("loadType", loadType);
 
-            ObjectResult<NotificationAlert_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NotificationAlert_Load_p_Result>("NotificationAlert_Load_p", memberIdParameter, checkStautsParameter);
+            ObjectResult<NotificationAlert_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<NotificationAlert_Load_p_Result>("NotificationAlert_Load_p", loadTypeParameter, memberIdParameter);
             return result;
         }
 
-        private void Notification_Save(Byte saveType, int paraId)
+        private void Notification_Save(Byte saveType, int memberId, int paraId)
         {
             var saveTypeParameter = new ObjectParameter("saveType", saveType);
-            var memberIdParameter = new ObjectParameter("paraId", paraId);
+            var memberIdParameter = new ObjectParameter("memberId", memberId);
+            var paraIdParameter = new ObjectParameter("paraId", paraId);
 
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Notification_Save_p", saveTypeParameter, memberIdParameter);
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Notification_Save_p", saveTypeParameter, memberIdParameter, paraIdParameter);
         }
 
         

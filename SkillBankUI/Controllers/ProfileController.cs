@@ -73,7 +73,7 @@ namespace SkillBankUI.Controllers
                 profileModel.MemberInfo = currMemberInfo;
                 userName = currMemberInfo.Name;
             }
-            profileModel.ClassList = _commonService.GetClassInfoByTeacherId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
+            profileModel.ClassList = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, memberId);
             if (memberId > 0)
             {
                 int sum0 = 0, sum1 = 0, maxId0 = 0, minId0 = 0, maxId1 = 0, minId1 = 0;
@@ -124,7 +124,7 @@ namespace SkillBankUI.Controllers
         {
             if (memberId > 0)
             {
-                Boolean checkStatus = (Session == null || Session["AlertStatus"] == null);
+                Byte checkStatus = (Byte)((Session == null || Session["AlertStatus"] == null) ? Enums.DBAccess.NotificationAlterLoadType.WebCheckStatus : Enums.DBAccess.NotificationAlterLoadType.Web);
                 var alerts = _commonService.GetPopNotification(memberId, checkStatus);
                 if (alerts != null && alerts.Count() > 0)
                 {
@@ -133,7 +133,7 @@ namespace SkillBankUI.Controllers
                     ViewBag.NotificationNum = newAlertNum > 0 ? newAlertNum.ToString() : "";
                 } 
                 
-                if (checkStatus)
+                if (checkStatus.Equals(1))
                 {
                     Session["AlertStatus"] = "1";
                 }

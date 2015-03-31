@@ -3,100 +3,263 @@
     @Html.CombresCustomUrl("contentCss")}
 @section FooterJs
 {@Html.CombresCustomUrl("apiJs")}
+<style type="text/css">
+    .func {
+        margin: 50px 15px 50px 200px;
+    }
+
+    .functitle, .funcinlinetitle {
+        width: 250px;
+        font-weight: 900;
+        color: #1f0463;
+        font-size: 15px;
+    }
+
+    .funcinlinetitle {
+        display: block;
+        float: left;
+    }
+
+    .funclabel, .funcllabel {
+        display: inline-block;
+        width: 110px;
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .funcllabel {
+        width: 300px;
+        text-align: left;
+    }
+
+    input {
+        width: 120px;
+    }
+
+    input.s{
+        width: 50px;
+    }
+
+    input.l{
+        width: 300px;
+    }
+
+
+    .funbtn {
+        margin-top: 15px;
+        display: inline-block;
+        width: 200px;
+    }
+
+    .funinlinebtn {
+        margin-left: 20px;
+        display: inline-block;
+        width: 200px;
+    }
+</style>
 <div class="body">
-    <div style="margin: 50px 0 50px 200px">
-        1 获得课程测试 :   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Get Class List" id="getclassbtn" />
+    <div class="func">
+        <div class="funcinlinetitle">1 获得课程测试 :  </div>
+        <span>
+            <input type="button" value="Get Class List" id="getclassbtn" /></span>
+        <div class="funbtn">
+        </div>
     </div>
 
-    <div style="margin: 50px 0 50px 200px">
-        2 点赞<br />
-        点赞者 :  
-        <input type="text" value="1" id="like-mid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被点赞的课 :  
-        <input type="text" value="2" id="like-cid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    是否点赞:  
-        <input type="text" value="1" id="like-isl" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Update Like Tag" id="likebtn" />
+    <div class="func">
+        <div class="functitle">2 点赞</div>
+        <span class="funclabel">点赞者 :</span>
+        <input type="text" value="1" id="like-mid" />
+        <span class="funclabel">被点赞的课 :</span>
+        <input type="text" value="2" id="like-cid" />
+        <span class="funclabel">是否点赞 :</span>
+        <input type="text" value="1" id="like-isl" />
+        <div class="funinlinebtn">
+            <input type="button" value="Like/Unlike" id="likebtn" />
+        </div>
     </div>
 
-    <div style="margin: 50px 0 50px 200px">
-        3 关注<br />
-        关注者 :  
-        <input type="text" value="1" id="follow-mid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;被关注者 :  
-        <input type="text" value="2" id="follow-fid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        是否关注:  
-        <input type="text" value="1" id="follow-isf" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Update Follow Tag" id="followbtn" />
+    <div class="func">
+        <div class="functitle">3 关注</div>
+        <span class="funclabel">关注者 :</span>
+        <input type="text" value="1" id="follow-mid" />
+        <span class="funclabel">被关注者 :</span>
+        <input type="text" value="2" id="follow-fid" />
+        <span class="funclabel">是否关注 :</span>
+        <input type="text" value="1" id="follow-isf" />
+        <div class="funinlinebtn">
+            <input type="button" value="Follow/Unfollow" id="followbtn" />
+        </div>
     </div>
 
-    <div style="margin: 50px 0 50px 200px">
-        4 私信<br />
-        发送者 :  
-        <input type="text" value="1" id="chat-fid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接受者 :  
-        <input type="text" value="2" id="chat-tid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Add Chat Message" id="addchatbtn" />
-        <br />
-        <br />
-        消息内容 :  
-        <input type="text" value="我是一条测试消息，我的id是0" id="chat-message" style="width: 300px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+    <div class="func">
+        <div class="functitle">4 私信</div>
+        <span class="funclabel">发送者 :</span>
+        <input type="text" value="1" id="chat-fid" />
+        <span class="funclabel">接受者 :</span>
+        <input type="text" value="2" id="chat-tid" />
+        <span class="funclabel">消息内容 :</span>
+        <input type="text" value="我是一条测试消息，我的id是0" id="chat-message" style="width: 300px" />
+        <div class="funinlinebtn">
+            <input type="button" value="Add Message" id="addchatbtn" />
+        </div>
     </div>
 
-
-
-    <div style="margin: 50px 0 50px 200px">
-        5 订课<br />
-        订课者 :  
-        <input type="text" value="1" id="order-mid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;课程id :  
-        <input type="text" value="7" id="order-cid" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    订课时间 : 
-        <input type="text" value="2015-01-08" id="order-date" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <br />
-        <br />
-        订课人名字: 
-        <input type="text" value="我是订课人" id="order-name" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        订课人手机: 
-        <input type="text" value="13564813923" id="order-mobile" />
-        <br />
-        <br />
-        备注 :  
-        <input type="text" value="我是一条测试备注" id="order-remark" style="width: 300px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Add Order" id="addorderbtn" />
-    </div>
-
-    <div style="margin: 50px 0 50px 200px">
-        6 发送验证码到手机:  
-        <input type="text" value="13564813923" id="valid-mobile" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="send" id="sendcodebtn" />
+    <div class="func">
+        <div class="funcinlinetitle">5 发送验证码到手机:</div>
+        <span>
+            <input type="text" value="13564813923" id="valid-mobile" /></span>
+        <div class="funinlinebtn">
+            <input type="button" value="send" id="sendcodebtn" />
+        </div>
     </div>
 
 
-    <div style="margin: 50px 0 50px 200px">
-        7 用户注册<br />
-        名字 : 
-        <input type="text" value="用户名字" id="member-name" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;头像 : 
-        <input type="text" value="test.jpg" id="member-avatar" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="func">
+        <div class="functitle">6 用户注册</div>
+        <span class="funclabel">名字 :</span>
+        <input type="text" value="用户名字" id="member-name" />
+        <span class="funclabel">头像 :</span>
+        <input type="text" value="test.jpg" id="member-avatar" />
+        <span class="funclabel">手机号码 :</span>
+        <input type="text" value="13000000000" id="member-mobile" />
+        <span class="funclabel">验证码 :</span>
+        <input type="text" value="999999" id="member-code" />
         <br />
-        手机号码 :  
-        <input type="text" value="13000000000" id="member-mobile" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;验证码 : 
-        <input type="text" value="999999" id="member-code" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <br />
-        社交账号 :  
-        <input type="text" value="0000000000" id="member-account" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;账号类型 : 
+        <span class="funclabel">社交账号 :</span>
+        <input type="text" value="0000000000" id="member-account" />
+        <span class="funclabel">账号类型 :</span>
         <input type="text" value="1" id="member-type" />
-        <br />
-        <input type="button" value="send" id="creatememberbtn" />
-    </div>
-
-    <div style="margin: 50px 0 50px 200px">
-        8 设备测试: @ViewBag.Agent  测试1 ： @ViewBag.Divice1
-        <br />
-        <br />
-        测试2 ： @ViewBag.Divice2  (选为手机判断)<br />
-        <br />
-        测试3 ： @ViewBag.Divice3
-        <br />
-        <br />
-        测试4 ： @ViewBag.Divice4
+        <div class="funinlinebtn">
+            <input type="button" value="send" id="creatememberbtn" />
+        </div>
     </div>
 
 
+    <div class="func">
+        <div class="functitle">7 课程信息</div>
+        <span class="funclabel">city :</span>
+        <input type="text" value="上海" id="course-city" class="s" />
+        <span class="funclabel">id :</span>
+        <input type="text" value="22" id="course-id" class="s" />
+        <span class="funclabel">Level :</span>
+        <input type="text" value="2" id="course-level" class="s" />
+        <span class="funclabel">category :</span>
+        <input type="text" value="1" id="course-category" class="s" />
+        <span class="funclabel">技能水平 :</span>
+        <input type="text" value="50" id="course-skill" class="s" />
+        <span class="funclabel">教学水平 :</span>
+        <input type="text" value="60" id="course-teach" class="s" />
+        <span class="funclabel">名字 :</span>
+        <input type="text" value="课程名称" id="course-title" />
+        <br />
+        <br />
+        <span class="funclabel">介绍 :</span>
+        <input type="text" value="课程介绍" id="course-summary" />
+        <span class="funclabel">WhyU :</span>
+        <input type="text" value="whyu" id="course-whyu" />
+        <span class="funclabel">上课时间 :</span>
+        <input type="text" value="上课时间" id="course-period" />
+        <span class="funclabel">上课地点 :</span>
+        <input type="text" value="上课地点" id="course-location" />
+        <span class="funclabel">备注 :</span>
+        <input type="text" value="课程备注" id="course-remark" />
+        <span class="funclabel">有空时间 :</span>
+        <input type="text" value="有空时间" id="course-available" />
+        <br />
+        <div class="funbtn">
+            <input type="button" value="Update Course" id="updatecourse" />
+        </div>
+        <div class="funbtn">
+            <input type="button" value="Add Course" id="addcourse" />
+        </div>
+        <div class="funbtn">
+            <input type="button" value="Pub Course" id="pubcourse" />
+        </div>
+
+    </div>
+
+    <div class="func">
+        <div class="functitle">8 用户信息</div>
+        <span class="funclabel">用户名 :</span>
+        <input type="text" value="用户名" id="memberinfo-name" />
+        <span class="funclabel">city :</span>
+        <input type="text" value="北京市" id="memberinfo-city" />
+        <span class="funclabel">性别 :</span>
+        <input type="text" value="1" id="memberinfo-gender" class="s" />
+        <span class="funclabel">手机 :</span>
+        <input type="text" value="15000000000" id="memberinfo-mobile" />
+        <span class="funclabel">自我介绍 :</span>
+        <input type="text" value="self introduction" id="memberinfo-intro" />
+        <span class="funclabel">avatar :</span>
+        <input type="text" value="/2/profile/m_1.jpg" id="memberinfo-avatar" />
+        <div class="funinlinebtn">
+            <input type="button" value="Update Member" id="updatemember" />
+        </div>
+    </div>
+
+    <div class="func">
+        <div class="functitle">9 订单信息</div>
+        <span class="funclabel">学生/老师 :</span>
+        <input type="text" value="1" id="order-mid" />
+        <span class="funclabel">课程id :</span>
+        <input type="text" value="7" id="order-cid"/>
+        <span class="funclabel">订课时间 :</span>
+        <input type="text" value="2015-01-08" id="order-date" />
+        <span class="funclabel">备注 :</span><input type="text" value="Test remark for order" id="order-remark" style="width: 300px" />
+        <br />
+        <br />
+        <span class="funclabel">姓名 :</span>
+        <input type="text" value="名字" id="order-name" />
+        <span class="funclabel">手机 :</span><input type="text" value="13564813923" id="order-mobile" />
+        <br />
+        <br />
+        <span class="funclabel">订单id :</span>
+        <input type="text" value="1" id="order-id" />
+        <span class="funclabel">状态码 :</span>
+        <input type="text" value="2" id="order-status" />
+        <span class="funclabel">课程名 :</span>
+        <input type="text" value="课程名" id="order-title" />
+        <br />
+        <div class="funbtn">
+            <input type="button" value="Update Order" id="updateorder" />
+        </div>
+        <div class="funbtn">
+            <input type="button" value="Add Order" id="addorder" />
+        </div>
+    </div>
+
+    <div class="func">
+        <div class="functitle">10 用户评价</div>
+        <span class="funclabel">订单id :</span>
+        <input type="text" value="" id="review-orderid" />
+        <!--<span class="funclabel">Class id :</span>
+        <input type="text" value="0" id="review-classid" />-->
+        <span class="funclabel">评分 :</span>
+        <input type="text" value="2" id="review-feedback" />
+        <span class="funclabel">评价 :</span>
+        <input type="text" value="Test comment for order" id="review-comment" style="width: 300px" />
+        <br />
+        <div class="funbtn">
+            <input type="button" value="Student Review" id="studentreviewbtn" />
+        </div>
+        <div class="funbtn">
+            <input type="button" value="Teacher Review" id="teacherreviewbtn" />
+        </div>
+    </div>
 
 
+
+    <div class="func">
+        <div class="functitle">11 设备测试: </div>
+        <span>@ViewBag.Agent</span>
+        <br />
+        <span class="funcllabel">测1 ： @ViewBag.Divice1</span>
+        <span class="funcllabel">测2 ： @ViewBag.Divice2 (选用)</span>
+        <span class="funcllabel">测3 ： @ViewBag.Divice3</span>
+        <span class="funcllabel">测4 ： @ViewBag.Divice4</span>
+    </div>
 
 
 

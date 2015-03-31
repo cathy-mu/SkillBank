@@ -20,10 +20,10 @@
     <resourceSet type="css" name="homeCss">
       <resource path="~/css/main.css"/>
       <resource path="~/css/site.css"/>
-      <resource path="~/js/plugins/mediaelement/mediaelementplayer.min.css"/>
+      <resource path="~/scripts/plugins/mediaelement/mediaelementplayer.min.css"/>
     </resourceSet>
     <resourceSet type="js" name="homeJs">
-      <resource path="~/js/plugins/mediaelement/mediaelement-and-player.min.js"/>
+      <resource path="~/scripts/plugins/mediaelement/mediaelement-and-player.min.js"/>
       <resource path="~/scripts/home.js"/>
     </resourceSet>
 
@@ -64,16 +64,14 @@
       <resource path="~/css/site.css"/>
     </resourceSet>
     <resourceSet type="js" name="classEditJs">
-      <!--<resource path="~/scripts/PlugIn/jquery.tagsinput_plus.js"/>-->
-      <resource path="~/scripts/plugIn/jquery.Jcrop.min.js"/>
+      <resource path="~/scripts/plugins/jquery.Jcrop.min.js"/>
       <resource path="~/Scripts/libs/jquery.form.js"/>
       <resource path="~/Scripts/PhotoEditor.js"/>
       <resource path="~/scripts/classedit.js"/>
     </resourceSet>
 
     <resourceSet type="js" name="classAddJs">
-      <!--<resource path="~/scripts/PlugIn/jquery.tagsinput_plus.js"/>-->
-      <resource path="~/scripts/plugIn/jquery.Jcrop.min.js"/>
+      <resource path="~/scripts/plugins/jquery.Jcrop.min.js"/>
       <resource path="~/Scripts/libs/jquery.form.js"/>
       <resource path="~/Scripts/PhotoEditor.js"/>
       <resource path="~/scripts/classadd.js"/>
@@ -157,7 +155,7 @@
       <resource path="~/css/site.css"/>
     </resourceSet>
     <resourceSet type="js" name="memberPhotoJs">
-      <resource path="~/scripts/plugIn/jquery.Jcrop.min.js"/>
+      <resource path="~/scripts/plugins/jquery.Jcrop.min.js"/>
       <resource path="~/Scripts/libs/jquery.form.js"/>
       <resource path="~/Scripts/PhotoEditor.js"/>
       <resource path="~/scripts/MemberPhoto.js"/>
@@ -222,8 +220,8 @@
     <resourceSet name="siteJs" type="js">
       <resource path="~/Scripts/libs/jquery.min.js"/>
       <resource path="~/scripts/libs/jquery-ui.min.js"/>
-      <resource path="~/scripts/PlugIn/jquery.cookie.js"/>
-      <resource path="~/js/site.js" />
+      <resource path="~/scripts/plugins/jquery.cookie.js"/>
+      <resource path="~/scripts/site.js" />
       <resource path="~/scripts/common.js" />
     </resourceSet>
 

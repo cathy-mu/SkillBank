@@ -97,6 +97,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Service\ContentService.cs" />
+    <Compile Include="Tencent\Cryptography.cs" />
+    <Compile Include="Tencent\WXBizMsgCrypt.cs" />
     <Compile Include="WindsorServicesRegistry.cs">
       <SubType>Code</SubType>
     </Compile>

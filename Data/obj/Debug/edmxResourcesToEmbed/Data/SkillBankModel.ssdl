@@ -263,6 +263,23 @@
     <Parameter Name="MinToAdd" Type="smallint" Mode="In" />
   </Function>
   <Function Name="CityInfo_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="ClassEditInfo_Add_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+    <Parameter Name="MemberId" Type="int" Mode="In" />
+    <Parameter Name="CategoryId" Type="tinyint" Mode="In" />
+    <Parameter Name="Level" Type="tinyint" Mode="In" />
+    <Parameter Name="Teach" Type="tinyint" Mode="In" />
+    <Parameter Name="Skill" Type="tinyint" Mode="In" />
+    <Parameter Name="Title" Type="varchar" Mode="In" />
+    <Parameter Name="Summary" Type="varchar" Mode="In" />
+    <Parameter Name="Cover" Type="varchar" Mode="In" />
+    <Parameter Name="WhyU" Type="varchar" Mode="In" />
+    <Parameter Name="Period" Type="varchar" Mode="In" />
+    <Parameter Name="Location" Type="varchar" Mode="In" />
+    <Parameter Name="Available" Type="nvarchar" Mode="In" />
+    <Parameter Name="Remark" Type="nvarchar" Mode="In" />
+    <Parameter Name="ClassId" Type="int" Mode="InOut" />
+  </Function>
   <Function Name="ClassEditInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="loadBy" Type="tinyint" Mode="In" />
     <Parameter Name="memberId" Type="int" Mode="In" />
@@ -368,6 +385,11 @@
     <Parameter Name="Mail" Type="nvarchar" Mode="In" />
     <Parameter Name="Name" Type="nvarchar" Mode="In" />
   </Function>
+  <Function Name="Favorite_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="LoadType" Type="tinyint" Mode="In" />
+    <Parameter Name="MemberId" Type="int" Mode="In" />
+    <Parameter Name="ParaId" Type="int" Mode="In" />
+  </Function>
   <Function Name="Favorite_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="saveType" Type="tinyint" Mode="In" />
     <Parameter Name="favoriteType" Type="tinyint" Mode="In" />
@@ -457,17 +479,17 @@
     <Parameter Name="Result" Type="tinyint" Mode="InOut" />
   </Function>
   <Function Name="Notification_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="loadBy" Type="tinyint" Mode="In" />
+    <Parameter Name="loadType" Type="tinyint" Mode="In" />
     <Parameter Name="memberId" Type="int" Mode="In" />
-    <Parameter Name="checkStauts" Type="bit" Mode="In" />
   </Function>
   <Function Name="Notification_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="saveType" Type="tinyint" Mode="In" />
+    <Parameter Name="memberId" Type="int" Mode="In" />
     <Parameter Name="paraId" Type="int" Mode="In" />
   </Function>
   <Function Name="NotificationAlert_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="memberId" Type="int" Mode="In" />
-    <Parameter Name="checkStauts" Type="bit" Mode="In" />
+    <Parameter Name="loadType" Type="tinyint" Mode="In" />
   </Function>
   <Function Name="Order_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="loadType" Type="tinyint" Mode="In" />

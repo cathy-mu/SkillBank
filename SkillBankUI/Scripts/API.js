@@ -4,7 +4,7 @@ $(document).ready(function () { apitest.init(); });
 
 function apitest_Class() {
     this.init = function () {
-     
+
         $("#addchatbtn").click(function () {
             apitest.saveChatMessage();
         });
@@ -21,10 +21,6 @@ function apitest_Class() {
             apitest.getClassList();
         });
 
-        $("#addorderbtn").click(function () {
-            apitest.addOrder();
-        });
-
         $("#sendcodebtn").click(function () {
             apitest.sendValidCode();
         });
@@ -33,8 +29,158 @@ function apitest_Class() {
             apitest.createMember();
         });
 
+        $("#updatemember").click(function () {
+            apitest.updateMember();
+        });
+
+        $("#addcourse").click(function () {
+            apitest.addCourseInfo();
+        });
+
+        $("#updatecourse").click(function () {
+            apitest.updateCourseInfo(false);
+        });
+
+        $("#pubcourse").click(function () {
+            apitest.updateCourseInfo(true);
+        });
+
+        $("#addorder").click(function () {
+            apitest.addOrder();
+        });
+
+        $("#updateorder").click(function () {
+            apitest.updateOrder();
+        });
+
+        $("#studentreviewbtn").click(function () {
+            apitest.addReview(true);
+        });
+
+        $("#teacherreviewbtn").click(function () {
+            apitest.addReview(false);
+        });
 
     };
+
+    this.addReview = function (isStudent) {
+        var orderId = $("#review-orderid").val();
+        var comment = $("#review-comment").val();
+        var feedback = $("#review-feedback").val();
+        
+        var classId = 0;
+        if (orderId == undefined || orderId == "") {
+            alert("please enter order id");
+            return false;
+        }
+
+        if (feedback != 1 && feedback != 2 && feedback != 3) {
+            alert("please enter feedback between 1 and 3");
+            return false;
+        }
+
+        var paraData = { "OrderId": orderId, "IsStudent": isStudent, "Feedback": feedback,  "Comment": comment };
+        console.log(paraData);
+        var savePath = "/API/OrderReview";
+        $.ajax({
+            url: savePath,
+            type: "POST",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    this.updateMember = function () {
+        var name = $("#memberinfo-name").val();
+        var gender = $("#memberinfo-gender").val();
+        var mobile = $("#memberinfo-mobile").val();
+        var avatar = $("#memberinfo-avatar").val();
+        var city = $("#memberinfo-city").val();
+        var intro = $("#memberinfo-intro").val();
+
+
+        var paraData = { "Name": name, "Mobile": mobile, "Gender": gender, "Intro": intro, "CityName": city, "Avatar": avatar };
+        console.log(paraData);
+
+        var savePath = "/API/Member/";
+        $.ajax({
+            url: savePath,
+            type: "PUT",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+
+    this.updateCourseInfo = function (isPublish) {
+        var courseId = $("#course-id").val();
+        var cityName = $("#course-city").val();
+        var title = $("#course-title").val();
+        var summary = $("#course-summary").val();
+        var whyu = $("#course-whyu").val();
+        var available = $("#course-available").val();
+        var location = $("#course-location").val();
+        var period = $("#course-period").val();
+        var category = $("#course-category").val();
+        var level = $("#course-level").val();
+        var skill = $("#course-skill").val();
+        var teach = $("#course-teach").val();
+        var remark = $("#course-remark").val();
+        
+        var paraData = { "CityName": cityName, "Title": title, "Summary": summary, "level": level, "skill": skill, "teach": teach, "category": category, "WhyU": whyu, "location": location, "period": period, "available": available, "remark": remark };
+        console.log(paraData);
+
+        var savePath = "/API/Course/" + courseId;
+        $.ajax({
+            url: savePath,
+            type: "PUT",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    this.addCourseInfo = function () {
+        
+        var cityName = $("#course-city").val();
+        var title = $("#course-title").val();
+        var summary = $("#course-summary").val();
+        var whyu = $("#course-whyu").val();
+        var available = $("#course-available").val();
+        var location = $("#course-location").val();
+        var period = $("#course-period").val();
+        var category = $("#course-category").val();
+        var level = $("#course-level").val();
+        var skill = $("#course-skill").val();
+        var teach = $("#course-teach").val();
+        var remark = $("#course-remark").val();
+
+        var paraData = { "CityName": cityName, "Title": title, "Summary": summary, "level": level, "skill": skill, "teach": teach, "category": category, "WhyU": whyu, "location": location, "period": period, "available": available, "remark": remark };
+        console.log(paraData);
+
+        var savePath = "/API/Course/";
+        $.ajax({
+            url: savePath,
+            type: "POST",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
 
     this.saveChatMessage = function () {
 
@@ -118,7 +264,8 @@ function apitest_Class() {
         });
     }
 
-
+    
+    //For orders
     this.addOrder = function () {
         var memberId = $("#order-mid").val();
         var classId = $("#order-cid").val();
@@ -141,10 +288,33 @@ function apitest_Class() {
         });
     }
 
+    this.updateOrder = function () {
+        var orderId = 100;
+        var memberId = $("#order-mid").val();
+        var classId = $("#order-cid").val();
+        var statusId = $("#order-status").val();
+        var remark = $("#order-remark").val();
+        var name = $("#order-name").val();
+        var mobile = $("#order-mobile").val();
+        var paraData = { "memberId": memberId, "OrderId": classId, "Status": statusId, "name": name, "mobile": mobile };
+        var savePath = "/API/Order/" + orderId;
+        console.log(paraData);
+        $.ajax({
+            url: savePath,
+            type: "PUT",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
     this.sendValidCode = function () {
         var mobile = $("#valid-mobile").val();
         var paraData = { "mobile": mobile };
-        var savePath = "/API/Validation?mobile="+mobile;
+        var savePath = "/API/Validation?mobile=" + mobile;
         console.log(paraData);
         $.ajax({
             url: savePath,
@@ -166,7 +336,7 @@ function apitest_Class() {
         var avatar = $("#member-avatar").val();
         var type = 1;
         var paraData = { "Mobile": mobile, "Name": name, "Type": type, "Account": account, "Avatar": avatar, "Code": code };
-        var savePath = "/API/Member";
+        var savePath = "/API/Registe";
         console.log(paraData);
         $.ajax({
             url: savePath,
@@ -175,7 +345,7 @@ function apitest_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                //alert(data);
+                alert(data);
             }
         });
     }
@@ -199,7 +369,7 @@ function apitest_Class() {
         //                var str = val.Title + ' : ' + val.ClassId;
         //                console.log(str);
         //            });
-                    
+
         //        });
     }
 

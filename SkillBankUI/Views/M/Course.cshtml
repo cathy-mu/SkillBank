@@ -321,7 +321,10 @@
                                             <span class="golden">+ 1</span>
                                         </div>
                                         <p>@Html.GetTrans(672)</p>
-                                        <button class="btn btn-olive"><a href="@Url.Action("login", "m")">现在就去注册</a></button>
+                                        @if (ViewBag.MemberInfo == null)
+                                        {
+                                        <button class="btn btn-olive"><a href="@Url.Action("login", "m")" style="color:#fff;">现在就去注册</a></button>
+                                        }
                                     </div>
                                     <div class="slide">
                                         <div class="circle mb-1">

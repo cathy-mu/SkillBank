@@ -21,7 +21,7 @@ namespace SkillBank.Site.DataSource.Data
     public interface IClassInfoRepository
     {
         int CreateClass(int memberId, int categoryId, Byte skillLevel, Byte teacheLevel, out Boolean isExist);
-        List<ClassInfo> GetClassInfo(Byte loadBy, int id, int memberId = 0);
+        List<ClassInfo> GetClassInfo(Byte loadBy, int paraId, int memberId = 0);
         List<ClassListItem> GetClassTabList(Byte loadBy, Byte typeId, int memberId, String searchKey = "", Decimal posX = 0, Decimal posY = 0, int cityId = 0);
         List<ClassListItem> GetClassList(Byte loadBy, Byte orderByType, int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, int memberId, out int totalNum, String searchKey = "", Decimal posX = 0, Decimal posY = 0);
         /*For class edit page 1.0*/
@@ -29,6 +29,7 @@ namespace SkillBank.Site.DataSource.Data
         void UpdateClassInfo(Byte saveType, int classId, Boolean isValue);
         void UpdateClassInfo(Byte saveType, int classId, String txtValue);
         /*For new class edit page 1.1*/
+        int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
         void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue);
         void UpdateClassEditInfo(Byte saveType, int classId, Boolean isValue);
         void UpdateClassEditInfo(Byte saveType, int classId, String txtValue);
@@ -64,6 +65,12 @@ namespace SkillBank.Site.DataSource.Data
         {
             ClassEditInfo_Save_p(saveType, classId, 0, isValue, "");
         }
+
+        public int UpdateClassEditInfo(Byte savaType, ClassInfo classinfo)
+        {
+            var result = ClassEditInfo_Add_p(savaType, classinfo.ClassId, classinfo.Member_Id, classinfo.Category_Id, classinfo.Level, classinfo.SkillLevel, classinfo.TeacheLevel, classinfo.Title, classinfo.Summary, classinfo.WhyU, classinfo.Cover, classinfo.Location, classinfo.Period, classinfo.Remark, classinfo.Available);
+            return result;
+        }
         
         #region For class edit page 1.0
 
@@ -95,7 +102,7 @@ namespace SkillBank.Site.DataSource.Data
             return (result != null && result.Count > 0) ? result : null;
         }
 
-        private List<ClassEditItem> ClassEditInfo_Load_p(Byte loadBy, int memberId, int classId)
+        private List<ClassEditItem> ClassEditInfo_Load_p(Byte loadBy, int classId, int memberId)
         {
             var loadByParameter = new ObjectParameter("loadBy", loadBy);
             var memberIdParameter = new ObjectParameter("memberId", memberId);
@@ -237,6 +244,30 @@ namespace SkillBank.Site.DataSource.Data
             ObjectParameter paraIdParameter = new ObjectParameter("ParaId", classId);
 
             ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassEditInfo_Save_p", saveTypeParameter, paraValueParameter, isValueParameter, txtValueParameter, paraIdParameter);
+        }
+
+        private int ClassEditInfo_Add_p(Byte saveType, int classId, int memberId, Byte categoryId, Byte level, int skill, int teach, String title, String summary, String whyU, String cover, String location, String period, String remark, String available)
+        {
+            ObjectParameter saveTypeParameter = new ObjectParameter("saveType", saveType);
+            ObjectParameter memberIdParameter = new ObjectParameter("memberId", memberId);
+            ObjectParameter categoryIdParameter = new ObjectParameter("CategoryId", categoryId);
+            ObjectParameter levelParameter = new ObjectParameter("level", level);
+            ObjectParameter skillParameter = new ObjectParameter("skill", skill);
+            ObjectParameter teachParameter = new ObjectParameter("teach", teach);
+
+            ObjectParameter titleParameter = new ObjectParameter("title", title);
+            ObjectParameter summaryParameter = new ObjectParameter("summary", summary);
+            ObjectParameter whyUParameter = new ObjectParameter("whyU", whyU);
+            ObjectParameter periodParameter = new ObjectParameter("period", period);
+            ObjectParameter locationParameter = new ObjectParameter("location", location);
+            ObjectParameter availableParameter = new ObjectParameter("available", available);
+            ObjectParameter remarkParameter = new ObjectParameter("remark", remark);
+            ObjectParameter coverParameter = new ObjectParameter("cover", cover);
+            ObjectParameter classIdParameter = new ObjectParameter("classId", classId);
+
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassEditInfo_Add_p", saveTypeParameter, memberIdParameter, classIdParameter, categoryIdParameter, levelParameter, skillParameter, teachParameter, titleParameter, summaryParameter, whyUParameter, periodParameter, locationParameter, availableParameter, remarkParameter, coverParameter);
+            var result = Convert.ToInt32(classIdParameter.Value);
+            return result;
         }
 
     }

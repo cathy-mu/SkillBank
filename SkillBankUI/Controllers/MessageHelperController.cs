@@ -86,7 +86,7 @@ namespace SkillBankWeb.Controllers
         public JsonResult SetAlertAsClicked()
         {
             var memberId = WebContext.Current.MemberId;
-            _commonService.SetNotificationAsClicked(memberId);
+            _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetPopTagAsClicked, memberId);
             return Json("true", JsonRequestBehavior.AllowGet);
         }
 
@@ -94,7 +94,7 @@ namespace SkillBankWeb.Controllers
         public JsonResult SetAlertAsRead()
         {
             var memberId = WebContext.Current.MemberId;
-            _commonService.SetNotificationAsRead((Byte)Enums.DBAccess.NotificationTagUpdateType.SetPopTagAsRead, memberId);
+            _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetPopTagAsRead, memberId);
             return Json("true", JsonRequestBehavior.AllowGet);
         }
 

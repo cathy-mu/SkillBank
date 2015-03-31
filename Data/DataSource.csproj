@@ -113,6 +113,9 @@
     <Compile Include="Data\Favorite.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\Favorite_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\MemberInfo.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
@@ -211,6 +214,7 @@
     </Compile>
     <Compile Include="Mapper\BlurbMapper.cs" />
     <Compile Include="Mapper\ClassMapper.cs" />
+    <Compile Include="Mapper\InteractiveMapper.cs" />
     <Compile Include="Mapper\ReportToolsMapper.cs" />
     <Compile Include="Mapper\NotificationMapper.cs" />
     <Compile Include="Mapper\FeedBackMapper.cs" />
@@ -224,6 +228,7 @@
     <Compile Include="Model\ClassItem.cs" />
     <Compile Include="Model\ClassReviewItem.cs" />
     <Compile Include="Model\ClassListItem.cs" />
+    <Compile Include="Model\FavoriteItem.cs" />
     <Compile Include="Model\MemberInfoItem.cs" />
     <Compile Include="Model\MemberReviewItem.cs" />
     <Compile Include="Model\MemberViewInfo.cs" />

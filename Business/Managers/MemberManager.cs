@@ -33,6 +33,7 @@ namespace SkillBank.Site.Services.Managers
         Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount);
 
         void UpdateMemberLikeTag(int memberId, int relatedId, bool isLike);
+        List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId);
     }
 
     public class MemberManager : IMemberManager
@@ -186,7 +187,10 @@ namespace SkillBank.Site.Services.Managers
             return _repository.HasShareClassCoin(memberId);
         }
 
-
+        public List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId)
+        {
+            return _intRep.GetFavorites(loadType, memberId, paraId);
+        }
 
     }
 

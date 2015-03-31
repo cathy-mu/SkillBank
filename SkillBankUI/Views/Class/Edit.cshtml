@@ -213,7 +213,7 @@
                                         <div class="row-fluid spaced">
                                             <div class="span2 tright">@Html.GetTrans(636)</div>
                                             <div class="span6">
-                                                <textarea name="whyu" id="whyu" class="form-control span12" rows="4" placeholder="@ResourceHelper.GetTransText(637).Trim()">@(Model.isEdit ? Model.ClassInfo.Location : ResourceHelper.GetTransText(291))</textarea>
+                                                <textarea name="whyu" id="whyu" class="form-control span12" rows="4" placeholder="@ResourceHelper.GetTransText(637).Trim()">@Model.ClassInfo.WhyU</textarea>
                                                 <br />&nbsp;
                                                 <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="class-whyu-charsleft">400</span>@ViewBag.CharacterCountText[1]</div>-->
                                             </div>
@@ -231,7 +231,7 @@
                                         <div class="row-fluid spaced">
                                             <div class="span2 tright">@Html.GetTrans(640)</div>
                                             <div class="span6">
-                                                <textarea name="location" id="location" class="form-control span12" rows="2" placeholder="@ResourceHelper.GetTransText(641).Trim()">@(Model.isEdit ? Model.ClassInfo.Location : ResourceHelper.GetTransText(291))</textarea>
+                                                <textarea name="location" id="location" class="form-control span12" rows="2" placeholder="@ResourceHelper.GetTransText(641).Trim()">@Model.ClassInfo.Location</textarea>
                                                 <br />&nbsp;
                                                 <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="class-location-charsleft">100</span>@ViewBag.CharacterCountText[1]</div>-->
                                             </div>
@@ -248,7 +248,7 @@
                                         <div class="row-fluid spaced">
                                             <div class="span2 tright">@Html.GetTrans(643)</div>
                                             <div class="span6">
-                                                <textarea name="remark" id="remark" class="form-control span12" rows="4" placeholder="@ResourceHelper.GetTransText(644).Trim()">@Model.ClassInfo.Location</textarea>
+                                                <textarea name="remark" id="remark" class="form-control span12" rows="4" placeholder="@ResourceHelper.GetTransText(644).Trim()">@Model.ClassInfo.Remark</textarea>
                                                 <br />&nbsp;
                                                 <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="class-remark-charsleft">100</span>@ViewBag.CharacterCountText[1]</div>-->
                                             </div>

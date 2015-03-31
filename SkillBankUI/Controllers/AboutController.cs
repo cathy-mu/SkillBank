@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using SkillBank.Site.Services;
 using SkillBank.Site.Web;
 using SkillBank.Site.Web.Context;
+using SkillBank.Site.Common;
 
 namespace SkillBankWeb.Controllers
 {
@@ -89,7 +90,7 @@ namespace SkillBankWeb.Controllers
         {
             if (memberId > 0)
             {
-                Boolean checkStatus = (Session == null || Session["AlertStatus"] == null);
+                Byte checkStatus = (Byte)((Session == null || Session["AlertStatus"] == null) ? Enums.DBAccess.NotificationAlterLoadType.WebCheckStatus : Enums.DBAccess.NotificationAlterLoadType.Web);
                 var alerts = _commonService.GetPopNotification(memberId, checkStatus);
                 var newAlertNum = "";
                 if (alerts != null && alerts.Count() > 0)
@@ -99,7 +100,7 @@ namespace SkillBankWeb.Controllers
                 }
 
                 ViewBag.NotificationNum = newAlertNum; 
-                if (checkStatus)
+                if (checkStatus.Equals(1))
                 {
                     Session["AlertStatus"] = "1";
                 }

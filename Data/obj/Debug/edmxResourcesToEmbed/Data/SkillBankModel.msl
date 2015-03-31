@@ -649,5 +649,16 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Favorite_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Favorite_Load_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.Favorite_Load_p_Result">
+          <ScalarProperty Name="RelatedId" ColumnName="RelatedId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="IsLike" ColumnName="IsLike" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ClassEditInfo_Add_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassEditInfo_Add_p" />
   </EntityContainerMapping>
 </Mapping>

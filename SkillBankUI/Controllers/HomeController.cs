@@ -93,7 +93,7 @@ namespace SkillBank.Controllers
         {
             if (memberId > 0)
             {
-                Boolean checkStatus = (Session == null || Session["AlertStatus"] == null);
+                Byte checkStatus = (Byte)((Session == null || Session["AlertStatus"] == null) ? Enums.DBAccess.NotificationAlterLoadType.WebCheckStatus : Enums.DBAccess.NotificationAlterLoadType.Web);
                 var alerts = _commonService.GetPopNotification(memberId, checkStatus);
                 if (alerts != null && alerts.Count() > 0)
                 {
@@ -102,7 +102,7 @@ namespace SkillBank.Controllers
                     ViewBag.NotificationNum = newAlertNum > 0 ? newAlertNum.ToString() : "";
                 }
                 
-                if (checkStatus)
+                if (checkStatus.Equals(1))
                 {
                     Session["AlertStatus"] = "1";
                 }

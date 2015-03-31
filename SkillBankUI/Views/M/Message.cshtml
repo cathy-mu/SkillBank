@@ -7,24 +7,31 @@
 <div class="content" id="message-page">
     <nav>
         <div class="segmented-control card">
-            <a class="control-item active" href="#item1mobile">通知
-          </a>
-            <a class="control-item" href="#item2mobile">私信
-          </a>
-        </div>
+            @if (ViewBag.AlterNums != null && ViewBag.AlterNums["m"] > 0)
+            {
+                <a class="control-item active red-dot-wrapper notification-tab" href="#item1mobile">通知</a>
+                <a class="control-item-no-js red-dot-wrapper message-tab" href="#" data-maxid="@ViewBag.MaxMessageId">
+                    <span class="red-dot"></span>私信
+                </a>
+            }
+            else
+            {
+                <a class="control-item active red-dot-wrapper" href="#item1mobile">通知</a>
+                <a class="control-item red-dot-wrapper" href="#item2mobile">私信</a>
+            }
+         </div>
     </nav>
     <div>
         <div id="item1mobile" class="control-content active">
             <ul class="avatar-text">
                 <li class="card">
                     <div class="msg-title">
-                        <time class="pull-right">3小时 之前</time>
+                        <time class="pull-right">@TextContentHelper.GetDateString(new DateTime(2015,03,05))</time>
                         <h4 class="flag-num">欢迎使用技能银行手机公测版<!--<span class="badge">1</span>-->
                         </h4>
                     </div>
                     <p>
-                       
-目前已开放部分功能的测试，完整版将在近期上线。用户也可以在PC端访问www.skillbank.cn，使用全部功能。
+                        目前已开放部分功能的测试，完整版将在近期上线。用户也可以在PC端访问www.skillbank.cn，使用全部功能。
                     </p>
                 </li>
 
@@ -36,7 +43,7 @@
                 {
                     foreach (var message in Model.Messages)
                     {
-                        var contactId = (message.From_Id == ViewBag.MemberInfo.MemberId) ? message.To_Id : message.From_Id;
+                    var contactId = (message.From_Id == ViewBag.MemberInfo.MemberId) ? message.To_Id : message.From_Id;
                     <li class="card">
                         <a href="" data-transition="slide-in">
                             <div class="pull-left flag-num">
