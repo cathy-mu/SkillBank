@@ -4,6 +4,51 @@ window.ENV = {
   imgHost : 'http://skillbank.b0.upaiyun.com'
 };
 
+var browser={
+    versions:function(){
+        var u = navigator.userAgent, app = navigator.appVersion;
+        return {
+            trident: u.indexOf('Trident') > -1, //IE内核
+            presto: u.indexOf('Presto') > -1, //opera内核
+            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,//火狐内核
+            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+            android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+            iPhone: u.indexOf('iPhone') > -1 , //是否为iPhone或者QQHD浏览器
+            iPad: u.indexOf('iPad') > -1, //是否iPad
+            webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+            weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2015-01-22新增）
+            qq: u.match(/\sQQ/i) == " qq" //是否QQ
+        };
+    }(),
+    language:(navigator.browserLanguage || navigator.language).toLowerCase()
+};
+
+function parseURL(url) {
+  var parser = document.createElement('a'),
+    searchObject = {},
+    queries, split, i;
+  // Let the browser do the work
+  parser.href = url;
+  // Convert query string to object
+  queries = parser.search.replace(/^\?/, '').split('&');
+  for( i = 0; i < queries.length; i++ ) {
+    split = queries[i].split('=');
+    searchObject[split[0]] = split[1];
+  }
+  return {
+    protocol: parser.protocol,
+    host: parser.host,
+    hostname: parser.hostname,
+    port: parser.port,
+    pathname: parser.pathname,
+    search: parser.search,
+    searchObject: searchObject,
+    hash: parser.hash
+  };
+}
+
 // fns
 window.checkImgHost = function(host, url){
   return url.indexOf('http') === -1 ? host + url : url
@@ -16,6 +61,20 @@ NodeList.prototype.on = function (event, fn) {
   });
   return this;
 };
+
+function closestParent( el, selector ){
+  if(el.matches){
+    while( !el.matches(selector) ){
+      el = el.parentNode;
+    }
+  } else{
+    var className = selector.slice(1);
+    while( !el.classList.contains(className) ){
+      el = el.parentNode;
+    }
+  }
+  return el
+}
 
 // ajax
 function request(type, url, opts, callback) {
@@ -71,9 +130,9 @@ var checkPage = function(){
   privateMsgForm();
   reservationForm();
   followMember();
-
+  customRadio();
   bindCloseEventToModal();
-
+  fixedPositionBug();
 
   // course search
   if( document.getElementById('course-search') ){
@@ -154,9 +213,58 @@ var checkPage = function(){
   }
 
   // add course page
-  if( $('.add-course-page').length ) {
-
+  if( $('.add-course-page.step-1').length ) {
+    bindHashChangeToSteps();
+    selectSkill();
+    checkAllFillInStep1();
+    $('.step-1 .btn.next').on('click', function(){
+      myAlert('哈哈', 2);
+    });
   }
+  
+  // add course page 2
+  if( $('.add-course-page.step-2').length ) {
+    limitedText();
+    checkAllFillIn();
+  } 
+  
+  // add course page 3
+  if( $('.add-course-page.step-3').length ) {
+    chooseCover();
+  } 
+  
+  // add course page private
+  if( $('.add-course-page.step-private').length ) {
+    checkAllFillInPrivate();
+    chooseAvatar();
+  } 
+
+  // course manage 
+  if( $('.courses-manage-page').length ) {
+    confirmManage();
+    checkAllEvaluateModal();
+
+    // reservation modal
+    $('#contact.modal .accept-reserve').on('click', function(){
+      $('#contact')[0].classList.remove('active');
+      toAcceptedState($('.teaching.active')[0]);
+    });
+
+
+    // set active card
+    $('.teaching.card').on('click', function(){
+      [].forEach.call($('.teaching.card'), function (el) {
+        el.classList.remove('active');
+      });
+      this.classList.add('active');
+    });
+
+    // show modal.  for conflict's sake
+    $('[data-modal]').on('click', function(){$('#' + this.dataset.modal)[0].classList.add('active'); });
+
+  } 
+
+  
 
 
 };
@@ -165,35 +273,53 @@ var checkPage = function(){
 checkPage();
 window.addEventListener('push', checkPage);
 
+function bindHashChangeToSteps(){
+  var changeContent = function(){
+    console.log(location.hash);
+    var stepName = location.hash.slice(1);
+    if(!stepName) return;
+    $('.steps.active')[0].classList.remove('active');
+    $('.content.active')[0].classList.remove('active');
+    $('.steps.step-' + stepName)[0].classList.add('active');
+    $('.content.step-' + stepName)[0].classList.add('active');
+  }
+  changeContent();
+  window.onhashchange = changeContent;
+}
+
 function switchCourseCat(){
-  // search cat
-  $('#search-cat a').on('click', function(){
+  var load = function(){
+    console.log(location.hash);
+    if(!location.hash.slice(1)) return;
+    var query = parseURL(location.hash.slice(1)).searchObject;
     var self = this;
     var geo_opts = {
-        enableHighAccuracy: true, 
-        maximumAge        : 30000, 
-        timeout           : 27000
-      };
+      enableHighAccuracy: true, 
+      maximumAge        : 30000, 
+      timeout           : 27000
+    };
 
     // nearby skill
-    if(this.dataset.by == 0){
+    if(query.by == 0){
       navigator.geolocation.getCurrentPosition(function (position) {
-        var url = ENV.host + '/api/ClassList?' + 'by=' + self.dataset.by + '&type=' + self.dataset.type +
+        var url = ENV.host + '/api/ClassList?' + 'by=' + query.by + '&type=' + query.type +
                   '&PosY=' + position.coords.latitude + '&PosX=' + position.coords.longitude;
-        getCourses(url, self);
+        getCourses(url);
       }, function(){
         console.log("Sorry, no position available.")
       }, geo_opts);
-    } else{
-      var url = ENV.host + '/api/ClassList?' + 'by=' + self.dataset.by + '&type=' + self.dataset.type;
-      getCourses(url, self);
+    } else if(query.by){
+      var url = ENV.host + '/api/ClassList?' + 'by=' + query.by + '&type=' + query.type;
+      getCourses(url);
     }
-
-  });
+  }
+  load();
+  window.onhashchange = load;
 }
 
-function getCourses(url, el){
+function getCourses(url){
   var $loading = $('.loading');
+  var $cats = $('.search-cat-wrap a');
   $loading[0].style.display = 'block';
   get(url, function(fb){
     if( !_.isArray(fb) ) return;
@@ -201,10 +327,13 @@ function getCourses(url, el){
     var tpl = $('#course-tpl')[0].innerHTML;
     $('.course-list')[0].innerHTML = _.template(tpl, {courses: fb, imgHost: ENV.imgHost});
     // active tab
-    [].forEach.call($('.search-cat-wrap a'), function (el) {
+    [].forEach.call($cats, function (el) {
       el.classList.remove('active');
     });
-    el.classList.add('active');
+    var $active = _.find($cats, function($cat){
+      return location.hash == $cat.getAttribute('href');
+    });
+    $active.classList.add('active');
     $loading[0].style.display = 'none';
   });
 }
@@ -212,7 +341,7 @@ function getCourses(url, el){
 function bindCloseEventToModal(){
   if( !$('.modal').length ) return;
   // jQuery(document).on('touchend click', function(e){
-  document.body.addEventListener('touchend', function(e){
+  document.body.addEventListener('click', function(e){
     if( e.target.classList.contains('content') ) {
       var $modal = e.target.parentNode;
       $modal.classList.remove('active');
@@ -423,20 +552,22 @@ function commentForm(){
 
 function followMember(){
   if( !$('.follow').length ) return;
-  $('.follow')[0].on('click', function(event){
-    event.preventDefault();
-    var self = this;
-    var isFollow = self.classList.contains( 'btn-olive' );
-    var data = {
-      MemberId: 1,
-      FollowingId: 7,
-      IsFollow: isFollow
-    };
-      self.classList[ isFollow ? 'add' : 'remove' ]('btn-grey');
-      self.classList[ !isFollow ? 'add' : 'remove' ]('btn-olive');
-    // post(ENV.host + '/api/followmember', data, function(fb){
-    // });
+  [].forEach.call($('.follow'), function(el) {
+    el.on('click', function(event){
+      event.preventDefault();
+      var self = this;
+      var isFollow = self.classList.contains( 'btn-olive' );
+      var data = {
+        MemberId: 1,
+        FollowingId: 7,
+        IsFollow: isFollow
+      };
+        self.classList[ isFollow ? 'add' : 'remove' ]('btn-grey');
+        self.classList[ !isFollow ? 'add' : 'remove' ]('btn-olive');
+      // post(ENV.host + '/api/followmember', data, function(fb){
+      // });
 
+    })
   })
 }
 
@@ -448,6 +579,228 @@ function showRangeVal( el ){
       left: val + '%',
       marginLeft: -val*30*0.01 + 'px'
     })
+}
+
+function customRadio(){
+  $('.custom-radio input[type=radio]').on('change', function(){
+    var $icon = this.parentNode.querySelector('.icon');
+    [].forEach.call($('.custom-radio .icon'), function(el) {
+      el.classList.remove('selected');
+    })
+    $icon.classList.add('selected');
+  })
+}
+
+function limitedText(){
+  var $textarea = $('.limitedText textarea')[0];
+  var $num = $('.limitedText .warning span')[0];
+  var $nextBtn = $('.main .next')[0];
+  var changeNum = function(){
+    var len = this.value.length
+    if(len < 100){
+      $num.innerHTML = 100 - len;
+    } else{
+      $num.innerHTML = 0;
+    }
+  }
+  $textarea.on('change', changeNum);
+  $textarea.on('keyup', changeNum);
+}
+
+function checkAllFillInStep1(){
+  var $form = $('.step-1 form')[0];
+  var $nextBtn = $('.step-1 .main .next')[0];
+  var checkInputs = function(){
+    var ifAllFillIn = $form.city.value && 
+                      $form['skill-cat'].value &&
+                      $form['skill-sub-cat'].value;
+    $nextBtn.classList[ifAllFillIn ? 'remove' : 'add']('disabled');
+  };
+  [].forEach.call( $('.step-1 input[name=city], .step-1 select[name=skill-cat], .step-1 select[name=skill-sub-cat]'), 
+    function (el) {
+      el.on('change', checkInputs);
+      el.on('keyup', checkInputs);
+    }
+  );
+
+}
+
+function checkAllFillIn(){
+  var $form = $('.step-2 form')[0];
+  var $nextBtn = $('.step-2 .main .next')[0];
+  var checkInputs = function(){
+    var ifAllFillIn = $('input[type="radio"]:checked').length && 
+                      $form.courseName.value && 
+                      $form.highlight.value &&
+                      $form.intro.value.length >= 100 ? true : false;
+    $nextBtn.classList[ifAllFillIn ? 'remove' : 'add']('disabled');
+  };
+  [].forEach.call( $('.custom-radio input[type=radio], input[name=courseName],' + 
+    'textarea[name=highlight], textarea[name=intro]'), 
+    function (el) {
+      el.on('change', checkInputs);
+      el.on('keyup', checkInputs);
+    }
+  );
+
+}
+
+function checkAllEvaluateModal(){
+  var $form = $('#evaluate form')[0];
+  $('#evaluate .btn-evaluate')[0].on('click', function(){
+    if( $('#evaluate input[type="radio"]:checked').length && $form.message.value){
+      $('#evaluate')[0].classList.remove('active');
+      toDidabledState($('.teaching.active')[0]);
+    }             
+  });
+}
+
+function chooseCover(){
+  var $uploader = $('.course input[type=file]')[0];
+  $uploader.on('change', function(){
+    if(!this.files[0]) return;
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(this.files[0]);
+    oFReader.onload = function (oFREvent) {
+      $('.cover-holder')[0].innerHTML = '<img src="' + oFREvent.target.result + '" />'
+      $('.step-name')[0].style.display = 'none';
+      [].forEach.call($('.right .btn'), function(el) {
+        el.classList.remove('disabled');
+      });
+      $('.right .btn')[1].classList.add('border-none');
+      $('.right .btn')[1].classList.add('btn-olive');
+      $('h3')[0].innerHTML = '内容已填完并被保存';
+    };
+  });
+}
+
+function chooseAvatar(){
+  var $uploader = $('.edit-avatar input[type=file]')[0];
+  $uploader.on('change', function(){
+    if(!this.files[0]) return;
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(this.files[0]);
+    oFReader.onload = function (oFREvent) {
+      $('.edit-avatar img')[0].outerHTML = '<img class="avatar" src="' + oFREvent.target.result + '" />';
+      [].forEach.call($('.right .btn'), function(el) {
+        el.classList.remove('disabled');
+      });
+      $('.right .btn')[1].classList.add('border-none');
+      $('.right .btn')[1].classList.add('btn-olive');
+    };
+  });
+}
+
+function checkAllFillInPrivate(){
+  var $form = $('form')[0];
+  var $btn1 = $('.main .right .btn')[0];
+  var $btn2 = $('.main .right .btn')[1];
+  var checkInputs = function(){
+    var ifAllFillIn = $('input[type="radio"]:checked').length && 
+                      $form.realname.value && 
+                      $form.city.value &&
+                      $form.introSelf.value ? true : false;
+    $btn1.classList[ifAllFillIn ? 'remove' : 'add']('disabled');
+    $btn2.classList[ifAllFillIn ? 'remove' : 'add']('disabled');
+    $btn2.classList[ifAllFillIn ? 'add' : 'remove']('border-none');
+    $btn2.classList[ifAllFillIn ? 'add' : 'remove']('btn-olive');
+  };
+  [].forEach.call( $('.custom-radio input[type=radio], input[name=realname],' + 
+    'input[name=city], textarea[name=introSelf]'), 
+    function (el) {
+      el.on('change', checkInputs);
+      el.on('keyup', checkInputs);
+    }
+  );
+}
+
+function confirmManage(){
+  [].forEach.call( $('.confirm'), function (el) {
+    el.on('click', function(){
+      if( el.classList.contains('confirm-refuse-reserve') ){
+        if (window.confirm("拒绝订课?")) toDidabledState(el);
+      } else if( el.classList.contains('content') ){
+      } else if( el.classList.contains('refuse-draw-back') ){
+        if (window.confirm("拒绝退币?")) toDidabledState(el);
+      } else if( el.classList.contains('accept-draw-back') ){
+        if (window.confirm("接受退币?")) toDidabledState(el);
+      } else {
+        if (window.confirm("拒绝订课?")) toDidabledState(el);
+      }
+    })
+  });
+}
+
+function toDidabledState(el){
+  var $card = closestParent(el, '.card');
+  var  $tpl= $('#teaching-disabled-tpl')[0].innerHTML;
+  $tpl = _.template($tpl, {person: $card.dataset});
+  $card.outerHTML = $tpl;
+}
+
+function toAcceptedState($card){
+  var  $tpl= $('#teaching-accepted-tpl')[0].innerHTML;
+  $tpl = _.template($tpl, {person: $card.dataset});
+  $card.outerHTML = $tpl;
+}
+
+function PreviewImage() {
+  var oFReader = new FileReader();
+  oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+
+  oFReader.onload = function (oFREvent) {
+    document.getElementById("uploadPreview").src = oFREvent.target.result;
+  };
+}
+
+function selectSkill(){
+  var allSkills = {
+    语言类: ['英语', '法语', '德语', '日语'],
+    设计类: ['油画', '平面', '建筑']
+  };
+  var options_tpl = '<% _.forEach(list, function(name) { %><option value=<%- name %> > <%- name %> </option><% }); %>';;
+  var $skillCat = $('#skill-cat')[0];
+  var $skillSubCat = $('#skill-sub-cat')[0];
+  function renderSubCat(subCats){
+    var citiesOptions = _.template(options_tpl, {list: subCats});
+    $skillSubCat.innerHTML = citiesOptions;
+  }
+  var provinceOptions = _.template(options_tpl, {list: _.keys(allSkills)});
+  $skillCat.insertAdjacentHTML('beforeend', provinceOptions);
+  // var idx = arrProvinces.indexOf(provinceVal);
+  // renderCity(idx);
+  $skillCat.on('change', function(){
+    renderSubCat(allSkills[this.value]);
+    $skillSubCat.style.display = 'block';
+  });
+}
+
+function fixedPositionBug(){
+  if(browser.versions.iPhone || browser.versions.iPad){
+    [].forEach.call($('textarea,input,select'), function (el) {
+      el.on('focus', function(){
+        [].forEach.call($('.bar'), function(el){
+          el.style.position = 'absolute';
+        });
+      });
+      el.on('blur', function(){
+        [].forEach.call($('.bar'), function(el){
+          el.style.position = '';
+        });
+      });
+    });
+  }
+}
+
+function myAlert(msg, seconds){
+  var $warning = $('.my-alert')[0];
+  var $inner = $('.my-alert .inner')[0];
+  seconds = seconds ? seconds : 2; 
+  $inner.innerHTML = msg;
+  $warning.style.display = 'flex';
+  var t = setTimeout(function(){
+    $warning.style.display = '';
+  }, seconds * 1000)
 }
 
 
