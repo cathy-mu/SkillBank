@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "收藏";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+@Html.Partial("_MobileMenuPartial")
+
+<div class="setting-page setting-favorites-page content">
+    <header class="mb-05">
+        <div class="main">
+            <!--<a href="index.html" class="icon icomoon icon-arrow-left grey"></a>-->
+            <span class="page-title" align="center">收藏</span>
+            <span class="avatar-wrapper" align="right">
+                <a href="#">
+                    <img class="avatar" src="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "ms")" /></a>
+            </span>
+        </div>
+    </header>
+    <div class="list">
+        <ul>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {<li>
+            <a href="@Url.Action("course", "m", new { id = item.ClassId })">
+                <div class="left">
+                    <img src="@(!String.IsNullOrEmpty(item.Cover) ? ContentHelper.GetClassCoverPath(item.Cover, "ms") : "/img/default_cover.png")">
+                </div>
+                <div class="right">
+                    <p class="course-name">@item.Title</p>
+                    <span>分享者:@item.Summary </span>
+                </div>
+            </a>
+        </li>
+                }
+            }
+        </ul>
+    </div>
+
+</div>
+

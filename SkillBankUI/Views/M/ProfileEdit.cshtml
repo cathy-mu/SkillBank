@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "ProfileEdit";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+@Html.Partial("_MobileMenuPartial")
+
+<div class="add-course-page step-private content active">
+    <div class="steps mb-2">
+        <div class="main">
+            <span class="step-name center-title">个人信息</span>
+            <span><a href="index.html" align="left" class="icon icomoon icon-arrow-left grey"></a></span>
+            <span class="right">
+                <!--<a class="btn btn-transparent disabled" id="profile-viewbtn">查看 </a>-->
+                <a class="btn disabled fileupload-trigger" id="profile-savebtn">保存 </a>
+            </span>
+        </div>
+        <ul class="process-bar">
+            <li class="yellow"></li>
+        </ul>
+    </div>
+    <form>
+        <div class="inner">
+
+            <div class="edit-avatar mb-1">
+                <a href="#" id="uploadimg-container">
+                    <div style="width:78px;height:78px;border-radius: 50%; border: 3px solid #fff;overflow:hidden"><img class="avatar" src="@ContentHelper.GetAvatarPath(ViewBag.Memberinfo.Avatar, "mb")" id="uploadimg"></div>
+                    <span class="icon icomoon round icon-camera" id="pickfiles"></span>
+                    <input type="file" />
+                </a>
+            </div>
+            <ul class="custom-radio mb-1">
+                <li>
+                    <label>
+                        <span class="icon icomoon icon-checkmark round yellow @(!ViewBag.MemberInfo.Gender ? "selected" : "")"></span>
+                        <input type="radio" name="sex" value="female" @(!ViewBag.MemberInfo.Gender ? "checked='checked'" : "") />
+                        女生
+            
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="icon icomoon icon-checkmark round yellow @(ViewBag.MemberInfo.Gender ? "selected" : "")"></span>
+                        <input type="radio" name="sex" value="male" @(ViewBag.MemberInfo.Gender ? "checked='checked'" : "")>
+                        男生
+             
+                    </label>
+                </li>
+                <li></li>
+            </ul>
+            <div class="group-input">
+                <input type="text" placeholder="姓名" name="realname" value="@ViewBag.MemberInfo.Name" />
+                <input type="text" placeholder="城市" name="city" value="@ViewBag.CityName" />
+            </div>
+            <h5 class="mb-05">自我介绍</h5>
+            <textarea placeholder="技能银行的基础是真实的人际关系和互相的信任，你的自我介绍能帮助别人更好地了解你。" rows="5" name="introSelf">@ViewBag.MemberInfo.SelfIntro</textarea>
+            <input type="hidden" id="imagefilename" name="imagefilename" value="@ViewBag.MemberInfo.MemberId" />
+            <input type="hidden" id="imagefileext" name="imagefileext" value=".jpg"/>
+            <input type="hidden" id="imagefilesetting" name="imagefilesetting" />
+            <input type="hidden" id="policy" name="policy" />
+            <input type="hidden" id="signature" name="signature" />
+            <input type="hidden" id="savekey" name="savekey" />
+        </div>
+    </form>
+
+
+</div>
+
+@section FooterScripts
+{
+    <script src="/Scripts/PlugIns/plupload.full.min.js"></script>
+    <script src="/Scripts/ImageUploader.js"></script>
+}

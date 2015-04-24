@@ -67,27 +67,33 @@ namespace SkillBankWeb.API
             }
 
             var result = _commonService.GetClassTabList(by, type, mid, key, (Decimal)x, (Decimal)y, cityId);
-
-            List<ClassListItem> classList = result.Select(c => new ClassListItem()
+            if (result != null)
             {
-                CityId = c.CityId,
-                ClassNum = c.ClassNum,
-                Cover = String.Format("{0}{1}!{2}", ConfigConstants.ThirdPartySetting.UpYun.SpaceHost, c.Cover, coverw),
-                Avatar = (c.Avatar.Contains("profile") ? String.Format("{0}{1}!{2}", ConfigConstants.ThirdPartySetting.UpYun.SpaceHost, c.Avatar, avatarw) : c.Avatar),
-                Level = c.Level,
-                Member_Id = c.Member_Id,
-                IsLike = c.IsLike,
-                Name = c.Name,
-                PosX = c.PosX,
-                PosY = c.PosY,
-                ReviewNum = c.ReviewNum,
-                ClassId = c.ClassId,
-                LikeNum = c.LikeNum,
-                Title = c.Title,
-                CityName = (c.CityId.HasValue && cityDic.ContainsKey(c.CityId.Value) ? cityDic[c.CityId.Value].CityName : "")
-            }).ToList();
-
-            return classList;
+                List<ClassListItem> classList = result.Select(c => new ClassListItem()
+                {
+                    CityId = c.CityId,
+                    ClassNum = c.ClassNum,
+                    Cover = String.Format("{0}{1}!{2}", ConfigConstants.ThirdPartySetting.UpYun.SpaceHost, c.Cover, coverw),
+                    Avatar = (c.Avatar.Contains("profile") ? String.Format("{0}{1}!{2}", ConfigConstants.ThirdPartySetting.UpYun.SpaceHost, c.Avatar, avatarw) : c.Avatar),
+                    Level = c.Level,
+                    Member_Id = c.Member_Id,
+                    IsLike = c.IsLike,
+                    Name = c.Name,
+                    PosX = c.PosX,
+                    PosY = c.PosY,
+                    ReviewNum = c.ReviewNum,
+                    ClassId = c.ClassId,
+                    LikeNum = c.LikeNum,
+                    Title = c.Title,
+                    CityName = (c.CityId.HasValue && cityDic.ContainsKey(c.CityId.Value) ? cityDic[c.CityId.Value].CityName : "")
+                }).ToList();
+                return classList;
+            }
+            else
+            {
+                return null;
+            }
+           
         }
 
 

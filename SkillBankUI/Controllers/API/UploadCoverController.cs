@@ -24,18 +24,28 @@ namespace MvcTesting.Controllers.WebApi
         {
             // Get a reference to the file that our jQuery sent.  Even with multiple files, they will all be their own request and be the 0 index
             HttpPostedFile file = HttpContext.Current.Request.Files[0];
-            String corpSetting = String.Format("{0},{1},{2},{3}", HttpContext.Current.Request["imagefiletop"], HttpContext.Current.Request["imagefileleft"], HttpContext.Current.Request["imagefilew"], HttpContext.Current.Request["imagefileh"]);
+            //String corpSetting = String.Format("{0},{1},{2},{3}", HttpContext.Current.Request["imagefiletop"], HttpContext.Current.Request["imagefileleft"], HttpContext.Current.Request["imagefilew"], HttpContext.Current.Request["imagefileh"]);
             // String corpSetting/*"top,left,width,height"*/, 
             var classId = HttpContext.Current.Request["imagefilename"];
+            var isPublish = HttpContext.Current.Request["ispublish"];
 
-            String fileName = String.Concat(classId, "_", DateTime.Now.ToString("yyMMddhhmmss"), HttpContext.Current.Request["imagefileext"]);
-            //String fileName = String.Concat(classId, HttpContext.Current.Request["imagefileext"]);
+            //String fileName = String.Concat(classId, "_", DateTime.Now.ToString("yyMMddhhmmss"), HttpContext.Current.Request["imagefileext"]);
+            String fileName = String.Concat(classId, HttpContext.Current.Request["imagefileext"]);//For image upload testing
             Stream fileStream = file.InputStream;
 
             var coverPath = String.Concat("/", System.Configuration.ConfigurationManager.AppSettings["ENV"], ConfigConstants.ThirdPartySetting.UpYun.ClassCoverPathPrefix, fileName);
             ImageUploadManager.UploadClassCoverImage(fileStream, coverPath, HttpContext.Current.Request["imagefilesetting"]);//corpSetting"100,120,238,178"
             ClassInfoRepository _rep = new ClassInfoRepository();
-            _rep.UpdateClassEditInfo((Byte)Enums.DBAccess.ClassSaveType.UpdatePhoto, Convert.ToInt32(classId), coverPath);
+            //Save cover and publish class
+            if (isPublish != null && isPublish.Equals("1"))
+            {
+                _rep.UpdateClassEditInfo((Byte)Enums.DBAccess.ClassSaveType.UpdateStep3, Convert.ToInt32(classId), coverPath);
+            }
+            //save cover only
+            else
+            {
+                _rep.UpdateClassEditInfo((Byte)Enums.DBAccess.ClassSaveType.UpdatePhoto, Convert.ToInt32(classId), coverPath);
+            }
 
             // Now we need to wire up a response so that the calling script understands what happened
             HttpContext.Current.Response.ContentType = "text/plain";

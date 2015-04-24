@@ -29,5 +29,7 @@ namespace SkillBank.Site.DataSource.Data
         public byte IsProved { get; set; }
         public byte PublishStatus { get; set; }
         public string WhyU { get; set; }
+        public bool IsLike { get; set; }
+        public int LikeNum { get; set; }
     }
 }

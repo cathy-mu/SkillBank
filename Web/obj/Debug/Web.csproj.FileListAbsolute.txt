@@ -48,6 +48,7 @@ E:\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.dll
 E:\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.pdb
 E:\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.xml
 E:\SourceCode\VS\SkillBank\Web\bin\Debug\CodeScales.Http.dll
+D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.Web.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.Web.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\Castle.Core.dll
@@ -75,6 +76,5 @@ D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\dotNetDR_OAuth2.xml
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\EntityFramework.xml
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.xml
-D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\SkillBank.Site.Web.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\SkillBank.Site.Web.pdb

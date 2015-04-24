@@ -1,0 +1,258 @@
+﻿@model List<SkillBank.Site.DataSource.Data.OrderItem>
+@{
+    ViewBag.Title = "Learning";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+@Html.Partial("_MobileMenuPartial")
+<div class="courses-learning-page content">
+    <nav>
+        <div class="segmented-control-no-js card">
+            <a href="@Url.Action("mycourses", "m")" class="control-item">课程管理</a>
+            <a href="@Url.Action("teaching", "m")" class="control-item">教课记录</a>
+            <a href="#" class="control-item active">学习记录</a>
+        </div>
+    </nav>
+    <div class="teaching-list">
+        @if (@Model != null)
+        {
+            foreach (var item in Model)
+            {
+                var status = item.OrderStatus.Value;
+                var isDisable = status.Equals(2) || status.Equals(3) || status.Equals(6) || status.Equals(7) || status.Equals(8) || status.Equals(11) || ((status.Equals(9) || status.Equals(10)) && item.HasReview);
+                <div class="teaching card @(isDisable ? "disabled" : "")"
+                data-orderid="@item.OrderId"
+                data-name="@item.MemberName"
+                data-memberid="@item.MemberId"
+                data-avatar="@ContentHelper.GetAvatarPath(item.Avatar, "ms")"
+                data-date="@TextContentHelper.GetDateString(item.BookedDate)"
+                data-date-oral="@TextContentHelper.GetDateString(item.LastUpdateDate)"
+                data-message="@item.Remark"
+                data-course="@item.Title @item.OrderId"
+                data-phone="@item.Phone"
+                data-email="@item.Email">
+                <div class="inner">
+                    <div class="profile">
+                        <a href="#" class="img">
+                            <img src="@ContentHelper.GetAvatarPath(item.Avatar, "ms")" alt="" class="avatar">
+                        </a>
+                        <div class="name">
+                            <a href="#">老师：@item.MemberName  @item.OrderId</a>
+                            <br>
+                            <!--<small>City</small>-->
+                        </div>
+                        <div class="approval">
+                            @if (status.Equals(1))
+                            {
+                                <span class="btn-tag orange">等待接受</span>
+                            }
+                            else if (status.Equals(2))
+                            {
+                                <span class="btn-tag grey">未被接受</span>
+                            }
+                            else if (status.Equals(3))
+                            {
+                                <span class="btn-tag grey">已被取消</span>
+                            }
+                            else if (status.Equals(4))
+                            {
+                                <span class="btn-tag green">接受订课</span>
+                            }
+                            else if (status.Equals(5))
+                            {
+                                <span class="btn-tag yellow">等待支付</span>
+                            }
+                            else if (status.Equals(6))
+                            {
+                                <span class="btn-tag orange">退币申请</span>
+                            }
+                            else if (status.Equals(7))
+                            {
+                                <span class="btn-tag grey">退币成功</span>
+                            }
+                            else if (status.Equals(8))
+                            {
+                                <span class="btn-tag grey">退币失败</span>
+                            }
+                            else if (status.Equals(9) || status.Equals(10))
+                            {
+                                if (item.HasReview)
+                                {
+                                <span class="btn-tag grey">授课完成</span>
+                                }
+                                else
+                                {
+                                <span class="btn-tag yellow">授完待评</span>
+                                }
+                            }
+                            else if (status.Equals(11))
+                            {
+                                <span class="btn-tag grey">退币成功</span>
+                            }
+                            <br />
+                            <small>@TextContentHelper.GetDateString(item.LastUpdateDate)</small>
+                        </div>
+                    </div>
+                    @if (!String.IsNullOrEmpty(item.Remark))
+                    {
+                        <div class="popover-chat bottom mb-1">
+                            <div class="arrow"></div>
+                            <div class="main">@item.Remark</div>
+                        </div>
+                    }
+                    <div class="course-info mb-1">
+                        预定课程：@item.Title<br />
+                        上课日期：@TextContentHelper.GetDateString(item.BookedDate)<br />
+                        @if (status.Equals(4)){
+                        <span class="olive">课币状态：已被锁定</span><br>
+                        <span class="olive">联系信息：@item.MemberName @item.Phone</span>
+                        }else if (status.Equals(5)){
+                        <span>课币状态：已被锁定</span><br>
+                        <span>联系信息：@item.MemberName @item.Phone</span>
+                        }else if (status.Equals(10)){
+                        <span>课币状态：已经自动支付</span><br>
+                        <span>联系信息：@item.MemberName @item.Phone</span>
+                        }
+                    </div>
+                    <div class="btn-set mb-1">
+                        @if (status.Equals(1))
+                        {
+                            <a class="btn confirm cancel-book">取消订课</a>
+
+                            <a class="btn" href="@Url.Action("chat", "m", new { id = item.MemberId })">私信对方</a>
+                        }
+                        else if (status.Equals(4))
+                        {
+                            <a href="#phone" class="btn contact-btn">电话对方</a>
+
+                            <a class="btn" href="@Url.Action("chat", "m", new { id = item.MemberId })">私信对方</a> 
+                        }
+                        else if (status.Equals(5))
+                        {
+                            <a class="btn confirm apply-draw-back">申请退币</a>
+
+                            <a href="#phone" class="btn contact-btn">电话对方</a>
+                        }
+                    </div>
+                </div>
+                @if (status.Equals(5))
+                {<a class="foot-bar dark-olive" data-modal="paycoin">支付课币</a>}
+                else if ((status.Equals(9) || status.Equals(10)) && !item.HasReview)
+                {<a class="foot-bar btn-evaluate" data-modal="evaluate">评价一下你的老师</a>}
+
+            </div>
+        
+            }
+        }
+        <div id="phone" class="modal">
+            <div class="content">
+                <div class="content-inner">
+                    <div class="content-padded">
+                        <form>
+                            <a id="makecall" href="tel:13564813923" class="btn btn-primary btn-block">打电话给对方</a>
+                            <a id="sendsms" href="sms:13564813923" class="btn btn-primary btn-block">发短消息</a>
+                            <a href="#phone" class="btn btn-block">取消</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="evaluate" class="modal">
+            <header class="bar bar-nav">
+                <a class="icon icon-close pull-right grey" href="#evaluate"></a>
+                <h1 class="title">评价老师</h1>
+            </header>
+            <div class="content">
+                <div class="content-inner">
+                    <div class="content-padded">
+                        <form>
+                            <ul class="custom-radio mb-1">
+                                <li>
+                                    <label>
+                                        <span class="icon icomoon icon-checkmark round yellow selected"></span>
+                                        <input type="radio" name="level" value="3" checked="checked">
+                                        好评
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <span class="icon icomoon icon-checkmark round yellow"></span>
+                                        <input type="radio" name="level" value="2">
+                                        中评
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <span class="icon icomoon icon-checkmark round yellow"></span>
+                                        <input type="radio" name="level" value="1">
+                                        差评
+                                    </label>
+                                </li>
+                            </ul>
+                            <textarea name="message" placeholder="请评价一下对方"></textarea>
+                            <a href="#" class="btn btn-primary btn-block btn-evaluate" data-student="1">发送评价</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="paycoin" class="modal">
+            <header class="bar bar-nav">
+                <a class="icon icon-close pull-right grey" href="#paycoin"></a>
+                <h1 class="title">评价老师</h1>
+            </header>
+            <div class="content">
+                <div class="content-inner">
+                    <div class="content-padded">
+                        <form>
+                            <ul class="custom-radio mb-1">
+                                <li>
+                                    <label>
+                                        <span class="icon icomoon icon-checkmark round yellow selected"></span>
+                                        <input type="radio" name="level" value="3" checked="checked">
+                                        好评
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <span class="icon icomoon icon-checkmark round yellow"></span>
+                                        <input type="radio" name="level" value="2">
+                                        中评
+                                    </label>
+                                </li>
+                                <li>
+                                    <label>
+                                        <span class="icon icomoon icon-checkmark round yellow"></span>
+                                        <input type="radio" name="level" value="1">
+                                        差评
+                                    </label>
+                                </li>
+                            </ul>
+                            <textarea name="message" placeholder="请评价一下对方"></textarea>
+                            <a href="#" class="btn btn-primary btn-block btn-paycoin" data-student="1">支付课币</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/template" id="teaching-disabled-tpl">
+        <div class="teaching card disabled">
+          <div class="inner">
+            <div class="profile">
+              <a href="#" class="img"> <img src="<%- person.avatar %>" alt="" class="avatar"> </a>
+              <div class="name"><a href="#">学生：<%- person.name %> </a> <br> <small><%- person.location %></small></div>
+              <div class="approval">
+                <span class="btn-tag grey"><%- text %></span><br><small><%- person.dateOral %></small>
+              </div>
+            </div>
+            <div class="course-info mb-1">
+              预定课程：<%- person.course %> <br>
+              订课日期：<%- person.date %> <br>
+            </div>
+          </div>
+        </div>
+      </script>
+
+    </div>

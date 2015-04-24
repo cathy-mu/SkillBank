@@ -30,15 +30,15 @@ namespace SkillBankWeb.Controllers.API
         public class OrderUpdateItem
         {
             public int OrderId { get; set; }
-            public Byte Status { get; set; }
-            public Byte FeedBack { get; set; }
-            public int MemberId { get; set; }
-            public int ClassId { get; set; }
-            public String Title { get; set; }
-            public String Email { get; set; }
-            public String Receiver { get; set; }
-            public String Name { get; set; }
+            public Byte Status { get; set; }//*
+            public int MemberId { get; set; }//*
+            public String Title { get; set; }//*
             public String Phone { get; set; }
+            public String Name { get; set; }
+            public String MyName { get; set; }
+            public String MyPhone { get; set; }
+            public String Email { get; set; }
+            public Byte FeedBack { get; set; }
             public String Comment { get; set; }
         }
         
@@ -63,11 +63,12 @@ namespace SkillBankWeb.Controllers.API
             try
             {
                 int memberId = APIHelper.GetMemberId(true);
+                item.OrderId = id;
                 int teacherId;
                 int studentId;
                 String mailText;
-                //item.Comment = String.IsNullOrEmpty(item.Comment) ? "" : item.Comment;
-
+                item.Comment = String.IsNullOrEmpty(item.Comment) ? "" : item.Comment;
+                
                 switch (item.Status)
                 {
                     case (Byte)Enums.OrderStatus.Rejected://2 reject,T
@@ -90,12 +91,10 @@ namespace SkillBankWeb.Controllers.API
                         item.Name = String.IsNullOrEmpty(item.Name) ? "" : item.Name;
                         item.Phone = String.IsNullOrEmpty(item.Phone) ? "" : item.Phone;
 
-                        result = _commonService.AcceptOrder(item.OrderId, studentId, teacherId, item.Name, item.Phone, item.Email);
-                        //if (!String.IsNullOrEmpty(item.Email))
-                        //{
-                        //    String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(629, item.Title);
-                        //    SendCloudEmail.SendOrderStatusUpdateMail(item.Email, Receiver, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(479));
-                        //}
+                        result = _commonService.AcceptOrder(item.OrderId, studentId, teacherId, item.MyName, item.MyPhone);
+                        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(629, item.Title);
+                        //SendCloudEmail.SendOrderStatusUpdateMail(item.Email, Receiver, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(479));
+                        
                         break;
                     case (Byte)Enums.OrderStatus.Refund://6 refund
                         teacherId = item.MemberId;
@@ -120,7 +119,7 @@ namespace SkillBankWeb.Controllers.API
                         teacherId = item.MemberId;
                         studentId = memberId;
                         result = _commonService.UpdateOrderStatusWithCoins(item.OrderId, item.Status, studentId, teacherId);
-                        _commonService.AddStudentReview(item.OrderId, item.ClassId, item.FeedBack, item.Comment, "");
+                        _commonService.AddStudentReview(item.OrderId, 0, item.FeedBack, item.Comment, "");//leave classid as 0 and get id in sp
                         mailText = TextContentHelper.ReplaeceBlurbParameterWithText(632, item.Title);
                         //SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(480));
                         break;
@@ -128,6 +127,7 @@ namespace SkillBankWeb.Controllers.API
                         result = 0;
                         break;
                 }
+                 
             }
             catch
             { }

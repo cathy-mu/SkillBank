@@ -6,6 +6,7 @@ using System.Net;
 using System.IO;
 
 using SkillBank.Site.Common;
+using System.Security.Cryptography;
 
 namespace SkillBank.Site.Web.CDN
 {
@@ -62,10 +63,8 @@ namespace SkillBank.Site.Web.CDN
         {
             Hashtable headers = new Hashtable();
             headers.Add("x-gmkerl-type", "fix_width");
-
-
-            //TO DO:update for release 1410
             headers.Add("x-gmkerl-value", ConfigConstants.ThirdPartySetting.UpYun.ClassCoverSize["h"][0]);
+            headers.Add("x-gmkerl-quality", "10");
             if (!String.IsNullOrEmpty(cropSetting))
             {
                 headers.Add("x-gmkerl-crop", cropSetting);//"top,left,width,height"  

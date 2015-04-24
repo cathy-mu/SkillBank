@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "粉丝";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+@Html.Partial("_MobileMenuPartial")
+
+<div class="setting-page setting-fans-page content">
+    <header class="mb-05">
+        <div class="main">
+            <!--<a href="index.html" class="icon icomoon icon-arrow-left grey"></a>-->
+            <span class="page-title" align="center">粉丝</span>
+            <span class="avatar-wrapper" align="right">
+                <a href="#">
+                    <img class="avatar" src="@ContentHelper.GetAvatarPath(ViewBag.Avatar, "ms")" /></a>
+            </span>
+        </div>
+    </header>
+    <div class="list">
+        <ul>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                <li>
+                    <div class="left">
+                        <a href="@Url.Action("personal", "m", new { id = item.RelatedId })">
+                            <img class="avatar" src="@ContentHelper.GetAvatarPath(item.Avatar, "ms")">
+                            @item.Name
+                        </a>
+                    </div>
+                    <div class="right">
+                        <span class="btn @(item.IsLike ? "btn-grey" : "btn-olive") follow" data-memberid="@((ViewBag.MemberInfo.MemberId==item.RelatedId)?-1:item.RelatedId)">@(item.IsLike ? "已关注" : "加关注")</span>
+                    </div>
+                </li>
+                }
+            }
+
+        </ul>
+    </div>
+
+</div>

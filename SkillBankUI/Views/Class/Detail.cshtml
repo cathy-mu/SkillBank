@@ -421,7 +421,7 @@
                   <a href="#"><img src="../img/icon-share-douban-2.png"></a> 
                 </span>-->
                 <span class="high-light spaced-right">@Html.GetTrans(285)</span>
-                <span class="spaced-right"><i id="class-detail-linkicon" class="fa fa-heart icon-large @(Model.ClassInfo.PublishStatus.Equals(1) ? "fa-heart-like" : "")"></i> <span id="class-detail-linknum" class="gray-light bold">@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Like])</span></span>
+                <span class="spaced-right"><i id="class-detail-linkicon" class="fa fa-heart icon-large @(Model.ClassInfo.IsLike ? "fa-heart-like" : "")"></i> <span id="class-detail-linknum" class="gray-light bold">@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Like])</span></span>
               </div>
             </div>
           </div>

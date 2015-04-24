@@ -7,7 +7,12 @@ namespace SkillBank.Site.Web
 {
     public static class OrderHandlerHelper
     {
-
+        /// <summary>
+        /// Should generate the key for handler member's order
+        /// </summary>
+        /// <param name="memberId"></param>
+        /// <param name="handleKey">Exist key before process</param>
+        /// <returns>empty string if not need handler order</returns>
         public static String GetHandleMemberOrderKey(int memberId, String handleKey)
         {
             if (memberId > 0)

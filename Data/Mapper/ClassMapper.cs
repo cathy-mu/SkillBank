@@ -40,7 +40,7 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objClasses != null)
             {
-                var classes = objClasses.Select(item => new ClassEditItem() { ClassId = item.ClassId, Category_Id = item.Category_Id, TeacheLevel = item.TeacheLevel, PublishStatus = item.PublishStatus, Cover = item.Cover, IsProved = item.IsProved, Level = item.Level, Member_Id = item.Member_Id, SkillLevel = item.SkillLevel, Summary = item.Summary, Title = item.Title, Period = item.Period, Available = item.Available, Location = item.Location, Remark = item.Remark, WhyU = item.WhyU }).ToList<ClassEditItem>();
+                var classes = objClasses.Select(item => new ClassEditItem() { ClassId = item.ClassId, Category_Id = item.Category_Id, TeacheLevel = item.TeacheLevel, PublishStatus = item.PublishStatus, Cover = item.Cover, IsProved = item.IsProved, Level = item.Level, Member_Id = item.Member_Id, SkillLevel = item.SkillLevel, Summary = item.Summary, Title = item.Title, Period = item.Period, Available = item.Available, Location = item.Location, Remark = item.Remark, WhyU = item.WhyU, IsLike= item.IsLike, LikeNum = item.LikeNum }).ToList<ClassEditItem>();
                 return (classes.Count > 0) ? classes : null;
             }
             return null;

@@ -13,14 +13,17 @@ namespace SkillBank.Site.DataSource.Data
     
     public partial class MemberInfo_Load_p_Result
     {
+        public MemberInfo_Load_p_Result()
+        {
+            this.IsLike = false;
+        }
+    
         public int MemberId { get; set; }
         public byte SocialType { get; set; }
         public string Name { get; set; }
         public int CityId { get; set; }
         public decimal PosX { get; set; }
         public decimal PosY { get; set; }
-        public byte IsMobileVerified { get; set; }
-        public byte IsEmailVerified { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public bool Gender { get; set; }
@@ -37,6 +40,7 @@ namespace SkillBank.Site.DataSource.Data
         public string Address { get; set; }
         public string SocialAccount { get; set; }
         public string ContactName { get; set; }
+        public byte VerifyTag { get; set; }
         public bool IsLike { get; set; }
         public string MasterInfo { get; set; }
     }

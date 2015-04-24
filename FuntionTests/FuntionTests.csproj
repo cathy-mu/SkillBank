@@ -92,6 +92,7 @@
     <Compile Include="Repositories\MemberRepositoryTest.cs" />
     <Compile Include="Services\CommonServiceTest.cs" />
     <Compile Include="Services\ContentServiceTest.cs" />
+    <Compile Include="Utility\VerficationHelperTest.cs" />
     <Compile Include="Web\LookupHelperTest.cs" />
     <Compile Include="Web\PagingHelperTest.cs" />
   </ItemGroup>

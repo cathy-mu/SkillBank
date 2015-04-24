@@ -1,20 +1,24 @@
-﻿<div style="background-color:#EDEDED;text-align:right;height:36px;">
-     <!--<div style="float:left;background-color:#EDEDED;"></div><div style="float:right;text-align:right;background-color:#EDEDED;"></div>
+﻿@if (System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals("0"))
+{
+<div style="background-color: #EDEDED; text-align: right; height: 36px;">
+    <!--<div style="float:left;background-color:#EDEDED;"></div><div style="float:right;text-align:right;background-color:#EDEDED;"></div>
 -->
-    <div style="float:left;"><a href="https://mixpanel.com/f/partner"><img src="//cdn.mxpnl.com/site_media/images/partner/badge_light.png" alt="Mobile Analytics" /></a></div>
-<script type="text/javascript">
-    (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-            (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date(); a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    <div style="float: left;"><a href="https://mixpanel.com/f/partner">
+        <img src="//cdn.mxpnl.com/site_media/images/partner/badge_light.png" alt="Mobile Analytics" /></a></div>
+    <script type="text/javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-52592553-1', 'auto');
-    ga('send', 'pageview');
+        ga('create', 'UA-61493845-1', 'auto');
+        ga('send', 'pageview');
 
-    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F449a030acd8b22a07a87b03fb86d6a4b' type='text/javascript'%3E%3C/script%3E"));
-</script>
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F449a030acd8b22a07a87b03fb86d6a4b' type='text/javascript'%3E%3C/script%3E"));
+    </script>
 </div>
+}
 

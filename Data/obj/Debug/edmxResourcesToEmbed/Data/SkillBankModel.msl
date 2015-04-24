@@ -55,36 +55,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="MemberInfo">
-      <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo">
-        <MappingFragment StoreEntitySet="MemberInfo">
-          <ScalarProperty Name="IsEmailVerified" ColumnName="IsEmailVerified" />
-          <ScalarProperty Name="IsMobileVerified" ColumnName="IsMobileVerified" />
-          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-          <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="SocialType" ColumnName="SocialType" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="CityId" ColumnName="CityId" />
-          <ScalarProperty Name="PosX" ColumnName="PosX" />
-          <ScalarProperty Name="PosY" ColumnName="PosY" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Gender" ColumnName="Gender" />
-          <ScalarProperty Name="Coins" ColumnName="Coins" />
-          <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
-          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-          <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="OpenId" ColumnName="OpenId" />
-          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-          <ScalarProperty Name="Etag" ColumnName="Etag" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Message">
       <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.Message">
         <MappingFragment StoreEntitySet="Message">
@@ -561,36 +531,6 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="Verification_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Verification_Save_p" />
-    <FunctionImportMapping FunctionImportName="MemberInfo_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.MemberInfo_Load_p">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result">
-          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-          <ScalarProperty Name="SocialType" ColumnName="SocialType" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="CityId" ColumnName="CityId" />
-          <ScalarProperty Name="PosX" ColumnName="PosX" />
-          <ScalarProperty Name="PosY" ColumnName="PosY" />
-          <ScalarProperty Name="IsMobileVerified" ColumnName="IsMobileVerified" />
-          <ScalarProperty Name="IsEmailVerified" ColumnName="IsEmailVerified" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Gender" ColumnName="Gender" />
-          <ScalarProperty Name="Coins" ColumnName="Coins" />
-          <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
-          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-          <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="OpenId" ColumnName="OpenId" />
-          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-          <ScalarProperty Name="Etag" ColumnName="Etag" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
-          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
     <EntitySetMapping Name="Comments">
       <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.Comment">
         <MappingFragment StoreEntitySet="Comment">
@@ -660,5 +600,66 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="ClassEditInfo_Add_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassEditInfo_Add_p" />
+    <EntitySetMapping Name="MemberInfoes">
+      <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo">
+        <MappingFragment StoreEntitySet="MemberInfo">
+          <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Etag" ColumnName="Etag" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
+          <ScalarProperty Name="Coins" ColumnName="Coins" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="IsMobileVerified" ColumnName="IsMobileVerified" />
+          <ScalarProperty Name="PosY" ColumnName="PosY" />
+          <ScalarProperty Name="PosX" ColumnName="PosX" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="SocialType" ColumnName="SocialType" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="MemberInfo_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.MemberInfo_Load_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result">
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="SocialType" ColumnName="SocialType" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="PosX" ColumnName="PosX" />
+          <ScalarProperty Name="PosY" ColumnName="PosY" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Coins" ColumnName="Coins" />
+          <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+          <ScalarProperty Name="Etag" ColumnName="Etag" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
+          <ScalarProperty Name="IsLike" ColumnName="IsLike" />
+          <ScalarProperty Name="MasterInfo" ColumnName="MasterInfo" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

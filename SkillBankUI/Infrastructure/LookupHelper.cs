@@ -71,7 +71,7 @@ namespace SkillBank.Site.Web
         {
             if (!String.IsNullOrEmpty(cityName))
             {
-                cityName = cityName.Replace("市", "");
+                cityName = cityName.Replace("市", "").Trim();
                 var cityItems = cityDic.Where(c => c.Value.CityName.StartsWith(cityName));
                 if (cityItems.Count() > 0)
                 {

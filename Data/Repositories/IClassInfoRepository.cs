@@ -98,7 +98,7 @@ namespace SkillBank.Site.DataSource.Data
 
         public List<ClassEditItem> GetClassEditInfo(Byte loadBy, int classId, int memberId = 0)
         {
-            var result = ClassEditInfo_Load_p(loadBy, memberId, classId);
+            var result = ClassEditInfo_Load_p(loadBy, classId, memberId);
             return (result != null && result.Count > 0) ? result : null;
         }
 
@@ -243,7 +243,7 @@ namespace SkillBank.Site.DataSource.Data
             ObjectParameter txtValueParameter = new ObjectParameter("TxtValue", txtValue);
             ObjectParameter paraIdParameter = new ObjectParameter("ParaId", classId);
 
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassEditInfo_Save_p", saveTypeParameter, paraValueParameter, isValueParameter, txtValueParameter, paraIdParameter);
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassEditInfo_Save_p", paraIdParameter, txtValueParameter, paraValueParameter, isValueParameter, saveTypeParameter);
         }
 
         private int ClassEditInfo_Add_p(Byte saveType, int classId, int memberId, Byte categoryId, Byte level, int skill, int teach, String title, String summary, String whyU, String cover, String location, String period, String remark, String available)

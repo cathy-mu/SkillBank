@@ -523,27 +523,6 @@ namespace SkillBank.Site.DataSource.Data
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TeacherReview_Save_p", orderIdParameter, feedBackParameter, commentParameter, paraId, priCommentParameter);
         }
     
-        public virtual ObjectResult<MemberInfo_Load_p_Result> MemberInfo_Load_p(Nullable<byte> loadBy, string account, Nullable<byte> type, Nullable<int> id)
-        {
-            var loadByParameter = loadBy.HasValue ?
-                new ObjectParameter("LoadBy", loadBy) :
-                new ObjectParameter("LoadBy", typeof(byte));
-    
-            var accountParameter = account != null ?
-                new ObjectParameter("Account", account) :
-                new ObjectParameter("Account", typeof(string));
-    
-            var typeParameter = type.HasValue ?
-                new ObjectParameter("Type", type) :
-                new ObjectParameter("Type", typeof(byte));
-    
-            var idParameter = id.HasValue ?
-                new ObjectParameter("Id", id) :
-                new ObjectParameter("Id", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", loadByParameter, accountParameter, typeParameter, idParameter);
-        }
-    
         public virtual int StudentReview_LoadAll_p(Nullable<byte> loadBy, Nullable<int> classId, Nullable<int> memberId, Nullable<int> maxId)
         {
             var loadByParameter = loadBy.HasValue ?

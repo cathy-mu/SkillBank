@@ -1,0 +1,272 @@
+﻿@model SkillBank.Site.Web.ViewModel.ClassEditModel
+@{
+    ViewBag.Title = "CourseEdit";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+@Html.Partial("_MobileMenuPartial")
+
+@if (ViewBag.ActiveStep != 3)
+{
+    <div class="bar bar-nav steps step-1 active">
+        <div class="main">
+            <a href="index.html" class="icon icomoon icon-arrow-left grey"></a>
+            <span class="step-name center-title">第1/3步</span>
+            <span align="right">
+                <a href="#2" data-ignore="push" class="btn disabled next btn-transparent" >下一步</a>
+                <!--<a data-ignore="push" class="btn btn-step2">next</a>-->
+            </span>
+        </div>
+        <ul class="process-bar">
+            <li class="yellow"></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="bar bar-nav steps step-2">
+        <div class="main">
+            <span class="step-name center-title">第2/3步</span>
+            <span><a href="#1" data-ignore="push" class="btn btn-transparent">上一步</a></span>
+            <span align="right">
+                <a href="#3" data-ignore="push" class="btn btn-transparent disabled next">下一步</a>
+            </span>
+        </div>
+        <ul class="process-bar">
+            <li class="yellow"></li>
+            <li class="yellow"></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="bar bar-nav steps step-3">
+        <div class="main">
+            <span class="step-name center-title">第3/3步</span>
+            <span><a href="#2" data-ignore="push" class="btn btn-transparent">上一步</a></span>
+            <span class="right">
+                <a href="#" class="btn btn-transparent fileupload-trigger @(String.IsNullOrEmpty(Model.ClassInfo.Cover)?"disabled":"")" id="btnpreview">预览 </a>
+                <a href="#success" data-ignore="push" class="btn @(String.IsNullOrEmpty(Model.ClassInfo.Cover)?"disabled":"border-none btn-olive") next fileupload-trigger">发布 </a>
+            </span>
+        </div>
+        <ul class="process-bar">
+            <li class="yellow"></li>
+            <li class="yellow"></li>
+            <li class="yellow"></li>
+        </ul>
+    </div>
+}
+<div class="bar bar-nav steps step-success @(ViewBag.ActiveStep.Equals(3) ? "active" : "")">
+    <div class="main">
+        <!--<a href="#3" data-ignore="push" class="icon icomoon icon-arrow-left pull-left grey"></a>-->
+        <span class="step-name center-title">课程发布申请成功</span>
+        <span></span>
+    </div>
+</div>
+
+
+<div class="add-course-page step-1 content active">
+    <form>
+        <div class="inner">
+            <h3 align="center" class="olive mb-1">基本描述 @(Model.ClassInfo == null ? 0 : Model.ClassInfo.ClassId)</h3>
+            <input type="hidden" id="categoryid" name="categoryid" value="@(Model.ClassInfo == null ? "" : Model.ClassInfo.Category_Id.ToString())"/>
+            <input type="hidden" id="classid" name="classid" value="@(Model.ClassInfo == null ? 0 : Model.ClassInfo.ClassId)"/>
+            <input type="hidden" id="cityid" name="cityid" value="@(ViewBag.MemberInfo.CityId>0?"":ViewBag.MemberInfo.CityId)"/>
+                        
+            <input type="text" id="city" name="city" placeholder="你所在的城市" style="margin-bottom: 25px;" value="@ViewBag.CityName">
+            <select id="skill-cat" name="skill-cat">
+                <option value='' disabled selected style='display: none;'>选择一项技能</option>
+                @if (@Model.CategoryLkp != null)
+                {
+                    foreach (var item in Model.CategoryLkp)
+                    {
+                        var selected = (Model.ParentCategoryId != null && Model.ParentCategoryId == item.CateId) || (Model.ClassInfo != null && Model.ClassInfo.Category_Id == item.CateId);
+                    <option value="@item.CateId" data-subcats="@item.SubCategories" @(selected ? "selected=\"selected\"" : "")>@Html.GetTrans(item.BlubId)</option>
+                    }
+                }
+            </select>
+            <select id="skill-sub-cat" name="skill-sub-cat" @((Model.ClassInfo.Category_Id!=Model.ParentCategoryId)?"":"style=display:none;")>
+                @if (Model.CategoryLkp != null && Model.CategoryLkp.Count > 0 && Model.ClassInfo != null)
+                {
+                    foreach (var item in Model.CategoryLkp)
+                    {
+                        if (!String.IsNullOrEmpty(item.SubCategories))
+                        {
+                            var subCates = item.SubCategories.Split(';');
+                            foreach (var cate in subCates)
+                            {
+                                var optItem = cate.Split(',');
+                    <option value="@optItem[0]" @((Model.ParentCategoryId != null && Model.ClassInfo.Category_Id.ToString() == optItem[0]) ? "selected=\"selected\"" : "")>@optItem[1]</option>
+                            }
+                        }
+                    }
+                }
+            </select>
+            <h5 class="mb-0">你的技能水平</h5>
+            <div class="select-lever">
+                <div class="wrapper">
+                    <ul class="vertical-lines">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <input type="range" min="0" max="100" step="1" onchange="showRangeVal(this)" value="@(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel)">
+                    <span id="skilllevel" class="num" style="left: @(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel)%; margin-left: @(-(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel) * 30 * 0.01)px;">@(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel)</span>
+                </div>
+                <ul class="levers">
+                    <li>初学</li>
+                    <li>略懂</li>
+                    <li>良好</li>
+                    <li>熟练</li>
+                    <li>精通</li>
+                </ul>
+            </div>
+            <h5 class="mb-0">你的教学水平</h5>
+            <div class="select-lever">
+                <div class="wrapper">
+                    <ul class="vertical-lines">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <input type="range" min="0" max="100" step="1" onchange="showRangeVal(this)" value="@(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel)">
+                    <span id="teachlevel" class="num" style="left: @(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel)%; margin-left: @(-(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel) * 30 * 0.01)px;">@(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel)</span>
+                </div>
+                <ul class="levers">
+                    <li>初学</li>
+                    <li>略懂</li>
+                    <li>良好</li>
+                    <li>熟练</li>
+                    <li>精通</li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="add-course-page step-2 content">
+    <form>
+        <div class="inner must-fill-in">
+            <h3 align="center" class="olive mb-1">课程介绍</h3>
+            <h5 class="mb-1">课程水平要求</h5>
+            <ul class="custom-radio mb-1">
+                <li>
+                    <label>
+                        <span class="icon icomoon icon-checkmark round yellow @((Model.ClassInfo != null && Model.ClassInfo.Level.Equals(1)) ? "selected" : "")"></span>
+                        <input type="radio" name="level" value="1" @((Model.ClassInfo != null && Model.ClassInfo.Level.Equals(1)) ? "checked=checked" : "")">
+                        基本
+                  
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="icon icomoon icon-checkmark round yellow @((Model.ClassInfo != null && Model.ClassInfo.Level.Equals(2)) ? "selected" : "")"></span>
+                        <input type="radio" name="level" value="2" @((Model.ClassInfo != null && Model.ClassInfo.Level.Equals(2)) ? "checked=checked" : "")">
+                        中等
+                  
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="icon icomoon icon-checkmark round yellow @((Model.ClassInfo != null && Model.ClassInfo.Level.Equals(3)) ? "selected" : "")"></span>
+                        <input type="radio" name="level" value="3" @((Model.ClassInfo != null && Model.ClassInfo.Level.Equals(3)) ? "checked=checked" : "")">
+                        高阶
+                  
+                    </label>
+                </li>
+            </ul>
+            <input type="text" placeholder="课程名称" name="courseName" class="" value="@(Model.ClassInfo == null ? "" : Model.ClassInfo.Title)">
+            <h5 class="mb-1">课程介绍</h5>
+            <div class="limitedText">
+                <textarea placeholder="具体课程内容有什么？需要上几节课？需要学生有一定基础吗？不少于100字" rows="5" name="intro">@(Model.ClassInfo == null ? "" : Model.ClassInfo.Summary)</textarea>
+                <p class="warning" align="right"><small>还差<span>@(100-((Model.ClassInfo==null || String.IsNullOrEmpty(Model.ClassInfo.Summary))?0:(Model.ClassInfo.Summary.Length>100?100:Model.ClassInfo.Summary.Length)))</span>字</small></p>
+            </div>
+            <h5 class="mb-1">你的闪光点</h5>
+            <textarea placeholder="你的优势和吸引别人的理由是什么？" name="highlight">@(Model.ClassInfo == null ? "" : Model.ClassInfo.WhyU)</textarea>
+        </div>
+        <div id="extra">
+            <div class="inner">
+                <div class="tl">
+                    <h5 class="mb-1">补充信息</h5>
+                    <small class="">非必填</small>
+                </div>
+                <input name="period" type="text" placeholder="一节课用时" value="@(Model.ClassInfo == null ? "" : Model.ClassInfo.Period)">
+                <textarea name="location" placeholder="上课地点">@(Model.ClassInfo == null ? "" : Model.ClassInfo.Location)</textarea>
+                <textarea name="available" placeholder="能上课的时间">@(Model.ClassInfo == null ? "" : Model.ClassInfo.Available)</textarea>
+                <textarea name="remark" placeholder="课前须知">@(Model.ClassInfo == null ? "" : Model.ClassInfo.Remark)</textarea>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="add-course-page step-3 content">
+    <form>
+        <div class="inner">
+            <h3 align="center" class="olive mb-1">添加封面</h3>
+            <div class="course-list">
+                <div class="course card" id="uploadimg-container">
+                    <div class="title-bar u-full-width">
+                        <a class="pull-left" id="preview-title1">@Model.ClassInfo.Title</a>
+                        <div class="pull-right">
+                            <a href="#" class="icon icomoon icon-comment"></a>
+                            <a href="#" class="icon icomoon icon-heart toggle-like"></a>
+                        </div>
+                    </div>
+                    <a href="#" class="cover-holder">
+                        <img src="@(String.IsNullOrEmpty(Model.ClassInfo.Cover)?"":ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "mm"))" id="uploadimg" />
+                    </a>
+                    <div class="info"></div>
+                    <a href="#" class="icon icomoon icon-camera round" id="pickfiles"></a>
+                    <input type="file">
+                    <div class="fileinfo">
+                        <input type="hidden" id="imagefilesetting" name="imagefilesetting" />
+                        <input type="hidden" id="imagefileext" name="imagefileext" />
+                        <input type="hidden" id="imagefilename" name="imagefilename" value="@ViewBag.ClassId"/>
+                        <input type="hidden" id="policy" name="policy" />
+                        <input type="hidden" id="signature" name="signature" />
+                        <input type="hidden" id="savekey" name="savekey" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="add-course-page step-success content @(ViewBag.ActiveStep.Equals(3) ? "active" : "")">
+    <form>
+        <div class="inner">
+            <h4 align="center" class="olive">我们会在2天内告知你审核结果<br />
+                你可以在这里修改个人信息
+            </h4>
+            <div class="course-list">
+                <div class="course card">
+                    <div class="title-bar u-full-width">
+                        <a class="pull-left" id="preview-title2">@Model.ClassInfo.Title</a>
+                        <div class="pull-right">
+                            <a href="#" class="icon icomoon icon-comment"></a>
+                            <a href="#" class="icon icomoon icon-heart toggle-like"></a>
+                        </div>
+                    </div>
+                    <a href="#" class="cover-holder">
+                        <img id="preview-cover" src="@ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "mm")" alt="" class="cover">
+                    </a>
+                    <div class="info">
+                        <a href="@Url.Action("profileedit", "m")">
+                            <img src="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mb")" alt="" class="avatar">
+                            <a href="@Url.Action("profileedit", "m")" class="icon icomoon icon-pencil round yellow"></a>
+                        </a>
+                        <h4>@ViewBag.MemberInfo.Name</h4>
+                        <p id="preview-city">@ViewBag.CityName</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section FooterScripts
+{
+    <script src="/Scripts/PlugIns/plupload.full.min.js"></script>
+    <script src="/Scripts/ImageUploader.js"></script>
+}

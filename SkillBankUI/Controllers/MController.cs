@@ -41,17 +41,17 @@ namespace SkillBank.Controllers
             _contentService = contentService;
             _commonService = commonService;
 
-            //int memberId = WebContext.Current.MemberId;
-            //if (memberId > 0)
-            //{
-            //    var handleKey = OrderHandlerHelper.GetHandleMemberOrderKey(WebContext.Current.MemberId, WebContext.Current.OrderHandleDate);
-            //    if (!String.IsNullOrEmpty(handleKey))
-            //    {
-            //        _commonService.HandleMemberOrder(memberId);
-            //        WebContext.Current.OrderHandleDate = handleKey;
-            //    }
-            //}
-
+            int memberId = WebContext.Current.MemberId;
+            //Only handler order after member login
+            if (memberId > 0)
+            {
+                var handleKey = OrderHandlerHelper.GetHandleMemberOrderKey(WebContext.Current.MemberId, WebContext.Current.OrderHandleDate);
+                if (!String.IsNullOrEmpty(handleKey))
+                {
+                    _commonService.HandleMemberOrder(memberId);
+                    WebContext.Current.OrderHandleDate = handleKey;
+                }
+            }
         }
 
         public ActionResult Login()
@@ -73,7 +73,7 @@ namespace SkillBank.Controllers
             int cityId = 0;
             Decimal x = Convert.ToDecimal(121.4165);
             Decimal y = Convert.ToDecimal(31.2190);
-            
+
             var metaTags = MetaTagHelper.GetMetaTags("classsearch");
             ViewBag.MetaTagTitle = metaTags[0];
             ViewBag.MetaTagKeyWords = metaTags[1];
@@ -121,10 +121,9 @@ namespace SkillBank.Controllers
         public ActionResult Course(int id = 0)
         {
             String className = "";
-            ClassDetailModel classDetailModel = new ClassDetailModel();
-
             int memberId = GetCurrentMemberInfo(false);
-            
+
+            ClassDetailModel classDetailModel = new ClassDetailModel();
             if (id > 0)
             {
                 var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassAndCurrMemberId, id, memberId);
@@ -211,16 +210,16 @@ namespace SkillBank.Controllers
             ViewBag.ActiveTab = 1;
 
             int memberId = GetCurrentMemberInfo(true);
-            
+
             MessageListModel messageListModel = new MessageListModel();
             if (memberId > 0)
             {
                 var messages = _commonService.GetMessageList(memberId, 0, (Byte)Enums.DBAccess.MessageLoadType.DateAsc);
                 messageListModel.Messages = messages;
-                ViewBag.MaxMessageId = (messages==null?0:messages.Max(m => m.MessageId));
+                ViewBag.MaxMessageId = (messages == null ? 0 : messages.Max(m => m.MessageId));
                 var unReadMessageNum = _commonService.GetMessageUnReadNum(memberId);
                 messageListModel.UnReadMessageNumDic = unReadMessageNum;
-                
+
                 _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetNotificationAsPopedByMemberId, memberId, 0);
                 GetNotificationNums(memberId, true);
             }
@@ -249,7 +248,7 @@ namespace SkillBank.Controllers
                 _commonService.SetMessageAsRead(0, memberId, contactId);
             }
             return View(messageDetailModel);
-         }
+        }
 
         /// <summary>
         /// 
@@ -261,7 +260,7 @@ namespace SkillBank.Controllers
             String userName = "";
             int likeNum = 0, sReviewNum = 0, tReviewNum = 0;//, certificateNum = 0;
             int currMemberId = GetCurrentMemberInfo(false);
-            
+
             ProfilelModel profileModel = new ProfilelModel();
 
             int memberId = 0;
@@ -393,6 +392,9 @@ namespace SkillBank.Controllers
             return View();
         }
 
+
+        #region Non-public functions
+
         [NonAction]
         private void GetUserInfo(Byte socialType)
         {
@@ -470,7 +472,7 @@ namespace SkillBank.Controllers
             if (memberId > 0)
             {
                 var result = _commonService.GetPopNotification(memberId, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileCheckStatus);
-                Dictionary<String,int> alterNums = new Dictionary<string,int>();
+                Dictionary<String, int> alterNums = new Dictionary<string, int>();
                 if (result == null)
                 {
                     alterNums.Add("n", 0);
@@ -481,28 +483,229 @@ namespace SkillBank.Controllers
                     alterNums.Add("n", result.Any(a => (a.PopNum > 0 && (a.Type.Equals("m") || a.Type.Equals("s")))) ? 1 : 0);
                     alterNums.Add("m", (showNewMessage && result.Any(a => (a.Number > 0 && a.Type.Equals("m")))) ? 1 : 0);
                 }
-                
+
                 ViewBag.AlterNums = alterNums;
             }
         }
 
+        #endregion
+
+        #region Phase 2 pages
+
+        /// <summary>
+        /// Get own favorite class (Apr1th without frontend)
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Favorites()
         {
-            int memberId = WebContext.Current.MemberId;
+            ViewBag.ActiveTab = 3;
+            ViewBag.AlterNums = null;
 
+            var memberId = GetCurrentMemberInfo(true);
             var result = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByMemberLiked, 0, memberId);
 
             return View(result);
         }
 
-        public ActionResult Follower(int id = 0)
+        /// <summary>
+        /// Get own or others follow members 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Following(int id = 0)
         {
-            int memberId = WebContext.Current.MemberId;
-            id = id.Equals(0) ? memberId : id;
+            ViewBag.ActiveTab = 3;
+            ViewBag.AlterNums = null;
+            
+            var memberId = GetCurrentMemberInfo(true);
+            if (id.Equals(0) || id.Equals(memberId))//own fans 
+            {
+                id = memberId;
+                ViewBag.Avatar = ViewBag.MemberInfo.Avatar;
+            }
+            else if (id > 0)//if view others fans 
+            {
+                var memberInfo = _commonService.GetMemberInfo(id);
+                ViewBag.Avatar = (memberInfo == null ? "" : memberInfo.Avatar);
+            }
             var result = _commonService.GetFavorites((Byte)Enums.DBAccess.FavoriteLoadType.ByFollwingMemberAViewerId, id, memberId);
+            
+            return View(result);
+        }
+
+        /// <summary>
+        /// Get own or others fans (Apr1th without frontend)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Fans(int id = 0)
+        {
+            ViewBag.ActiveTab = 3;
+            ViewBag.AlterNums = null;
+
+            var memberId = GetCurrentMemberInfo(true);
+            if (id.Equals(0) || id.Equals(memberId))//own fans 
+            {
+                id = memberId;
+                ViewBag.Avatar = ViewBag.MemberInfo.Avatar;
+            }
+            else if (id > 0)//if view others fans 
+            {
+                var memberInfo = _commonService.GetMemberInfo(id);
+                ViewBag.Avatar = (memberInfo == null ? "" : memberInfo.Avatar);
+            }
+            var result = _commonService.GetFavorites((Byte)Enums.DBAccess.FavoriteLoadType.ByFansMemberAViewerId, id, memberId);
 
             return View(result);
         }
-        
+
+        /// <summary>
+        /// Add or Edit class information
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult CourseEdit(int id = 0)
+        {
+            ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("classadd");
+
+            ViewBag.ActiveTab = 2;
+            ViewBag.AlterNums = null;
+            ViewBag.ActiveStep = 0;
+
+            //update user get info use shared one
+            var memberId = GetCurrentMemberInfo(true);
+
+            //Get member city info
+            var cityName = "";
+            if (ViewBag.MemberInfo.CityId > 0)
+            {
+                var cityDic = _contentService.GetCities("cn");
+                cityName = LookupHelper.GetCityNameById(cityDic, ViewBag.MemberInfo.CityId);
+            }
+            ViewBag.CityName = cityName;
+
+            ClassEditModel classEditModel = new ClassEditModel();
+            var categoryLkp = _contentService.GetAllCategories();
+            var categories = LookupHelper.GetCatagory4Picker(categoryLkp);
+            if (categories != null)
+            {
+                classEditModel.CategoryLkp = categories;
+            }
+
+            //var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassEditDetail, id, memberId);
+            var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassId, id, memberId);
+            //class owner ,allow for edit
+            if (classInfo != null && classInfo.Member_Id.Equals(memberId))
+            {
+                if (classInfo.IsProved.Equals(3))
+                {
+                    ViewBag.ActiveStep = 3;
+                    classEditModel.ClassInfo = classInfo;
+                }
+                else
+                {
+                    ViewBag.Editable = true;
+                    //get member's editable class
+                    if (id.Equals(0))
+                    {
+                        id = classInfo.ClassId;
+                    }
+                    classEditModel.ClassInfo = classInfo;
+                    int categoryId = classInfo.Category_Id;
+                    if (categoryId > 0 && categories != null)
+                    {
+                        String subCateKey = String.Format(";{0},", categoryId);
+                        var parentCategory = categories.Where(i => (i.SubCategories != null && i.SubCategories.Contains(subCateKey))).FirstOrDefault();
+                        if (parentCategory != null)
+                        {
+                            classEditModel.ParentCategoryId = parentCategory.CateId;
+                        }
+                        else
+                        {
+                            classEditModel.ParentCategoryId = categoryId;
+                        }
+                        classEditModel.ParentCategoryName = categoryLkp.ContainsKey(classEditModel.ParentCategoryId) ? categoryLkp[classEditModel.ParentCategoryId].CategoryInfo.CategoryName : "";
+                    }
+                    ViewBag.ClassId = id;
+                }
+
+                ViewBag.CharacterCountText = ResourceHelper.GetTransText(283).Replace("{0}", ";").Split(';');
+            }
+            else
+            {
+                ViewBag.ErrorMessage = ResourceHelper.GetTransText(580);
+            }
+
+            return View(classEditModel);
+        }
+
+        public ActionResult ProfileEdit()
+        {
+            ViewBag.ActiveTab = 3;
+            var memberId = GetCurrentMemberInfo(true);
+            String cityName = "";
+            if (ViewBag.MemberInfo.CityId > 0)
+            {
+                var cityDic = _contentService.GetCities("cn");
+                cityName = LookupHelper.GetCityNameById(cityDic, ViewBag.MemberInfo.CityId);
+            }
+            ViewBag.CityName = cityName;
+            return View();
+        }
+
+        public ActionResult Learning()
+        {
+            ViewBag.ActiveTab = 2;
+            ViewBag.AlterNums = null;
+            var memberId = GetCurrentMemberInfo(true);
+
+            var shouldCheckOrder = false;// CheckOrderHandlerDate("TOrderHandleDate", memberId);
+            var orders = _commonService.GetOrderListByStudent(memberId, shouldCheckOrder);
+            return View(orders);
+        }
+
+        public ActionResult Teaching()
+        {
+            ViewBag.ActiveTab = 2;
+            ViewBag.AlterNums = null;
+            var memberId = GetCurrentMemberInfo(true);
+
+            var shouldCheckOrder = false;// CheckOrderHandlerDate("TOrderHandleDate", memberId);
+
+            var orders = _commonService.GetOrderListByTeacher(memberId, shouldCheckOrder);
+            return View(orders);
+        }
+
+        public ActionResult MyCourses()
+        {
+            ViewBag.ActiveTab = 2;
+            ViewBag.AlterNums = null;
+            var memberId = GetCurrentMemberInfo(true);
+
+            var ClassEditList = _commonService.GetClassEditInfoByMemberId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherId);
+
+            return View(ClassEditList);
+        }
+
+        public ActionResult Dashboard()
+        {
+            ViewBag.ActiveTab = 3;
+            
+            var memberId = GetCurrentMemberInfo(true);
+            var numDic = _commonService.GetNumsByMember(memberId, (Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberDashboard);
+            String cityName = "";
+            if (ViewBag.MemberInfo.CityId > 0)
+            {
+                var cityDic = _contentService.GetCities("cn");
+                cityName = LookupHelper.GetCityNameById(cityDic, ViewBag.MemberInfo.CityId);
+            }
+            ViewBag.CityName = cityName;
+            //GetNotificationNums(currMemberId);
+
+            return View(numDic);
+        }
+
+        #endregion
+
     }
 }

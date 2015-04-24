@@ -120,6 +120,15 @@ function resError(status){
 var get = request.bind(this, 'GET');
 var post = request.bind(this, 'POST');
 
+var scrollToPrevPos = _.once(function(){
+  if(window.history.state && window.history.state.top){
+    var offsetTop = window.history.state.top;
+    $('.content')[0].scrollTop = offsetTop;
+    if( location.hash.slice(1) ) window.history.replaceState(null);
+  }
+});
+
+
 
 var checkPage = function(){
 
@@ -136,10 +145,13 @@ var checkPage = function(){
 
   // course search
   if( document.getElementById('course-search') ){
+
+    // record scrollTop when go to other url
+    window.onunload = function(){window.history.pushState({top: $('.content')[0].scrollTop}, 'toTop');};
+    if(!location.hash.slice(1)) scrollToPrevPos();
+
     switchCourseCat();
     affix();
-
-
   }
 
   // course page
@@ -237,6 +249,7 @@ var checkPage = function(){
   if( $('.add-course-page.step-private').length ) {
     checkAllFillInPrivate();
     chooseAvatar();
+    uploadAvatar();
   } 
 
   // course manage 
@@ -289,7 +302,6 @@ function bindHashChangeToSteps(){
 
 function switchCourseCat(){
   var load = function(){
-    console.log(location.hash);
     if(!location.hash.slice(1)) return;
     var query = parseURL(location.hash.slice(1)).searchObject;
     var self = this;
@@ -298,6 +310,8 @@ function switchCourseCat(){
       maximumAge        : 30000, 
       timeout           : 27000
     };
+
+    
 
     // nearby skill
     if(query.by == 0){
@@ -312,7 +326,8 @@ function switchCourseCat(){
       var url = ENV.host + '/api/ClassList?' + 'by=' + query.by + '&type=' + query.type;
       getCourses(url);
     }
-  }
+  };
+
   load();
   window.onhashchange = load;
 }
@@ -335,6 +350,7 @@ function getCourses(url){
     });
     $active.classList.add('active');
     $loading[0].style.display = 'none';
+    scrollToPrevPos();
   });
 }
 
@@ -801,6 +817,30 @@ function myAlert(msg, seconds){
   var t = setTimeout(function(){
     $warning.style.display = '';
   }, seconds * 1000)
+}
+
+
+// 示例
+function uploadAvatar(){
+  $('.btn-uploader')[0].on('click', function(){
+    $input = $('.edit-avatar input[type=file]')[0];
+    if(!$input.files.length) return;
+    uploadFile($input, '/API/UploadAvatar', function(data){
+      console.log(data);
+    });
+  });
+}
+
+function uploadFile(input, url, callback){
+  var xhr = new XMLHttpRequest();
+  var formData = new FormData();
+  var file = input.files[0];
+  formData.append('file', file);
+  xhr.open('POST', url);
+  xhr.onload = function () {
+    callback(JSON.parse(xhr.response));
+  };
+  xhr.send(formData);
 }
 
 

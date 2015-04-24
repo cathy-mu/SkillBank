@@ -266,6 +266,13 @@ namespace SkillBank.Site.DataSource.Data
                 numDic.Add(Enums.NumberDictionaryKey.Follow, Convert.ToInt32(resulto1Parameter.Value));
                 numDic.Add(Enums.NumberDictionaryKey.Fans, Convert.ToInt32(resulto2Parameter.Value));
             }
+            else if (loadType.Equals((Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberDashboard))
+            {
+                numDic.Add(Enums.NumberDictionaryKey.Class, Convert.ToInt32(result1Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Like, Convert.ToInt32(result2Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Follow, Convert.ToInt32(resulto1Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Fans, Convert.ToInt32(resulto2Parameter.Value));
+            }
 
             return numDic;
         }

@@ -21,7 +21,9 @@
         public string Location { get; set; }
         public string Available { get; set; }
         public string Remark { get; set; }
-    
+
+        public Boolean IsLike { get; set; }
+        public int LikeNum { get; set; }
     }
 }
 

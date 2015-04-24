@@ -1,7 +1,7 @@
 ﻿@model SkillBank.Site.Web.ViewModel.ProfilelModel
 @using SkillBank.Site.Common
 @{
-    ViewBag.Title = "Personal";
+    ViewBag.Title = "个人主页";
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
 @Html.Partial("_MobileMenuPartial")
@@ -31,27 +31,21 @@
             {
                 <a href="#" class="follow btn border-none btn-grey" data-memberid="@Model.MemberInfo.MemberId">已关注</a>
             }
-            else
+            else if (ViewBag.MemberInfo != null && (Model.MemberInfo.MemberId.Equals(Model.MemberInfo.MemberId)))
             {
+                <a href="#" class="follow btn border-none btn-olive" data-memberid="-1">关注</a>
+            } else{
                 <a href="#" class="follow btn border-none btn-olive" data-memberid="@Model.MemberInfo.MemberId">关注</a>
-            } 
+            }
         </div>
         <div class="statistic">
             <table class="u-full-width">
-                <thead>
-                    <tr>
-                        <th>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Class]</th>
-                        <th>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Student]</th>
-                        <th>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Follow]</th>
-                        <th class="fans-num">@Model.ProfileNumDic[Enums.NumberDictionaryKey.Fans]</th>
-                    </tr>
-                </thead>
                 <tbody>
                     <tr>
-                        <td>教授</td>
-                        <td>学习</td>
-                        <td>关注</td>
-                        <td>粉丝</td>
+                        <td><a href="#"><h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Class]</h6>教授</a></td>
+                        <td><a href="#"><h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Student]</h6>学习</a></td>
+                        <td><a href="@Url.Action("following", "m", new { id = Model.MemberInfo.MemberId })"><h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Follow]</h6>关注</a></td>
+                        <td><a href="@Url.Action("fans", "m", new { id = Model.MemberInfo.MemberId })"><h6 class="fans-num">@Model.ProfileNumDic[Enums.NumberDictionaryKey.Fans]</h6>粉丝</a></td>
                     </tr>
                 </tbody>
             </table>

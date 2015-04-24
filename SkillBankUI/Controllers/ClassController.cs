@@ -297,8 +297,9 @@ namespace SkillBank.Controllers
             
             classEditModel.isEdit = (edit == 1);//0 new class, 1 edit class
 
-            var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassEditDetail, id, memberId);
-
+            //Load class info by class id or get lastest course if not course id
+            var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassId, id, memberId);
+            
             List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
             var IsAdmin = whiteListMem.Contains(memberId.ToString());
             //classPreviewModel.IsOwner = memberId.Equals(currMemberId);

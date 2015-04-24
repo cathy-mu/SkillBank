@@ -201,12 +201,14 @@
     <Compile Include="Controllers\API\ChatController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\API\CityController.cs" />
     <Compile Include="Controllers\API\ClassListController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\CommentController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\API\UpCloudController.cs" />
     <Compile Include="Controllers\API\OrderReviewController.cs" />
     <Compile Include="Controllers\API\CourseController.cs">
       <SubType>Code</SubType>
@@ -403,6 +405,8 @@
     <Content Include="bower_components\lodash\dist\lodash.underscore.js" />
     <Content Include="bower_components\lodash\dist\lodash.underscore.min.js" />
     <Content Include="bower_components\lodash\LICENSE.txt" />
+    <Content Include="bower_components\page\index.js" />
+    <Content Include="bower_components\page\page.js" />
     <Content Include="bower_components\ratchet\dist\css\ratchet-theme-android.css" />
     <Content Include="bower_components\ratchet\dist\css\ratchet-theme-android.min.css" />
     <Content Include="bower_components\ratchet\dist\css\ratchet-theme-ios.css" />
@@ -536,6 +540,8 @@
     <Content Include="css\jquery-ui.css" />
     <Content Include="css\jquery.Jcrop.min.css" />
     <Content Include="css\main.css" />
+    <Content Include="Demo\add-course-private.html" />
+    <Content Include="Demo\add-course.html" />
     <Content Include="Demo\bower_components\bootstrap\.bower.json" />
     <Content Include="Demo\bower_components\bootstrap\bower.json" />
     <Content Include="Demo\bower_components\bootstrap\dist\css\bootstrap-theme.css" />
@@ -910,6 +916,12 @@
     <Content Include="Demo\bower_components\vue\src\vue.js" />
     <Content Include="Demo\bower_components\vue\src\watcher.js" />
     <Content Include="Demo\chat.html" />
+    <Content Include="Demo\manage-courses.html" />
+    <Content Include="Demo\manage-studying.html" />
+    <Content Include="Demo\manage-teaching.html" />
+    <Content Include="Demo\setting-fans.html" />
+    <Content Include="Demo\setting-favorites.html" />
+    <Content Include="Demo\setting.html" />
     <Content Include="Demo\urls.html" />
     <Content Include="Demo\course.html" />
     <Content Include="Demo\css\common.css" />
@@ -1143,33 +1155,7 @@
     <Content Include="img\sample-video.mp4" />
     <Content Include="img\select2-spinner.gif" />
     <Content Include="img\signup-arrow.png" />
-    <Content Include="js_o\application.js" />
-    <Content Include="js_o\bootstrap.js" />
-    <Content Include="js_o\bootstrap.min.js" />
-    <Content Include="js_o\create-class.js" />
-    <Content Include="js_o\html5.js" />
-    <Content Include="js_o\jquery-1.10.2.min.js" />
-    <Content Include="js_o\jquery-ui.js" />
-    <Content Include="js_o\jquery-ui.min.js" />
-    <Content Include="js_o\less.min.js" />
-    <Content Include="js_o\plugins\chosen\chosen.jquery.js" />
-    <Content Include="js_o\plugins\chosen\chosen.jquery.min.js" />
-    <Content Include="js_o\plugins\gmap\gmap.js" />
-    <Content Include="js_o\plugins\icheck\icheck.js" />
-    <Content Include="js_o\plugins\jquery-validate\jquery.validate.js" />
-    <Content Include="js_o\plugins\jquery-validate\jquery.validate.min.js" />
-    <Content Include="js_o\plugins\jquery.limit\jquery.limit.js" />
-    <Content Include="js_o\plugins\nouislider\jquery.nouislider.js" />
-    <Content Include="js_o\plugins\scrolltofixed\jquery-scrolltofixed.js" />
-    <Content Include="js_o\plugins\select2\select2.js" />
-    <Content Include="js_o\plugins\select2\select2.min.js" />
-    <Content Include="js_o\plugins\select2\select2_locale_zh-CN.js" />
-    <Content Include="js_o\plugins\touchpunch\jquery.ui.touch-punch.js" />
-    <Content Include="js_o\plugins\touchpunch\jquery.ui.touch-punch.min.js" />
-    <Content Include="js_o\respond.min.js" />
-    <Content Include="js_o\site.js" />
-    <Content Include="js_o\site.min.js" />
-    <Content Include="js_o\underscore.js" />
+    <Content Include="Scripts\ImageUploader.js" />
     <Content Include="Scripts\PlugIns\mediaelement\background.png" />
     <Content Include="Scripts\PlugIns\mediaelement\bigplay.png" />
     <Content Include="Scripts\PlugIns\mediaelement\bigplay.svg" />
@@ -1424,6 +1410,10 @@
     <Content Include="bower_components\vue\.bower.json" />
     <Content Include="bower_components\vue\bower.json" />
     <Content Include="bower_components\vue\LICENSE" />
+    <Content Include="bower_components\page\.bower.json" />
+    <Content Include="bower_components\page\.jsbeautifyrc" />
+    <Content Include="bower_components\page\.jshintrc" />
+    <Content Include="bower_components\page\bower.json" />
     <None Include="Live_Web.Debug.config">
       <DependentUpon>Live_Web.config</DependentUpon>
     </None>
@@ -1552,7 +1542,15 @@
     <Content Include="Views\Shared\_MobileMenuPartial.cshtml" />
     <Content Include="Views\Shared\_TrackingBaiDuPartial.cshtml" />
     <Content Include="Views\M\Favorites.cshtml" />
-    <Content Include="Views\M\Follower.cshtml" />
+    <Content Include="Views\M\Fans.cshtml" />
+    <Content Include="Views\M\CourseEdit.cshtml" />
+    <Content Include="Views\M\ProfileEdit.cshtml" />
+    <Content Include="Views\M\Learning.cshtml" />
+    <Content Include="Views\M\Teaching.cshtml" />
+    <Content Include="Views\M\MyCourses.cshtml" />
+    <Content Include="Views\M\Dashboard.cshtml" />
+    <Content Include="Views\M\Following.cshtml" />
+    <Content Include="Views\M\CoursePreview.cshtml" />
     <None Include="Views\Tools\ClassView.cshtml" />
     <Content Include="Views\Class\Rejected.cshtml" />
     <Content Include="Views\Member\Teach.cshtml" />

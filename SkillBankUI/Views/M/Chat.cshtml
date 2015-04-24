@@ -4,19 +4,18 @@
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
 <div class="chat-page bar bar-footer">
-    <form id="form-write" data-contactid="@Model.Contact.MemberId" data-avatar="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mm")">
+    <form id="form-write" data-contactid="@(Model.Contact==null?0:Model.Contact.MemberId)" data-avatar="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mm")">
         <textarea id="write-box" rows="1"></textarea>
         <div class="pull-right">
-            <button class="btn btn-link disabled">发送</button>
+            <button class="btn btn-link" disabled>发送</button>
         </div>
-
     </form>
 </div>
 <div class="chat-page content">
     <a href="#" class="icon icomoon icon-arrow-left nav-inner nav-left grey nav-back" data-transition="slide-out"></a>
     @if (Model != null)
     {
-        <div class="h3" align="center">@(Model.Contact == null ? "没有私信记录" : Model.Contact.Name)</div>
+        <div class="h3" align="center">@(Model.Contact == null ? "没有相关记录" : Model.Contact.Name)</div>
         <div class="chat-content">
             @if (Model.Messages != null && ViewBag.MemberInfo != null)
             {
@@ -67,3 +66,7 @@
         </div>
     }
 </div>
+@section FooterScripts
+{
+   <script src="/bower_components/textarea-autosize/dist/jquery.textarea_autosize.js"></script>
+}

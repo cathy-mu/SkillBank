@@ -167,7 +167,6 @@
           <Property Name="PosX" Type="decimal" Nullable="false" Precision="10" Scale="6" />
           <Property Name="PosY" Type="decimal" Nullable="false" Precision="10" Scale="6" />
           <Property Name="IsMobileVerified" Type="tinyint" Nullable="false" />
-          <Property Name="IsEmailVerified" Type="tinyint" Nullable="false" />
           <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Gender" Type="bit" Nullable="false" />
@@ -184,6 +183,7 @@
           <Property Name="Address" Type="nvarchar" MaxLength="100" />
           <Property Name="SocialAccount" Type="nvarchar" MaxLength="50" />
           <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+          <Property Name="VerifyTag" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -601,7 +601,6 @@
           <EntitySet Name="CoinsHistory" EntityType="SkillBank.Site.DataSource.Data.CoinsHistory" />
           <EntitySet Name="EmailAccount" EntityType="SkillBank.Site.DataSource.Data.EmailAccount" />
           <EntitySet Name="EmailTemplate" EntityType="SkillBank.Site.DataSource.Data.EmailTemplate" />
-          <EntitySet Name="MemberInfo" EntityType="SkillBank.Site.DataSource.Data.MemberInfo" />
           <EntitySet Name="Message" EntityType="SkillBank.Site.DataSource.Data.Message" />
           <EntitySet Name="MetaTag" EntityType="SkillBank.Site.DataSource.Data.MetaTag" />
           <EntitySet Name="Order" EntityType="SkillBank.Site.DataSource.Data.Order" />
@@ -894,13 +893,6 @@
             <Parameter Name="VerifyAccount" Mode="In" Type="String" />
             <Parameter Name="Result" Mode="InOut" Type="Byte" />
           </FunctionImport>
-          <FunctionImport Name="MemberInfo_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result)">
-            <Parameter Name="LoadBy" Mode="In" Type="Byte" />
-            <Parameter Name="Account" Mode="In" Type="String" />
-            <Parameter Name="Type" Mode="In" Type="Byte" />
-            <Parameter Name="Id" Mode="In" Type="Int32" />
-            <Parameter Name="RelatedId" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="Comments" EntityType="SkillBank.Site.DataSource.Data.Comment" />
           <FunctionImport Name="Comment_Save_p">
             <Parameter Name="SaveType" Mode="In" Type="Byte" />
@@ -958,6 +950,14 @@
             <Parameter Name="Remark" Mode="In" Type="String" />
             <Parameter Name="ClassId" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="MemberInfoes" EntityType="SkillBank.Site.DataSource.Data.MemberInfo" />
+          <FunctionImport Name="MemberInfo_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result)">
+            <Parameter Name="LoadBy" Mode="In" Type="Byte" />
+            <Parameter Name="Account" Mode="In" Type="String" />
+            <Parameter Name="Type" Mode="In" Type="Byte" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="RelatedId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="CategoryPopTag">
           <Key>
@@ -1007,35 +1007,6 @@
           <Property Name="Content" Type="String" MaxLength="2000" Unicode="true" FixedLength="false" />
           <Property Name="SiteVersion" Type="Byte" />
           <Property Name="LastUpdateDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="MemberInfo">
-          <Key>
-            <PropertyRef Name="MemberId" />
-          </Key>
-          <Property Name="MemberId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SocialType" Type="Byte" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="CityId" Type="Int32" Nullable="false" />
-          <Property Name="PosX" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
-          <Property Name="PosY" Type="Decimal" Nullable="false" Precision="10" Scale="6" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Gender" Type="Boolean" Nullable="false" />
-          <Property Name="Coins" Type="Int32" Nullable="false" />
-          <Property Name="CoinsLocked" Type="Int32" Nullable="false" />
-          <Property Name="Avatar" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
-          <Property Name="SelfIntro" Type="String" MaxLength="1200" Unicode="true" FixedLength="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="OpenId" Type="String" Nullable="false" MaxLength="70" Unicode="true" FixedLength="false" />
-          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Etag" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Address" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="SocialAccount" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ContactName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Byte" Name="IsMobileVerified" Nullable="false" />
-          <Property Type="Byte" Name="IsEmailVerified" Nullable="false" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -1418,6 +1389,8 @@
           <Property Type="Byte" Name="IsProved" Nullable="false" />
           <Property Type="Byte" Name="PublishStatus" Nullable="false" />
           <Property Type="String" Name="WhyU" Nullable="false" />
+          <Property Type="Boolean" Name="IsLike" Nullable="false" />
+          <Property Type="Int32" Name="LikeNum" Nullable="false" />
         </ComplexType>
         <ComplexType Name="ReportNumItem" >
           <Property Type="Int32" Name="Num1" Nullable="false" />
@@ -1430,34 +1403,6 @@
           <Property Type="Int32" Name="Num1" Nullable="true" />
           <Property Type="Int32" Name="Num2" Nullable="true" />
           <Property Type="Decimal" Name="Percentage" Nullable="true" Precision="7" Scale="4" />
-        </ComplexType>
-        <ComplexType Name="MemberInfo_Load_p_Result">
-          <Property Type="Int32" Name="MemberId" Nullable="false" />
-          <Property Type="Byte" Name="SocialType" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
-          <Property Type="Int32" Name="CityId" Nullable="false" />
-          <Property Type="Decimal" Name="PosX" Nullable="false" Precision="10" Scale="6" />
-          <Property Type="Decimal" Name="PosY" Nullable="false" Precision="10" Scale="6" />
-          <Property Type="Byte" Name="IsMobileVerified" Nullable="false" />
-          <Property Type="Byte" Name="IsEmailVerified" Nullable="false" />
-          <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
-          <Property Type="Boolean" Name="Gender" Nullable="false" />
-          <Property Type="Int32" Name="Coins" Nullable="false" />
-          <Property Type="Int32" Name="CoinsLocked" Nullable="false" />
-          <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
-          <Property Type="String" Name="SelfIntro" Nullable="true" MaxLength="1200" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
-          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
-          <Property Type="String" Name="OpenId" Nullable="false" MaxLength="70" />
-          <Property Type="DateTime" Name="BirthDate" Nullable="false" Precision="23" />
-          <Property Type="String" Name="Etag" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Address" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="SocialAccount" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ContactName" Nullable="true" MaxLength="50" />
-          <Property Type="Boolean" Name="IsLike" Nullable="false" />
-          <Property Type="String" Name="MasterInfo" Nullable="false" />
         </ComplexType>
         <EntityType Name="Comment">
           <Key>
@@ -1512,6 +1457,62 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
           <Property Type="Boolean" Name="IsLike" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="MemberInfo">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Type="Int32" Name="MemberId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Byte" Name="SocialType" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
+          <Property Type="Decimal" Name="PosX" Nullable="false" Precision="10" Scale="6" />
+          <Property Type="Decimal" Name="PosY" Nullable="false" Precision="10" Scale="6" />
+          <Property Type="Byte" Name="IsMobileVerified" Nullable="false" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="Gender" Nullable="false" />
+          <Property Type="Int32" Name="Coins" Nullable="false" />
+          <Property Type="Int32" Name="CoinsLocked" Nullable="false" />
+          <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SelfIntro" MaxLength="1200" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <Property Type="String" Name="OpenId" Nullable="false" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="false" Precision="3" />
+          <Property Type="String" Name="Etag" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Address" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SocialAccount" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContactName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Byte" Name="VerifyTag" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="MemberInfo_Load_p_Result">
+          <Property Type="Int32" Name="MemberId" Nullable="false" />
+          <Property Type="Byte" Name="SocialType" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
+          <Property Type="Decimal" Name="PosX" Nullable="false" Precision="10" Scale="6" />
+          <Property Type="Decimal" Name="PosY" Nullable="false" Precision="10" Scale="6" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="Gender" Nullable="false" />
+          <Property Type="Int32" Name="Coins" Nullable="false" />
+          <Property Type="Int32" Name="CoinsLocked" Nullable="false" />
+          <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="SelfIntro" Nullable="true" MaxLength="1200" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="OpenId" Nullable="false" MaxLength="70" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Etag" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="SocialAccount" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ContactName" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="VerifyTag" Nullable="false" />
+          <Property Type="Boolean" Name="IsLike" Nullable="false" DefaultValue="false" />
+          <Property Type="String" Name="MasterInfo" Nullable="false" MaxLength="1" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1570,36 +1571,6 @@
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="SiteVersion" ColumnName="SiteVersion" />
                 <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MemberInfo">
-            <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo">
-              <MappingFragment StoreEntitySet="MemberInfo">
-                <ScalarProperty Name="IsEmailVerified" ColumnName="IsEmailVerified" />
-                <ScalarProperty Name="IsMobileVerified" ColumnName="IsMobileVerified" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
-                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-                <ScalarProperty Name="SocialType" ColumnName="SocialType" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="PosX" ColumnName="PosX" />
-                <ScalarProperty Name="PosY" ColumnName="PosY" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Coins" ColumnName="Coins" />
-                <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Etag" ColumnName="Etag" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2079,36 +2050,6 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="Verification_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Verification_Save_p" />
-          <FunctionImportMapping FunctionImportName="MemberInfo_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.MemberInfo_Load_p">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result">
-                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
-                <ScalarProperty Name="SocialType" ColumnName="SocialType" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CityId" ColumnName="CityId" />
-                <ScalarProperty Name="PosX" ColumnName="PosX" />
-                <ScalarProperty Name="PosY" ColumnName="PosY" />
-                <ScalarProperty Name="IsMobileVerified" ColumnName="IsMobileVerified" />
-                <ScalarProperty Name="IsEmailVerified" ColumnName="IsEmailVerified" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Coins" ColumnName="Coins" />
-                <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
-                <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Etag" ColumnName="Etag" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.Comment">
               <MappingFragment StoreEntitySet="Comment">
@@ -2178,6 +2119,67 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="ClassEditInfo_Add_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassEditInfo_Add_p" />
+          <EntitySetMapping Name="MemberInfoes">
+            <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo">
+              <MappingFragment StoreEntitySet="MemberInfo">
+                <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Etag" ColumnName="Etag" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
+                <ScalarProperty Name="Coins" ColumnName="Coins" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="IsMobileVerified" ColumnName="IsMobileVerified" />
+                <ScalarProperty Name="PosY" ColumnName="PosY" />
+                <ScalarProperty Name="PosX" ColumnName="PosX" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SocialType" ColumnName="SocialType" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="MemberInfo_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.MemberInfo_Load_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result">
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="SocialType" ColumnName="SocialType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="PosX" ColumnName="PosX" />
+                <ScalarProperty Name="PosY" ColumnName="PosY" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Coins" ColumnName="Coins" />
+                <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+                <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="OpenId" ColumnName="OpenId" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Etag" ColumnName="Etag" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
+                <ScalarProperty Name="IsLike" ColumnName="IsLike" />
+                <ScalarProperty Name="MasterInfo" ColumnName="MasterInfo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

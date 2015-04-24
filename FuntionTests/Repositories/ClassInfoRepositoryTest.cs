@@ -229,6 +229,38 @@ namespace SkillBank.FunctionTests
             Assert.AreEqual(cover, classItem.Cover);
         }
 
+        [TestMethod]
+        public void Should_UpdatedClassEditCover_Correctly()
+        {
+            var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdatePhoto;
+            Random rd = new Random();
+            String cover = "mytest.gif";
+
+            _repository.UpdateClassEditInfo(updateType, 3/* _classId*/, cover);
+
+            var classes = _repository.GetClassEditInfo(_loadType, 3/* _classId*/);
+            Assert.IsNotNull(classes);
+            var classItem = classes.FirstOrDefault();
+            Assert.AreEqual(cover, classItem.Cover);
+        }
+
+        [TestMethod]
+        public void Should_UpdatedClassEditCoverAPublish_Correctly()
+        {
+            var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdateStep3;
+            Random rd = new Random();
+            String cover = "mytest.png";
+            Byte publishStatus = 3;
+
+            _repository.UpdateClassEditInfo(updateType, 3/* _classId*/, cover);
+
+            var classes = _repository.GetClassEditInfo(_loadType, 3/* _classId*/);
+            Assert.IsNotNull(classes);
+            var classItem = classes.FirstOrDefault();
+            Assert.AreEqual(cover, classItem.Cover);
+            Assert.AreEqual(publishStatus, classItem.PublishStatus);
+        }
+
         //[TestMethod]
         //public void Should_UpdatedClassInfo_Correctly()
         //{

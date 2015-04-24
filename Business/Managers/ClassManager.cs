@@ -266,7 +266,7 @@ namespace SkillBank.Site.Services.Managers
 
         public List<ClassEditItem> GetClassEditInfoByMemberId(int memberId, Byte loadType)
         {
-            return _classRep.GetClassEditInfo(loadType, memberId);
+            return _classRep.GetClassEditInfo(loadType, 0, memberId);
         }
 
         /// <summary>

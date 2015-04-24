@@ -1,0 +1,65 @@
+﻿@model List<SkillBank.Site.DataSource.Data.ClassEditItem>
+@{
+    ViewBag.Title = "MyCourses";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+@Html.Partial("_MobileMenuPartial")
+
+<div class="courses-manage-page content">
+    <nav>
+        <div class="segmented-control-no-js card">
+            <a href="#" class="control-item active">课程管理</a>
+            <a href="@Url.Action("teaching", "m")" class="control-item">教课记录</a>
+            <a href="@Url.Action("learning", "m")" class="control-item">学习记录</a>
+        </div>
+    </nav>
+    <div class="well">
+        <a href="@Url.Action("courseedit", "m")" class="icon icomoon icon-ionic-plus round add-course"></a>
+    </div>
+    <div class="course-list">
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+            <div class="course card">
+                <div class="title-bar u-full-width">
+                    <a class="pull-left">@(String.IsNullOrEmpty(item.Title) ? ResourceHelper.GetTransText(560) : item.Title)</a>
+                    <div class="pull-right">
+                        <a href="@Url.Action("courseedit", "m", new { id = item.ClassId })" class="icon icomoon icon-pencil round yellow"></a>
+                        <!--<a href="#" class="icon icomoon icon-redo round white"></a>-->
+                    </div>
+                </div>
+                <a href="#">
+                    <img src="@ContentHelper.GetClassCoverPath(item.Cover, "mm")" alt="" class="cover">
+                </a>
+                <div class="info">
+                    <img src="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mb")" alt="" class="avatar">
+                    <!--<a href="@Url.Action("profileedit", "m")"></a><a href="#" class="icon icomoon icon-pencil round yellow"></a>-->
+                    <h4>@ViewBag.MemberInfo.Name</h4>
+                    @if (item.IsProved.Equals(3))
+                    {
+                        <span class="btn-tag grey">审批中</span>
+                    }
+                    else if (item.IsProved.Equals(1))
+                    {
+                        <span class="btn-tag orange">通过并上线</span>
+                    }
+                    else if (item.IsProved.Equals(2))
+                    {
+                        <span class="btn-tag orange">审批未通过</span>
+                    }
+                    else if (item.PublishStatus.Equals(0))
+                    {
+                        <span class="btn-tag grey">编辑中</span>
+                    }else {
+                        <span class="btn-tag grey">修改中</span>
+                    }
+                </div>
+            </div>
+        
+            }
+        }
+    </div>
+</div>
+
