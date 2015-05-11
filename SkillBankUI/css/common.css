@@ -129,8 +129,9 @@ input[type="search"]:focus {
   border-radius: 50%;
   border: 3px solid #fff;
   width: 90px;
-  height: 90px; }
-
+  height: 90px;
+  vertical-align: bottom;
+  display: inline; }
 a {
   color: #999; }
 
@@ -328,7 +329,7 @@ body > .bar-nav {
       text-align: center; }
       .search-bar .input-group .input-group-addon .icon-search {
         font-size: 13px; }
-    .search-bar .input-group input[type=search] {
+    .search-bar .input-group input[type=search] ,.search-bar .input-group #key {
       height: 28px;
       padding-left: 30px;
       margin: 0;
@@ -552,7 +553,8 @@ nav .segmented-control .control-item, nav .segmented-control-no-js .control-item
   z-index: 10;
   background: rgba(0, 0, 0, 0.5);
   color: #fff;
-  text-align: center; }
+  text-align: center; 
+}
   .loading span {
     position: absolute;
     top: 45%;
@@ -1355,6 +1357,8 @@ nav.bar.bar-tab .tab-item {
     color: #fff;
     border-radius: 5px; }
 
+#course-search .course-list img.cover {
+  min-height: 70vw; }
 .add-course-page {
   display: none; }
   .add-course-page .btn-olive {
@@ -1472,14 +1476,10 @@ nav.bar.bar-tab .tab-item {
     text-align: center; }
     .add-course-page.step-private .edit-avatar a {
       position: relative;
-      display: inline-block; 
-    }
+      display: inline-block; }
       .add-course-page.step-private .edit-avatar a .avatar {
         width: 78px;
-        height: auto; 
-        border-radius:0;
-        border: none;
-      }
+        height: 78px; }
       .add-course-page.step-private .edit-avatar a .icon {
         position: absolute;
         left: 50%;
@@ -1821,5 +1821,17 @@ input.error, textarea.error  {
 
 #message-page .segmented-control .control-item a:visited {
     color: #A6AFB2;
+}
+/*.add-course-page.step-private .edit-avatar a .avatar {
+        width: 78px;
+        height: auto; 
+        border-radius:0;
+        border: none;
+      }*/
+
+h3.nocourse-title {
+    margin-top:100px;
+    font-size:22px;
+    color:#a6afb2;
 }
 

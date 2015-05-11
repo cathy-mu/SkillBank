@@ -58,7 +58,7 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objOrders != null)
             {
-                var orders = objOrders.Select(item => new OrderItem() { OrderId = item.OrderId, ClassId = item.ClassId, LastUpdateDate = item.LastUpdateDate, OrderStatus = item.OrderStatus, BookedDate = item.BookedDate, Title = item.Title, MemberId = item.MemberId, MemberName = item.MemberName, Email = item.Email, Phone = item.Phone, Avatar = item.Avatar, HasReview = item.HasReview }).ToList();
+                var orders = objOrders.Select(item => new OrderItem() { OrderId = item.OrderId, ClassId = item.ClassId, LastUpdateDate = item.LastUpdateDate, OrderStatus = item.OrderStatus, BookedDate = item.BookedDate, Title = item.Title, MemberId = item.MemberId, MemberName = item.MemberName, Email = item.Email, Phone = item.Phone, Avatar = item.Avatar, HasReview = item.HasReview, Remark = item.Remark }).ToList();
                 return (orders.Count > 0) ? orders : null;
             }
             return null;

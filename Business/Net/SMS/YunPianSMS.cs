@@ -114,5 +114,84 @@ namespace SkillBank.Site.Services.Net.SMS
             var result = tplSendSms(apikey, tpl_id, tpl_value, mobile);
         }
 
+        /// <summary>
+        /// 发送订单状态改变短消息
+        /// </summary>
+        /// <param name="statusType"></param>
+        /// <param name="mobile"></param>
+        /// <param name="className"></param>
+        /// <param name="link"></param>
+        public static void SendOrderUpdateSms(Byte statusType, string mobile, String className, String link)
+        {
+            //修改为您的apikey
+            string apikey = "4eaffd69cbe3cd2e7382f207a11b0229";
+            //调用模板接口发短信
+
+            long tpl_id = 0;
+            switch (statusType)
+            {
+                //add order
+                case 1: tpl_id = 752781;//hello，老师，有人在技能银行跟你预定了课程《#class#》哦，快来回复吧#link#
+                    break;
+                //reject order
+                case 2: tpl_id = 781417;//您预订的《#class#》未被接受。请务必先和老师沟通过后再来订课，来完善你的自我介绍也会对订课有帮助哦。#link#
+                    break;
+                //cancle order
+                case 3: tpl_id = 0;//cancle
+                    break;
+                //accept order
+                case 4: tpl_id = 781423;//恭喜，老师已经接受了您预订的《#class#》,快来看一下吧#link#
+                    break;
+                //refund order
+                case 6: tpl_id = 781429;//您好，在您教授的《#class#》中出现了退币申请
+                    break;
+                //refund prove
+                case 7: tpl_id = 781437;//您好，您的《#class#》退币请求已被接受，退回的课币已经返回您的账户
+                    break;
+                //refund reject
+                case 8: tpl_id = 781443;//您好，您的《#class#》退币请求未被接受
+                    break;
+                //order confirm
+                case 9: tpl_id = 781451;//恭喜，学生已经对你的《#class#》支付了课币并做出了评价，快来看一下吧#link#
+                    break;
+
+                default:
+                    break;
+            }
+            if (!tpl_id.Equals(0))
+            {
+                string tpl_value = "#class#=" + Uri.EscapeDataString(className) + "&#link#=" + Uri.EscapeDataString(link);
+                var result = tplSendSms(apikey, tpl_id, tpl_value, mobile);
+            }
+        }
+
+        /// <summary>
+        /// 发送课程批准，拒绝短消息
+        /// </summary>
+        /// <param name="isProve"></param>
+        /// <param name="mobile"></param>
+        /// <param name="className"></param>
+        /// <param name="link"></param>
+        public static void SendClassProveSms(Boolean isProve, string mobile, String className, String link)
+        {
+            //修改为您的apikey
+            string apikey = "4eaffd69cbe3cd2e7382f207a11b0229";
+            //调用模板接口发短信
+
+            long tpl_id;
+            if (isProve)
+            {
+                tpl_id = 781493;
+            }
+            else
+            {
+                tpl_id = 781509;
+            }
+
+            string tpl_value = "#class#=" + Uri.EscapeDataString(className) + "&#link#=" + Uri.EscapeDataString(link);
+            var result = tplSendSms(apikey, tpl_id, tpl_value, mobile);
+        }
+
+
     }
 }

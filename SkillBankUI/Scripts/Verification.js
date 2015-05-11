@@ -30,15 +30,15 @@ function verification_Class() {
     }
 
     this.validMobile = function (mobile) {
-        var patten = new RegExp(/^[1][3,4,5,8][0-9]{9}$/);
-        return patten.test(mobile);
+        var patten = new RegExp(/^[1]+\d{10}$/);
+        return (mobile != "" && patten.test(mobile));
     }
 
     this.sendVerifyCode = function () {
         $("#verify-errormobile").hide();
         $("#verify-errorcode").hide();
         var phone = verification.mobileObj.val();
-        if (phone == "" || !verification.validMobile(phone)) {
+        if (!verification.validMobile(phone)) {
             this.mobileObj.addClass("inputerror");
             return false;
         } else {

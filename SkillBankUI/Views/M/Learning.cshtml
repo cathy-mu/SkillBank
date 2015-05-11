@@ -28,16 +28,16 @@
                 data-date="@TextContentHelper.GetDateString(item.BookedDate)"
                 data-date-oral="@TextContentHelper.GetDateString(item.LastUpdateDate)"
                 data-message="@item.Remark"
-                data-course="@item.Title @item.OrderId"
+                data-course="@item.Title"
                 data-phone="@item.Phone"
                 data-email="@item.Email">
                 <div class="inner">
                     <div class="profile">
-                        <a href="#" class="img">
+                        <a href="@Url.Action("personal", "m", new { id = item.MemberId })" class="img">
                             <img src="@ContentHelper.GetAvatarPath(item.Avatar, "ms")" alt="" class="avatar">
                         </a>
                         <div class="name">
-                            <a href="#">老师：@item.MemberName  @item.OrderId</a>
+                            <a href="@Url.Action("personal", "m", new { id = item.MemberId })">老师：@item.MemberName</a>
                             <br>
                             <!--<small>City</small>-->
                         </div>
@@ -93,7 +93,7 @@
                             <small>@TextContentHelper.GetDateString(item.LastUpdateDate)</small>
                         </div>
                     </div>
-                    @if (!String.IsNullOrEmpty(item.Remark))
+                    @if (!String.IsNullOrEmpty(item.Remark) && (status.Equals(1)||status.Equals(4)||status.Equals(5)))
                     {
                         <div class="popover-chat bottom mb-1">
                             <div class="arrow"></div>
@@ -123,7 +123,7 @@
                         }
                         else if (status.Equals(4))
                         {
-                            <a href="#phone" class="btn contact-btn">电话对方</a>
+                            <a class="btn contact-btn">电话对方</a>
 
                             <a class="btn" href="@Url.Action("chat", "m", new { id = item.MemberId })">私信对方</a> 
                         }
@@ -131,7 +131,7 @@
                         {
                             <a class="btn confirm apply-draw-back">申请退币</a>
 
-                            <a href="#phone" class="btn contact-btn">电话对方</a>
+                            <a class="btn contact-btn">电话对方</a>
                         }
                     </div>
                 </div>
@@ -149,8 +149,8 @@
                 <div class="content-inner">
                     <div class="content-padded">
                         <form>
-                            <a id="makecall" href="tel:13564813923" class="btn btn-primary btn-block">打电话给对方</a>
-                            <a id="sendsms" href="sms:13564813923" class="btn btn-primary btn-block">发短消息</a>
+                            <a id="makecall" href="#" class="btn btn-primary btn-block">打电话给对方</a>
+                            <a id="sendsms" href="#" class="btn btn-primary btn-block">发短消息</a>
                             <a href="#phone" class="btn btn-block">取消</a>
                         </form>
                     </div>
@@ -241,8 +241,8 @@
         <div class="teaching card disabled">
           <div class="inner">
             <div class="profile">
-              <a href="#" class="img"> <img src="<%- person.avatar %>" alt="" class="avatar"> </a>
-              <div class="name"><a href="#">学生：<%- person.name %> </a> <br> <small><%- person.location %></small></div>
+              <a href="/m/personal/<%- person.memberid %>" class="img"> <img src="<%- person.avatar %>" alt="" class="avatar"> </a>
+              <div class="name"><a href="/m/personal/<%- person.memberid %>">学生：<%- person.name %> </a> <br> <small><%- person.location %></small></div>
               <div class="approval">
                 <span class="btn-tag grey"><%- text %></span><br><small><%- person.dateOral %></small>
               </div>

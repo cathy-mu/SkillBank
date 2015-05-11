@@ -18,7 +18,11 @@
         <a href="@Url.Action("courseedit", "m")" class="icon icomoon icon-ionic-plus round add-course"></a>
     </div>
     <div class="course-list">
-        @if (Model != null)
+        @if (Model == null)
+        {
+            <h3 align="center" class="nocourse-title">快来开设第一堂技能课吧！</h3>
+        }
+        else
         {
             foreach (var item in Model)
             {

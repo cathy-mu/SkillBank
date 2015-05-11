@@ -80,8 +80,7 @@
                 </a>
             </div>
         </div>
-
-
+        
         <div class="info">
             <a class="classdetail-avatar" href="@Url.Action("personal", "m", new { id = Model.MemberInfo.MemberId })">
                 <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "h", Model.MemberInfo.SocialType)" alt="" class="avatar">
@@ -269,9 +268,9 @@
                         <div class="content-padded">
                             @if (ViewBag.MemberInfo != null)
                             {
-                                <form data-classid="@Model.ClassInfo.ClassId">
+                                <form data-classid="@Model.ClassInfo.ClassId" data-tphone="@Model.MemberInfo.Phone" data-temail="@Model.MemberInfo.Email" data-tname="@Model.MemberInfo.Name" data-class="@Model.ClassInfo.Title">
                                     <input placeholder="授课日期" type="text" name="date" onfocus="(this.type='date')" onblur="(this.type='text')" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(1).ToString("yyyy-MM-dd")">
-                                    <textarea name="remark" id="" cols="30" rows="2" placeholder="留言"></textarea>
+                                    <textarea name="remark" cols="30" rows="2" placeholder="留言"></textarea>
                                     <h5>你的联系信息</h5>
                                     <p class="lightGrey">老师在确认之后才能看到你的联系信息</p>
                                     <input type="text" name="name" placeholder="姓名" value="@ViewBag.MemberInfo.Name">

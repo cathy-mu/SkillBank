@@ -25,6 +25,15 @@ var browser = {
     language: (navigator.browserLanguage || navigator.language).toLowerCase()
 };
 
+function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return unescape(r[2]);
+    }
+    return null;
+}
+
 function parseURL(url) {
     var parser = document.createElement('a'),
       searchObject = {},
@@ -108,6 +117,7 @@ function request(type, url, opts, callback) {
   };
   xhr.send(opts ? fd : null);
 }
+
 function resError(status){
   if(status == 401){
       //goToLogin();
@@ -124,6 +134,18 @@ function resError(status){
     alert('400');
   }
 }
+
+var get = request.bind(this, 'GET');
+var post = request.bind(this, 'POST');
+var put = request.bind(this, 'PUT');
+
+var scrollToPrevPos = _.once(function () {
+    if (window.history.state && window.history.state.top) {
+        var offsetTop = window.history.state.top;
+        $('.content')[0].scrollTop = offsetTop;
+        if (location.hash.slice(1)) window.history.replaceState(null);
+    }
+});
 
 function checkLogin() {
     var ctlObj;
@@ -156,11 +178,6 @@ function goToLogin() {
     return;
 }
 
-var get = request.bind(this, 'GET');
-var post = request.bind(this, 'POST');
-var put = request.bind(this, 'PUT');
-
-
 var checkPage = function () {
   addBulletsWeget();
   removeTrashes();
@@ -181,26 +198,15 @@ var checkPage = function () {
       });
   }
 
-  //$(".menutab-course").on('click', function () {
-  //    if (typeof (mixpanel) != "undefined") {
-  //        mixpanel.track("menu course");
-  //    }
-  //    alert("此功能将稍后开放");
-  //});
-
-  //$(".menutab-mypage").on('click', function () {
-  //    if (typeof (mixpanel) != "undefined") {
-  //        mixpanel.track("menu mypage");
-  //    }
-  //    alert("此功能将稍后开放");
-  //});
-
   $(".login-trigger").on('click', function () {
       checkLogin();
   });
 
   // course list search
   if (document.getElementById('course-search')) {
+      // record scrollTop when go to other url
+      window.onunload = function () { window.history.pushState({ top: $('.content')[0].scrollTop }, 'toTop'); };
+      if (!location.hash.slice(1)) scrollToPrevPos();
       switchCourseCat();
       affix();
       toggleLike();
@@ -208,7 +214,7 @@ var checkPage = function () {
   }
 
   // course detail page
-  if ($('.course-page').length) {
+  if ($('.course-page').length && !$('.coursepreview-page').length) {
       toggleLike();
   
       // go for comment
@@ -282,7 +288,6 @@ var checkPage = function () {
   }
 
   // register page
-  //--Update:redirect url ,validation
   if ($('#register-page').length) {
       if (typeof (mixpanel) != "undefined") {
           mixpanel.track("signup page");
@@ -391,7 +396,7 @@ var checkPage = function () {
       initPubClassStep1();
   }
 
-    // add course page 2
+  // add course page 2
   if ($('.add-course-page.step-2').length) {
       var maxlen = 100;
       limitedText(maxlen);
@@ -399,13 +404,13 @@ var checkPage = function () {
       initPubClassStep2();
   }
 
-    // add course page 3
+  // add course page 3
   if ($('.add-course-page.step-3').length) {
       //chooseCover();
-      $('.step-3 .btn-transparent').on('click', function () {
+      $('.step-3 .preview').on('click', function () {
           //update cover and go to preview page
           initPubClassStep3(false);
-          alert("go to preview page");
+          //TO DO:go to preview page
       });
       $('.step-3 .next').on('click', function () {
           location.href = "#success";
@@ -414,14 +419,16 @@ var checkPage = function () {
           //$('.step-name')[0].style.display = 'none';
           $('h3')[0].innerHTML = '内容已填完并被保存';
       });
+      initUploadSetting();
   }
 
   
     // profile edit page
   if ($('.add-course-page.step-private').length) {
       checkAllFillInPrivate();
+      initUploadSetting();
       //chooseAvatar();
-      $('#profile-savebtn').on('click', function () { updateProfile(); });
+      $('#profile-savebtn').on('click', function () { updateProfile(this); });
   }
 
     // course manage 
@@ -455,12 +462,13 @@ var checkPage = function () {
       $('[data-modal]').on('click', function () { $('#' + this.dataset.modal)[0].classList.add('active'); });
 
       limitedTextLen($("#evaluate textarea")[0], 200);
+      limitedTextLen($("#paycoin textarea")[0], 200);
   }
 
   if ($('.courses-learning-page').length) {
       //Only for learning page
       payClassCoin();
-      limitedTextLen($("#paycoin textarea")[0], 200);
+      ($("#paycoin textarea")[0], 200);
   }
 
   if ($('.setting-page').length) {
@@ -477,23 +485,34 @@ window.addEventListener('push', checkPage);
 
 function bindHashChangeToSteps() {
     var changeContent = function () {
-        console.log(location.hash);
+        console.log("hash"+location.hash);
         var stepName = location.hash.slice(1);
         if (!stepName) return;
         $('.steps.active')[0].classList.remove('active');
         $('.content.active')[0].classList.remove('active');
         $('.steps.step-' + stepName)[0].classList.add('active');
         $('.content.step-' + stepName)[0].classList.add('active');
+        if (location.hash === "#3") {
+            uploader.refresh();
+        }
     }
     changeContent();
     window.onhashchange = changeContent;
 }
 
 function switchCourseCat() {
+    //init course search event
+    $('#key')[0].on('keypress', function () {
+        var serachKey = $('#key')[0].value;
+        if (event.keyCode == 13 && serachKey != undefined && serachKey != "") {
+            location.href = "/m?key=" + serachKey;//+ "#by=3&type=1";
+        }
+    });
+
     var load = function () {
-        console.log(location.hash);
         if (!location.hash.slice(1)) return;
-        var query = parseURL(location.hash.slice(1)).searchObject;
+        //var query = parseURL(location.hash.slice(1)).searchObject;
+        var query = parseURL(location.hash.replace("#", "?")).searchObject;
         var geo_opts = {
             enableHighAccuracy: true,
             maximumAge: 30000,
@@ -518,19 +537,16 @@ function switchCourseCat() {
                     getCourses(url);
                 });
             }, function () {
-                console.log("Sorry, no position available.")
+                console.log("no position available.")
             }, geo_opts);
         } else if (query.by == 3) {// search
             if (typeof (mixpanel) != "undefined") {
                 mixpanel.track("search");
             }
-            var url = ENV.host + '/api/ClassList?' + 'by=3&type=1&key=' + encodeURIComponent(query.key);
-            //var url = ENV.host + '/api/ClassList?' + 'by=' + query.by + '&type=' + query.type + '&key=' + encodeURIComponent(query.key);
-            console.log(url);
-            getCourses(url);
+            var url = ENV.host + '/api/ClassList?key=' + getQueryString("key")+ '&by=3&type=1';//encodeURIComponent() 
+             getCourses(url);
         } else {// category ,promote
             var url = ENV.host + '/api/ClassList?' + 'by=' + query.by + '&type=' + query.type;
-            console.log(url);
             getCourses(url);
         }
     }
@@ -543,7 +559,10 @@ function getCourses(url) {
     var $cats = $('.search-cat-wrap a');
     $loading[0].style.display = 'block';
     get(url, function (fb) {
-        if (!_.isArray(fb)) return;
+        if (!_.isArray(fb)) {
+            $loading[0].style.display = 'none';
+            return;
+        }
         // insert html
         var tpl = $('#course-tpl')[0].innerHTML;
         $('.course-list')[0].innerHTML = _.template(tpl, { courses: fb, imgHost: ENV.imgHost });
@@ -554,15 +573,31 @@ function getCourses(url) {
         var $active = _.find($cats, function ($cat) {
             return location.hash == $cat.getAttribute('href');
         });
+        if (!$active && getQueryString("key"))
+        {
+            $active = $cats[0];
+        }
         $active.classList.add('active');
         $loading[0].style.display = 'none';
+        scrollToPrevPos();
     });
+}
+
+function showLoadingIcon(isShow) {
+    var $loading = $('.loading');
+    if ($loading) {
+        if (isShow) {
+            $loading[0].style.display = "block";
+        } else {
+            $loading[0].style.display = "none";
+        }
+    }
 }
 
 function bindCloseEventToModal() {
     if (!$('.modal').length) return;
     // jQuery(document).on('touchend click', function(e){
-    document.body.addEventListener('touchend', function (e) {
+    document.body.addEventListener('click', function (e) {
         if (e.target.classList.contains('content')) {
             var $modal = e.target.parentNode;
             $modal.classList.remove('active');
@@ -683,22 +718,10 @@ function hackForModals(){
   }
 }
 
-//function getChatDetail(uid, fid){
-//  var url = ENV.host + '/api/chat/' + uid + '?contact=' + fid;
-//  var $container = $('.chat-content');
-//  var tpl = $('#chat-detail-tpl')[0].innerHTML;
-//  get(url, function(fb){
-//    if( !_.isArray(fb) ) return;
-
-//    // insert html
-//    $container[0].innerHTML = _.template(tpl, {items: fb, uid: uid});
-//  });
-//}
-
-//--Update:(DT)template , inset position
 function chatForm() {
     var $form = $('#form-write');
     var $input = $form[0].querySelector('textarea');
+    var $btn = $form[0].querySelector('button');
     $form[0].on('submit', function (event) {
         event.preventDefault();
         if (!$input.value) {
@@ -711,13 +734,17 @@ function chatForm() {
                     ToId: toId,
                     MessageText: $input.value
                 };
+                $btn.classList.add("disabled");
+                showLoadingIcon(true);
                 data.Avatar = $form[0].dataset.avatar;
                 post(ENV.host + '/api/chat', data, function (fb) {
+                    showLoadingIcon(false);
                     if (!fb) return;
                     $('.chat-content')[0].insertAdjacentHTML('beforeend',
                           _.template($('#chat-detail-tpl')[0].innerHTML, { item: data }));
                     $input.value = "";
                     $input.focus();
+                    $btn.classList.remove("disabled");
 
                     if (typeof (mixpanel) != "undefined") {
                         mixpanel.track("chat on chatpage");
@@ -730,13 +757,15 @@ function chatForm() {
     });
 }
 
-//--Update:error message
 function privateMsgForm() {
     var $modal = $('#privateMsg');
     if (!$modal.length) return;
     var $form = $modal[0].querySelectorAll('form');
     var $input = $form[0].querySelector('textarea');
+    var $btn = $form[0].querySelector('.btn-block');
     $form[0].on('submit', function (event) {
+        $btn.textContent = "发送中... ...";
+        $btn.classList.add("disabled");
         event.preventDefault();
         if (!$input.value) {
             $input.classList.add("error");
@@ -749,8 +778,10 @@ function privateMsgForm() {
                 MessageText: $input.value
             };
             post(ENV.host + '/api/chat', data, function (fb) {
+            $btn.classList.remove("disabled");
+            $btn.textContent = "发送私信";
                 if (!fb) return;
-                alert("私信已发送");
+                myAlert("私信已发送", 2);
                 $input.value = "";
                 $modal[0].classList.remove('active');
                 if (typeof (mixpanel) != "undefined") {
@@ -761,12 +792,13 @@ function privateMsgForm() {
     });
 }
 
-//--Update:TO DO：Valid　
 function reservationForm() {
     var $modal = $('#reservation');
     if (!$modal.length) return;
     var $form = $modal[0].querySelectorAll('form');
     var $input = $form[0].querySelector('textarea');
+    limitedTextLen($input, 150);
+
     $form[0].on('submit', function (event) {
         event.preventDefault();
         var d = new Date();
@@ -781,46 +813,37 @@ function reservationForm() {
             this.date.classList.remove("error");
         }
 
-        if (this.name.value == "") {
-            this.name.classList.add("error");
-            return false;
-        } else {
-            this.name.classList.remove("error");
-        }
+        if (validHasValue(this.name) && validPhone(this.phone)) {
 
-        //var patten = new RegExp(/^[1]+[3,4,5,8]+\d{9}/);
-        var patten = new RegExp(/^[1]+\d{10}/);
-        if (!this.phone.value || !patten.test(this.phone.value)) {
-            this.phone.classList.add("error");//手机号码格式不对
-            return;
-        } else {
-            this.phone.classList.remove("error");//手机号码格式不对
-        }
+            var formData = $form[0].dataset;
+            var data = {
+                ClassId: formData.classid,
+                BookDate: this.date.value,
+                Remark: this.remark.value,
+                Name: this.name.value,
+                Phone: this.phone.value,
+                TeacherName: formData.tname,
+                TeacherMail: formData.temail,
+                TeacherPhone: formData.tphone,
+                ClassName: formData.class
+            };
 
-        var data = {
-            ClassId: $form[0].dataset.classid,
-            BookDate: this.date.value,
-            Remark: this.remark.value,
-            Name: this.name.value,
-            Phone: this.phone.value
-        };
-
-        post(ENV.host + '/api/Order', data, function(fb){
-            if (!fb) {
-                alert("订课请求发送失败");
-                return;
-            }
-            else {
-                alert("订课请求已发送");
-                $form[0].date.value = "";
-                if (typeof (mixpanel) != "undefined") {
-                    mixpanel.track("book class");
+            post(ENV.host + '/api/Order', data, function (fb) {
+                if (!fb) {
+                    myAlert("订课请求发送失败", 2);
+                    return;
                 }
-            }
-        });
-        
-        //$modal[0].style.display = 'none';
-        $modal[0].classList.remove('active');
+                else {
+                    myAlert("订课请求已发送", 2);
+                    $form[0].date.value = "";
+                    if (typeof (mixpanel) != "undefined") {
+                        mixpanel.track("book class");
+                    }
+                }
+            });
+
+            $modal[0].classList.remove('active');
+        }
 
     });
 }
@@ -829,6 +852,7 @@ function reservationForm() {
 function commentForm() {
     var $form = $('#comment-form');
     var $input = $form[0].querySelector('input');
+    var $btn = $form[0].querySelector('button');
     $input.on('focus', function () {
         checkLogin();
     });
@@ -840,7 +864,6 @@ function commentForm() {
     //});
     
     $form[0].on('submit', function (event) {
-        
         event.preventDefault();
         var patten = new RegExp(/true/i);
         if (!patten.test($('.bar-nav')[0].dataset.ismember)) {
@@ -858,26 +881,35 @@ function commentForm() {
                 ClassId: $form[0].dataset.classid,
                 CommentText: $input.value
             };
-            post(ENV.host + '/api/comment', data, function(fb){
-            if(!fb) return;
-            data.Avatar = $form[0].dataset.avatar;
-            data.Name = $form[0].dataset.name;
-            $('.comment-text')[0].insertAdjacentHTML('afterBegin',
-              _.template($('#comment-tpl')[0].innerHTML, { item: data }));
-                //$input.focus();
+            $btn.classList.add("disabled");
+            showLoadingIcon(true);
+            post(ENV.host + '/api/comment', data, function (fb) {
+                showLoadingIcon(false);
+                $btn.classList.remove("disabled");
+                if (!fb) {
+                    myAlert("保存失败,请稍后再试", 2);
+                    return;
+                } else {
+                    myAlert("留言成功", 2);
+                    data.Avatar = $form[0].dataset.avatar;
+                    data.Name = $form[0].dataset.name;
+                    $('.comment-text')[0].insertAdjacentHTML('afterBegin',
+                      _.template($('#comment-tpl')[0].innerHTML, { item: data }));
+                    //$input.focus();
 
-            if (typeof (mixpanel) != "undefined") {
-                mixpanel.track("leave comment");
-            }
+                    if (typeof (mixpanel) != "undefined") {
+                        mixpanel.track("leave comment");
+                    }
 
-            var tagNum = $(".comment-num").length;
-            if (tagNum > 0) {
-                var commentNum = parseInt($(".comment-num")[0].innerText) + 1;
-                for (var i = 0; i < tagNum; i++) {
-                    $(".comment-num")[i].innerText = commentNum;
+                    var tagNum = $(".comment-num").length;
+                    if (tagNum > 0) {
+                        var commentNum = parseInt($(".comment-num")[0].innerText) + 1;
+                        for (var i = 0; i < tagNum; i++) {
+                            $(".comment-num")[i].innerText = commentNum;
+                        }
+                    }
+                    $input.value = "";
                 }
-            }
-            $input.value = '';
             });
         }
     });
@@ -1144,7 +1176,6 @@ function initPubClassStep1() {
             "Skill": $('#skilllevel')[0].textContent,
             "Teach": $('#teachlevel')[0].textContent
         };
-        
         updateClassInfo(data);
     });
 }
@@ -1163,9 +1194,8 @@ function initPubClassStep2() {
             "Available": $form.available.value,
             "Remark": $form.remark.value
         };
-
         updateClassInfo(data);
-    });
+     });
 }
 
 function initPubClassStep3(isPublish) {
@@ -1175,7 +1205,6 @@ function initPubClassStep3(isPublish) {
         "Cover": $form.savekey.value,
         "IsPublish": isPublish
     };
-    console.log(data);
     updateClassInfo(data);
 }
 
@@ -1185,7 +1214,7 @@ function checkAllEvaluateModal() {
     var $form = $('#evaluate form')[0];
     $('#evaluate .btn-evaluate')[0].on('click', function () {
         $subbtn = this;
-        if (!$subbtn.matches('.disable') && $('#evaluate input[type="radio"]:checked').length) {
+        if (!$subbtn.classList.contains('disable') && $('#evaluate input[type="radio"]:checked').length) {
             if (validHasValue($form.message)) {
                 $subbtn.classList.add("disable");
                 var feedback = $('#evaluate input[type="radio"]:checked')[0].value;
@@ -1213,6 +1242,7 @@ function checkAllEvaluateModal() {
     });
 }
 
+/*
 function chooseCover() {
     var $uploader = $('.course input[type=file]')[0];
     $uploader.on('change', function () {
@@ -1272,6 +1302,7 @@ function chooseAvatar() {
         };
     });
 }
+*/
 
 function checkAllFillInPrivate() {
     var $form = $('form')[0];
@@ -1295,8 +1326,8 @@ function checkAllFillInPrivate() {
     );
 }
 
-function checkAllFillInImage(isAvatar) {
-    if (isAvatar) {
+function checkAllFillInImage(imageType) {
+    if (imageType>1) {
         var $form = $('form')[0];
         var $btn1 = $('.main .right .btn')[0];
         var ifAllFillIn = $('input[type="radio"]:checked').length &&
@@ -1316,14 +1347,14 @@ function checkAllFillInImage(isAvatar) {
        
 }
 
-function PreviewImage() {
-    var oFReader = new FileReader();
-    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+//function PreviewImage() {
+//    var oFReader = new FileReader();
+//    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
 
-    oFReader.onload = function (oFREvent) {
-        document.getElementById("uploadPreview").src = oFREvent.target.result;
-    };
-}
+//    oFReader.onload = function (oFREvent) {
+//        document.getElementById("uploadPreview").src = oFREvent.target.result;
+//    };
+//}
 
 function selectSkill() {
     var options_tpl = '<% _.forEach(list, function(item) { %><option value=<%- item.value %> > <%- item.name %> </option><% }); %>';;
@@ -1409,14 +1440,14 @@ function myAlert(msg, seconds) {
 
 
 // Profile page update info
-function updateProfile() {
-    //event.preventDefault();
-    //uploadImage(0);
+function updateProfile(btn) {
+    event.preventDefault();
     var $form = $('form')[0];
     $form.city.classList.remove("error");
     var self = event.target;
     var name = $form.realname.value;
-    var avatar = ($form.savekey.value == "") ? "" : ($form.savekey.value);
+    var noAvatar = ($form.savekey.value === "");
+    var avatar = noAvatar ? "" : ($form.savekey.value);
     var city = $form.city.value;
     var intro = $form.introSelf.value;
     var gender = ($("input[name='sex'][value='male']:checked").length > 0);
@@ -1427,15 +1458,24 @@ function updateProfile() {
         "Intro": intro,
         "Gender": gender
     };
-    
+    btn.classList.add("disabled");
+    if (noAvatar) {
+        showLoadingIcon(true);
+    }
     put(ENV.host + '/api/member', data, function (fb) {
+        if (noAvatar) {
+            showLoadingIcon(false);
+        }
         if (fb === 1) {
-            //window.location.href = "/m/personal";
-            myAlert("保存成功", 2);
+            if (noAvatar) {
+                myAlert("保存成功", 2);
+            }
             $('#profile-savebtn')[0].classList.add("disabled");
         }
         else if (fb === 2) {
-            myAlert("保存失败,请稍后再试", 2);
+            if (noAvatar) {
+                myAlert("保存失败,请稍后再试", 2);
+            }
             return;
         } else if (fb === 3) {
             $form.city.classList.add("error");
@@ -1502,9 +1542,20 @@ function toDidabledState(el, desc) {
     $card.outerHTML = $tpl;
 }
 
-function toAcceptedState($card) {
-    var $tpl = $('#teaching-accepted-tpl')[0].innerHTML;
-    $tpl = _.template($tpl, { person: $card.dataset });
+function toAcceptedState($card, isAccept) {
+    $('#contact')[0].classList.remove('active');
+    var $tpl;
+    if (isAccept) {
+        var $tpl = $('#teaching-accepted-tpl')[0].innerHTML;
+        if ($card.dataset.message === "") {
+            $tpl = _.template($tpl, { person: $card.dataset, showmessage: "none" });
+        } else {
+            $tpl = _.template($tpl, { person: $card.dataset, showmessage: "" });
+        }
+    } else {
+        var $tpl = $('#teaching-disabled-tpl')[0].innerHTML;
+        $tpl = _.template($tpl, { person: $card.dataset, text: "已被取消" });
+    }
     $card.outerHTML = $tpl;
 }
 
@@ -1513,7 +1564,8 @@ function accpetOrder($form) {
     var $phone = $form.phone;
     var $card = $('.teaching.active')[0];
     var datas = $card.dataset;
-    var orderId = datas.orderid
+    var orderId = datas.orderid;
+    
     if (validHasValue($name) && validPhone($phone)) {
         var data = {
             "Status": 4,
@@ -1525,18 +1577,17 @@ function accpetOrder($form) {
             "MyName": $name.value,
             "MyPhone": $phone.value
         };
-
         console.log(data);
         put(ENV.host + '/api/order/' + orderId, data, function (fb) {
             if (fb === 2) {
-                alert("学生课币不足，接受订课失败");
+                //alert("学生课币不足，接受订课失败");
+                toAcceptedState($card, false);
             } else if (fb === 3) {
                 alert("订单状态已经改变，请刷新");
             } else if (fb === -1) {
                 alert("操作失败");
             } else {
-                $('#contact')[0].classList.remove('active');
-                toAcceptedState($card);
+                toAcceptedState($card, true);
             }
             return;
         });
@@ -1608,7 +1659,7 @@ function payClassCoin() {
     if ($form.length > 0) {
         $('#paycoin .btn-paycoin')[0].on('click', function () {
             $subbtn = this;
-            if (!$subbtn.matches('.disable') && $('#evaluate input[type="radio"]:checked').length) {
+            if (!$subbtn.classList.contains('disable') && $('#evaluate input[type="radio"]:checked').length) {
                 if (validHasValue($form.message)) {
                     $subbtn.classList.add("disable");
                     var feedback = $('#evaluate input[type="radio"]:checked')[0].value;
@@ -1627,7 +1678,7 @@ function payClassCoin() {
                         "Comment": comment,
                     };
                     console.log(data);
-
+                    
                     put(ENV.host + '/api/order/' + datas.orderid, data, function (fb) {
                         if (fb === 3) {
                             alert("订单状态已经改变，请刷新");
@@ -1678,13 +1729,11 @@ function uploadImage(type) {
     console.log(formData);
     uploadFile(formData, url, function (data) {
         if (type === 0) {
-            alert("保存成功");
             myAlert("保存成功", 2);
         } else if (type === 1) {
-            alert("go to classpreview");
+            myAlert("保存成功", 2);
             //location.href = '/m/classpreview';
         } else if (type === 2) {
-            alert("发布成功");
             myAlert("发布成功", 2);
         }
     });
@@ -1699,16 +1748,15 @@ function uploadFile(formData, url, callback) {
     xhr.send(formData);
 }
 
-function getUpCloudOptions(isAvatar) {
-    post(ENV.host + '/api/UpCloud?fileName=' + $('#imagefilename')[0].value + $('#imagefileext')[0].value + "&isAvatar=" + isAvatar, function (fb) {
+function getUpCloudOptions(imageType) {
+    post(ENV.host + '/api/UpCloud?fileName=' + $('#imagefilename')[0].value + $('#imagefileext')[0].value + "&imageType=" + imageType, function (fb) {
             if (fb) {
-            console.log(fb);
             $('#policy')[0].value = fb.Policy;
             $('#signature')[0].value = fb.Signature;
             $('#savekey')[0].value = fb.SaveKey;
         }
     });
-    checkAllFillInImage(isAvatar);
+    checkAllFillInImage(imageType);
 }
 
 //validation functions
@@ -1723,7 +1771,7 @@ function validHasValue(el) {
 }
 
 function validPhone(el) {
-    var patten = new RegExp(/^[1]+\d{10}/);
+    var patten = new RegExp(/^[1]+\d{10}$/);
     if (el.value && patten.test(el.value)) {
         el.classList.remove("error");
         return true;
@@ -1732,10 +1780,18 @@ function validPhone(el) {
         return false;
     }
 }
+/*
+$(".menutab-course").on('click', function () {
+    if (typeof (mixpanel) != "undefined") {
+        mixpanel.track("menu course");
+    }
+    myAlert("此功能将稍后开放", 2);
+});
 
-
-
-
-
-
-
+$(".menutab-mypage").on('click', function () {
+    if (typeof (mixpanel) != "undefined") {
+        mixpanel.track("menu mypage");
+    }
+    myAlert("此功能将稍后开放", 2);
+});
+*/

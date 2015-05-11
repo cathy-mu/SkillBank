@@ -18,8 +18,8 @@ function memberinfo_Class() {
     }
 
     this.validMobile = function (mobile) {
-        var patten = new RegExp(/^[1][3,4,5,8][0-9]{9}$/);
-        return patten.test(mobile);
+        var patten = new RegExp(/^[1]+\d{10}$/);
+        return (mobile != "" && patten.test(mobile));
     }
         
     this.searchCity = function () {
@@ -96,7 +96,7 @@ function memberinfo_Class() {
         }
 
         var phone = this.getInputValue("#profileinfo-phone");
-        if (phone == "" || !memberinfo.validMobile(phone)) {
+        if (!memberinfo.validMobile(phone)) {
             $("#profileinfo-phone").addClass("inputerror");
             return false;
         }

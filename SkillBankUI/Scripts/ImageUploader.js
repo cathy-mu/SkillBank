@@ -1,18 +1,20 @@
-﻿var uploadSetting;
+﻿var uploadSetting = {
+    imagetype: 1,
+    resize: { width: 640, quality: 95, preserve_headers: false },
+};
 
 var uploader = new plupload.Uploader({
     runtimes: 'html5,flash,silverlight,html4',
-    browse_button: 'pickfiles', // you can pass in id...
-    container: document.getElementById('uploadimg-container'), // ... or DOM Element itself
+    browse_button: 'pickfiles', // pass triggr id...
+    container: document.getElementById('uploadimg-container'), // image holder container
     url: 'http://v0.api.upyun.com/skillbank',
     flash_swf_url: '../js/Moxie.swf',
     silverlight_xap_url: '../js/Moxie.xap',
-    //resize: { width: 100, quality: 90 },
-    //multipart_params: uploadSetting.multipart_params,
+    resize: uploadSetting.resize,
     filters: {
         max_file_size: '10mb',
         mime_types: [
-            { title: "Image files", extensions: "jpg,gif,png,jpeg,bmp"}
+            { title: "Image files", extensions: "jpg,gif,png,jpeg,bmp" }
         ]
     },
 
@@ -21,19 +23,18 @@ var uploader = new plupload.Uploader({
         },
 
         UploadFile: function (up, file) {
-            console.log('[UploadFile]', file);
-            uploadSetting.multipart_params = {
+            var multipartParams = {
                 'Filename': document.getElementById('savekey').value,
                 'Content-Type': '',
                 'policy': document.getElementById('policy').value,
                 'signature': document.getElementById('signature').value
             };
-            uploader.setOption("multipart_params", uploadSetting.multipart_params);
+            uploader.setOption("multipart_params", multipartParams);
         }
     },
 
     init: {
-        PostInit: 
+        PostInit:
             function () {
                 var tigger = document.getElementsByClassName("fileupload-trigger");
                 if (tigger.length) {
@@ -53,25 +54,28 @@ var uploader = new plupload.Uploader({
                     }
                 }
             },
-
         FilesAdded: function (up, files) {
-            console.log("add image");
-            //plupload.each(files, function (file) {
-            //    console.log('  File:', file);
-            //});
+            //upload just last one file
+            if (up.files.length > 1) {
+                up.splice(0, up.files.length - 1);
+            }
+
             getUploadSetting(files[0]);
+        },
+        BeforeUpload: function (up, file) {
+            showLoadingIcon(true);
         },
         /*
         UploadProgress: function (up, file) {
-            console.log(file.percent);
             document.getElementById("progress").innerHTML = file.percent + "%";
         },
         */
         UploadComplete: function (up, files) {
             // Called when all files are either uploaded or failed
+            showLoadingIcon(false);
+            myAlert("保存成功", 2);
             console.log('[UploadComplete]');
         },
-
         Error: function (up, err) {
             console.log(err.code + ": " + err.message);
         }
@@ -80,22 +84,16 @@ var uploader = new plupload.Uploader({
 
 function initUploadSetting() {
     if (document.getElementsByClassName('edit-avatar')[0]) {
-    uploadSetting = {
-            isAvatar: true,
-            resize: { width: 180, quality: 90, preserve_headers: false }
-        };
-    } else {
         uploadSetting = {
-            isAvatar: false,
-            resize: { width: 640, quality: 95, preserve_headers: false }
+            imagetype: 2,
+            resize: { width: 360, quality: 95, preserve_headers: false }
         };
     }
+    //uploader.setOption("resize", uploadSetting.resize);
+    uploader.init();
     
-    uploader.setOption("resize", uploadSetting.resize);
 }
-
 function getUploadSetting(file) {
-    console.log("设置图片src");
     if (!file) return;
     if (!/image\//.test(file.type)) {
         alert("请选择图片格式文件");
@@ -104,16 +102,15 @@ function getUploadSetting(file) {
     $('#imagefileext')[0].value = ("." + file.name.match(/[^\.]+$/)).toLowerCase();
 
     previewImage(file, function (imgsrc) {
-        document.getElementById('uploadimg').src = imgsrc;
-        if (!uploadSetting.isAvatar)
-        {
+        var preImg = document.getElementById('uploadimg');
+        preImg.src = imgsrc;
+        if (document.getElementById('preview-cover')) {
             document.getElementById('preview-cover').src = imgsrc;
         }
-        //console.log(previewImg.naturalWidth);
-        //console.log(previewImg.naturalHeight);
+        //initUploadSetting(preImg.naturalWidth, preImg.naturalHeight);
+        getUpCloudOptions(uploadSetting.imagetype);
     });
-    
-    getUpCloudOptions(uploadSetting.isAvatar);
+
 }
 
 
@@ -129,7 +126,9 @@ function previewImage(file, callback) {//file为plupload事件监听函数参数
     } else {
         var preloader = new mOxie.Image();
         preloader.onload = function () {
-            //preloader.downsize(300, 300);//先压缩一下要预览的图片,宽300，高300
+            //if (uploadSetting.imagetype===1) {
+            //    preloader.downsize(640, 480);//先压缩一下要预览的图片,宽300，高300
+            //}
             var imgsrc = preloader.type == 'image/jpeg' ? preloader.getAsDataURL('image/jpeg', 80) : preloader.getAsDataURL(); //得到图片src,实质为一个base64编码的数据
             callback && callback(imgsrc); //callback传入的参数为预览图片的url
             preloader.destroy();
@@ -139,7 +138,3 @@ function previewImage(file, callback) {//file为plupload事件监听函数参数
     }
 }
 
-
-uploader.init();
-initUploadSetting();
-//getUploadSetting();

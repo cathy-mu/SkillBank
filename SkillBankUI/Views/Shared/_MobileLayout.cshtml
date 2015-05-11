@@ -34,6 +34,9 @@
             mixpanel.init("35e4fbb87e7a72277c35ff8542dbfddf");
         </script>
     }
+    <div class="loading" style="display: none;">
+        <span class="icon icon-refresh spin"></span>
+    </div>
     @RenderBody()
     <div class="my-alert vertical-middle">
         <div class="inner"></div>
@@ -42,8 +45,8 @@
     <script src="/bower_components/ratchet/dist/js/ratchet.js"></script>
     <script src="/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="/bower_components/lodash/dist/lodash.min.js"></script>
-    <script src="/Scripts/mcommon.js"></script>
     @RenderSection("FooterScripts", false)
+    <script src="/Scripts/mcommon.js"></script>
     @if (System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals("0"))
     {
         <script>

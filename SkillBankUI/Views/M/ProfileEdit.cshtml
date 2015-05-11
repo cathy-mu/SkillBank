@@ -23,8 +23,8 @@
         <div class="inner">
 
             <div class="edit-avatar mb-1">
-                <a href="#" id="uploadimg-container">
-                    <div style="width:78px;height:78px;border-radius: 50%; border: 3px solid #fff;overflow:hidden"><img class="avatar" src="@ContentHelper.GetAvatarPath(ViewBag.Memberinfo.Avatar, "mb")" id="uploadimg"></div>
+                <a href="#" id="uploadimg-container"><!--<div style="width:78px;height:78px;border-radius: 50%; border: 3px solid #fff;overflow:hidden"></div>-->
+                    <img class="avatar" src="@ContentHelper.GetAvatarPath(ViewBag.Memberinfo.Avatar, "mb")" id="uploadimg">
                     <span class="icon icomoon round icon-camera" id="pickfiles"></span>
                     <input type="file" />
                 </a>
@@ -56,7 +56,7 @@
             <textarea placeholder="技能银行的基础是真实的人际关系和互相的信任，你的自我介绍能帮助别人更好地了解你。" rows="5" name="introSelf">@ViewBag.MemberInfo.SelfIntro</textarea>
             <input type="hidden" id="imagefilename" name="imagefilename" value="@ViewBag.MemberInfo.MemberId" />
             <input type="hidden" id="imagefileext" name="imagefileext" value=".jpg"/>
-            <input type="hidden" id="imagefilesetting" name="imagefilesetting" />
+            <!--<input type="hidden" id="imagefilesetting" name="imagefilesetting" />-->
             <input type="hidden" id="policy" name="policy" />
             <input type="hidden" id="signature" name="signature" />
             <input type="hidden" id="savekey" name="savekey" />

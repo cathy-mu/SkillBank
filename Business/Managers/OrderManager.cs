@@ -22,7 +22,6 @@ namespace SkillBank.Site.Services.Managers
         List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck);
 
         void HandleMemberOrder(int memberId);
-     
     }
 
     public class OrderManager : IOrderManager
@@ -38,8 +37,7 @@ namespace SkillBank.Site.Services.Managers
         {
             _orderRep.HandleMemberOrder(memberId);
         }
-
-
+        
         public int AddOrder(int studentId, int classId, DateTime bookDate, String remark)
         {
             var result = _orderRep.AddOrder(studentId, classId, bookDate, remark);

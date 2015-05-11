@@ -12,7 +12,7 @@
             <a href="index.html" class="icon icomoon icon-arrow-left grey"></a>
             <span class="step-name center-title">第1/3步</span>
             <span align="right">
-                <a href="#2" data-ignore="push" class="btn disabled next btn-transparent" >下一步</a>
+                <a href="#2" data-ignore="push" class="btn disabled next btn-transparent">下一步</a>
                 <!--<a data-ignore="push" class="btn btn-step2">next</a>-->
             </span>
         </div>
@@ -41,8 +41,8 @@
             <span class="step-name center-title">第3/3步</span>
             <span><a href="#2" data-ignore="push" class="btn btn-transparent">上一步</a></span>
             <span class="right">
-                <a href="#" class="btn btn-transparent fileupload-trigger @(String.IsNullOrEmpty(Model.ClassInfo.Cover)?"disabled":"")" id="btnpreview">预览 </a>
-                <a href="#success" data-ignore="push" class="btn @(String.IsNullOrEmpty(Model.ClassInfo.Cover)?"disabled":"border-none btn-olive") next fileupload-trigger">发布 </a>
+                <a href="#" class="btn btn-transparent fileupload-trigger preview @(String.IsNullOrEmpty(Model.ClassInfo.Cover) ? "disabled" : "")" id="btnpreview">保存 </a>
+                <a href="#success" data-ignore="push" class="btn @(String.IsNullOrEmpty(Model.ClassInfo.Cover) ? "disabled" : "border-none btn-olive") next fileupload-trigger">发布 </a>
             </span>
         </div>
         <ul class="process-bar">
@@ -64,11 +64,11 @@
 <div class="add-course-page step-1 content active">
     <form>
         <div class="inner">
-            <h3 align="center" class="olive mb-1">基本描述 @(Model.ClassInfo == null ? 0 : Model.ClassInfo.ClassId)</h3>
+            <h3 align="center" class="olive mb-1">基本描述</h3>
             <input type="hidden" id="categoryid" name="categoryid" value="@(Model.ClassInfo == null ? "" : Model.ClassInfo.Category_Id.ToString())"/>
             <input type="hidden" id="classid" name="classid" value="@(Model.ClassInfo == null ? 0 : Model.ClassInfo.ClassId)"/>
-            <input type="hidden" id="cityid" name="cityid" value="@(ViewBag.MemberInfo.CityId>0?"":ViewBag.MemberInfo.CityId)"/>
-                        
+            <input type="hidden" id="cityid" name="cityid" value="@(ViewBag.MemberInfo.CityId > 0 ? "" : ViewBag.MemberInfo.CityId)"/>
+
             <input type="text" id="city" name="city" placeholder="你所在的城市" style="margin-bottom: 25px;" value="@ViewBag.CityName">
             <select id="skill-cat" name="skill-cat">
                 <option value='' disabled selected style='display: none;'>选择一项技能</option>
@@ -81,7 +81,7 @@
                     }
                 }
             </select>
-            <select id="skill-sub-cat" name="skill-sub-cat" @((Model.ClassInfo.Category_Id!=Model.ParentCategoryId)?"":"style=display:none;")>
+            <select id="skill-sub-cat" name="skill-sub-cat" @((Model.ClassInfo.Category_Id != Model.ParentCategoryId) ? "" : "style=display:none;")>
                 @if (Model.CategoryLkp != null && Model.CategoryLkp.Count > 0 && Model.ClassInfo != null)
                 {
                     foreach (var item in Model.CategoryLkp)
@@ -179,7 +179,7 @@
             <h5 class="mb-1">课程介绍</h5>
             <div class="limitedText">
                 <textarea placeholder="具体课程内容有什么？需要上几节课？需要学生有一定基础吗？不少于100字" rows="5" name="intro">@(Model.ClassInfo == null ? "" : Model.ClassInfo.Summary)</textarea>
-                <p class="warning" align="right"><small>还差<span>@(100-((Model.ClassInfo==null || String.IsNullOrEmpty(Model.ClassInfo.Summary))?0:(Model.ClassInfo.Summary.Length>100?100:Model.ClassInfo.Summary.Length)))</span>字</small></p>
+                <p class="warning" align="right"><small>还差<span>@(100 - ((Model.ClassInfo == null || String.IsNullOrEmpty(Model.ClassInfo.Summary)) ? 0 : (Model.ClassInfo.Summary.Length > 100 ? 100 : Model.ClassInfo.Summary.Length)))</span>字</small></p>
             </div>
             <h5 class="mb-1">你的闪光点</h5>
             <textarea placeholder="你的优势和吸引别人的理由是什么？" name="highlight">@(Model.ClassInfo == null ? "" : Model.ClassInfo.WhyU)</textarea>
@@ -212,21 +212,19 @@
                             <a href="#" class="icon icomoon icon-heart toggle-like"></a>
                         </div>
                     </div>
-                    <a href="#" class="cover-holder">
-                        <img src="@(String.IsNullOrEmpty(Model.ClassInfo.Cover)?"":ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "mm"))" id="uploadimg" />
-                    </a>
+                    <a href="#" class="cover-holder"><img src="@(String.IsNullOrEmpty(Model.ClassInfo.Cover) ? "" : ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "mm"))" id="uploadimg" /></a>
                     <div class="info"></div>
                     <a href="#" class="icon icomoon icon-camera round" id="pickfiles"></a>
                     <input type="file">
-                    <div class="fileinfo">
-                        <input type="hidden" id="imagefilesetting" name="imagefilesetting" />
-                        <input type="hidden" id="imagefileext" name="imagefileext" />
-                        <input type="hidden" id="imagefilename" name="imagefilename" value="@ViewBag.ClassId"/>
-                        <input type="hidden" id="policy" name="policy" />
-                        <input type="hidden" id="signature" name="signature" />
-                        <input type="hidden" id="savekey" name="savekey" />
-                    </div>
                 </div>
+            </div>
+            <div class="fileinfo">
+                <!--<input type="hidden" id="imagefilesetting" name="imagefilesetting" />-->
+                <input type="hidden" id="imagefileext" name="imagefileext" />
+                <input type="hidden" id="imagefilename" name="imagefilename" value="@ViewBag.ClassId"/>
+                <input type="hidden" id="policy" name="policy" />
+                <input type="hidden" id="signature" name="signature" />
+                <input type="hidden" id="savekey" name="savekey" />
             </div>
         </div>
     </form>

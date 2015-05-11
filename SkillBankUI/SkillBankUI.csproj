@@ -1156,6 +1156,7 @@
     <Content Include="img\select2-spinner.gif" />
     <Content Include="img\signup-arrow.png" />
     <Content Include="Scripts\ImageUploader.js" />
+    <Content Include="Scripts\ImageUploader1.js" />
     <Content Include="Scripts\PlugIns\mediaelement\background.png" />
     <Content Include="Scripts\PlugIns\mediaelement\bigplay.png" />
     <Content Include="Scripts\PlugIns\mediaelement\bigplay.svg" />

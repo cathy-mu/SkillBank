@@ -71,7 +71,7 @@ namespace SkillBank.Site.Web
             }
             else
             {
-                return datetime.ToString("MM.dd.yyyy");
+                return datetime.ToString("yyyy.M.d");
             }
         }
 

@@ -29,8 +29,8 @@ namespace MvcTesting.Controllers.WebApi
             var classId = HttpContext.Current.Request["imagefilename"];
             var isPublish = HttpContext.Current.Request["ispublish"];
 
-            //String fileName = String.Concat(classId, "_", DateTime.Now.ToString("yyMMddhhmmss"), HttpContext.Current.Request["imagefileext"]);
-            String fileName = String.Concat(classId, HttpContext.Current.Request["imagefileext"]);//For image upload testing
+            String fileName = String.Concat(classId, "_", DateTime.Now.ToString("yyMMddhhmmss"), HttpContext.Current.Request["imagefileext"]);
+            //String fileName = String.Concat(classId, HttpContext.Current.Request["imagefileext"]);//For image upload testing
             Stream fileStream = file.InputStream;
 
             var coverPath = String.Concat("/", System.Configuration.ConfigurationManager.AppSettings["ENV"], ConfigConstants.ThirdPartySetting.UpYun.ClassCoverPathPrefix, fileName);

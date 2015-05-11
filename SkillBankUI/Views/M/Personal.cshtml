@@ -31,7 +31,7 @@
             {
                 <a href="#" class="follow btn border-none btn-grey" data-memberid="@Model.MemberInfo.MemberId">已关注</a>
             }
-            else if (ViewBag.MemberInfo != null && (Model.MemberInfo.MemberId.Equals(Model.MemberInfo.MemberId)))
+            else if (ViewBag.MemberInfo != null && (ViewBag.MemberInfo.MemberId.Equals(Model.MemberInfo.MemberId)))
             {
                 <a href="#" class="follow btn border-none btn-olive" data-memberid="-1">关注</a>
             } else{

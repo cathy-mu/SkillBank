@@ -25,5 +25,6 @@ namespace SkillBank.Site.DataSource.Data
         public string Email { get; set; }
         public string Avatar { get; set; }
         public bool HasReview { get; set; }
+        public string Remark { get; set; }
     }
 }

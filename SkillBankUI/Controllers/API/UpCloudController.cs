@@ -35,7 +35,7 @@ namespace SkillBankWeb.Controllers.API
         /// </summary>
         /// <param name="fileName">{id}.{suffix}</param>
         /// <returns></returns>
-        public UploadPara Post(String fileName, Boolean isAvatar)
+        public UploadPara Post(String fileName, Byte imageType)
         {
             DateTime time = DateTime.Now.AddMinutes(30);
 
@@ -44,15 +44,23 @@ namespace SkillBankWeb.Controllers.API
             String expiration = t.ToString();
             String paras;
             //Get policy by 
-            if (isAvatar)
+            if (imageType.Equals(2))
             {
                 fileName = String.Concat("/", System.Configuration.ConfigurationManager.AppSettings["ENV"], ConfigConstants.ThirdPartySetting.UpYun.AvatarPathPrefix, fileName);
-                paras = String.Concat("{\"bucket\":\"", bucket, "\",\"expiration\":", expiration, ",\"save-key\":\"", fileName, "\",\"x-gmkerl-type\":\"fix_width\",\"x-gmkerl-type\":\"" + ConfigConstants.ThirdPartySetting.UpYun.AvatarImgSize["h"] + "\",\"x-gmkerl-crop\":\"0,0,180,180\"}");
+                //paras = String.Concat("{\"bucket\":\"", bucket, "\",\"expiration\":", expiration, ",\"save-key\":\"", fileName, "\",\"x-gmkerl-type\":\"fix_width\",\"x-gmkerl-value\":\"360\",\"x-gmkerl-crop\":\"0,0,360,360\"}");
+                paras = String.Concat("{\"bucket\":\"", bucket, "\",\"expiration\":", expiration, ",\"save-key\":\"", fileName, "\",\"x-gmkerl-type\":\"fix_both\",\"x-gmkerl-value\":\"360x360\"}");//
+            }
+            else if (imageType.Equals(3))
+            {
+                fileName = String.Concat("/", System.Configuration.ConfigurationManager.AppSettings["ENV"], ConfigConstants.ThirdPartySetting.UpYun.AvatarPathPrefix, fileName);
+                //paras = String.Concat("{\"bucket\":\"", bucket, "\",\"expiration\":", expiration, ",\"save-key\":\"", fileName, "\",\"x-gmkerl-type\":\"fix_height\",\"x-gmkerl-value\":\"360\",\"x-gmkerl-crop\":\"0,0,360,360\"}");
+                paras = String.Concat("{\"bucket\":\"", bucket, "\",\"expiration\":", expiration, ",\"save-key\":\"", fileName, "\",\"x-gmkerl-type\":\"fix_both\",\"x-gmkerl-value\":\"360x360\"}");
             }
             else
             {
+                fileName = fileName.Replace(".",String.Concat("_", DateTime.Now.ToString("yyMMddhhmmss"),"."));
                 fileName = String.Concat("/", System.Configuration.ConfigurationManager.AppSettings["ENV"], ConfigConstants.ThirdPartySetting.UpYun.ClassCoverPathPrefix, fileName);
-                paras = String.Concat("{\"bucket\":\"", bucket, "\",\"expiration\":", expiration, ",\"save-key\":\"", fileName, "\",\"x-gmkerl-type\":\"fix_width\",\"x-gmkerl-type\":\"" + ConfigConstants.ThirdPartySetting.UpYun.ClassCoverSize["h"][0] +"\",\"x-gmkerl-crop\":\"0,0,640,480\"}");
+                paras = String.Concat("{\"bucket\":\"", bucket, "\",\"expiration\":", expiration, ",\"save-key\":\"", fileName, "\",\"x-gmkerl-type\":\"fix_width\",\"x-gmkerl-value\":\"640\",\"x-gmkerl-crop\":\"0,0,640,480\"}");
             }
             byte[] bytes = Encoding.Default.GetBytes(paras);
             string policy = Convert.ToBase64String(bytes);

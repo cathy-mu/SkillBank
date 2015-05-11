@@ -80,7 +80,7 @@ namespace SkillBank.Site.Services
         List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck);
         List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck);
         void HandleMemberOrder(int memberId);
-
+        
         //Message
         int AddMessage(int fromId, int toId, String messageText);
         Boolean SetMessageAsRead(int maxId, int memberId, int contactorId);
@@ -94,6 +94,8 @@ namespace SkillBank.Site.Services
         List<NotificationItem> GetNotification(int memberId, Byte loadType);
         List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType);
         void UpdateNotification(Byte saveType, int memberId, int paraId = 0);
+        void SendOrderUpdateSMS(Byte statusType, String mobile, String className, String link, Boolean sendSMS = true);
+        void SendClassProveSMS(Boolean isProve, String mobile, String className, String link, Boolean sendSMS = true);
 
         // report and tools
         List<ReportNumItem> GetReportClassMemberNum();
@@ -147,7 +149,16 @@ namespace SkillBank.Site.Services
         {
             _notificationMgr.UpdateNotification(saveType, memberId, paraId);
         }
+        
+        public void SendOrderUpdateSMS(Byte statusType, String mobile, String className, String link, Boolean sendSMS = true)
+        {
+            _notificationMgr.SendOrderUpdateSMS(statusType, mobile, className, link, sendSMS);
+        }
 
+        public void SendClassProveSMS(Boolean isProve, String mobile, String className, String link, Boolean sendSMS = true)
+        {
+            _notificationMgr.SendClassProveSMS(isProve, mobile, className, link, sendSMS);
+        }
 
         #endregion
 
@@ -177,7 +188,7 @@ namespace SkillBank.Site.Services
         {
             return _memberMgr.SendMobileVerifyCode(memberId, mobile, sendSMS);
         }
-
+        
         public Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd)//tool
         {
             return _memberMgr.CoinUpdate(updateType, memberId, classId, coinsToAdd);

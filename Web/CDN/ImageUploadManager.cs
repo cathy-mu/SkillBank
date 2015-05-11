@@ -64,7 +64,7 @@ namespace SkillBank.Site.Web.CDN
             Hashtable headers = new Hashtable();
             headers.Add("x-gmkerl-type", "fix_width");
             headers.Add("x-gmkerl-value", ConfigConstants.ThirdPartySetting.UpYun.ClassCoverSize["h"][0]);
-            headers.Add("x-gmkerl-quality", "10");
+            //headers.Add("x-gmkerl-quality", "90");
             if (!String.IsNullOrEmpty(cropSetting))
             {
                 headers.Add("x-gmkerl-crop", cropSetting);//"top,left,width,height"  

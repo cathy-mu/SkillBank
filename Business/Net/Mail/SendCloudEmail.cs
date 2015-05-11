@@ -7,7 +7,7 @@ using CodeScales.Http.Entity;
 using CodeScales.Http.Entity.Mime;
 using CodeScales.Http.Methods;
 using SkillBank.Site.Common;
-
+        
 namespace SkillBank.Site.Services.Net.Mail
 {
     public class SendCloudEmail
@@ -83,6 +83,7 @@ namespace SkillBank.Site.Services.Net.Mail
                 SendTemplateMail(ConfigConstants.SendCloudMailSetting.OrderStatusChanged_EmailSubject, ConfigConstants.SendCloudMailSetting.OrderStatusChanged_TemplateName, "{\"to\": [\"" + emailAddress + "\"], \"sub\" : { \"%name%\" : [\"" + memberName + "\"], \"%class%\" : [\"" + className + "\"], \"%action%\" : [\"" + actionName + "\"], \"%clink%\" : [\"" + detailLink + "\"]} }");
             }
         }
+
 
         /// <summary>
         /// User send cloud template send email 

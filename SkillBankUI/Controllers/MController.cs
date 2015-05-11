@@ -203,6 +203,41 @@ namespace SkillBank.Controllers
             return View(classDetailModel);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">Class Id</param>
+        /// <returns></returns>
+        public ActionResult CoursePreview(int id = 0)
+        {
+            String className = "";
+            int memberId = GetCurrentMemberInfo(false);
+
+            ClassDetailModel classDetailModel = new ClassDetailModel();
+            if (id > 0)
+            {
+                var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassId, id, 0);
+                //Class Owner
+                if (classInfo != null && classInfo.Member_Id.Equals(memberId))
+                {
+                    classInfo.ClassId = id;
+                    classDetailModel.ClassInfo = classInfo;
+                    className = String.IsNullOrEmpty(classInfo.Title) ? ResourceHelper.GetTransText(560) : classInfo.Title;
+                }
+                else
+                {
+                    classDetailModel.ClassInfo = null;
+                    ViewBag.ErrorMessage = ResourceHelper.GetTransText(580);//No class info
+                }
+            }
+
+            var metaTags = MetaTagHelper.GetMetaTags("classdetail");
+            ViewBag.MetaTagTitle = metaTags[0].Replace("{0}", className);
+            ViewBag.MetaTagKeyWords = metaTags[1];
+            ViewBag.MetaTagDescription = metaTags[2];
+
+            return View(classDetailModel);
+        }
 
         public ActionResult Message()
         {
@@ -221,7 +256,7 @@ namespace SkillBank.Controllers
                 messageListModel.UnReadMessageNumDic = unReadMessageNum;
 
                 _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetNotificationAsPopedByMemberId, memberId, 0);
-                GetNotificationNums(memberId, true);
+                GetNotificationNums(memberId);
             }
             return View(messageListModel);
         }
@@ -467,7 +502,7 @@ namespace SkillBank.Controllers
 
 
         //Show on bottom menu and message page
-        private void GetNotificationNums(int memberId, Boolean showNewMessage = false)
+        private void GetNotificationNums(int memberId)
         {
             if (memberId > 0)
             {
@@ -481,7 +516,7 @@ namespace SkillBank.Controllers
                 else
                 {
                     alterNums.Add("n", result.Any(a => (a.PopNum > 0 && (a.Type.Equals("m") || a.Type.Equals("s")))) ? 1 : 0);
-                    alterNums.Add("m", (showNewMessage && result.Any(a => (a.Number > 0 && a.Type.Equals("m")))) ? 1 : 0);
+                    alterNums.Add("m", (result.Any(a => (a.Number > 0 && a.Type.Equals("m")))) ? 1 : 0);
                 }
 
                 ViewBag.AlterNums = alterNums;
@@ -516,19 +551,22 @@ namespace SkillBank.Controllers
         {
             ViewBag.ActiveTab = 3;
             ViewBag.AlterNums = null;
+            Byte loadType = 0;
             
             var memberId = GetCurrentMemberInfo(true);
             if (id.Equals(0) || id.Equals(memberId))//own fans 
             {
                 id = memberId;
                 ViewBag.Avatar = ViewBag.MemberInfo.Avatar;
+                loadType = (Byte)Enums.DBAccess.FavoriteLoadType.ByFollwingMemberAViewerId;
             }
             else if (id > 0)//if view others fans 
             {
                 var memberInfo = _commonService.GetMemberInfo(id);
                 ViewBag.Avatar = (memberInfo == null ? "" : memberInfo.Avatar);
+                loadType = (Byte)Enums.DBAccess.FavoriteLoadType.ByFansMemberAViewerId;
             }
-            var result = _commonService.GetFavorites((Byte)Enums.DBAccess.FavoriteLoadType.ByFollwingMemberAViewerId, id, memberId);
+            var result = _commonService.GetFavorites(loadType, id, memberId);
             
             return View(result);
         }
@@ -661,6 +699,8 @@ namespace SkillBank.Controllers
 
             var shouldCheckOrder = false;// CheckOrderHandlerDate("TOrderHandleDate", memberId);
             var orders = _commonService.GetOrderListByStudent(memberId, shouldCheckOrder);
+            GetNotificationNums(memberId);
+
             return View(orders);
         }
 
@@ -673,6 +713,8 @@ namespace SkillBank.Controllers
             var shouldCheckOrder = false;// CheckOrderHandlerDate("TOrderHandleDate", memberId);
 
             var orders = _commonService.GetOrderListByTeacher(memberId, shouldCheckOrder);
+            GetNotificationNums(memberId);
+
             return View(orders);
         }
 
@@ -683,6 +725,7 @@ namespace SkillBank.Controllers
             var memberId = GetCurrentMemberInfo(true);
 
             var ClassEditList = _commonService.GetClassEditInfoByMemberId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherId);
+            GetNotificationNums(memberId);
 
             return View(ClassEditList);
         }
@@ -700,7 +743,7 @@ namespace SkillBank.Controllers
                 cityName = LookupHelper.GetCityNameById(cityDic, ViewBag.MemberInfo.CityId);
             }
             ViewBag.CityName = cityName;
-            //GetNotificationNums(currMemberId);
+            GetNotificationNums(memberId);
 
             return View(numDic);
         }
