@@ -1,6 +1,6 @@
 ﻿var uploadSetting = {
     imagetype: 1,
-    resize: { width: 640, quality: 95, preserve_headers: false },
+    resize: { width: 640, quality: 95, preserve_headers: false }
 };
 
 var uploader = new plupload.Uploader({

@@ -1198,7 +1198,7 @@ function initPubClassStep2() {
      });
 }
 
-function initPubClassStep3(isPublish) {
+function initPubClassStep3(isPublish) {    
     var $form = $('.step-3 form')[0];
     var data = {
         "ClassId": $('#classid')[0].value,
