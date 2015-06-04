@@ -336,7 +336,7 @@
 
                         @if (ViewBag.MemberInfo == null)
                         {
-                            <a href="#modal-login" data-toggle="modal" class="btn btn-primary">@Html.GetTrans(202)</a>
+                            <a href="#modal-login" data-toggle="modal" class="btn btn-primary btn-block">@Html.GetTrans(202)</a>
                         }
                         else
                         {
@@ -428,7 +428,7 @@
                             <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "s", Model.MemberInfo.SocialType)"></a>
                         @if (ViewBag.MemberInfo == null)
                         {
-                            <a href="#modal-login" data-toggle="modal" class="btn btn-primary">@Html.GetTrans(199)</a>
+                            <a href="#modal-login" data-toggle="modal" class="btn btn-primary">@Html.GetTrans(202)</a>
                         }
                         else
                         {

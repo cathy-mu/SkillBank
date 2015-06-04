@@ -153,14 +153,22 @@ function classdetail_Class() {
             $("#classpreview-disactive").click(function () { classdetail.setClassTag($(this), 2, true); });
         }
     }
-
+    
+    this.validCompareDate = function (comparedate, currdate) {
+        if (currdate == comparedate)
+            return 0;
+        else {
+            return (comparedate > currdate) ? 1 : -1;
+        }
+    }
+    
     this.addOrder = function () {
         var classId = $("#classdetail-hidclassid").val();
 
         var dateCtl = $("#bookpop-bookdate");
         var bookDate = dateCtl.val();
         var currDate = $("#bookpop-currdate").val();
-        if (bookDate != "" && sitecommon.validCompareDate(bookDate, currDate) > 0) {
+        if (bookDate != "" && classdetail.validCompareDate(bookDate, currDate) > 0) {
             dateCtl.removeClass("inputerror");
         } else {
             dateCtl.addClass("inputerror");
@@ -206,7 +214,8 @@ function classdetail_Class() {
         
         if (typeof (mixpanel) != "undefined") {
             mixpanel.track("book class");
-        } 
+        }
+        
         $.ajax({
             url: savePath,
             type: "POST",
@@ -219,6 +228,7 @@ function classdetail_Class() {
                 }
             }
         });
+        
     }
 
     this.addMessage = function () {

@@ -324,28 +324,7 @@ function sitecommon_Class() {
             return false;
         return true;
     }
-
-    this.validCompareDate = function (comparedate, currdate) {
-        if (currdate == comparedate)
-            return 0;
-        else {
-            if (currdate.substr(6, 2) == "20") {
-                currdate = currdate.substr(-4, 4) + "/" + currdate.substr(3, 2) + "/" + currdate.substr(0, 2);
-            }
-            else {
-                currdate = currdate.substr(0, 4) + "/" + currdate.substr(5, 2) + "/" + currdate.substr(8, 2);
-            }
-            var comyear = comparedate.substr(-4, 4);
-            comparedate = comyear + "/" + comparedate.substr(0, 5);
-            if (comparedate > currdate) {
-                return 1;
-            }
-            else {
-                return -1;
-            }
-        }
-    }
-
+    
     this.validCode = function (code) {
         var patten = new RegExp(/^[0-9]{6}$/);
         return (code != "" && patten.test(code));
