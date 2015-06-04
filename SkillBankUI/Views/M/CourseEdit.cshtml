@@ -63,7 +63,7 @@
 
 <div class="add-course-page step-1 content active">
     <form>
-        <div class="inner">
+        <div class="inner"> 
             <h3 align="center" class="olive mb-1">基本描述</h3>
             <input type="hidden" id="categoryid" name="categoryid" value="@(Model.ClassInfo == null ? "" : Model.ClassInfo.Category_Id.ToString())"/>
             <input type="hidden" id="classid" name="classid" value="@(Model.ClassInfo == null ? 0 : Model.ClassInfo.ClassId)"/>
@@ -98,9 +98,9 @@
                     }
                 }
             </select>
-            <h5 class="mb-0">你的技能水平</h5>
-            <div class="select-lever">
-                <div class="wrapper">
+            <h5 class="mb-05">你的技能水平</h5>
+            <div class="custom-range">
+                <div class="bg">
                     <ul class="vertical-lines">
                         <li></li>
                         <li></li>
@@ -108,20 +108,19 @@
                         <li></li>
                         <li></li>
                     </ul>
-                    <input type="range" min="0" max="100" step="1" onchange="showRangeVal(this)" value="@(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel)">
-                    <span id="skilllevel" class="num" style="left: @(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel)%; margin-left: @(-(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel) * 30 * 0.01)px;">@(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel)</span>
                 </div>
-                <ul class="levers">
-                    <li>初学</li>
-                    <li>略懂</li>
-                    <li>良好</li>
-                    <li>熟练</li>
-                    <li>精通</li>
-                </ul>
+                <span id="skilllevel" class="handle">@(Model.ClassInfo == null ? 50 : Model.ClassInfo.SkillLevel)</span>
             </div>
-            <h5 class="mb-0">你的教学水平</h5>
-            <div class="select-lever">
-                <div class="wrapper">
+            <ul class="levers clearfix">
+                <li>初学</li>
+                <li>略懂</li>
+                <li>良好</li>
+                <li>熟练</li>
+                <li>精通</li>
+            </ul>
+            <h5 class="mb-05">你的教学水平</h5>
+            <div class="custom-range">
+                <div class="bg">
                     <ul class="vertical-lines">
                         <li></li>
                         <li></li>
@@ -129,17 +128,16 @@
                         <li></li>
                         <li></li>
                     </ul>
-                    <input type="range" min="0" max="100" step="1" onchange="showRangeVal(this)" value="@(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel)">
-                    <span id="teachlevel" class="num" style="left: @(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel)%; margin-left: @(-(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel) * 30 * 0.01)px;">@(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel)</span>
                 </div>
-                <ul class="levers">
-                    <li>初学</li>
-                    <li>略懂</li>
-                    <li>良好</li>
-                    <li>熟练</li>
-                    <li>精通</li>
-                </ul>
+                <span id="teachlevel" class="handle">@(Model.ClassInfo == null ? 50 : Model.ClassInfo.TeacheLevel)</span>
             </div>
+            <ul class="levers clearfix">
+                <li>初学</li>
+                <li>略懂</li>
+                <li>良好</li>
+                <li>熟练</li>
+                <li>精通</li>
+            </ul>
         </div>
     </form>
 </div>
@@ -212,7 +210,8 @@
                             <a href="#" class="icon icomoon icon-heart toggle-like"></a>
                         </div>
                     </div>
-                    <a href="#" class="cover-holder"><img src="@(String.IsNullOrEmpty(Model.ClassInfo.Cover) ? "" : ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "mm"))" id="uploadimg" /></a>
+                    <a href="#" class="cover-holder">
+                        <img src="@(String.IsNullOrEmpty(Model.ClassInfo.Cover) ? "" : ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "h"))" id="uploadimg" /></a>
                     <div class="info"></div>
                     <a href="#" class="icon icomoon icon-camera round" id="pickfiles"></a>
                     <input type="file">
@@ -250,9 +249,9 @@
                         <img id="preview-cover" src="@ContentHelper.GetClassCoverPath(Model.ClassInfo.Cover, "mm")" alt="" class="cover">
                     </a>
                     <div class="info">
-                        <a href="@Url.Action("profileedit", "m")">
+                        <a class="profileedit-link">
                             <img src="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mb")" alt="" class="avatar">
-                            <a href="@Url.Action("profileedit", "m")" class="icon icomoon icon-pencil round yellow"></a>
+                            <a class="profileedit-link icon icomoon icon-pencil round yellow"></a>
                         </a>
                         <h4>@ViewBag.MemberInfo.Name</h4>
                         <p id="preview-city">@ViewBag.CityName</p>

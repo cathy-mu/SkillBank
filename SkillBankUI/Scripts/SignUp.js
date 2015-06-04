@@ -36,7 +36,9 @@ function signup_Class() {
     };
 
     this.initEvents = function () {
-        $("#signup-subbtn").click(function () { signup.validSignUpForm(); });
+        $("#signup-subbtn").click(function () {           
+            signup.validSignUpForm();
+        });
     };
 
     this.initInfo = function () {
@@ -52,9 +54,9 @@ function signup_Class() {
 
             $("#signup-socialname").text(name);
             $("#signup-socialavatar").attr("src", sitecommon.getMemberAvatarPath(avatarPath, "m"));
-            $("#signup-hidavatar").val(sitecommon.getMemberSocialAvatar());
-            $("#signup-hidsid").val(sitecommon.getMemberSocialId());
-            $("#signup-hidtype").val(sitecommon.getMemberSocialType());
+            //$("#signup-hidavatar").val(sitecommon.getMemberSocialAvatar());
+            //$("#signup-hidsid").val(sitecommon.getMemberSocialId());
+            //$("#signup-hidtype").val(sitecommon.getMemberSocialType());
         }
         //Redirect if user already log in
         else if ($("#signup-mid").val() != undefined)
@@ -81,9 +83,9 @@ function signup_Class() {
             }
             var city = 0;
             var userName = this.nameObj.val();
-            var paraData = { account: $("#signup-hidsid").val(), socialType: $("#signup-hidtype").val(), memberName: userName, email: this.emailObj.val(), avatar: $("#signup-hidavatar").val()/*, cityId: city*/ };
+            var paraData = { account: $("#signup-hidsid").val(), socialType: $("#signup-hidtype").val(), memberName: userName, email: this.emailObj.val(), avatar: $("#signup-hidavatar").val(), gender: ($("#signup-gender").val()==="1") };
             consoleLog(paraData);
-
+            
             $.ajax({
                 url: this.createMemberPath,
                 type: "POST",
@@ -117,7 +119,7 @@ function signup_Class() {
         }
 
         if ($.getUrlParam("code") == "y") {
-            alert("mobile");
+            
         }/*
         else if (backUrl.indexOf("/login") > 0) {
             location.href = "/m/register";

@@ -43,7 +43,7 @@
                     <div class="row-fluid spaced">
                         <div class="span2 tright">@Html.GetTrans(318)</div>
                         <div class="span10">
-                            <input type="text" id="acceptpop-contactphone" class="form-control span6" value="@ViewBag.MemberInfo.Phone" /></div>
+                            <input type="text" id="acceptpop-contactphone" class="form-control span6" value="@ViewBag.MemberInfo.Phone" @(String.IsNullOrEmpty(ViewBag.MemberInfo.Phone)?"":"disabled=disabled") /></div>
                     </div>
 
                     <div class="row-fluid spaced">
@@ -60,6 +60,7 @@
                     <input type="hidden" id="acceptpop-hidstudentid" />
                     <input type="hidden" id="acceptpop-updatememberinfo" />
                     <input type="hidden" id="acceptpop-hidmailto" />
+                    <input type="hidden" id="acceptpop-hidmobile" />
                 </div>
 
             </div>

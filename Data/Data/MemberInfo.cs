@@ -39,5 +39,6 @@ namespace SkillBank.Site.DataSource.Data
         public byte VerifyTag { get; set; }
         public bool IsLike { get; set; }
         public string MasterInfo { get; set; }
+        public byte NotifyTag { get; set; }
     }
 }

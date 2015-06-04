@@ -50,7 +50,7 @@ namespace SkillBankWeb.API
         public List<ClassListItem> GetClassList(Byte by, Byte type, int mid = 0, String key = "", Double x = 0, Double y = 0, String city = "")
         {
             mid = WebContext.Current.MemberId;
-            int coverw = 600;
+            int coverw = ConfigConstants.ThirdPartySetting.UpYun.ClassCoverSize["h"][0];
             int avatarw = 150;
             key = String.IsNullOrEmpty(key) ? "" : key;
             var cityDic = _contentService.GetCities("cn");

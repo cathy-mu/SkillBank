@@ -20,7 +20,7 @@ namespace SkillBank.Site.Services
         MemberInfo GetMemberInfo(int memberId, int relatedMemberId = 0);
         MemberInfo GetMemberInfo(String openId);
         MemberInfo GetMemberInfo(String socialAccount, Byte socialType);
-        int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", string etag = "");
+        int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", string etag = "", Boolean isMale = true);
         Boolean UpdateMemberInfo(int memberId, Byte saveType, String saveValue, String saveValue2 = "");
         Boolean UpdateMemberProfile(MemberInfo memberInfo,Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile);
         void SaveEmailAccount(String name, String email);
@@ -31,7 +31,8 @@ namespace SkillBank.Site.Services
         Boolean HasShareClassCoin(int memberId);
         Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS = true);
         Byte VerifyMobile(int memberId, String mobile, String verifyCode);
-        Byte CheckIsMobileVerified(int memberId);
+        //[Obsolete]
+        //Byte CheckIsMobileVerified(int memberId);
         Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount);
         void UpdateMemberLikeTag(int memberId, int relatedId, Boolean isLike);
         List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId);
@@ -94,9 +95,10 @@ namespace SkillBank.Site.Services
         List<NotificationItem> GetNotification(int memberId, Byte loadType);
         List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType);
         void UpdateNotification(Byte saveType, int memberId, int paraId = 0);
-        void SendOrderUpdateSMS(Byte statusType, String mobile, String className, String link, Boolean sendSMS = true);
+        void SendOrderUpdateSMS(Byte statusType, String mobile, String className, Boolean sendSMS = true);
         void SendClassProveSMS(Boolean isProve, String mobile, String className, String link, Boolean sendSMS = true);
-
+        void SendNewMessageSMS(String mobile, String name, String link, Boolean sendSMS = true);
+        
         // report and tools
         List<ReportNumItem> GetReportClassMemberNum();
         List<ReportOrderStatus_Load_p_Result> GetReportClassMemberNum(Byte loadBy, DateTime beginDate, DateTime endDate);
@@ -150,14 +152,19 @@ namespace SkillBank.Site.Services
             _notificationMgr.UpdateNotification(saveType, memberId, paraId);
         }
         
-        public void SendOrderUpdateSMS(Byte statusType, String mobile, String className, String link, Boolean sendSMS = true)
+        public void SendOrderUpdateSMS(Byte statusType, String mobile, String className, Boolean sendSMS = true)
         {
-            _notificationMgr.SendOrderUpdateSMS(statusType, mobile, className, link, sendSMS);
+            _notificationMgr.SendOrderUpdateSMS(statusType, mobile, className, sendSMS);
         }
 
         public void SendClassProveSMS(Boolean isProve, String mobile, String className, String link, Boolean sendSMS = true)
         {
             _notificationMgr.SendClassProveSMS(isProve, mobile, className, link, sendSMS);
+        }
+
+        public void SendNewMessageSMS(String mobile, String name, String link, Boolean sendSMS = true)
+        {
+            _notificationMgr.SendNewMessageSMS(mobile, name, link, sendSMS);
         }
 
         #endregion
@@ -239,9 +246,9 @@ namespace SkillBank.Site.Services
         /// <param name="email"></param>
         /// <param name="cityId"></param>
         /// <returns></returns>
-        public int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", String etag = "")
+        public int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", String etag = "", Boolean gender = true)
         {
-            return this._memberMgr.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, etag);
+            return this._memberMgr.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, etag, gender);
         }
 
         /// <summary>

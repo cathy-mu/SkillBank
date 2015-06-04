@@ -10,8 +10,10 @@
     <nav>
         <div class="segmented-control-no-js card">
             <a href="#" class="control-item active">课程管理</a>
-            <a href="@Url.Action("teaching", "m")" class="control-item">教课记录</a>
-            <a href="@Url.Action("learning", "m")" class="control-item">学习记录</a>
+            <a href="@Url.Action("teaching", "m")" class="control-item red-dot-wrapper">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["t"] > 0)
+                                                                                        {<span class="red-dot"></span>}教课记录</a>
+            <a href="@Url.Action("learning", "m")" class="control-item red-dot-wrapper">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["l"] > 0)
+                                                                        {<span class="red-dot"></span>}学习记录</a>
         </div>
     </nav>
     <div class="well">
@@ -56,7 +58,9 @@
                     else if (item.PublishStatus.Equals(0))
                     {
                         <span class="btn-tag grey">编辑中</span>
-                    }else {
+                    }
+                    else
+                    {
                         <span class="btn-tag grey">修改中</span>
                     }
                 </div>

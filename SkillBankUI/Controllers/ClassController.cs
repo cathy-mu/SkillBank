@@ -235,12 +235,8 @@ namespace SkillBank.Controllers
 
                     classDetailModel.IsLogin = (currMemberId > 0);
                     classDetailModel.IsOwner = memberId.Equals(currMemberId);
-                    //if (!classDetailModel.IsOwner)
-                    //{
-                    //    var myInfo = _commonService.GetMemberInfo(currMemberId);
-                    //    classDetailModel.MyInfo = myInfo;
-                    //}
-
+                    ViewBag.ContactMobile = (memberInfo.NotifyTag & 1).Equals(1) ? memberInfo.Phone : "";//for send SMS notify
+                    
                     //init numbers on page
                     var numDic = _commonService.GetNumsByMemberClass(memberId, id);
                     int sum0 = numDic[Enums.NumberDictionaryKey.Result01] + numDic[Enums.NumberDictionaryKey.Result02] + numDic[Enums.NumberDictionaryKey.Result03];

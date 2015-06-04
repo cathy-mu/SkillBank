@@ -3,7 +3,7 @@
 {@Html.CombresCustomUrl("chatCss")}
 @section FooterJs
 {@Html.CombresCustomUrl("chatJs")}
-<!--Member self view only / mypage-->
+
 <div class="body">
     <div class="inner">
 
@@ -27,7 +27,8 @@
                                 </div>
                             </div>
                             <div class="sendmessage-btn">
-                                <button class="btn btn-primary" id="chat-sendmessagebtn" type="button">@Html.GetTrans(462)</button>
+                                <a id="chat-verify-mobile" href="#modal-verify-mobile" data-toggle="modal"></a>
+                                <button class="btn btn-primary" id="chat-sendmessagebtn" type="button" data-mobile="@ViewBag.ContactMobile" data-isverify="@(ViewBag.MemberInfo.VerifyTag & 1)">@Html.GetTrans(462)</button>
                             </div>
                         </div>
                         @if (Model.Messages != null && ViewBag.MemberInfo != null)
@@ -162,4 +163,4 @@
 
     </div>
 </div>
-
+@Html.Partial("_VerifyMobilePartial")

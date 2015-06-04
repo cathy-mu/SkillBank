@@ -37,19 +37,22 @@ namespace SkillBankWeb.Controllers
         /// <param name="classTitle">Provide Class title if it's from class page</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult AddMessage(int to, String message, String msname, String mremail, String mrname, String title = "")
+        public JsonResult AddMessage(int to, String message, String msname, String mremail, String mrname, String title = "", String mobile = "")
         {
             var fromId = WebContext.Current.MemberId;
             if (!String.IsNullOrEmpty(title))
             {
                 message = String.Format("{0}      [{1}]", message, title);
             }
-            _commonService.AddMessage(fromId, to, message);
-            if (!String.IsNullOrEmpty(mremail))
+            var result = _commonService.AddMessage(fromId, to, message);
+            if (result.Equals(2) && !String.IsNullOrEmpty(mobile))
             {
-                SendCloudEmail.SendMessageReceiveMail(mremail, mrname, msname, "http://www.skillbank.cn/chat/" + fromId);
+                _commonService.SendNewMessageSMS(mobile, mrname, Constants.PageURL.MobileMessagePage, true);
             }
-            
+            else if (!String.IsNullOrEmpty(mremail))
+            {
+                SendCloudEmail.SendMessageReceiveMail(mremail, mrname, msname, Constants.PageURL.MessagePage);
+            }
             return Json("true", JsonRequestBehavior.AllowGet);
         }
 

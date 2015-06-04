@@ -1,88 +1,98 @@
 ﻿@model SkillBank.Site.Web.ViewModel.ClassDetailModel
+@if (ViewBag.MemberInfo != null)
+{
+    <div class="modal fade modal-booking-request" id="modal-booking-request" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="bookpop-close">&times;</button>
+                    <form action="" class="form-horizontal">
+                        @if (Model.ClassInfo != null)
+                        {
+                            <div class="hd">
 
-<div class="modal fade modal-booking-request" id="modal-booking-request" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="bookpop-close">&times;</button>
-                <form action="" class="form-horizontal">
-                    @if (Model.ClassInfo != null)
-                    {
-                    <div class="hd">
+                                <h4 class="orange">@Html.GetTrans(305)</h4>
+                                <p class="gray-light spaced font-small">@Html.GetTrans(306)</p>
 
-                        <h4 class="orange">@Html.GetTrans(305)</h4>
-                        <p class="gray-light spaced font-small">@Html.GetTrans(306)</p>
+                                <div class="row-fluid spaced">
+                                    <div class="span2 tright">@Html.GetTrans(307)</div>
+                                    <div class="span10">@Model.ClassInfo.Title</div>
+                                </div>
 
-                        <div class="row-fluid spaced">
-                            <div class="span2 tright">@Html.GetTrans(307)</div>
-                            <div class="span10">@Model.ClassInfo.Title</div>
-                        </div>
+                                <div class="row-fluid spaced">
+                                    <div class="span2 tright">@Html.GetTrans(308)</div>
+                                    <div class="span10">@Model.MemberInfo.Name</div>
+                                </div>
 
-                        <div class="row-fluid spaced">
-                            <div class="span2 tright">@Html.GetTrans(308)</div>
-                            <div class="span10">@Model.MemberInfo.Name</div>
-                        </div>
+                                <div class="row-fluid spaced">
+                                    <div class="span2 tright">
+                                        <label for="" class="control-label">@Html.GetTrans(309)</label>
+                                    </div>
+                                    <div class="span10">
+                                        <input type="text" name="" id="bookpop-bookdate" class="span6 form-control datepicker spaced-small">
+                                        <div class="orange clear font-small">@Html.GetTrans(311)</div>
+                                    </div>
+                                </div>
 
-                        <div class="row-fluid spaced">
-                            <div class="span2 tright">
-                                <label for="" class="control-label">@Html.GetTrans(309)</label></div>
-                            <div class="span10">
-                                <input type="text" name="" id="bookpop-bookdate"  class="span6 form-control datepicker spaced-small">
-                                <div class="orange clear font-small">@Html.GetTrans(311)</div>
+                                <div class="row-fluid spaced">
+                                    <div class="span2 tright">@Html.GetTrans(312)</div>
+                                    <div class="span10"><span class="gray-light"><em>1</em>@Html.GetTrans(198)</span></div>
+                                </div>
+
+                                <div class="row-fluid spaced">
+                                    <div class="span2 tright">
+                                        <label for="" class="control-label">@Html.GetTrans(314)</label>
+                                    </div>
+                                    <div class="span10">
+                                        <textarea name="" id="bookpop-remark" rows="3" class="form-control span12"></textarea>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
 
-                        <div class="row-fluid spaced">
-                            <div class="span2 tright">@Html.GetTrans(312)</div>
-                            <div class="span10"><span class="gray-light"><em>1</em>@Html.GetTrans(198)</span></div>
-                        </div>
+                            <div class="bd">
 
-                        <div class="row-fluid spaced">
-                            <div class="span2 tright">
-                                <label for="" class="control-label">@Html.GetTrans(314)</label></div>
-                            <div class="span10">
-                                <textarea name="" id="bookpop-remark" rows="3" class="form-control span12"></textarea>
+                                <h4>@Html.GetTrans(315)</h4>
+                                <p class="gray-light spaced font-small">@Html.GetTrans(316)<i class="fa fa-lock orange"></i></p>
+
+                                <div class="row-fluid spaced">
+                                    <div class="span2 tright">
+                                        <label for="" class="control-label">@Html.GetTrans(317)</label>
+                                    </div>
+                                    <div class="span10">
+                                        <input type="text" name="" id="bookpop-contactname" class="form-control span6" value="@((ViewBag.MemberInfo != null) ? ViewBag.MemberInfo.Name : "")" />
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid spaced">
+                                    <div class="span2 tright">
+                                        <label for="" class="control-label">@Html.GetTrans(318)</label>
+                                    </div>
+                                    <div class="span10">
+                                        <input type="text" name="" id="bookpop-contactphone" class="form-control span6" @(String.IsNullOrEmpty(ViewBag.MemberInfo.Phone) ? "" : "disabled=disabled value="+ViewBag.MemberInfo.Phone) />
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid spaced">
+                                    <div class="span2 tright">@Html.GetTrans(227)</div>
+                                    <div class="span10">
+                                        <input type="text" name="" id="bookpop-contactemail" class="form-control span6" value="@((ViewBag.MemberInfo != null) ? ViewBag.MemberInfo.Email : "")" /></div>
+                                </div>
+
+                                <div class="row-fluid">
+                                    <div class="span12 tright">
+                                        <input type="button" id="bookpop-bookbtn" class="btn btn-warning" value="@Html.GetTrans(322)"  data-tmobile="@ViewBag.ContactMobile">
+                                    </div>
+                                    <input type="hidden" name="" id="bookpop-updatememberinfo" value="0" />
+                                    <input type="hidden" name="" id="bookpop-currdate" value="@DateTime.Now.ToString("yyyy/MM/dd/")" />
+                                </div>
+
                             </div>
-                        </div>
+                        }
+                    </form>
 
-                    </div>
-
-                    <div class="bd">
-
-                        <h4>@Html.GetTrans(315)</h4>
-                        <p class="gray-light spaced font-small">@Html.GetTrans(316)<i class="fa fa-lock orange"></i></p>
-
-                        <div class="row-fluid spaced">
-                            <div class="span2 tright">
-                                <label for="" class="control-label">@Html.GetTrans(317)</label></div>
-                            <div class="span10">
-                                <input type="text" name="" id="bookpop-contactname" class="form-control span6" value="@((ViewBag.MemberInfo!= null)?ViewBag.MemberInfo.Name:"")" /></div>
-                        </div>
-
-                        <div class="row-fluid spaced">
-                            <div class="span2 tright">
-                                <label for="" class="control-label">@Html.GetTrans(318)</label></div>
-                            <div class="span10">
-                                <input type="text" name="" id="bookpop-contactphone" class="form-control span6" value="@((ViewBag.MemberInfo!= null)?ViewBag.MemberInfo.Phone:"")" /></div>
-                        </div>
-
-                        <div class="row-fluid spaced">
-                            <div class="span2 tright">@Html.GetTrans(227)</div>
-                            <div class="span10"><input type="text" name="" id="bookpop-contactemail" class="form-control span6" value="@((ViewBag.MemberInfo!= null)?ViewBag.MemberInfo.Email:"")" /></div>
-                        </div>
-
-                        <div class="row-fluid">
-                            <div class="span12 tright">
-                                <input type="button" id="bookpop-bookbtn" class="btn btn-warning" value="@Html.GetTrans(322)"></div>
-                                <input type="hidden" name="" id="bookpop-updatememberinfo" value="0" />
-                                <input type="hidden" name="" id="bookpop-currdate" value="@DateTime.Now.ToString("yyyy/MM/dd/")" />
-                        </div>
-
-                    </div>
-                    }
-                </form>
-
+                </div>
             </div>
         </div>
     </div>
-</div>
+}

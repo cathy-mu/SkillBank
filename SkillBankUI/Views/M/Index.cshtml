@@ -31,7 +31,7 @@
                 <a data-ignore="push" class="active" href="?key=@ViewBag.SearchKey" data-by="3" data-type="1" data-key="@ViewBag.SearchKey">搜索"@(ViewBag.SearchKey.Length>4?ViewBag.SearchKey.Substring(0,4)+"...":ViewBag.SearchKey)" </a>
                 }
                 <a data-ignore="push" href="#by=0&type=1" data-by="0" data-type="1">附近技能 </a>
-                <a data-ignore="push" @(String.IsNullOrEmpty(ViewBag.SearchKey)?"class=active":"") href="#by=1&type=2" data-by="1" data-type="2">最新加入 </a>
+                <a data-ignore="push" @(String.IsNullOrEmpty(ViewBag.SearchKey)?"class=active":"") href="#by=1&type=2" data-by="1" data-type="2">新荐技能 </a>
                 <a data-ignore="push" href="#by=1&type=1" data-by="1" data-type="1">达人技能 </a>
                 <a data-ignore="push" href="#by=1&type=3" data-by="1" data-type="3">小众奇葩 </a>
                 @if (Model.CategoryLkp != null)
@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <a class="classlist-cover" href="@Url.Action("course", "m", new { id = classItem.ClassId })">
-                    <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "mm")" alt="" class="cover">
+                    <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "h")" alt="" class="cover">
                 </a>
                 <div class="info">
                     <a class="classlist-avatar" href="@Url.Action("personal", "m", new { id = classItem.Member_Id })">

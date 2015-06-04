@@ -4,6 +4,8 @@ window.ENV = {
     imgHost: 'http://skillbank.b0.upaiyun.com'
 };
 
+String.prototype.trim = function () { return this.replace(/(^\s*)|(\s*$)/g, ""); }
+
 var browser = {
     versions: function () {
         var u = navigator.userAgent, app = navigator.appVersion;
@@ -118,21 +120,15 @@ function request(type, url, opts, callback) {
   xhr.send(opts ? fd : null);
 }
 
-function resError(status){
-  if(status == 401){
-      //goToLogin();
-      if (typeof (mixpanel) != "undefined") {
-          mixpanel.track("register alert");
-      }
-      if (window.confirm("亲，先来注册一下吧？")) {
-          if (typeof (mixpanel) != "undefined") {
-              mixpanel.track("register alert yes");
-          }
-          location.href = '/m/login';
-      }
-  } else if(status == 400){
-    alert('400');
-  }
+function resError(status) {
+    if (status == 401) {
+        //goToLogin();
+        triggerTackingEvent("register alert");
+        if (window.confirm("亲，先来注册一下吧？")) {
+            triggerTackingEvent("register alert yes");
+            location.href = '/m/login';
+        }
+    }
 }
 
 var get = request.bind(this, 'GET');
@@ -166,13 +162,9 @@ function checkLogin() {
 }
 
 function goToLogin() {
-    if (typeof (mixpanel) != "undefined") {
-        mixpanel.track("register alert");
-    }
+    triggerTackingEvent("register alert");
     if (window.confirm("亲，先来注册一下吧？")) {
-        if (typeof (mixpanel) != "undefined") {
-            mixpanel.track("register alert yes");
-        }
+        triggerTackingEvent("register alert yes");
         location.href = '/m/login';
     }
     return;
@@ -244,9 +236,7 @@ var checkPage = function () {
   //login page
   if ($('.login-page').length) {
       $('#sinaloginbtn').on('click', function () {
-          if (typeof (mixpanel) != "undefined") {
-              mixpanel.track("sina signup");
-          }
+          triggerTackingEvent("sina signup");
           var backUrlKey = "backUrl";
           var refPath = sessionStorage.getItem(backUrlKey);
           if (refPath == undefined || refPath == "") {
@@ -254,17 +244,30 @@ var checkPage = function () {
           }
           location.href = "https://api.weibo.com/oauth2/authorize?client_id=111240964&response_type=code&redirect_uri=http%3A%2F%2Fwww.skillbank.cn%2Fsignup%3Fmb%3D" + encodeURIComponent(refPath);
       });
+      if (browser.versions.weixin) {
+          $('#wechatloginbtn').on('click', function () {
+              triggerTackingEvent("wechat signup");
+              var backUrlKey = "backUrl";
+              var refPath = sessionStorage.getItem(backUrlKey);
+              if (refPath == undefined || refPath == "") {
+                  refPath = "/m";
+              }
+              location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa10c0a8a413081b6&redirect_uri=http%3a%2f%2fwww.skillbank.cn%2fsignup%3Fmb%3D" + encodeURIComponent(refPath) + "&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+          });
+      } else {
+          $('#wechatloginbtn label')[0].innerText = '关注订阅号SkillBank后登录';
+      }
   }
 
   if ($('#message-page').length) {
-      $('.message-tab').on('click', function () {
-          $('.notification-tab')[0].classList.toggle('active');
-          $('.message-tab')[0].classList.toggle('active');
+      $('.notification-tab').on('click', function () {
+          $('.notification-tab')[0].classList.add('active');
+          $('.message-tab')[0].classList.remove('active');
           //$('.message-tab')[0].classList.remove("control-item-no-js");
           //$('.message-tab')[0].classList.add("control-item");
-          $('#item2mobile')[0].classList.toggle('active');
-          $('#item1mobile')[0].classList.toggle('active');
-          post(ENV.host + "/api/alter?id=" + this.dataset.maxid, function () { jQuery(".red-dot").fadeOut(); });
+          $('#item2mobile')[0].classList.add('active');
+          $('#item1mobile')[0].classList.remove('active');
+          post(ENV.host + "/api/alter?id=0", function () { jQuery(".red-dot").fadeOut(); });
       });
   }
 
@@ -292,19 +295,14 @@ var checkPage = function () {
       if (typeof (mixpanel) != "undefined") {
           mixpanel.track("signup page");
       }
-
-      var $form = $('form')[0];
-      $("#registebtn").on('click', function (event) {
+            
+     var $form = $('form')[0];
+     $("#registebtn").on('click', function (event) {
           event.preventDefault();
-
-          var patten = new RegExp(/^[1]+\d{10}/);
-          if (!$form.phone.value || !patten.test($form.phone.value)) {
-              $form.phone.classList.add("error");//手机号码格式不对
+          
+          if (!validPhone($form.phone)) {
               return;
-          } else {
-              $form.phone.classList.remove("error");//手机号码格式不对
           }
-
           patten = new RegExp(/^\d{6}/);
           if (!$form.code.value || !patten.test($form.code.value)) {
               $form.code.classList.add("error");//验证码格式不对
@@ -324,14 +322,16 @@ var checkPage = function () {
           }
 
           var data = {
+              //Account: $form.registebtn.dataset.socialid,
+              //Type: $form.registebtn.dataset.socialtype,
               Mobile: $form.phone.value,
               Code: $form.code.value,
               Avatar: $form.registebtn.dataset.avatar,
-              Name: $form.registebtn.dataset.name
+              Name: $form.registebtn.dataset.name,
+              Gender: ($form.registebtn.dataset.gender === "1")
           };
-          
+                    
           post(ENV.host + '/api/registe', data, function (fb) {
-              console.log(fb);//-1 数据格式不符
               if (fb == 2) {
                   alert("验证失败，请检查验证码或重新发送");
               } else if (fb == 3) {
@@ -394,6 +394,7 @@ var checkPage = function () {
       changeCity();
       checkAllFillInStep1();
       initPubClassStep1();
+      customRange();
   }
 
   // add course page 2
@@ -420,6 +421,13 @@ var checkPage = function () {
           $('h3')[0].innerHTML = '内容已填完并被保存';
       });
       initUploadSetting();
+  }
+
+  if ($('.add-course-page.step-success').length) {
+      $('.profileedit-link').on('click', function () {
+          triggerTackingEvent("class edit profile");
+          location.href = "/m/profileedit";
+      });
   }
 
   
@@ -473,8 +481,11 @@ var checkPage = function () {
 
   if ($('.setting-page').length) {
       initLikeEvent();
+      $('.profileedit-link').on('click', function () {
+          triggerTackingEvent("dashboard edit profile");
+          location.href = "/m/profileedit";
+      });
   }
-
 };
 
 
@@ -540,9 +551,7 @@ function switchCourseCat() {
                 console.log("no position available.")
             }, geo_opts);
         } else if (query.by == 3) {// search
-            if (typeof (mixpanel) != "undefined") {
-                mixpanel.track("search");
-            }
+            triggerTackingEvent("search");
             var url = ENV.host + '/api/ClassList?key=' + getQueryString("key")+ '&by=3&type=1';//encodeURIComponent() 
              getCourses(url);
         } else {// category ,promote
@@ -579,6 +588,7 @@ function getCourses(url) {
         }
         $active.classList.add('active');
         $loading[0].style.display = 'none';
+        toggleLike();
         scrollToPrevPos();
     });
 }
@@ -732,7 +742,9 @@ function chatForm() {
             if (toId != undefined) {
                 var data = {
                     ToId: toId,
-                    MessageText: $input.value
+                    MessageText: $input.value,
+                    FromName: $form[0].dataset.fromname,
+                    ToMobile: $form[0].dataset.tomobile
                 };
                 $btn.classList.add("disabled");
                 showLoadingIcon(true);
@@ -764,22 +776,20 @@ function privateMsgForm() {
     var $input = $form[0].querySelector('textarea');
     var $btn = $form[0].querySelector('.btn-block');
     $form[0].on('submit', function (event) {
-        $btn.textContent = "发送中... ...";
-        $btn.classList.add("disabled");
         event.preventDefault();
-        if (!$input.value) {
-            $input.classList.add("error");
-        }
-        else {
-            $input.classList.remove("error");
+        if (validHasValue($input)) {
+            $btn.textContent = "发送中... ...";
+            $btn.classList.add("disabled");
             var toId = $form[0].dataset.contactid;
             var data = {
                 ToId: toId,
-                MessageText: $input.value
+                MessageText: $input.value,
+                FromName: $form[0].dataset.fromname,
+                ToMobile: $form[0].dataset.tomobile
             };
             post(ENV.host + '/api/chat', data, function (fb) {
-            $btn.classList.remove("disabled");
-            $btn.textContent = "发送私信";
+                $btn.classList.remove("disabled");
+                $btn.textContent = "发送私信";
                 if (!fb) return;
                 myAlert("私信已发送", 2);
                 $input.value = "";
@@ -862,7 +872,7 @@ function commentForm() {
     //        alert("submit");
     //    }
     //});
-    
+
     $form[0].on('submit', function (event) {
         event.preventDefault();
         var patten = new RegExp(/true/i);
@@ -871,11 +881,7 @@ function commentForm() {
             return false;
         }
 
-        if ($input.value == "") {
-            $input.classList.add("error");
-            return false;
-        } else {
-            $input.classList.remove("error");
+        if (validHasValue($input)) {
             var data = {
                 //MemberId: 1,
                 ClassId: $form[0].dataset.classid,
@@ -960,18 +966,6 @@ function followMember() {
         }
     })
 }
-
-function showRangeVal(el) {
-    var val = el.value;
-    jQuery(el).siblings('.num')
-      .text(val)
-      .css({
-          left: val + '%',
-          marginLeft: -val * 30 * 0.01 + 'px'
-      })
-}
-
-
 
 //Added functioins
 function bindClassListTrackingEvent() {
@@ -1082,6 +1076,15 @@ function redirectAfterLogin() {
     window.location.href = refPath;
 }
 
+function showRangeVal(el) {
+    var val = el.value;
+    jQuery(el).siblings('.num')
+      .text(val)
+      .css({
+          left: val + '%',
+          marginLeft: -val * 30 * 0.01 + 'px'
+      })
+}
 
 function customRadio() {
     $('.custom-radio input[type=radio]').on('change', function () {
@@ -1171,7 +1174,7 @@ function initPubClassStep1() {
         var $form = $('.step-1 form')[0];
         var data = {
             "ClassId": $('#classid')[0].value,
-            "CityId": ($form.cityid.value == "" ? "0" : form.cityid.value),
+            "CityId": ($form.cityid.value == "" ? "0" : $form.cityid.value),
             "Category": $form.categoryid.value,
             "Skill": $('#skilllevel')[0].textContent,
             "Teach": $('#teachlevel')[0].textContent
@@ -1242,68 +1245,6 @@ function checkAllEvaluateModal() {
     });
 }
 
-/*
-function chooseCover() {
-    var $uploader = $('.course input[type=file]')[0];
-    $uploader.on('change', function () {
-        if (!this.files[0]) return;
-        if (!/image\/\w+/.test(this.files[0].type)) {
-            alert("请选择图片格式文件");
-            return;
-        }
-        $('#imagefileext')[0].value = ("." + this.files[0].name.match(/[^\.]+$/)).toLowerCase();
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(this.files[0]);
-        oFReader.onload = function (oFREvent) {
-            $('.cover-holder')[0].innerHTML = '<img src="' + oFREvent.target.result + '" />'
-            $("#preview-cover")[0].src = oFREvent.target.result;
-
-            var width = $('.cover-holder img')[0].width;
-            var minHeight = parseInt(width * 3 / 4);
-            var height = $('.cover-holder img')[0].height;
-            height = (height > minHeight) ? minHeight : height;
-            $('#imagefilesetting')[0].value = '0,0,' + width + ',' + height;
-
-            $('.step-name')[0].style.display = 'none';
-            [].forEach.call($('.right .btn'), function (el) {
-                el.classList.remove('disabled');
-            });
-            $('.right .btn')[1].classList.add('border-none');
-            $('.right .btn')[1].classList.add('btn-olive');
-            $('h3')[0].innerHTML = '内容已填完并被保存';
-        };
-    });
-}
-
-function chooseAvatar() {
-    var $uploader = $('.edit-avatar input[type=file]')[0];
-    $uploader.on('change', function () {
-        if (!this.files[0]) return;
-        if (!/image\/\w+/.test(this.files[0].type)) {
-            alert("请选择图片格式文件");
-            return;
-        }
-        $('#imagefileext')[0].value = ("." + this.files[0].name.match(/[^\.]+$/)).toLowerCase();
-        var oFReader = new FileReader();
-        oFReader.readAsDataURL(this.files[0]);
-        oFReader.onload = function (oFREvent) {
-            $('.edit-avatar img')[0].outerHTML = '<img class="avatar" src="' + oFREvent.target.result + '" />';
-            var width = $('.edit-avatar img')[0].width;
-            var height = $('.edit-avatar img')[0].height;
-            width = (height > width) ? width : height;
-            console.log($('.edit-avatar img')[0]);
-            $('#imagefilesetting')[0].value = '0,0,' + width + ',' + width;
-
-            [].forEach.call($('.right .btn'), function (el) {
-                el.classList.remove('disabled');
-            });
-            $('.right .btn')[0].classList.add('border-none');
-            $('.right .btn')[0].classList.add('btn-olive');
-        };
-    });
-}
-*/
-
 function checkAllFillInPrivate() {
     var $form = $('form')[0];
     var $btn1 = $('.main .right .btn')[0];
@@ -1347,15 +1288,6 @@ function checkAllFillInImage(imageType) {
        
 }
 
-//function PreviewImage() {
-//    var oFReader = new FileReader();
-//    oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
-
-//    oFReader.onload = function (oFREvent) {
-//        document.getElementById("uploadPreview").src = oFREvent.target.result;
-//    };
-//}
-
 function selectSkill() {
     var options_tpl = '<% _.forEach(list, function(item) { %><option value=<%- item.value %> > <%- item.name %> </option><% }); %>';;
     var $skillCat = $('#skill-cat')[0];
@@ -1363,12 +1295,12 @@ function selectSkill() {
     var $category = $('#categoryid')[0];
     
     function renderSubCat(subCats) {
-        var subitems = subCats.split(",");//.substr(1, subCats.length)
+        var subitems = subCats.split(";");//.substr(1, subCats.length)
         var citiesOptions = "";
         for (i = 1; i < subitems.length;i++)
         {
-           var optItem = subitems[i].split(";");
-           citiesOptions += "<option value=\"" + optItem[1] + "\">" + optItem[0] + "</option>";
+           var optItem = subitems[i].split(",");
+           citiesOptions += "<option value=\"" + optItem[0] + "\">" + optItem[1] + "</option>";
         }
         $skillSubCat.innerHTML = citiesOptions;
     }
@@ -1432,12 +1364,45 @@ function myAlert(msg, seconds) {
     var $inner = $('.my-alert .inner')[0];
     seconds = seconds ? seconds : 2;
     $inner.innerHTML = msg;
-    $warning.style.display = 'flex';
+    $warning.style.display = "block";
     var t = setTimeout(function () {
-        $warning.style.display = '';
+        $warning.style.display = "none";
     }, seconds * 1000)
 }
 
+function customRange() {
+    var $range = $('.custom-range');
+    if (!$range.length) return;
+
+    var bodyW = $('body')[0].clientWidth;
+
+    [].forEach.call($range, function (elRange) {
+        // init value
+        updateHandlePos(elRange);
+
+        var calRangeHandle = calRangeVal(elRange, bodyW);
+        elRange.on('touchend', calRangeHandle);
+        elRange.on('touchmove', calRangeHandle);
+    });
+}
+
+function updateHandlePos(elRange) {
+    var $handle = elRange.querySelector('.handle');
+    var value = $handle.innerHTML;
+    $handle.style.left = value + '%';
+    $handle.style.marginLeft = -value * 30 * 0.01 + 'px';
+}
+
+function calRangeVal(elRange, bodyW) {
+    return function (e) {
+        var x = e.changedTouches[0].pageX;
+        if (x < 35) x = 35;
+        if (x > (bodyW - 35)) x = bodyW - 35;
+        var val = ((x - 35) * 100 / (bodyW - 35 * 2)).toFixed();
+        elRange.querySelector('.handle').innerHTML = val;
+        updateHandlePos(elRange);
+    }
+}
 
 // Profile page update info
 function updateProfile(btn) {
@@ -1469,6 +1434,7 @@ function updateProfile(btn) {
         if (fb === 1) {
             if (noAvatar) {
                 myAlert("保存成功", 2);
+                triggerTackingEvent("save edit profile");
             }
             $('#profile-savebtn')[0].classList.add("disabled");
         }
@@ -1587,6 +1553,7 @@ function accpetOrder($form) {
             } else if (fb === -1) {
                 alert("操作失败");
             } else {
+                triggerTackingEvent("accept booking");
                 toAcceptedState($card, true);
             }
             return;
@@ -1620,6 +1587,7 @@ function updateOrderStatus(el, status) {
         } else {
             if (status === 2) {//T
                 toDidabledState(el, "未被接受");
+                triggerTackingEvent("reject booking");
             } else if (status === 3) {//S
                 toDidabledState(el, "已被取消");
             } else if (status === 6) {//S
@@ -1639,12 +1607,16 @@ function updateOrderStatus(el, status) {
 
 function updateClassInfo(data) {
     put(ENV.host + '/api/course/' + data.ClassId, data, function (fb) {
+        console.log(fb);
         if (fb > 0) {
             if (data.City != null) {
                 $('#preview-city')[0].innerText = data.City;
             } else if (data.Title != null) {
                 $('#preview-title1')[0].innerText = data.Title;
                 $('#preview-title2')[0].innerText = data.Title;
+            }
+            else if (data.IsPublish != null) {
+                triggerTackingEvent("publish class");
             }
             return;
         } else {
@@ -1761,12 +1733,12 @@ function getUpCloudOptions(imageType) {
 
 //validation functions
 function validHasValue(el) {
-    if (el.value) {
-        el.classList.remove("error");
-        return true;
-    } else {
+    if (!el.value || el.value.trim() === "") {
         el.classList.add("error");
         return false;
+    } else {
+        el.classList.remove("error");
+        return true;
     }
 }
 
@@ -1778,6 +1750,12 @@ function validPhone(el) {
     } else {
         el.classList.add("error");//手机号码格式不对
         return false;
+    }
+}
+
+function triggerTackingEvent(eventCode) {
+    if (typeof (mixpanel) != "undefined") {
+        mixpanel.track(eventCode);
     }
 }
 /*

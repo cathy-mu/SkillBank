@@ -35,16 +35,22 @@ namespace SkillBankWeb.Controllers
         /// <param name="message"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult AddOrder(int classid, DateTime bookdate, String remark, String mailaddr = "", String mailname = "", String title = "", String name = "", String phone = "", String email = "")
+        public JsonResult AddOrder(int classid, DateTime bookdate, String remark, String mailaddr = "", String mailname = "", String title = "", String mobile = "", String name = "", String phone = "", String email = "")
         {
             int studentId = WebContext.Current.MemberId;
             _commonService.AddOrder(studentId, classid, bookdate, remark, name, phone, email);
 
-            if (!String.IsNullOrEmpty(mailaddr))
-            {
-                String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(626, title);
-                SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(478));
-            }
+            OrderNotificationHelper.NotifyOrderStatusUpdate((Byte)Enums.OrderStatus.Booked, mobile, mailaddr, title, mailname);
+                
+            //if (!String.IsNullOrEmpty(mobile))
+            //{
+            //    _commonService.SendOrderUpdateSMS(1, mobile, title, true);
+            //}
+            //else if (!String.IsNullOrEmpty(mailaddr))
+            //{
+            //    String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(626, title);
+            //    SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(478));
+            //}
 
             return Json("true", JsonRequestBehavior.AllowGet);
         }
@@ -58,37 +64,41 @@ namespace SkillBankWeb.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult AcceptOrder(int orderid, int studentid, String mailaddr = "", String mailname = "", String title = "", String name = "", String phone = "", String email = "")
+        public JsonResult AcceptOrder(int orderid, int studentid, String mailaddr = "", String mailname = "", String title = "", String mobile = "", String name = "", String phone = "", String email = "")
         {
             int teacherId = WebContext.Current.MemberId;
             var result = _commonService.AcceptOrder(orderid, studentid, teacherId, name, phone, email);
 
-            if (!String.IsNullOrEmpty(mailaddr))
-            {
-                String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(629, title);
-                SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(479));
-            }
+            OrderNotificationHelper.NotifyOrderStatusUpdate((Byte)Enums.OrderStatus.Accepted, mobile, mailaddr, title, mailname);
+            
+            //if (!String.IsNullOrEmpty(mailaddr))
+            //{
+            //    String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(629, title);
+            //    SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(479));
+            //}
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult ConfirmOrder(int orderid, int teacherid, int classid, Byte feedback, String comment = "", String mailaddr = "", String mailname = "", String title = "")
+        public JsonResult ConfirmOrder(int orderid, int teacherid, int classid, Byte feedback, String comment = "", String mailaddr = "", String mailname = "", String title = "", String mobile = "")
         {
             Byte status = (Byte)Enums.OrderStatus.Confirmed;
             int studentId = WebContext.Current.MemberId;
             var result = _commonService.UpdateOrderStatusWithCoins(orderid, status, studentId, teacherid);
             _commonService.AddStudentReview(orderid, classid, feedback, comment, "");
 
-            if (!String.IsNullOrEmpty(mailaddr))
-            {
-                String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(632, title);
-                SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(480));
-            }
+            OrderNotificationHelper.NotifyOrderStatusUpdate(status, mobile, mailaddr, title, mailname);
+            
+            //if (!String.IsNullOrEmpty(mailaddr))
+            //{
+            //    String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(632, title);
+            //    SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(480));
+            //}
 
             return Json("true", JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         public JsonResult ReviewOrder(int orderid, int classId, byte feedback, String comment = "")
         {
@@ -107,7 +117,7 @@ namespace SkillBankWeb.Controllers
         /// <param name="tid"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UpdateOrderStatus(int orderid, Byte status, String mailaddr = "", String mailname = "", String title = "", int student = 0)
+        public JsonResult UpdateOrderStatus(int orderid, Byte status, String mailaddr = "", String mailname = "", String title = "", String mobile = "", int student = 0)
         {
             int teacher = 0;
             if (status.Equals((Byte)Enums.OrderStatus.Rejected) || status.Equals((Byte)Enums.OrderStatus.RefundReject))//teacher reject
@@ -120,49 +130,52 @@ namespace SkillBankWeb.Controllers
             }
             var result = _commonService.UpdateOrderStatus(orderid, status, student, teacher);
 
-            if (!String.IsNullOrEmpty(mailaddr) && System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName))
-            {
-                String mailText;
-                if (status.Equals((Byte)Enums.OrderStatus.Rejected))
-                {
-                    mailText = TextContentHelper.ReplaeceBlurbParameterWithText(628, title);
-                    SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
-                }
-                else if (status.Equals((Byte)Enums.OrderStatus.Cancled))
-                {
-                    mailText = TextContentHelper.ReplaeceBlurbParameterWithText(627, title);
-                    SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(480));
-                }
-                else if (status.Equals((Byte)Enums.OrderStatus.Refund))
-                {
-                    mailText = TextContentHelper.ReplaeceBlurbParameterWithText(630, title);
-                    SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(481));
-                }
-                else if (status.Equals((Byte)Enums.OrderStatus.RefundReject))
-                {
-                    mailText = TextContentHelper.ReplaeceBlurbParameterWithText(633, title);
-                    SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
-                }
-            }
+            OrderNotificationHelper.NotifyOrderStatusUpdate(status, mobile, mailaddr, title, mailname);
+            
+            //if (!String.IsNullOrEmpty(mailaddr) && System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName))
+            //{
+            //    String mailText;
+            //    if (status.Equals((Byte)Enums.OrderStatus.Rejected))
+            //    {
+            //        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(628, title);
+            //        SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
+            //    }
+            //    else if (status.Equals((Byte)Enums.OrderStatus.Cancled))
+            //    {
+            //        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(627, title);
+            //        SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(480));
+            //    }
+            //    else if (status.Equals((Byte)Enums.OrderStatus.Refund))
+            //    {
+            //        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(630, title);
+            //        SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberTeachPage, ResourceHelper.GetTransText(481));
+            //    }
+            //    else if (status.Equals((Byte)Enums.OrderStatus.RefundReject))
+            //    {
+            //        mailText = TextContentHelper.ReplaeceBlurbParameterWithText(633, title);
+            //        SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
+            //    }
+            //}
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         //TO DO:6->7, 6-11
         [HttpPost]
-        public JsonResult RefundProve(int orderid, int studentid, String mailaddr = "", String mailname = "", String title = "")
+        public JsonResult RefundProve(int orderid, int studentid, String mailaddr = "", String mailname = "", String title = "", String mobile = "")
         {
             int teacherId = WebContext.Current.MemberId;
             var result = _commonService.UpdateOrderStatusWithCoins(orderid, (Byte)Enums.OrderStatus.RefundProve, studentid, teacherId);
 
-            if (!String.IsNullOrEmpty(mailaddr))
-            {
-                String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(631, title);
-                SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
-            }
-                
+            OrderNotificationHelper.NotifyOrderStatusUpdate((Byte)Enums.OrderStatus.RefundProve, mobile, mailaddr, title, mailname);
+            
+            //if (!String.IsNullOrEmpty(mailaddr))
+            //{
+            //    String mailText = TextContentHelper.ReplaeceBlurbParameterWithText(631, title);
+            //    SendCloudEmail.SendOrderStatusUpdateMail(mailaddr, mailname, mailText, Constants.PageURL.MemberLearnPage, ResourceHelper.GetTransText(480));
+            //}
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        
     }
 }

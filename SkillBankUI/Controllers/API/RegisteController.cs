@@ -19,10 +19,13 @@ namespace SkillBankWeb.Controllers.API
         public readonly ICommonService _commonService;
         public class RegisterInfo
         {
+            //public String Account { get; set; }
+            //public Byte Type { get; set; }
             public String Name { get; set; }
             public String Avatar { get; set; }
             public String Mobile { get; set; }
             public String Code { get; set; }
+            public Boolean Gender { get; set; }
         }
         
         //
@@ -42,8 +45,8 @@ namespace SkillBankWeb.Controllers.API
         public int Post(RegisterInfo item)
         {
             String etag = (WebContext.Current.Etag == null) ? "" : WebContext.Current.Etag;
-            String socialAccount = WebContext.Current.SocialAccount;
-            Byte socialType = WebContext.Current.SocialType;
+            String socialAccount = WebContext.Current.SocialAccount;//item.Account; 
+            Byte socialType = WebContext.Current.SocialType;//item.Type;
 
             int memberId = 0;
             var result = 0;
@@ -51,9 +54,10 @@ namespace SkillBankWeb.Controllers.API
             var isMobileValid = System.Text.RegularExpressions.Regex.IsMatch(item.Mobile, Constants.ValidationExpressions.Mobile);
             var isCodeValid = System.Text.RegularExpressions.Regex.IsMatch(item.Code, Constants.ValidationExpressions.ValidationCode);
 
-            if (isMobileValid && isCodeValid && socialType > 0 && socialType < 3 && !String.IsNullOrEmpty(socialAccount) && !String.IsNullOrEmpty(item.Name))
+            if (isMobileValid && isCodeValid && socialType > 0 && !String.IsNullOrEmpty(socialAccount) && !String.IsNullOrEmpty(item.Name))
             {
-                result = _commonService.CreateMember(out memberId, socialAccount, socialType, item.Name, "", item.Avatar, item.Mobile, item.Code, etag);
+                result = _commonService.CreateMember(out memberId, socialAccount, socialType, item.Name, "", item.Avatar, item.Mobile, item.Code, etag, item.Gender);
+
                 if (memberId > 0)
                 {
                     WebContext.Current.MemberId = memberId;
@@ -67,7 +71,6 @@ namespace SkillBankWeb.Controllers.API
                 result = -1;
             }
             return result;
-
         }
 
 

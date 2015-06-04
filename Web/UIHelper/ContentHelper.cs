@@ -74,7 +74,21 @@ namespace SkillBank.Site.Web
                             break;
                     }
                 }
-                else if (socialType.Equals(3) || path.Contains("qlogo"))
+                else if (socialType.Equals(4) && path.Contains("qlogo"))
+                {
+                    switch (size)
+                    {
+                        case "s":
+                            path = path.Replace("/132", "/46");
+                            break;
+                        case "m":
+                            path = path.Replace("/132", "/64");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (socialType.Equals(3) && path.Contains("qlogo"))
                 {
                     switch (size)
                     {
@@ -89,6 +103,7 @@ namespace SkillBank.Site.Web
                             break;
                     }
                 }
+                
                 imgPath = path;
             }
             else if (ConfigConstants.ThirdPartySetting.UpYun.AvatarImgSize.ContainsKey(size))

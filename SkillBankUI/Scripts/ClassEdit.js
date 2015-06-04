@@ -23,6 +23,7 @@ function classedit_Class() {
             this.cateIdPrefix = "#class-category-list";
             this.subCateIdPrefix = "#class-subcategory-list";
             this.initCategory();
+            mobileverification.initEvents();
         }
 
         this.initEvents();
@@ -42,6 +43,26 @@ function classedit_Class() {
         this.formValidation(0);
         this.stepBtnInit();
         $(".steps-tabs a").click(function () { $(document).scrollTop(0); });
+        $("#summary").keyup(function () { classedit.countLeftNum($(this), $("#summary-charsleft"), 100); });
+        $("#summary").blur(function () { classedit.checkMinLength($(this), 100); });
+     }
+
+    this.checkMinLength = function (el, num) {
+        var len = el.val().length;
+        if (len < num && len > 0) {
+            el.addClass("inputerror");
+        } else {
+            el.removeClass("inputerror");
+        }
+    }
+
+    this.countLeftNum = function (el, counterel, num) {
+        var len = el.val().length;
+        if (len < num) {
+            counterel.text(num - len);
+        } else {
+            counterel.text(0);
+        }
     }
 
     this.stepBtnInit = function () {
@@ -132,16 +153,21 @@ function classedit_Class() {
     //}
 
     this.checkPublishClass = function () {
-
-        var summaryLength = $("#summary").val().length;
-        if (summaryLength < 100) {
-            $("#class-confirm-publish").trigger("click");
-        } else {
-            if (typeof (mixpanel) != "undefined") {
-                mixpanel.track("publish class");
+        var pubBtn = $("#class-publish");
+        //var summaryLength = $("#summary").val().length;
+        //if (summaryLength < 100) {
+        //    $("#class-confirm-publish").trigger("click");
+        //} else {
+            var isVerfied = (pubBtn.attr("data-isverify") == 1);
+            if (isVerfied) {
+                if (typeof (mixpanel) != "undefined") {
+                    mixpanel.track("publish class");
+                }
+                classedit.publishClass();
+            } else {
+                $("#class-verify-mobile").trigger("click");
             }
-            classedit.publishClass();
-        }
+        //}
     }
 
     this.publishClass = function () {
@@ -169,7 +195,7 @@ function classedit_Class() {
         }
 
         if (tabid == 2 || tabid == 0) {//class overview
-            if ($.trim($("#title").val()) != "" && $.trim($("#summary").val()) != "" && $.trim($("#whyu").val()) != "" && $.trim($("#location").val()) != "" && $.trim($("#period").val()) != "") {
+            if ($.trim($("#title").val()) != "" && $.trim($("#summary").val()).length>99  && $.trim($("#whyu").val()) != "" && $.trim($("#location").val()) != "" && $.trim($("#period").val()) != "") {
                 $("#tab-class-overview .icon").addClass("success");
                 if (secondFormAdding > 0) {
                     secondFormAdding = -1;
@@ -233,7 +259,7 @@ function classedit_Class() {
                 $('#selfintro').limit('600', '#selfintro-charsleft');
             }
             $('#title').limit('30', '#title-charsleft');
-            $('#summary').limit('1000', '#summary-charsleft');
+            //$('#summary').limit('1000', '#summary-charsleft');
             $('#period').limit('50', null);
             $('#location').limit('100', null);
             $('#available').limit('100', null);
@@ -302,16 +328,16 @@ function classedit_Class() {
 
     /* Character Counter */
     this.initCharacterCount = function () {
-        classedit.characterCount($("#classf-intro"), $("#classf-introcounter"), 300);
+        classedit.characterCount($("#intro"), $("#classf-introcounter"), 100);
     }
 
-    this.characterCount = function (targetObj, textObj, maxNum) {
-        $(targetObj).keyup(function () {
-            var currlen = $(targetObj).val().length;
-            var leftNo = maxNum - currlen;
-            $(textObj).text(leftNo + "/" + maxNum);
-        });
-    }
+    //this.characterCount = function (targetObj, textObj, maxNum) {
+    //    $(targetObj).keyup(function () {
+    //        var currlen = $(targetObj).val().length;
+    //        var leftNo = maxNum - currlen;
+    //        $(textObj).text(leftNo + "/" + maxNum);
+    //    });
+    //}
 
 
     this.saveClassInfo = function (saveType, saveValue) {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using SkillBank.Site.Common;
+
 namespace SkillBank.Site.Services.Net.SMS
 {
     public static class YunPianSMS
@@ -28,6 +30,8 @@ namespace SkillBank.Site.Services.Net.SMS
         */
         private static string URI_TPL_SEND_SMS = BASE_URI + "/" + VERSION + "/sms/tpl_send.json";
 
+        private static string YunPianApiKey = "4eaffd69cbe3cd2e7382f207a11b0229";
+        
         /**
         * 取账户信息
         * @return json格式字符串
@@ -91,10 +95,6 @@ namespace SkillBank.Site.Services.Net.SMS
 
         public static void SendMobileValidationCodeSms(string mobile, string code)
         {
-            //修改为您的apikey
-            string apikey = "4eaffd69cbe3cd2e7382f207a11b0229";
-            //修改为您要发送的手机号
-            //string mobile = "188xxxxxxxx";
             //设置您要发送的内容
             //string text = "您的验证码是1234【云片网】";
             //string text = "欢迎使用#app#，您的手机验证码是#code#。本条信息无需回复【#company#】";
@@ -111,7 +111,7 @@ namespace SkillBank.Site.Services.Net.SMS
             long tpl_id = 6; //使用模板1，对应的模板内容为：您的验证码是#code#【#company#】
             //注意：参数必须进行Uri.EscapeDataString编码。以免&#%=等特殊符号无法正常提交
             string tpl_value = "#code#=" + Uri.EscapeDataString(code) + "&#company#=" + Uri.EscapeDataString("技能银行") + "&#app#=" + Uri.EscapeDataString("技能银行");
-            var result = tplSendSms(apikey, tpl_id, tpl_value, mobile);
+            var result = tplSendSms(YunPianApiKey, tpl_id, tpl_value, mobile);
         }
 
         /// <summary>
@@ -121,38 +121,43 @@ namespace SkillBank.Site.Services.Net.SMS
         /// <param name="mobile"></param>
         /// <param name="className"></param>
         /// <param name="link"></param>
-        public static void SendOrderUpdateSms(Byte statusType, string mobile, String className, String link)
+        public static void SendOrderUpdateSms(Byte statusType, string mobile, String className)//, String link
         {
-            //修改为您的apikey
-            string apikey = "4eaffd69cbe3cd2e7382f207a11b0229";
-            //调用模板接口发短信
-
             long tpl_id = 0;
+            String pageUrl = default(String);
             switch (statusType)
             {
                 //add order
                 case 1: tpl_id = 752781;//hello，老师，有人在技能银行跟你预定了课程《#class#》哦，快来回复吧#link#
+                    pageUrl = Constants.PageURL.MobileTeachPage;
                     break;
                 //reject order
                 case 2: tpl_id = 781417;//您预订的《#class#》未被接受。请务必先和老师沟通过后再来订课，来完善你的自我介绍也会对订课有帮助哦。#link#
+                    pageUrl = Constants.PageURL.MobileLearnPage;
                     break;
                 //cancle order
                 case 3: tpl_id = 0;//cancle
+                    pageUrl = Constants.PageURL.MobileTeachPage;
                     break;
                 //accept order
                 case 4: tpl_id = 781423;//恭喜，老师已经接受了您预订的《#class#》,快来看一下吧#link#
+                    pageUrl = Constants.PageURL.MobileLearnPage;
                     break;
                 //refund order
                 case 6: tpl_id = 781429;//您好，在您教授的《#class#》中出现了退币申请
+                    pageUrl = Constants.PageURL.MobileTeachPage;
                     break;
                 //refund prove
                 case 7: tpl_id = 781437;//您好，您的《#class#》退币请求已被接受，退回的课币已经返回您的账户
+                    pageUrl = Constants.PageURL.MobileLearnPage;
                     break;
                 //refund reject
                 case 8: tpl_id = 781443;//您好，您的《#class#》退币请求未被接受
+                    pageUrl = Constants.PageURL.MobileLearnPage;
                     break;
                 //order confirm
                 case 9: tpl_id = 781451;//恭喜，学生已经对你的《#class#》支付了课币并做出了评价，快来看一下吧#link#
+                    pageUrl = Constants.PageURL.MobileTeachPage;
                     break;
 
                 default:
@@ -160,8 +165,8 @@ namespace SkillBank.Site.Services.Net.SMS
             }
             if (!tpl_id.Equals(0))
             {
-                string tpl_value = "#class#=" + Uri.EscapeDataString(className) + "&#link#=" + Uri.EscapeDataString(link);
-                var result = tplSendSms(apikey, tpl_id, tpl_value, mobile);
+                string tpl_value = "#class#=" + Uri.EscapeDataString(className) + "&#link#=" + Uri.EscapeDataString(pageUrl);
+                var result = tplSendSms(YunPianApiKey, tpl_id, tpl_value, mobile);
             }
         }
 
@@ -174,10 +179,6 @@ namespace SkillBank.Site.Services.Net.SMS
         /// <param name="link"></param>
         public static void SendClassProveSms(Boolean isProve, string mobile, String className, String link)
         {
-            //修改为您的apikey
-            string apikey = "4eaffd69cbe3cd2e7382f207a11b0229";
-            //调用模板接口发短信
-
             long tpl_id;
             if (isProve)
             {
@@ -189,7 +190,20 @@ namespace SkillBank.Site.Services.Net.SMS
             }
 
             string tpl_value = "#class#=" + Uri.EscapeDataString(className) + "&#link#=" + Uri.EscapeDataString(link);
-            var result = tplSendSms(apikey, tpl_id, tpl_value, mobile);
+            var result = tplSendSms(YunPianApiKey, tpl_id, tpl_value, mobile);
+        }
+
+        /// <summary>
+        /// 收到新私信的短消息
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="name"></param>
+        /// <param name="link"></param>
+        public static void SendNewMessageSMS(String mobile, String name, String link)
+        {
+            long tpl_id = 792823;
+            string tpl_value = "#name#=" + name + "&#link#=" + Uri.EscapeDataString(link);
+            var result = tplSendSms(YunPianApiKey, tpl_id, tpl_value, mobile);
         }
 
 

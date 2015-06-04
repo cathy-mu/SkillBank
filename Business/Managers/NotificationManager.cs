@@ -20,8 +20,9 @@ namespace SkillBank.Site.Services.Managers
         List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType);
         void UpdateNotification(Byte saveType, int memberId, int paraId = 0);
         
-        void SendOrderUpdateSMS(Byte statusType, String mobile, String className, String link, Boolean sendSMS = true);
+        void SendOrderUpdateSMS(Byte statusType, String mobile, String className, Boolean sendSMS = true);
         void SendClassProveSMS(Boolean isProve, String mobile, String className, String link, Boolean sendSMS = true);
+        void SendNewMessageSMS(String mobile, String name, String link, Boolean sendSMS = true);
     }
 
     public class NotificationManager : INotificationManager
@@ -33,11 +34,11 @@ namespace SkillBank.Site.Services.Managers
             _repository = repository;
         }
 
-        public void SendOrderUpdateSMS(Byte statusType, String mobile, String className, String link, Boolean sendSMS = true)
+        public void SendOrderUpdateSMS(Byte statusType, String mobile, String className, Boolean sendSMS = true)
         {
             if (sendSMS)
             {
-                YunPianSMS.SendOrderUpdateSms(statusType, mobile, className, link);
+                YunPianSMS.SendOrderUpdateSms(statusType, mobile, className);
             }
         }
 
@@ -46,6 +47,14 @@ namespace SkillBank.Site.Services.Managers
             if (sendSMS)
             {
                 YunPianSMS.SendClassProveSms(isProve, mobile, className, link);
+            }
+        }
+
+        public void SendNewMessageSMS(String mobile, String name, String link, Boolean sendSMS = true)
+        {
+            if (sendSMS)
+            {
+                YunPianSMS.SendNewMessageSMS(mobile, name, link);
             }
         }
 

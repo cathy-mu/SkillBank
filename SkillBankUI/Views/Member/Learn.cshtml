@@ -83,7 +83,7 @@
                                             <td><a href="@Url.Action("detail", "class", new { id = order.ClassId })">@order.Title</a></td>
                                             <td><a href="@Url.Action("chat", "message", new { id = order.MemberId })">@Html.GetTrans(442)</a></td>
                                             <td><span class="gray-light">@TextContentHelper.GetDateString(order.BookedDate)</span></td>
-                                            <td class="tcenter" data-mailaddr="@order.Email" data-title="@order.Title" data-name="@order.MemberName">
+                                            <td class="tcenter" data-mailaddr="@order.Email" data-title="@order.Title" data-name="@order.MemberName" data-mobile="@order.Phone">
                                                 @if (order.OrderStatus == 1)
                                                 {
                                                     <a href="#" class="btn btn-block btn-default learn-cancle" data-orderid="@order.OrderId">@Html.GetTrans(444)</a>

@@ -78,6 +78,8 @@ function sitecommon_Class() {
         }
         //window.location = navUrl;
     }
+    
+    
 
     //Hide alter for top bar, when user click and see the sub menu for alter
     this.setAlertAsPoped = function () {
@@ -285,19 +287,15 @@ function sitecommon_Class() {
                         break;
                 }
             } else {
-                if (this.getMemberSocialType() == 3 || path.indexOf("qlogo") > -1) {
+                if (this.getMemberSocialType() == 4 || path.indexOf("qlogo") > -1) {
                     switch (size) {
                         case "s":
-                            path = path + "/30";
+                            path = path.replace("/132", "/46");
                             break;
                         case "m":
-                            path = path + "/50";
-                            break;
-                        case "b":
-                            path = path + "/180";
+                            path = path.replace("/132", "/64");
                             break;
                         default:
-                            path = path + "/180";
                             break;
                     }
                 } else if (this.getMemberSocialType() == 1 || path.indexOf("sina") > -1) {
@@ -346,6 +344,16 @@ function sitecommon_Class() {
                 return -1;
             }
         }
+    }
+
+    this.validCode = function (code) {
+        var patten = new RegExp(/^[0-9]{6}$/);
+        return (code != "" && patten.test(code));
+    }
+
+    this.validMobile = function (mobile) {
+        var patten = new RegExp(/^[1]+\d{10}$/);
+        return (mobile != "" && patten.test(mobile));
     }
 
     this.validEmail = function (email) {
@@ -457,9 +465,6 @@ function sitecommon_Class() {
          if (r != null) return unescape(r[2]); return null;
      }
 })(jQuery);
-
-
-
 
 function consoleLog(loginfo) {
     if (window.console) {

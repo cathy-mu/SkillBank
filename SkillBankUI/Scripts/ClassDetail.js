@@ -12,9 +12,20 @@ function classdetail_Class() {
     };
 
     this.initEvents = function () {
-        $("#class-detail-contact, #class-detail-btmcontact").click(function () { $("#message-content").val(""); });
+        var shouldVerify = ($("#class-detail-contact").attr("href") == "#modal-verify-mobile");
+
+        $("#class-detail-contact, #class-detail-btmcontact").click(function () {
+            $("#message-content").val("");
+            if (shouldVerify) {
+                $("#classdetail-nextaction").val("chat");
+            }
+        });
         $("#bookpop-contactname, #bookpop-contactphone, #bookpop-contactemail").focus(function () { $("#bookpop-updatememberinfo").val(1); });
         classdetail.sendMessageBtn.click(function () { classdetail.addMessage(); });
+        if (shouldVerify) {
+            $("#class-detail-book").click(function () { $("#classdetail-nextaction").val("book"); });
+            mobileverification.initEvents();
+        }
 
         //detail page
         if ($("#classpreview-prove").length == 0) {
@@ -184,15 +195,15 @@ function classdetail_Class() {
         var classTitle = $("#classdetail-title").text();
         var memberName = $("#classdetail-hidmrname").val();
         var mailAddress = $("#classdetail-hidmremail").val();
-
+        var mobile = $("#bookpop-bookbtn").attr("data-tmobile");
         var paraData;
         if ($("#bookpop-updatememberinfo").val() == 0) {
-            paraData = { classid: classId, bookdate: bookDate, remark: studentRemark, mailaddr: mailAddress, mailname: memberName, title: classTitle };
+            paraData = { classid: classId, bookdate: bookDate, remark: studentRemark, mailaddr: mailAddress, mailname: memberName, title: classTitle, mobile: mobile };
         } else {
-            var paraData = { classid: classId, bookdate: bookDate, remark: studentRemark, mailaddr: mailAddress, mailname: memberName, title: classTitle, name: nameCtl.val(), phone: phoneCtl.val(), email: emailCtl.val() };
+            var paraData = { classid: classId, bookdate: bookDate, remark: studentRemark, mailaddr: mailAddress, mailname: memberName, title: classTitle, mobile: mobile, name: nameCtl.val(), phone: phoneCtl.val(), email: emailCtl.val() };
         }
         var savePath = "/OrderHelper/AddOrder";
-        consoleLog(paraData);
+        
         if (typeof (mixpanel) != "undefined") {
             mixpanel.track("book class");
         } 
@@ -204,12 +215,9 @@ function classdetail_Class() {
             cache: false,
             success: function (data) {
                 if (data == "true") {
-                    //$("#bookpop-close").trigger("click");
                     window.location.href = "/member/learn";
                 }
-            }/*, error: function (e) {
-               consoleLog(e);
-            }*/
+            }
         });
     }
 
@@ -227,12 +235,12 @@ function classdetail_Class() {
             messageCtl.removeClass("inputerror");
             var toId = $("#classdetail-hidmemberid").val();
             var classTitle = $("#classdetail-title").text();
-            var paraData = { to: toId, message: messageContent, msname: senderName, mremail: receiverEmail, mrname: receiverName, title: classTitle };
+            var mobile = $("#message-sendbtn").attr("data-tomobile");
+            var paraData = { to: toId, message: messageContent, msname: senderName, mremail: receiverEmail, mrname: receiverName, title: classTitle, mobile: mobile };
             if (typeof (mixpanel) != "undefined") {
                 mixpanel.track("chat on classdetail");
             }
 
-            consoleLog(paraData);
             $.ajax({
                 url: savePath,
                 type: "POST",
@@ -262,9 +270,9 @@ function classdetail_Class() {
                 ga('send', 'event', 'class', 'click', 'peo_create_class');
                 mixpanel.track("prove class");
             }
-            paraData = { classId: classId, infoValue: isProved, forActive: isForActive, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email") };
+            paraData = { classId: classId, infoValue: isProved, forActive: isForActive, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile") };
         } else if (isProved == 2) {
-            paraData = { classId: classId, infoValue: isProved, forActive: isForActive, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email") };
+            paraData = { classId: classId, infoValue: isProved, forActive: isForActive, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile") };
         } 
         consoleLog(paraData);
         $.ajax({

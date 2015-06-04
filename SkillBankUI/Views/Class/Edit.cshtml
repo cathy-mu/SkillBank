@@ -29,8 +29,9 @@
                         </div>
 
                         <div class="steps-complete none">
-                            <a href="#" id="class-publish" class="btn btn-primary btn-block spaced">@Html.GetTrans(486)</a>
+                            <a href="#" data-isverify="@(ViewBag.MemberInfo.VerifyTag & 1)" id="class-publish" class="btn btn-primary btn-block spaced">@Html.GetTrans(486)</a>
                             <a id="class-confirm-publish" href="#modal-confirm-publish" data-toggle="modal"></a>
+                            <a id="class-verify-mobile" href="#modal-verify-mobile" data-toggle="modal"></a>
                             <a href="@Url.Action("Preview", "Class", new { id = @ViewBag.ClassId })" target="_blank" id="class-preview" class="btn btn-default btn-block">@Html.GetTrans(487)</a>
                         </div>
                     </div>
@@ -204,9 +205,9 @@
                                         <div class="row-fluid spaced">
                                             <div class="span2 tright">@Html.GetTrans(281)</div>
                                             <div class="span6">
-                                                <textarea name="summary" id="summary" class="form-control span12" rows="8" placeholder="@ResourceHelper.GetTransText(635).Trim()">@Model.ClassInfo.Summary</textarea>
+                                                <textarea name="summary" id="summary" class="form-control span12 @((Model.ClassInfo != null && !String.IsNullOrEmpty(Model.ClassInfo.Summary) && Model.ClassInfo.Summary.Length<100)?"inputerror":"")" rows="8" placeholder="@ResourceHelper.GetTransText(635).Trim()">@Model.ClassInfo.Summary</textarea>
                                                 <br />&nbsp;
-                                                <!--<div class="pull-right gray-light">@ViewBag.CharacterCountText[0]<span id="summary-charsleft">300</span>@ViewBag.CharacterCountText[1]</div>-->
+                                                <div class="pull-right gray-light">还差<span id="summary-charsleft">@(100 - ((Model.ClassInfo == null || String.IsNullOrEmpty(Model.ClassInfo.Summary)) ? 0 : (Model.ClassInfo.Summary.Length > 100 ? 100 : Model.ClassInfo.Summary.Length)))</span>字</div>
                                             </div>
                                             <div class="span4"></div>
                                         </div>
@@ -351,3 +352,4 @@
 </div>
 <!-- end of body -->
 @Html.Partial("_ConfirmPublishPartial")
+@Html.Partial("_VerifyMobilePartial")

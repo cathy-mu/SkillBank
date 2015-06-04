@@ -25,7 +25,6 @@ D:\SkillBank\SourceCode\SkillBank\Business\obj\Debug\Business.csprojResolveAssem
 D:\SkillBank\SourceCode\SkillBank\Business\obj\Debug\SkillBank.Site.Services.dll
 D:\SkillBank\SourceCode\SkillBank\Business\obj\Debug\SkillBank.Site.Services.pdb
 E:\SourceCode\VS\SkillBank\Business\bin\Debug\CodeScales.Http.dll
-D:\SkillBank\SourceCode\VS\SkillBank\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
 D:\SkillBank\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.Services.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.Services.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Business\bin\Debug\CodeScales.Http.dll
@@ -37,5 +36,6 @@ D:\SkillBank\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.DataSourc
 D:\SkillBank\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.Common.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Business\bin\Debug\SkillBank.Site.DataSource.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Business\bin\Debug\EntityFramework.xml
+D:\SkillBank\SourceCode\VS\SkillBank\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
 D:\SkillBank\SourceCode\VS\SkillBank\Business\obj\Debug\SkillBank.Site.Services.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Business\obj\Debug\SkillBank.Site.Services.pdb

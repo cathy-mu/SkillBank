@@ -179,8 +179,8 @@ namespace SkillBank.Controllers
 
                     classDetailModel.IsLogin = (memberId > 0);
                     classDetailModel.IsOwner = memberId.Equals(teacherId);
-
-
+                    ViewBag.ContactMobile = (teacherInfo.NotifyTag & 1).Equals(1) ? teacherInfo.Phone : "";//for send SMS notify
+                
                     var numDic = _commonService.GetNumsByMemberClass(teacherId, id, (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassSummary);
                     //init numbers on page
                     numDic.Add(Enums.NumberDictionaryKey.StudentReview, reviewNum);
@@ -255,7 +255,7 @@ namespace SkillBank.Controllers
                 var unReadMessageNum = _commonService.GetMessageUnReadNum(memberId);
                 messageListModel.UnReadMessageNumDic = unReadMessageNum;
 
-                _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetNotificationAsPopedByMemberId, memberId, 0);
+                _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetMessageAsPopedByMemberId, memberId, 0);
                 GetNotificationNums(memberId);
             }
             return View(messageListModel);
@@ -275,12 +275,14 @@ namespace SkillBank.Controllers
             {
                 var messages = _commonService.GetMessageDetail(memberId, contactId, (Byte)Enums.DBAccess.MessageLoadType.DateAsc);
                 messageDetailModel.Messages = messages;
-                messageDetailModel.Contact = _commonService.GetMemberInfo(contactId);
+                var contact =  _commonService.GetMemberInfo(contactId);
+                messageDetailModel.Contact = contact;
                 //messageDetailModel.ContactClass = _commonService.GetClassInfoById(contactId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
                 messageDetailModel.MaxMessageId = (messages == null || messages.Count.Equals(0)) ? 0 : messageDetailModel.Messages.Max(m => m.MessageId);
 
                 //TO DO : Move to client side with set max message id
                 _commonService.SetMessageAsRead(0, memberId, contactId);
+                ViewBag.ContactMobile = (contact.NotifyTag & 1).Equals(1) ? contact.Phone : "";//for send SMS notify
             }
             return View(messageDetailModel);
         }
@@ -310,6 +312,8 @@ namespace SkillBank.Controllers
                     memberInfo.MemberId = memberId;
                     profileModel.MemberInfo = memberInfo;
                     GetNotificationNums(currMemberId);
+                    ViewBag.ContactMobile = (memberInfo.NotifyTag & 1).Equals(1) ? memberInfo.Phone : "";//for send SMS notify
+                    ViewBag.IsOwner = memberId.Equals(currMemberId);
                 }
                 else
                 {
@@ -322,6 +326,7 @@ namespace SkillBank.Controllers
                 memberId = currMemberId;
                 profileModel.MemberInfo = ViewBag.MemberInfo;
                 userName = ViewBag.MemberInfo.Name;
+                ViewBag.IsOwner = true;
             }
             profileModel.ClassList = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, memberId);
 
@@ -360,8 +365,7 @@ namespace SkillBank.Controllers
 
             return View(profileModel);
         }
-
-
+        
         public ActionResult Register(string code = "", string openid = "", string openkey = "")
         {
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("sinup");
@@ -430,6 +434,10 @@ namespace SkillBank.Controllers
 
         #region Non-public functions
 
+        /// <summary>
+        /// Register and user infomation for social network
+        /// </summary>
+        /// <param name="socialType"></param>
         [NonAction]
         private void GetUserInfo(Byte socialType)
         {
@@ -474,7 +482,6 @@ namespace SkillBank.Controllers
             }
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -499,30 +506,37 @@ namespace SkillBank.Controllers
             }
             return memberId;
         }
-
-
-        //Show on bottom menu and message page
-        private void GetNotificationNums(int memberId)
+        
+        /// <summary>
+        /// Show on bottom menu and message page
+        /// </summary>
+        /// <param name="memberId"></param>
+        private void GetNotificationNums(int memberId, Byte loadType = (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileMenu)
         {
             if (memberId > 0)
             {
-                var result = _commonService.GetPopNotification(memberId, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileCheckStatus);
+                var result = _commonService.GetPopNotification(memberId, loadType);
                 Dictionary<String, int> alterNums = new Dictionary<string, int>();
-                if (result == null)
+                if (result != null)
                 {
-                    alterNums.Add("n", 0);
-                    alterNums.Add("m", 0);
+                    //message tab2
+                    int systemNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("s"))) ? 1 : 0;
+                    int messageNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("m"))) ? 1 : 0;
+                    alterNums.Add("nm", systemNotiNum + messageNotiNum);
+                    alterNums.Add("s", systemNotiNum);
+                    //course tab3
+                    int classNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("c"))) ? 1 : 0;
+                    int teacheNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("t"))) ? 1 : 0;
+                    int learnNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("l"))) ? 1 : 0;
+                    alterNums.Add("nc", (classNotiNum + teacheNotiNum + learnNotiNum));
+                    alterNums.Add("c", classNotiNum);
+                    alterNums.Add("t", teacheNotiNum);
+                    alterNums.Add("l", learnNotiNum);
+                    ViewBag.AlterNums = alterNums;
                 }
-                else
-                {
-                    alterNums.Add("n", result.Any(a => (a.PopNum > 0 && (a.Type.Equals("m") || a.Type.Equals("s")))) ? 1 : 0);
-                    alterNums.Add("m", (result.Any(a => (a.Number > 0 && a.Type.Equals("m")))) ? 1 : 0);
-                }
-
-                ViewBag.AlterNums = alterNums;
             }
         }
-
+        
         #endregion
 
         #region Phase 2 pages
@@ -534,10 +548,10 @@ namespace SkillBank.Controllers
         public ActionResult Favorites()
         {
             ViewBag.ActiveTab = 3;
-            ViewBag.AlterNums = null;
 
             var memberId = GetCurrentMemberInfo(true);
             var result = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByMemberLiked, 0, memberId);
+            GetNotificationNums(memberId);
 
             return View(result);
         }
@@ -550,24 +564,23 @@ namespace SkillBank.Controllers
         public ActionResult Following(int id = 0)
         {
             ViewBag.ActiveTab = 3;
-            ViewBag.AlterNums = null;
             Byte loadType = 0;
-            
+
             var memberId = GetCurrentMemberInfo(true);
             if (id.Equals(0) || id.Equals(memberId))//own fans 
             {
                 id = memberId;
                 ViewBag.Avatar = ViewBag.MemberInfo.Avatar;
-                loadType = (Byte)Enums.DBAccess.FavoriteLoadType.ByFollwingMemberAViewerId;
             }
             else if (id > 0)//if view others fans 
             {
                 var memberInfo = _commonService.GetMemberInfo(id);
                 ViewBag.Avatar = (memberInfo == null ? "" : memberInfo.Avatar);
-                loadType = (Byte)Enums.DBAccess.FavoriteLoadType.ByFansMemberAViewerId;
             }
+            loadType = (Byte)Enums.DBAccess.FavoriteLoadType.ByFollwingMemberAViewerId;
             var result = _commonService.GetFavorites(loadType, id, memberId);
-            
+            GetNotificationNums(memberId);
+
             return View(result);
         }
 
@@ -579,8 +592,7 @@ namespace SkillBank.Controllers
         public ActionResult Fans(int id = 0)
         {
             ViewBag.ActiveTab = 3;
-            ViewBag.AlterNums = null;
-
+            
             var memberId = GetCurrentMemberInfo(true);
             if (id.Equals(0) || id.Equals(memberId))//own fans 
             {
@@ -593,7 +605,8 @@ namespace SkillBank.Controllers
                 ViewBag.Avatar = (memberInfo == null ? "" : memberInfo.Avatar);
             }
             var result = _commonService.GetFavorites((Byte)Enums.DBAccess.FavoriteLoadType.ByFansMemberAViewerId, id, memberId);
-
+            GetNotificationNums(memberId);
+            
             return View(result);
         }
 
@@ -607,7 +620,6 @@ namespace SkillBank.Controllers
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("classadd");
 
             ViewBag.ActiveTab = 2;
-            ViewBag.AlterNums = null;
             ViewBag.ActiveStep = 0;
 
             //update user get info use shared one
@@ -673,7 +685,8 @@ namespace SkillBank.Controllers
             {
                 ViewBag.ErrorMessage = ResourceHelper.GetTransText(580);
             }
-
+            GetNotificationNums(memberId);
+            
             return View(classEditModel);
         }
 
@@ -699,7 +712,7 @@ namespace SkillBank.Controllers
 
             var shouldCheckOrder = false;// CheckOrderHandlerDate("TOrderHandleDate", memberId);
             var orders = _commonService.GetOrderListByStudent(memberId, shouldCheckOrder);
-            GetNotificationNums(memberId);
+            GetNotificationNums(memberId, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileLearn);
 
             return View(orders);
         }
@@ -713,7 +726,7 @@ namespace SkillBank.Controllers
             var shouldCheckOrder = false;// CheckOrderHandlerDate("TOrderHandleDate", memberId);
 
             var orders = _commonService.GetOrderListByTeacher(memberId, shouldCheckOrder);
-            GetNotificationNums(memberId);
+            GetNotificationNums(memberId, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileTeach);
 
             return View(orders);
         }
@@ -725,7 +738,7 @@ namespace SkillBank.Controllers
             var memberId = GetCurrentMemberInfo(true);
 
             var ClassEditList = _commonService.GetClassEditInfoByMemberId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherId);
-            GetNotificationNums(memberId);
+            GetNotificationNums(memberId, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileMyCourse);
 
             return View(ClassEditList);
         }

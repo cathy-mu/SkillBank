@@ -1,5 +1,59 @@
-﻿@if (!ViewBag.isMobile)
+﻿@if (ViewBag.isMobile)
 {
+    
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+    
+    
+    <div class="content has-header" id="register-page">
+    <a href="#" class="icon icomoon icon-arrow-left nav-inner nav-left grey nav-back" data-transition="slide-out"></a>
+
+    <div class="info">
+        <img src="@(String.IsNullOrEmpty(ViewBag.SocialAvatar) ? "about:blank" : ContentHelper.GetAvatarPath(ViewBag.SocialAvatar, "mm", ViewBag.SocialType))" alt="" class="avatar">
+        <p>欢迎 @(String.IsNullOrEmpty(ViewBag.SocialName) ? "" : ViewBag.SocialName)</p>
+    </div>
+
+    <div class="register_form">
+        <form>
+            <div class="input-group">
+                <input type="tel" placeholder="手机号码" name="phone">
+            </div>
+            <div class="input-group">
+                <input type="tel" placeholder="验证码" name="code" maxlength="6">
+                <button class="btn btn-grey" type="button">获得验证码</button>
+            </div>
+            <div class="input-group">
+                <button class="btn btn-olive btn-block" name="registebtn"  id="registebtn" type="button" data-avatar="@ViewBag.SocialAvatar" data-name="@ViewBag.SocialName" data-socialid="@ViewBag.SocialAccount" data-socialtype="@ViewBag.SocialType" data-gender="@ViewBag.Gender">完成注册，获得免费课币</button>
+            </div>
+            <div class="input-group">
+                <p>
+                    <small>我已经阅读并同意 <a href="#">使用条款和隐私政策</a></small>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/lodash/dist/lodash.min.js"></script>
+if (System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals("0"))
+   {
+    <script type="text/javascript">
+        (function (f, b) {
+            if (!b.__SV) {
+                var a, e, i, g; window.mixpanel = b; b._i = []; b.init = function (a, e, d) {
+                    function f(b, h) { var a = h.split("."); 2 == a.length && (b = b[a[0]], h = a[1]); b[h] = function () { b.push([h].concat(Array.prototype.slice.call(arguments, 0))) } } var c = b; "undefined" !== typeof d ? c = b[d] = [] : d = "mixpanel"; c.people = c.people || []; c.toString = function (b) { var a = "mixpanel"; "mixpanel" !== d && (a += "." + d); b || (a += " (stub)"); return a }; c.people.toString = function () { return c.toString(1) + ".people (stub)" }; i = "disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+                    for (g = 0; g < i.length; g++) f(c, i[g]); b._i.push([a, e, d])
+                }; b.__SV = 1.2; a = f.createElement("script"); a.type = "text/javascript"; a.async = !0; a.src = "//cdn.mxpnl.com/libs/mixpanel-2.2.min.js"; e = f.getElementsByTagName("script")[0]; e.parentNode.insertBefore(a, e)
+            }
+        })(document, window.mixpanel || []);
+
+        mixpanel.init("35e4fbb87e7a72277c35ff8542dbfddf");
+    </script>
+  }
+}
+else
+{
+    
 @section HeaderStyle
 {@Html.CombresCustomUrl("signUpCss")}
 @section FooterJs
@@ -67,57 +121,5 @@
 <input type="hidden" id="signup-hidavatar" value="@ViewBag.SocialAvatar" />
 <input type="hidden" id="signup-hidsid" value="@ViewBag.SocialAccount" />
 <input type="hidden" id="signup-test" value="@ViewBag.SocialInfo" />
-}else{
-
-    
-    ViewBag.Title = "Login";
-    Layout = "~/Views/Shared/_MobileLayout.cshtml";
-    
-    
-    <div class="content has-header" id="register-page">
-    <a href="#" class="icon icomoon icon-arrow-left nav-inner nav-left grey nav-back" data-transition="slide-out"></a>
-
-    <div class="info">
-        <img src="@(String.IsNullOrEmpty(ViewBag.SocialAvatar) ? "about:blank" : ContentHelper.GetAvatarPath(ViewBag.SocialAvatar, "mm", ViewBag.SocialType))" alt="" class="avatar">
-        <p>欢迎 @(String.IsNullOrEmpty(ViewBag.SocialName) ? "" : ViewBag.SocialName)</p>
-    </div>
-
-    <div class="register_form">
-        <form>
-            <div class="input-group">
-                <input type="tel" placeholder="手机号码" name="phone">
-            </div>
-            <div class="input-group">
-                <input type="tel" placeholder="验证码" name="code" maxlength="6">
-                <button class="btn btn-grey" type="button">获得验证码</button>
-            </div>
-            <div class="input-group">
-                <button class="btn btn-olive btn-block" name="registebtn"  id="registebtn" type="button" data-avatar="@ViewBag.SocialAvatar" data-name="@ViewBag.SocialName" data-socialid="@ViewBag.SocialAccount" data-socialtype="@ViewBag.SocialType">完成注册，获得免费课币</button>
-            </div>
-            <div class="input-group">
-                <p>
-                    <input type="checkbox" checked="checked" class="pass-checkbox">
-                    <small>我已经阅读并同意 <a href="#">使用条款和隐私政策</a></small>
-                </p>
-            </div>
-        </form>
-    </div>
-</div>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/bower_components/lodash/dist/lodash.min.js"></script>
-if (System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals("0"))
-   {
-    <script type="text/javascript">
-        (function (f, b) {
-            if (!b.__SV) {
-                var a, e, i, g; window.mixpanel = b; b._i = []; b.init = function (a, e, d) {
-                    function f(b, h) { var a = h.split("."); 2 == a.length && (b = b[a[0]], h = a[1]); b[h] = function () { b.push([h].concat(Array.prototype.slice.call(arguments, 0))) } } var c = b; "undefined" !== typeof d ? c = b[d] = [] : d = "mixpanel"; c.people = c.people || []; c.toString = function (b) { var a = "mixpanel"; "mixpanel" !== d && (a += "." + d); b || (a += " (stub)"); return a }; c.people.toString = function () { return c.toString(1) + ".people (stub)" }; i = "disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
-                    for (g = 0; g < i.length; g++) f(c, i[g]); b._i.push([a, e, d])
-                }; b.__SV = 1.2; a = f.createElement("script"); a.type = "text/javascript"; a.async = !0; a.src = "//cdn.mxpnl.com/libs/mixpanel-2.2.min.js"; e = f.getElementsByTagName("script")[0]; e.parentNode.insertBefore(a, e)
-            }
-        })(document, window.mixpanel || []);
-
-        mixpanel.init("35e4fbb87e7a72277c35ff8542dbfddf");
-    </script>
-  }
+<input type="hidden" id="signup-gender" value="@ViewBag.Gender">
 }

@@ -1,5 +1,3 @@
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankUI.csprojFakesResolveAssemblyReference.cache
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankUI.csprojResolveAssemblyReference.cache
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBankWeb.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBankWeb.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Fasterflect.2.1.3.0.Fakes.fakesconfig
@@ -43,11 +41,11 @@ D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\CodeScales.Http.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.Services.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.Common.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.DataSource.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\dotNetDR_OAuth2.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\dotNetDR_OAuth2.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.Web.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Combres.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Combres.Mvc.xml
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\dotNetDR_OAuth2.pdb
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\dotNetDR_OAuth2.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\EntityFramework.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Fasterflect.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Fasterflect.2.1.3.0.Fakes.xml
@@ -59,5 +57,7 @@ D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.Razor.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.WebPages.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.WebPages.Deployment.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.WebPages.Razor.xml
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankUI.csprojFakesResolveAssemblyReference.cache
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankUI.csprojResolveAssemblyReference.cache
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankWeb.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankWeb.pdb

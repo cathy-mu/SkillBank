@@ -105,8 +105,8 @@
                                             <label class="control-label">@Html.GetTrans(318)</label>
                                         </div>
                                         <div class="span8 form-inline">
-                                            <input type="text" class="form-control spaced-small span8" id="profileinfo-phone" value="@ViewBag.MemberInfo.Phone">
-                                               <div class="field-hint"><span class="errormessage" id="verify-errormobile">手机号码已被验证&nbsp;&nbsp;&nbsp;</span><span class="errormessage" id="verify-errorcode">验证失败&nbsp;&nbsp;&nbsp;</span>@Html.GetTrans(416)</div>
+                                            <input type="text" class="form-control spaced-small span8" id="profileinfo-phone" value="@ViewBag.MemberInfo.Phone" @(String.IsNullOrEmpty(ViewBag.MemberInfo.Phone)?"":"disabled=disabled")><label class="control-label">&nbsp;&nbsp;&nbsp;<a href="@Url.Action("Verification", "Member")" target="_blank">修改并验证手机号码</a></label>
+                                               <div class="field-hint"><span class="errormessage" id="verify-errormobile">手机号码已被验证&nbsp;&nbsp;&nbsp;</span><span class="errormessage" id="verify-errorcode">验证失败&nbsp;&nbsp;&nbsp;</span>@Html.GetTrans(416)&nbsp;&nbsp;&nbsp;</div>
                                         </div>
                                         <div class="span2">
                                             <p class="spaced-large"><span class="label label-warning label-private"><i class="fa fa-lock"></i>&nbsp; @Html.GetTrans(415)</span></p>

@@ -1,4 +1,5 @@
-﻿<div class="modal fade modal-contact-teacher" id="modal-contact-teacher" tabindex="-1" role="dialog" aria-hidden="true">
+﻿@if(ViewBag.MemberInfo!=null){
+    <div class="modal fade modal-contact-teacher" id="modal-contact-teacher" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
@@ -19,7 +20,7 @@
                     <div class="row-fluid">
                         <div class="span6"><a href="@(ViewBag.ContactorId==null?"#":"/message/chat/"+ViewBag.ContactorId)">@Html.GetTrans(303)</a></div>
                         <div class="span6 tright">
-                            <input type="button" class="btn btn-primary" value="@Html.GetTrans(304)" id="message-sendbtn"></div>
+                            <input type="button" class="btn btn-primary" value="@Html.GetTrans(304)" id="message-sendbtn" data-fromname="@ViewBag.MemberInfo.Name" data-tomobile="@ViewBag.ContactMobile"></div>
                     </div>
 
                 </div>
@@ -28,4 +29,5 @@
         </div>
     </div>
 </div>
+}
 <!-- end of modal: contact teacher -->

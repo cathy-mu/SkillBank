@@ -24,21 +24,13 @@ function verification_Class() {
         verification.mobileUpdateObj.click(function () { $(".mobile-verified").hide(); $(".mobile-verify").show(); });
     }
 
-    this.validCode = function (code) {
-        var patten = new RegExp(/^[0-9]{6}$/);
-        return patten.test(code);
-    }
 
-    this.validMobile = function (mobile) {
-        var patten = new RegExp(/^[1]+\d{10}$/);
-        return (mobile != "" && patten.test(mobile));
-    }
 
     this.sendVerifyCode = function () {
         $("#verify-errormobile").hide();
         $("#verify-errorcode").hide();
         var phone = verification.mobileObj.val();
-        if (!verification.validMobile(phone)) {
+        if (!sitecommon.validMobile(phone)) {
             this.mobileObj.addClass("inputerror");
             return false;
         } else {
@@ -88,20 +80,19 @@ function verification_Class() {
         var code = verification.codeObj.val();
 
 
-        if (phone == "" || !verification.validMobile(phone)) {
+        if (sitecommon.validMobile(phone)) {
+            this.mobileObj.removeClass("inputerror");
+        } else {
             this.mobileObj.addClass("inputerror");
             return false;
-        } else {
-            this.mobileObj.removeClass("inputerror");
         }
 
-        if (code == "" || !verification.validCode(code)) {
+        if (sitecommon.validCode(code)) {
+            verification.codeObj.removeClass("inputerror");
+        } else {
             verification.codeObj.addClass("inputerror");
             return false;
-        } else {
-            verification.codeObj.removeClass("inputerror");
         }
-
 
         verification.verifyBtnObj.addClass("disabled");
         var paraData = { "mobile": phone, "code": code };
@@ -117,7 +108,7 @@ function verification_Class() {
                 console.log(result);
                 if (result.r == "1") {
                     $(".mobile-verified").show();
-                    $(".mobile-verified div span.gray-light").text(phone+" 已通过验证");
+                    $(".mobile-verified div span.gray-light").text(phone + " 已通过验证");
                     $(".mobile-verify").hide();
 
                     if (!verification.isChecked && typeof (mixpanel) != "undefined") {
@@ -130,13 +121,7 @@ function verification_Class() {
                 verification.verifyBtnObj.removeClass("disabled");
             }
         });
-        
-        
-
     }
-
-   
-
 }
 
 

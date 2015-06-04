@@ -166,7 +166,6 @@
           <Property Name="CityId" Type="int" Nullable="false" />
           <Property Name="PosX" Type="decimal" Nullable="false" Precision="10" Scale="6" />
           <Property Name="PosY" Type="decimal" Nullable="false" Precision="10" Scale="6" />
-          <Property Name="IsMobileVerified" Type="tinyint" Nullable="false" />
           <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Gender" Type="bit" Nullable="false" />
@@ -184,6 +183,7 @@
           <Property Name="SocialAccount" Type="nvarchar" MaxLength="50" />
           <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
           <Property Name="VerifyTag" Type="tinyint" Nullable="false" />
+          <Property Name="NotifyTag" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -418,6 +418,7 @@
           <Parameter Name="AvatarPath" Type="nvarchar" Mode="In" />
           <Parameter Name="Etag" Type="nvarchar" Mode="In" />
           <Parameter Name="VerifyCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="Gender" Type="bit" Mode="In" />
           <Parameter Name="Result" Type="int" Mode="InOut" />
         </Function>
         <Function Name="MemberInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -669,6 +670,7 @@
             <Parameter Name="AvatarPath" Mode="In" Type="String" />
             <Parameter Name="Etag" Mode="In" Type="String" />
             <Parameter Name="VerifyCode" Mode="In" Type="String" />
+            <Parameter Name="Gender" Mode="In" Type="Boolean" />
             <Parameter Name="Result" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="MemberInfo_Save_p">
@@ -1181,6 +1183,7 @@
           <Property Type="String" Name="Avatar" Nullable="false" />
           <Property Type="Boolean" Name="HasReview" Nullable="false" />
           <Property Type="String" Name="Remark" Nullable="false" />
+          <Property Type="Byte" Name="NotifyTag" Nullable="false" />
         </ComplexType>
         <ComplexType Name="Order_LoadByTeacher_p_Result">
           <Property Type="Int32" Name="OrderId" Nullable="false" />
@@ -1196,6 +1199,7 @@
           <Property Type="String" Name="Avatar" Nullable="false" />
           <Property Type="Boolean" Name="HasReview" Nullable="false" />
           <Property Type="String" Name="Remark" Nullable="false" />
+          <Property Type="Byte" Name="NotifyTag" Nullable="false" />
         </ComplexType>
         <ComplexType Name="SkillCategory_LoadAll_p_Result">
           <Property Type="Byte" Name="CategoryId" Nullable="false" />
@@ -1469,7 +1473,6 @@
           <Property Type="Int32" Name="CityId" Nullable="false" />
           <Property Type="Decimal" Name="PosX" Nullable="false" Precision="10" Scale="6" />
           <Property Type="Decimal" Name="PosY" Nullable="false" Precision="10" Scale="6" />
-          <Property Type="Byte" Name="IsMobileVerified" Nullable="false" />
           <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="Gender" Nullable="false" />
@@ -1487,6 +1490,7 @@
           <Property Type="String" Name="SocialAccount" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ContactName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Byte" Name="VerifyTag" Nullable="false" />
+          <Property Type="Byte" Name="NotifyTag" Nullable="false" />
         </EntityType>
         <ComplexType Name="MemberInfo_Load_p_Result">
           <Property Type="Int32" Name="MemberId" Nullable="false" />
@@ -1514,6 +1518,7 @@
           <Property Type="Byte" Name="VerifyTag" Nullable="false" />
           <Property Type="Boolean" Name="IsLike" Nullable="false" DefaultValue="false" />
           <Property Type="String" Name="MasterInfo" Nullable="false" MaxLength="1" />
+          <Property Type="Byte" Name="NotifyTag" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2123,6 +2128,7 @@
           <EntitySetMapping Name="MemberInfoes">
             <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo">
               <MappingFragment StoreEntitySet="MemberInfo">
+                <ScalarProperty Name="NotifyTag" ColumnName="NotifyTag" />
                 <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
                 <ScalarProperty Name="ContactName" ColumnName="ContactName" />
                 <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
@@ -2140,7 +2146,6 @@
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="IsMobileVerified" ColumnName="IsMobileVerified" />
                 <ScalarProperty Name="PosY" ColumnName="PosY" />
                 <ScalarProperty Name="PosX" ColumnName="PosX" />
                 <ScalarProperty Name="CityId" ColumnName="CityId" />

@@ -204,10 +204,16 @@
 
 
         $("#unbindmobile").click(function () {
-           var mobile = $('#mobile').val();
-            var patten = new RegExp(/^[1]+[3,4,5,8]+\d{9}/);
-            if (mobile=="" || !patten.test(mobile)) {
+            var mobile = $('#mobile').val();
+            var pass = $('#passcode').val();
+            var patten = new RegExp(/^[1]+\d{10}/);
+            var patten2 = new RegExp(/^[1,3,5,7,9]+\d{3}/);
+            if (mobile == "" || !patten.test(mobile)) {
                 alert("我读书少你不要骗我，你填的是手机号吗？");
+                return;
+            }
+            if (pass == "" || !patten2.test(pass)) {
+                alert("我只想做一段安静的程序，麻烦你填对码1/4，确认你是认真的好吗");
                 return;
             }
             var paraData = { "type":11, "account": mobile };
@@ -228,9 +234,9 @@
         $("#unbindsid").click(function () {
             var pass = $('#passcode').val();
             var sid = $('#accountsid').val();
-            var patten = new RegExp(/^[2,3,6,8,0]+\d{3}/);
+            var patten = new RegExp(/^[2,4,6,8,0]+\d{3}/);
             if (pass == "" || !patten.test(pass)) {
-                alert("我只想做一段安静的程序，麻烦你填对码，确认你是认真的好吗");
+                alert("我只想做一段安静的程序，麻烦你填对码2/4，确认你是认真的好吗");
                 return;
             }
             if (sid == "") {
@@ -255,9 +261,9 @@
         $("#unbindmid").click(function () {
             var pass = $('#passcode').val();
             var mid = $('#accountmid').val();
-            var patten = new RegExp(/^[1,3,5,7,9]+\d{3}/);
+            var patten = new RegExp(/^[2,4,6,8,0]+\d{3}/);
             if (pass == "" || !patten.test(pass)) {
-                alert("我只想做一段乖巧的程序，麻烦你填对码，发誓你是认真的好吗");
+                alert("我只想做一段乖巧的程序，麻烦你填对码2/4，发誓你是认真的好吗");
                 return;
             }
             if (mid == "") {

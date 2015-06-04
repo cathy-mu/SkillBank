@@ -53,7 +53,6 @@ E:\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\NetDimension.Weibo.dll
 E:\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\NetDimension.Weibo.pdb
 E:\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\NetDimension.Weibo.xml
 E:\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\CodeScales.Http.dll
-D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\obj\Debug\FuntionTests.csprojResolveAssemblyReference.cache
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\FunctionTests.dll.config
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\FunctionTests.dll
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\FunctionTests.pdb
@@ -84,5 +83,6 @@ D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\dotNetDR_OAuth2.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\dotNetDR_OAuth2.xml
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\Combres.Mvc.xml
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\Combres.xml
+D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\obj\Debug\FuntionTests.csprojResolveAssemblyReference.cache
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\obj\Debug\FunctionTests.dll
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\obj\Debug\FunctionTests.pdb

@@ -29,12 +29,12 @@ namespace SkillBankWeb.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateMember(String account, Byte socialType, String memberName, String email, String avatar="", string mobile="", string code="" )
+        public JsonResult CreateMember(String account, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", Boolean gender = true)
         {
             int memberId;
             
             String etag = (WebContext.Current.Etag == null)? "" : WebContext.Current.Etag;
-            var result = _commonService.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, etag);
+            var result = _commonService.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, etag, gender);
             if (memberId > 0)
             {
                 WebContext.Current.MemberId = memberId;

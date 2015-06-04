@@ -26,5 +26,6 @@ namespace SkillBank.Site.DataSource.Data
         public string Avatar { get; set; }
         public Boolean HasReview { get; set; }
         public string Remark { get; set; }
+        public byte NotifyTag { get; set; }
     }
 }

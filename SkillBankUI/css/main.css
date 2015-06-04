@@ -3367,3 +3367,8 @@ div.tagssuggestion span.disabled {
   opacity: 0.8;
   font-weight: normal;
 }
+
+.modal-verify-mobile .modal-body .bd {
+  padding: 20px 30px;
+  background: #eee;
+}

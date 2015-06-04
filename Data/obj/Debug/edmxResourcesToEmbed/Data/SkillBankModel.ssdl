@@ -161,7 +161,6 @@
     <Property Name="CityId" Type="int" Nullable="false" />
     <Property Name="PosX" Type="decimal" Nullable="false" Precision="10" Scale="6" />
     <Property Name="PosY" Type="decimal" Nullable="false" Precision="10" Scale="6" />
-    <Property Name="IsMobileVerified" Type="tinyint" Nullable="false" />
     <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="Gender" Type="bit" Nullable="false" />
@@ -179,6 +178,7 @@
     <Property Name="SocialAccount" Type="nvarchar" MaxLength="50" />
     <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
     <Property Name="VerifyTag" Type="tinyint" Nullable="false" />
+    <Property Name="NotifyTag" Type="tinyint" Nullable="false" />
   </EntityType>
   <EntityType Name="Message">
     <Key>
@@ -413,6 +413,7 @@
     <Parameter Name="AvatarPath" Type="nvarchar" Mode="In" />
     <Parameter Name="Etag" Type="nvarchar" Mode="In" />
     <Parameter Name="VerifyCode" Type="nvarchar" Mode="In" />
+    <Parameter Name="Gender" Type="bit" Mode="In" />
     <Parameter Name="Result" Type="int" Mode="InOut" />
   </Function>
   <Function Name="MemberInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">

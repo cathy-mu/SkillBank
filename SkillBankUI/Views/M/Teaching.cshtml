@@ -9,9 +9,11 @@
 <div class="courses-teaching-page content">
     <nav>
         <div class="segmented-control-no-js card">
-            <a href="@Url.Action("mycourses", "m")" class="control-item">课程管理</a>
+            <a href="@Url.Action("mycourses", "m")" class="control-item red-dot-wrapper">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["c"] > 0)
+                                                                         {<span class="red-dot"></span>}课程管理</a>
             <a href="#" class="control-item active">教课记录</a>
-            <a href="@Url.Action("learning", "m")" class="control-item">学习记录</a>
+            <a href="@Url.Action("learning", "m")" class="control-item red-dot-wrapper">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["l"] > 0)
+                                                                        {<span class="red-dot"></span>}学习记录</a>
         </div>
     </nav>
     <div class="teaching-list">
@@ -168,7 +170,7 @@
                 <div class="content-padded">
                     <form>
                         <input type="text" name="name" placeholder="姓名" value="@ViewBag.MemberInfo.Name" />
-                        <input type="tel" name="phone" placeholder="手机" value="@ViewBag.MemberInfo.Phone" @(String.IsNullOrEmpty(ViewBag.MemberInfo.Phone)?"":"disabled") />
+                        <input type="tel" name="phone" placeholder="手机" value="@ViewBag.MemberInfo.Phone" @(String.IsNullOrEmpty(ViewBag.MemberInfo.Phone) ? "" : "disabled") />
                         <a href="#" class="btn btn-primary btn-block accept-reserve">接受预定</a>
                     </form>
                 </div>

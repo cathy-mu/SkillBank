@@ -19,7 +19,7 @@ namespace SkillBank.Site.Services.Managers
         Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy);
         Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId);
 
-        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "");
+        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "", Boolean gender = true);
         Boolean UpdateMemberInfo(Byte saveType, MemberInfo memberInfo);
         void SaveEmailAccount(String name, String email);
         Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd);//admin tool
@@ -129,9 +129,9 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="memberName"></param>
         /// <param name="email"></param>
         /// <returns>1 new member, 0 exists member</returns>
-        public int CreateMember(out int memberId, String socialId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "")
+        public int CreateMember(out int memberId, String socialId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "", Boolean gender = true)
         {
-            int result = _repository.CreateMember(out memberId, socialId, socialType, memberName, email, avatar, mobile, code, etag);
+            int result = _repository.CreateMember(out memberId, socialId, socialType, memberName, email, avatar, mobile, code, etag, gender);
             return result;
         }
 

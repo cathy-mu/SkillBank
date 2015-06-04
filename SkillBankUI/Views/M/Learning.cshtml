@@ -8,8 +8,10 @@
 <div class="courses-learning-page content">
     <nav>
         <div class="segmented-control-no-js card">
-            <a href="@Url.Action("mycourses", "m")" class="control-item">课程管理</a>
-            <a href="@Url.Action("teaching", "m")" class="control-item">教课记录</a>
+            <a href="@Url.Action("mycourses", "m")" class="control-item red-dot-wrapper">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["c"] > 0)
+                                                    {<span class="red-dot"></span>}课程管理</a>
+            <a href="@Url.Action("teaching", "m")" class="control-item red-dot-wrapper">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["t"] > 0)
+                                                    {<span class="red-dot"></span>}教课记录</a>
             <a href="#" class="control-item active">学习记录</a>
         </div>
     </nav>

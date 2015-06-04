@@ -15,7 +15,7 @@
 
     <div class="info">
         <h3>@Model.MemberInfo.Name<span class="icon icomoon @(Model.MemberInfo.Gender ? "icon-male" : "icon-female")"></span></h3>
-        <p><small>@(Model.MemberInfo.CityId>0 ? TagHelper.GetCityName(Model.MemberInfo.CityId) : "")</small></p>
+        <p><small>@(Model.MemberInfo.CityId > 0 ? TagHelper.GetCityName(Model.MemberInfo.CityId) : "")</small></p>
         <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "mb", Model.MemberInfo.SocialType)" alt="" class="avatar">
         <p class="white"><small>@TextContentHelper.GetJoinUsDateText(Model.MemberInfo.CreatedDate)</small></p>
         <div class="btn-set mb-1">
@@ -25,16 +25,18 @@
             }
             else
             {
-                <a href="#privateMsg" class="btn btn-default border-none personal-chat">私信 TA</a>
+                <a @(ViewBag.IsOwner ? "" : "href=#privateMsg") class="btn btn-default border-none personal-chat">私信 TA</a>
             }
             @if (ViewBag.MemberInfo != null && Model.MemberInfo.IsLike)
             {
                 <a href="#" class="follow btn border-none btn-grey" data-memberid="@Model.MemberInfo.MemberId">已关注</a>
             }
-            else if (ViewBag.MemberInfo != null && (ViewBag.MemberInfo.MemberId.Equals(Model.MemberInfo.MemberId)))
+            else if (ViewBag.MemberInfo != null && ViewBag.IsOwner)
             {
                 <a href="#" class="follow btn border-none btn-olive" data-memberid="-1">关注</a>
-            } else{
+            }
+            else
+            {
                 <a href="#" class="follow btn border-none btn-olive" data-memberid="@Model.MemberInfo.MemberId">关注</a>
             }
         </div>
@@ -42,10 +44,18 @@
             <table class="u-full-width">
                 <tbody>
                     <tr>
-                        <td><a href="#"><h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Class]</h6>教授</a></td>
-                        <td><a href="#"><h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Student]</h6>学习</a></td>
-                        <td><a href="@Url.Action("following", "m", new { id = Model.MemberInfo.MemberId })"><h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Follow]</h6>关注</a></td>
-                        <td><a href="@Url.Action("fans", "m", new { id = Model.MemberInfo.MemberId })"><h6 class="fans-num">@Model.ProfileNumDic[Enums.NumberDictionaryKey.Fans]</h6>粉丝</a></td>
+                        <td><a href="#">
+                            <h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Class]</h6>
+                            教授</a></td>
+                        <td><a href="#">
+                            <h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Student]</h6>
+                            学习</a></td>
+                        <td><a href="@Url.Action("following", "m", new { id = Model.MemberInfo.MemberId })">
+                            <h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Follow]</h6>
+                            关注</a></td>
+                        <td><a href="@Url.Action("fans", "m", new { id = Model.MemberInfo.MemberId })">
+                            <h6 class="fans-num">@Model.ProfileNumDic[Enums.NumberDictionaryKey.Fans]</h6>
+                            粉丝</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -124,8 +134,15 @@
             <span id="item1mobile" class="control-content active">
                 <ul class="comment-text verified">
                     <li class="card">
-                        <h5>新浪微博</h5>
-                        <small>weibo.com/@Model.MemberInfo.SocialAccount</small>
+                        @if (@Model.MemberInfo.SocialType.Equals(1))
+                        {
+                            <h5>新浪微博</h5>
+                            <small>weibo.com/@Model.MemberInfo.SocialAccount</small>
+                        }
+                        else if (@Model.MemberInfo.SocialType.Equals(4))
+                        {
+                            <h5>微信</h5>
+                        }
                         <img src="/img/icons/icon-correct.png"></li>
                     @if (Model.ProfileNumDic[Enums.NumberDictionaryKey.Certification] > 1)
                     {
@@ -187,23 +204,24 @@
             </span>
         </div>
     </div>
+    @if (ViewBag.MemberInfo != null)
+    {    
+        <div id="privateMsg" class="modal toBeRemoved">
+            <header class="bar bar-nav">
+                <a class="icon icon-close pull-right grey" href="#privateMsg"></a>
+                <h1 class="title">私信老师</h1>
+            </header>
 
-    <div id="privateMsg" class="modal toBeRemoved">
-        <header class="bar bar-nav">
-            <a class="icon icon-close pull-right grey" href="#privateMsg"></a>
-            <h1 class="title">私信老师</h1>
-        </header>
-
-        <div class="content">
-            <div class="content-inner">
-                <div class="content-padded">
-                    <form data-contactid="@Model.MemberInfo.MemberId">
-                        <textarea name="" id="" cols="30" rows="6" placeholder="输入你的私信内容，向老师咨询关于课程的各种问题"></textarea>
-                        <button class="btn btn-primary btn-block">发送私信</button>
-                    </form>
+            <div class="content">
+                <div class="content-inner">
+                    <div class="content-padded">
+                        <form data-contactid="@Model.MemberInfo.MemberId" data-fromname="@ViewBag.MemberInfo.Name" data-tomobile="@ViewBag.ContactMobile">
+                            <textarea name="" id="" cols="30" rows="6" placeholder="输入你的私信内容，向老师咨询关于课程的各种问题"></textarea>
+                            <button class="btn btn-primary btn-block">发送私信</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    }
 </div>

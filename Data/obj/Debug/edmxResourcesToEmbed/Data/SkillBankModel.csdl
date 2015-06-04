@@ -74,6 +74,7 @@
       <Parameter Name="AvatarPath" Mode="In" Type="String" />
       <Parameter Name="Etag" Mode="In" Type="String" />
       <Parameter Name="VerifyCode" Mode="In" Type="String" />
+      <Parameter Name="Gender" Mode="In" Type="Boolean" />
       <Parameter Name="Result" Mode="InOut" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="MemberInfo_Save_p">
@@ -586,6 +587,7 @@
     <Property Type="String" Name="Avatar" Nullable="false" />
     <Property Type="Boolean" Name="HasReview" Nullable="false" />
     <Property Type="String" Name="Remark" Nullable="false" />
+    <Property Type="Byte" Name="NotifyTag" Nullable="false" />
   </ComplexType>
   <ComplexType Name="Order_LoadByTeacher_p_Result">
     <Property Type="Int32" Name="OrderId" Nullable="false" />
@@ -601,6 +603,7 @@
     <Property Type="String" Name="Avatar" Nullable="false" />
     <Property Type="Boolean" Name="HasReview" Nullable="false" />
     <Property Type="String" Name="Remark" Nullable="false" />
+    <Property Type="Byte" Name="NotifyTag" Nullable="false" />
   </ComplexType>
   <ComplexType Name="SkillCategory_LoadAll_p_Result">
     <Property Type="Byte" Name="CategoryId" Nullable="false" />
@@ -874,7 +877,6 @@
     <Property Type="Int32" Name="CityId" Nullable="false" />
     <Property Type="Decimal" Name="PosX" Nullable="false" Precision="10" Scale="6" />
     <Property Type="Decimal" Name="PosY" Nullable="false" Precision="10" Scale="6" />
-    <Property Type="Byte" Name="IsMobileVerified" Nullable="false" />
     <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Type="Boolean" Name="Gender" Nullable="false" />
@@ -892,6 +894,7 @@
     <Property Type="String" Name="SocialAccount" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="ContactName" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Type="Byte" Name="VerifyTag" Nullable="false" />
+    <Property Type="Byte" Name="NotifyTag" Nullable="false" />
   </EntityType>
   <ComplexType Name="MemberInfo_Load_p_Result">
     <Property Type="Int32" Name="MemberId" Nullable="false" />
@@ -919,5 +922,6 @@
     <Property Type="Byte" Name="VerifyTag" Nullable="false" />
     <Property Type="Boolean" Name="IsLike" Nullable="false" DefaultValue="false" />
     <Property Type="String" Name="MasterInfo" Nullable="false" MaxLength="1" />
+    <Property Type="Byte" Name="NotifyTag" Nullable="false" />
   </ComplexType>
 </Schema>

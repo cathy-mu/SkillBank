@@ -603,6 +603,7 @@
     <EntitySetMapping Name="MemberInfoes">
       <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo">
         <MappingFragment StoreEntitySet="MemberInfo">
+          <ScalarProperty Name="NotifyTag" ColumnName="NotifyTag" />
           <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
           <ScalarProperty Name="ContactName" ColumnName="ContactName" />
           <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
@@ -620,7 +621,6 @@
           <ScalarProperty Name="Gender" ColumnName="Gender" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="IsMobileVerified" ColumnName="IsMobileVerified" />
           <ScalarProperty Name="PosY" ColumnName="PosY" />
           <ScalarProperty Name="PosX" ColumnName="PosX" />
           <ScalarProperty Name="CityId" ColumnName="CityId" />

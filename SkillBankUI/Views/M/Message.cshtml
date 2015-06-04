@@ -7,43 +7,19 @@
 <div class="content" id="message-page">
     <nav>
         <div class="segmented-control card">
-            @if (ViewBag.AlterNums != null && ViewBag.AlterNums["m"] > 0)
-            {
-                <a class="control-item active red-dot-wrapper notification-tab" href="#item1mobile">通知</a>
-                <a class="control-item-no-js red-dot-wrapper message-tab" href="#" data-maxid="@ViewBag.MaxMessageId">
-                    <span class="red-dot"></span>私信
-                </a>
-            }
-            else
-            {
-                <a class="control-item active red-dot-wrapper" href="#item1mobile">通知</a>
-                <a class="control-item red-dot-wrapper" href="#item2mobile">私信</a>
-            }
-         </div>
+            <a class="control-item active red-dot-wrapper message-tab" href="#item1mobile">私信</a>
+            <a class="control-item red-dot-wrapper notification-tab" href="#">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["s"] > 0)
+                                                                                                {<span class="red-dot"></span>}通知</a>
+        </div>
     </nav>
     <div>
         <div id="item1mobile" class="control-content active">
-            <ul class="avatar-text">
-                <li class="card">
-                    <div class="msg-title">
-                        <time class="pull-right">@TextContentHelper.GetDateString(new DateTime(2015,03,05))</time>
-                        <h4 class="flag-num">欢迎使用技能银行手机公测版<!--<span class="badge">1</span>-->
-                        </h4>
-                    </div>
-                    <p>
-                        目前已开放部分功能的测试，完整版将在近期上线。用户也可以在PC端访问www.skillbank.cn，使用全部功能。
-                    </p>
-                </li>
-
-            </ul>
-        </div>
-        <div id="item2mobile" class="control-content">
             <ul class="avatar-text private-msg">
                 @if (Model.Messages != null && ViewBag.MemberInfo != null)
                 {
                     foreach (var message in Model.Messages)
                     {
-                    var contactId = (message.From_Id == ViewBag.MemberInfo.MemberId) ? message.To_Id : message.From_Id;
+                        var contactId = (message.From_Id == ViewBag.MemberInfo.MemberId) ? message.To_Id : message.From_Id;
                     <li class="card">
                         <a href="" data-transition="slide-in">
                             <div class="pull-left flag-num">
@@ -65,6 +41,21 @@
                     </li>
                     }
                 }
+            </ul>
+        </div>
+        <div id="item2mobile" class="control-content">
+            <ul class="avatar-text">
+                <li class="card">
+                    <div class="msg-title">
+                        <time class="pull-right">@TextContentHelper.GetDateString(new DateTime(2015, 05, 13))</time>
+                        <h4 class="flag-num">技能银行手机公测版正式上线啦<!--<span class="badge">1</span>-->
+                        </h4>
+                    </div>
+                    <p>
+                        关注技能银行订阅号SkillBank,可以随时访问我们的手机平台。公测期间如有任何问题或反馈，请通过订阅号或平台私信技能菌。
+                    </p>
+                </li>
+
             </ul>
         </div>
     </div>

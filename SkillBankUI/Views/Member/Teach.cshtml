@@ -88,7 +88,7 @@
                                             <td><a href="@Url.Action("detail", "class", new { id = order.ClassId })">@order.Title</a></td>
                                             <td><a href="@Url.Action("chat", "message", new { id = order.MemberId })">@Html.GetTrans(442)</a></td>
                                             <td><span class="gray-light">@TextContentHelper.GetDateString(order.BookedDate)</span></td>
-                                            <td class="tcenter" data-mailaddr="@order.Email" data-title="@order.Title" data-name="@order.MemberName" data-studentid="@order.MemberId">
+                                            <td class="tcenter" data-mailaddr="@order.Email" data-title="@order.Title" data-name="@order.MemberName" data-studentid="@order.MemberId" data-mobile="@order.Phone">
                                                 @if (order.OrderStatus == 1)
                                                 { 
                                                     <a href="#modal-accept-booking" class="btn btn-block btn-warning spaced teach-accept" data-toggle="modal" data-orderid="@order.OrderId" data-date="@TextContentHelper.GetDateString(order.BookedDate)" data-studentid="@order.MemberId">@Html.GetTrans(454)</a>
@@ -123,14 +123,14 @@
                                                 }
                                             </td>
                                             <td>
-                                                @if(!String.IsNullOrEmpty(order.Remark))
+                                                @if (!String.IsNullOrEmpty(order.Remark))
                                                 {
-                                                <div class="dropdown teach-remarkpop">
-                                                    <a data-toggle="dropdown" href="#">@Html.GetTrans(652)<i class="fa fa-envelope-o">&nbsp;</i></a>
-                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                                        <li>@order.Remark</li>
-                                                    </ul>
-                                                </div>
+                                                    <div class="dropdown teach-remarkpop">
+                                                        <a data-toggle="dropdown" href="#">@Html.GetTrans(652)<i class="fa fa-envelope-o">&nbsp;</i></a>
+                                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                                            <li>@order.Remark</li>
+                                                        </ul>
+                                                    </div>
                                                 }
                                             </td>
                                         </tr>

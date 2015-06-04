@@ -32,12 +32,16 @@ namespace SkillBankWeb.Controllers
         private SinaError _errs = null;
         private IApi apis = Uf.C(CtorApi.Sina);
 
+        private IAuthorizationCodeBase _authCodew = Uf.C(CtorAT.WeChat);
+        private WeChatError _errw = null;
+        private IApi apiw = Uf.C(CtorApi.WeChat);
+
         public SignUpController(ICommonService commonService)
         {
             _commonService = commonService;
         }
 
-        public ActionResult Index(string code = "", string openid = "", string openkey = "")
+        public ActionResult Index(string code = "", string openid = "", string openkey = "", string state = "")
         {
             int memberId = 0;
             //TO DO：Temp for testing server
@@ -70,7 +74,7 @@ namespace SkillBankWeb.Controllers
             if (!String.IsNullOrEmpty(code))
             {
                 //Tencent
-                if (!String.IsNullOrEmpty(openid))
+                /*if (!String.IsNullOrEmpty(openid))
                 {
                     socialType = 3;
                     if (Session["accessToken"] == null && !string.IsNullOrEmpty(code))
@@ -90,8 +94,29 @@ namespace SkillBankWeb.Controllers
                         Session.Add("accessToken", accessToken);
 
                         WebContext.Current.SocialAccount = openid;
-                        WebContext.Current.SocialAccessInfo = String.Format("{0};{1}", accessToken.access_token, openkey);*/
+                        WebContext.Current.SocialAccessInfo = String.Format("{0};{1}", accessToken.access_token, openkey);
                         WebContext.Current.SocialType = (Byte)Enums.SocialTpye.QQ;
+                    }
+                }
+                
+                */ 
+                //wechat
+                if (!String.IsNullOrEmpty(state) && !String.IsNullOrEmpty(code))
+                {
+                    ViewBag.isMobile = true;
+                    socialType = 4;
+                    if (Session["accessToken"] == null)
+                    {
+                        var redirectUrl = AccessTokenToolkit.GenerateHostPath(Request.Url) + Url.Action("Index", "SignUp");
+                        var accessToken = _authCodew.GetResult(_authCodew.GenerateAccessTokenUrl(redirectUrl, code));
+
+                        if (apiw.WasError(accessToken, out _errw))
+                        {
+                            Session["err"] = _errw;
+                            return RedirectToAction("Error");
+                        }
+                        Session.Add("accessToken", accessToken);
+                        WebContext.Current.SocialAccessInfo = accessToken.access_token;
                     }
                 }
                 //Sina
@@ -123,14 +148,15 @@ namespace SkillBankWeb.Controllers
                         WebContext.Current.MemberId = memberId;
                         String domain = UtilitiesModule.GetCookieDomain(Request.Url.Host);
                         CookieManager.SetCookie(Constants.CookieKeys.MemberId, memberId.ToString(), /*isPersistent*/ true, domain, Response);
-                        if (!string.IsNullOrEmpty(backUrl))
+                        if (!string.IsNullOrEmpty(backUrl) && socialType < 3)
                         {
                             Response.Redirect(backUrl);
                         }
-                        
+
                     }
                     ViewBag.MemberId = memberId;
                 }
+                
             }
             return View();
         }
@@ -157,28 +183,60 @@ namespace SkillBankWeb.Controllers
                 {
                     ViewBag.SocialName = model.screen_name;
                     ViewBag.SocialAvatar = model.avatar_large;
+                    String gender = (model.gender == null ? "" : Convert.ToString(model.gender));
+                    ViewBag.Gender = (!String.IsNullOrEmpty(gender) && gender.Equals("f")) ? 0 : 1;
                     socialAccount = uid;
                     //var blogStatus = apis.CallGet("statuses/user_timeline/ids.json?uid=" + uid, accessToken);
                     //ViewBag.SocialInfo = blogStatus.total_number;
                 }
             }
-            //Tencent
-            else if (socialType == 3)
+            else if (socialType == 4)
             {
-                var model = apit.CallGet("user/info?format=json", accessToken, false, GetOpenidOpenkeyParamsExt());
+                var model = apiw.CallGet("sns/userinfo", accessToken, false, GetOpenidOpenkeyParamsExt());
+                //var model = apiw.CallGet("/cgi-bin/user/info", accessToken, false, GetOpenidOpenkeyParamsExt());
 
-                if (apit.WasError(model, out _err))
+                if (apiw.WasError(model, out _err))
                 {
                     Session["err"] = _err;
                 }
                 else
                 {
-                    ViewBag.SocialName = model.nick;
-                    ViewBag.SocialAvatar = model.head;
+                    ViewBag.SocialName = model.nickname;
+                    String avatarImg = (model.headimgurl == null ? "" : Convert.ToString(model.headimgurl));
+                    if (!String.IsNullOrEmpty(avatarImg))
+                    {
+                        int idx = avatarImg.LastIndexOf('/');
+                        if (idx > 0)
+                        {
+                            avatarImg = String.Concat(avatarImg.Substring(0, idx + 1), "132");
+                        }
+                    }
+                    ViewBag.SocialAvatar = avatarImg;
+                    String gender = (model.sex == null ? "" : Convert.ToString(model.sex));
+                    ViewBag.Gender = (!String.IsNullOrEmpty(gender) && gender.Equals("2")) ? 0 : 1;
+                    ViewBag.Test = ViewBag.Gender;
                     socialAccount = model.openid;
+                    WebContext.Current.SocialType = (Byte)Enums.SocialTpye.WeChat;
                 }
             }
+            //Tencent
+            //else if (socialType == 3)
+            //{
+            //    var model = apit.CallGet("user/info?format=json", accessToken, false, GetOpenidOpenkeyParamsExt());
 
+            //    if (apit.WasError(model, out _err))
+            //    {
+            //        Session["err"] = _err;
+            //    }
+            //    else
+            //    {
+            //        ViewBag.SocialName = model.nick;
+            //        ViewBag.SocialAvatar = model.head;
+            //        socialAccount = model.openid;
+            //    }
+            //}
+            //WeChat
+            
             ViewBag.SocialType = (Byte)socialType;
             if (!String.IsNullOrEmpty(socialAccount))
             {
@@ -259,11 +317,9 @@ namespace SkillBankWeb.Controllers
                     //ViewBag.SocialInfo = blogStatus.total_number;
                 }
             }
-            //Tencent
+            //WeChat
             else
-            {
-
-            }
+            {}
         }
 
         [HttpPost]
@@ -310,14 +366,8 @@ namespace SkillBankWeb.Controllers
                 {
                     var accessTokenObj = Session["accessToken"] as dynamic;
                     var accessToken = accessTokenObj.access_token;
-                    //var result = apis.CallGet("oauth2/revokeoauth2", accessToken);
-                    var result = CallGet("https://api.weibo.com/oauth2/revokeoauth2", accessToken);
+                    var result = apis.CallGet("https://api.weibo.com/oauth2/revokeoauth2", accessToken);
                     rs = Json(result, JsonRequestBehavior.AllowGet);
-                }
-                else if (socialType.Equals(Enums.SocialTpye.Sina))
-                {
-                    //var result = apit.CallGet("account/end_session.json?uid=" + uid, accessToken);
-                    //rs = Json(result, JsonRequestBehavior.AllowGet);
                 }
 
                 Session["accessToken"] = null;
@@ -335,24 +385,21 @@ namespace SkillBankWeb.Controllers
                 Response.Cookies.Clear();
                 return Json("NoLoginInfo", JsonRequestBehavior.AllowGet);
             }
-
-            
         }
 
+        //private dynamic CallGet(string url, string accessToken)
+        //{
+        //    var linkChar = url.IndexOf('?') > 0 ? "&" : "?";
+        //    var queryStringAccessToken = linkChar + "access_token=" + accessToken;
 
-        private dynamic CallGet(string url, string accessToken)
-        {
-            var linkChar = url.IndexOf('?') > 0 ? "&" : "?";
-            var queryStringAccessToken = linkChar + "access_token=" + accessToken;
-
-            ClientRequest cr = new ClientRequest(url + queryStringAccessToken);
-            cr.HttpMethod = WebRequestMethods.Http.Get;
+        //    ClientRequest cr = new ClientRequest(url + queryStringAccessToken);
+        //    cr.HttpMethod = WebRequestMethods.Http.Get;
                         
-            dynamic result = null;
-            result = NetQuick.GetResponseForText(cr);
+        //    dynamic result = null;
+        //    result = NetQuick.GetResponseForText(cr);
            
-            return result;
-        }
+        //    return result;
+        //}
 
     }
 }

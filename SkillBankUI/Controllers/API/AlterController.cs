@@ -38,7 +38,7 @@ namespace SkillBankWeb.API
             int memberId = GetMemberId(true);
             if (memberId > 0)
             {
-                _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetMessageAsPopedByMemberAndNotiId, memberId, id);
+                _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetSystemAsReadByMemberAndNotiId, memberId);
                 return true;
             }
             return false;

@@ -117,7 +117,6 @@ namespace SkillBank.Site.DataSource.Data
             var loadByParameter = new ObjectParameter("loadBy", loadBy);
             var paraIdParameter = new ObjectParameter("paraId", paraId);
             var memberIdParameter = new ObjectParameter("memberId", memberId);
-
             var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ClassInfo_Load_p_Result>("ClassInfo_Load_p", MergeOption.NoTracking, loadByParameter, paraIdParameter, memberIdParameter);
             return ClassMapper.Map(result);
         }

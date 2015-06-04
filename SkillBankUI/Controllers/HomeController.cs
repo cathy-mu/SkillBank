@@ -56,12 +56,12 @@ namespace SkillBank.Controllers
 
         public ActionResult Index()
         {
-            Boolean isMobile = Request.Url.Host.Contains("m.skill");//IsMobile();
+            Boolean isMobileRedirect = (IsMobile() || Request.Url.Host.Contains("m.skill"));
             String envCode = System.Configuration.ConfigurationManager.AppSettings["ENV"];
-            if (isMobile || envCode.Equals(ConfigConstants.EnvSetting.Web1EnvName))
+            if (isMobileRedirect || envCode.Equals(ConfigConstants.EnvSetting.Web1EnvName))
             {
                 Response.Status = "301 Moved Permanently";
-                Response.AddHeader("Location", isMobile ? ConfigConstants.EnvSetting.MobileHome[envCode] : ConfigConstants.EnvSetting.SiteHome[envCode]);
+                Response.AddHeader("Location", isMobileRedirect ? ConfigConstants.EnvSetting.MobileHome[envCode] : ConfigConstants.EnvSetting.SiteHome[envCode]);
                 Response.End();
             }
             

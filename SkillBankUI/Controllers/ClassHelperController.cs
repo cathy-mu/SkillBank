@@ -136,31 +136,7 @@ namespace SkillBankWeb.Controllers
             var result = _commonService.UpdateClassInfo(updateType, classId, infoValue);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
-        
-        //Old proved method
-        [HttpPost]
-        public JsonResult UpdateClassProveTag(int classId, Byte infoValue, String className = "", String name = "", String email = "")//Byte memberId,
-        {
-            Byte updateType = 2;//set prove tag
-
-            var result = _commonService.UpdateClassInfo(updateType, classId, infoValue, /*completeStatus*/1);
-            if (System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName))
-            {
-                if (infoValue.Equals(1))
-                {
-                    //Send Class Prove email 
-                    SendCloudEmail.SendClassProvedMail(email, name, className);
-                }
-                else if (infoValue.Equals(2))
-                {
-                    //Send reject email
-                    SendCloudEmail.SendClassRejectMail(email, name, className);
-                }
-            }
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
+              
         #endregion
 
         /// <summary>
@@ -217,27 +193,42 @@ namespace SkillBankWeb.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UpdateClassStatus(int classId, Byte infoValue, Boolean forActive = false, String className = "", String name = "", String email = "")
+        public JsonResult UpdateClassStatus(int classId, Byte infoValue, Boolean forActive = false, String className = "", String name = "", String email = "", String mobile = "")
         {
             Byte updateType = forActive ? (Byte)Enums.DBAccess.ClassSaveType.SetActiveTag : (Byte)Enums.DBAccess.ClassSaveType.UpdateProvedTag;
 
             var result = _commonService.UpdateClassEditInfo(updateType, classId, infoValue);
-            if (!forActive && System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName))
+            Boolean sendNotify = System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName);
+
+            if (!forActive && sendNotify)
             {
                 if (infoValue.Equals(1))
                 {
                     //Send Class Prove email 
-                    SendCloudEmail.SendClassProvedMail(email, name, className);
+                    if (!String.IsNullOrEmpty(mobile))
+                    {
+                        _commonService.SendClassProveSMS(true, mobile, className, Constants.PageURL.MobileMyCoursePage);
+                    }
+                    else
+                    {
+                        SendCloudEmail.SendClassProvedMail(email, name, className);
+                    }
                 }
                 else if (infoValue.Equals(2))
                 {
                     //Send reject email
-                    SendCloudEmail.SendClassRejectMail(email, name, className);
+                    if (!String.IsNullOrEmpty(mobile))
+                    {
+                        _commonService.SendClassProveSMS(false, mobile, className, Constants.PageURL.MobileMyCoursePage);
+                    }
+                    else
+                    {
+                        SendCloudEmail.SendClassRejectMail(email, name, className);
+                    }
                 }
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
         
         /// <summary>
         /// Create new class
@@ -276,7 +267,6 @@ namespace SkillBankWeb.Controllers
                     {
                         actionType = 1;
                     }
-                    
                 }
                 else
                 {

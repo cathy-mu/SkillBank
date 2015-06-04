@@ -67,6 +67,7 @@
       <resource path="~/scripts/plugins/jquery.Jcrop.min.js"/>
       <resource path="~/Scripts/libs/jquery.form.js"/>
       <resource path="~/Scripts/PhotoEditor.js"/>
+      <resource path="~/scripts/PopMobileVerification.js"/>
       <resource path="~/scripts/classedit.js"/>
     </resourceSet>
 
@@ -83,6 +84,7 @@
       <resource path="~/css/site.css"/>
     </resourceSet>
     <resourceSet type="js" name="classDetailJs">
+      <resource path="~/scripts/PopMobileVerification.js"/>
       <resource path="~/scripts/classDetail.js"/>
     </resourceSet>
 
@@ -119,6 +121,7 @@
       <resource path="~/css/site.css"/>
     </resourceSet>
     <resourceSet type="js" name="chatJs">
+      <resource path="~/scripts/PopMobileVerification.js"/>
       <resource path="~/scripts/Chat.js"/>
     </resourceSet>
 

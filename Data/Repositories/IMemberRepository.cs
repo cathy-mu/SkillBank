@@ -21,7 +21,7 @@ namespace SkillBank.Site.DataSource.Data
         List<MemberInfo> GetMemberInfos(Byte loadBy, String searchKey);
         MemberInfo GetMemberInfo(Byte loadType, String socialAccount, Byte socialType, int memberId, int relatedMemberId = 0);
         Boolean UpdateMemberInfo(int memberId, Byte saveType, String phoneNo, int cityId, String memberName, String intro, Boolean isMale, String eMail, Decimal posX, Decimal poxY, DateTime birthday, String avatar);
-        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "");
+        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "", Boolean gender = true);
         void LeaveEmailAddress(String name,String mail);
         Boolean CoinUpdate(Byte saveType, int memberId, int classId, int amount);
         Dictionary<Enum, int> GetMemberNums(int memberId, int classId, Byte loadBy);
@@ -74,9 +74,9 @@ namespace SkillBank.Site.DataSource.Data
         /// <param name="email"></param>
         /// <param name="cityId"></param>
         /// <returns></returns>
-        public int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "")
+        public int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "", Boolean gender = true)
         {
-            return MemberInfo_Add_p(out memberId, socialOpenId, socialType, avatar, memberName, email, mobile, code, etag);
+            return MemberInfo_Add_p(out memberId, socialOpenId, socialType, avatar, memberName, email, mobile, code, etag, gender);
         }
                 
 
@@ -160,7 +160,7 @@ namespace SkillBank.Site.DataSource.Data
             return ((Byte)resultParameter.Value == 0);
         }
 
-        private int MemberInfo_Add_p(out int memberId, String socialId, Byte socialType, String avatar, String memberName, String eMail, string mobile = "", string code = "", String etag = "")
+        private int MemberInfo_Add_p(out int memberId, String socialId, Byte socialType, String avatar, String memberName, String eMail, string mobile = "", string code = "", String etag = "", Boolean gender = true)
         {
             memberId = 0;
             var socialAccountParameter = new ObjectParameter("SocialId", socialId);
@@ -172,8 +172,9 @@ namespace SkillBank.Site.DataSource.Data
             var eMailParameter = new ObjectParameter("Mail", eMail);
             var avatarPathParameter = new ObjectParameter("AvatarPath", avatar);
             var etagParameter = new ObjectParameter("Etag", etag);
+            var genderParameter = new ObjectParameter("Gender", gender);
             var resultParameter = new ObjectParameter("Result", 0);
-            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MemberInfo_Add_p", socialAccountParameter, socialTypeParameter, memberIdParameter, mobileParameter, codeParameter, memberNameParameter, avatarPathParameter, eMailParameter, etagParameter, resultParameter);
+            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MemberInfo_Add_p", socialAccountParameter, socialTypeParameter, memberIdParameter, mobileParameter, codeParameter, memberNameParameter, avatarPathParameter, eMailParameter, genderParameter, etagParameter, resultParameter);
             memberId = (int)memberIdParameter.Value;
             return (int)resultParameter.Value;
         }

@@ -40,9 +40,10 @@ function memberteach_Class() {
         $("#acceptpop-hidorderid").val(btnObj.attr("data-orderid"));
         $("#acceptpop-hidstudentid").val(btnObj.attr("data-studentid"));
         $("#acceptpop-hidmailto").val(btnObj.parent().attr("data-mailaddr"));
+        $("#acceptpop-hidmobile").val(btnObj.parent().attr("data-mobile"));
     }
 
-    this.acceptBooking = function (btnObj) {
+    this.acceptBooking = function () {
         var nameCtl = $("#acceptpop-contactname");
         if ($.trim(nameCtl.val()) == "") {
             nameCtl.addClass("inputerror");
@@ -70,16 +71,19 @@ function memberteach_Class() {
         var mailAddress = $("#acceptpop-hidmailto").val();
         var classTitle = $("#acceptpop-title").text();
         var memberName = $("#acceptpop-student").text();
+        var mobile = $("#acceptpop-hidmobile").val();
+
         var paraData;
         if ($("#acceptpop-updatememberinfo").val() == 0) {
-            paraData = { orderid: orderId, studentid: studentId, mailaddr: mailAddress, mailname: memberName, title: classTitle };
+            paraData = { orderid: orderId, studentid: studentId, mailaddr: mailAddress, mailname: memberName, title: classTitle, mobile: mobile };
         } else {
-            paraData = { orderid: orderId, studentid: studentId, mailaddr: mailAddress, mailname: memberName, title: classTitle, name: nameCtl.val(), phone: phoneCtl.val(), email: emailCtl.val() };
+            paraData = { orderid: orderId, studentid: studentId, mailaddr: mailAddress, mailname: memberName, title: classTitle, mobile: mobile, name: nameCtl.val(), phone: phoneCtl.val(), email: emailCtl.val() };
         }
-        consoleLog(paraData);
+
         if (typeof (mixpanel) != "undefined") {
             mixpanel.track("accept booking");
         }
+        consoleLog(paraData);
 
         var savePath = "/OrderHelper/AcceptOrder";
         $.ajax({
@@ -91,19 +95,18 @@ function memberteach_Class() {
             success: function (data) {
                 if (data == 2) {
                     alert("对不起，该学生已经没有足够的课币，无法接受预定。");
-                }else if (data == 3) {
+                } else if (data == 3) {
                     alert("对不起，订单状态已改变。");
                 }
                 //1- error 1 success 2not enough coin
                 window.location.href = "/member/teach";
-
-            }/*, error: function (e) {
-                console.log(e);
-            }*/
+            }
         });
     }
 
     this.updateOrderStatus = function (paraData) {
+        consoleLog(paraData);
+
         var savePath = "/OrderHelper/UpdateOrderStatus";
         $.ajax({
             url: savePath,
@@ -128,8 +131,8 @@ function memberteach_Class() {
             var classTitle = btnObj.parent().attr("data-title");
             var memberName = btnObj.parent().attr("data-name");
             var studentId = btnObj.parent().attr("data-studentid");
-            var paraData = { "orderid": orderId, "status": 2, "mailaddr": mailAddress, "mailname": memberName, "title": classTitle, "student": studentId };//2 is reject booking
-            consoleLog(paraData);
+            var mobile = btnObj.parent().attr("data-mobile");
+            var paraData = { "orderid": orderId, "status": 2, "mailaddr": mailAddress, "mailname": memberName, "title": classTitle, "mobile":mobile, "student": studentId };//2 is reject booking
             if (typeof (mixpanel) != "undefined") {
                 mixpanel.track("reject booking");
             }
@@ -145,8 +148,8 @@ function memberteach_Class() {
             var classTitle = btnObj.parent().attr("data-title");
             var memberName = btnObj.parent().attr("data-name");
             var studentId = btnObj.parent().attr("data-studentid");
-            var paraData = { orderid: orderId, status: 8, mailaddr: mailAddress, mailname: memberName, title: classTitle, student: studentId };//8 is reject refund
-            consoleLog(paraData);
+            var mobile = btnObj.parent().attr("data-mobile");
+            var paraData = { orderid: orderId, status: 8, mailaddr: mailAddress, mailname: memberName, title: classTitle, "mobile": mobile, student: studentId };//8 is reject refund
             memberteach.updateOrderStatus(paraData);
         }
     }
@@ -159,7 +162,9 @@ function memberteach_Class() {
             var classTitle = btnObj.parent().attr("data-title");
             var memberName = btnObj.parent().attr("data-name");
             var studentId = btnObj.parent().attr("data-studentid");
-            var paraData = { orderid: orderId, studentid: studentId, mailaddr: mailAddress, mailname: memberName, title: classTitle };
+            var mobile = btnObj.parent().attr("data-mobile");
+            var paraData = { orderid: orderId, studentid: studentId, mailaddr: mailAddress, mailname: memberName, title: classTitle, "mobile": mobile };
+
             consoleLog(paraData);
             var savePath = "/OrderHelper/RefundProve";
             $.ajax({
@@ -200,9 +205,7 @@ function memberteach_Class() {
                     if (data == "true") {
                         window.location.reload();
                     }
-                }/*, error: function (e) {
-                    console.log(e);
-                }*/
+                }
             });
         } 
     }

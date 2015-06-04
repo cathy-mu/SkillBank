@@ -22,6 +22,8 @@ namespace SkillBankWeb.API
         {
             public int ToId { get; set; }
             public String MessageText { get; set; }
+            public String FromName { get; set; }
+            public String ToMobile { get; set; }
         }
         //
         // GET: /Message/
@@ -84,6 +86,10 @@ namespace SkillBankWeb.API
                 int toId = chatItem.ToId;
                 String messageText = chatItem.MessageText;
                 var result = _commonService.AddMessage(memberId, toId, messageText);
+                if (result.Equals(2))
+                {
+                    _commonService.SendNewMessageSMS(chatItem.ToMobile, chatItem.FromName, Constants.PageURL.MobileMessagePage, true);
+                }
                 return true;
             }
             return false;
