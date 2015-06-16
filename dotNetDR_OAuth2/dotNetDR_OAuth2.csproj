@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B72FFE8-BDDF-4D2C-9A8E-F51B59F7B949}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>dotNetDR_OAuth2</RootNamespace>
+    <AssemblyName>dotNetDR_OAuth2</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\dotNetDR_OAuth2.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessToken\AccessTokenToolkit.cs" />
+    <Compile Include="AccessToken\CtorAT.cs" />
+    <Compile Include="AccessToken\IAuthorizationCodeBase.cs" />
+    <Compile Include="AccessToken\IAccessToken.cs" />
+    <Compile Include="AccessToken\IGetAccessToken.cs" />
+    <Compile Include="AccessToken\IGetCode.cs" />
+    <Compile Include="AccessToken\Providers\WeChat\WeChatAuthorizationCode.cs" />
+    <Compile Include="AccessToken\Providers\Sina\SinaAuthorizationCode.cs" />
+    <Compile Include="AccessToken\Providers\Tencent\TencentAuthorizationCode.cs" />
+    <Compile Include="APIs\WeChatError.cs" />
+    <Compile Include="APIs\CtorApi.cs" />
+    <Compile Include="APIs\IApi.cs" />
+    <Compile Include="APIs\IError.cs" />
+    <Compile Include="APIs\Providers\Sina\SinaApi.cs" />
+    <Compile Include="APIs\Providers\WeChat\WeChatApi.cs" />
+    <Compile Include="APIs\SinaError.cs" />
+    <Compile Include="APIs\SinaErrorCode.cs" />
+    <Compile Include="APIs\Providers\Tencent\TencentApi.cs" />
+    <Compile Include="APIs\TencentError.cs" />
+    <Compile Include="Uf.cs" />
+    <Compile Include="AppConfig.cs" />
+    <Compile Include="AppConfigs.cs" />
+    <Compile Include="DefaultAppConfigs.cs" />
+    <Compile Include="JSON\DynamicJsonConverter.cs" />
+    <Compile Include="JSON\JsonQuick.cs" />
+    <Compile Include="Net\BinaryData.cs" />
+    <Compile Include="Net\DynamicDictionary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Net\NetQuick.cs" />
+    <Compile Include="Net\ClientRequest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

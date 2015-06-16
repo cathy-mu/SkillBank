@@ -755,6 +755,7 @@ namespace SkillBank.Controllers
                 var cityDic = _contentService.GetCities("cn");
                 cityName = LookupHelper.GetCityNameById(cityDic, ViewBag.MemberInfo.CityId);
             }
+            ViewBag.ContactMobile = (ViewBag.MemberInfo.NotifyTag & 1).Equals(1) ? ViewBag.MemberInfo.Phone : "";
             ViewBag.CityName = cityName;
             GetNotificationNums(memberId);
 

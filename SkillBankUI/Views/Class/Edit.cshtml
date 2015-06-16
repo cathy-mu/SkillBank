@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="steps-complete none">
-                            <a href="#" data-isverify="@(ViewBag.MemberInfo.VerifyTag & 1)" id="class-publish" class="btn btn-primary btn-block spaced">@Html.GetTrans(486)</a>
+                            <a href="#" data-isverify="@(ViewBag.IsOwner?(ViewBag.MemberInfo.VerifyTag & 1):1)" id="class-publish" class="btn btn-primary btn-block spaced">@Html.GetTrans(486)</a>
                             <a id="class-confirm-publish" href="#modal-confirm-publish" data-toggle="modal"></a>
                             <a id="class-verify-mobile" href="#modal-verify-mobile" data-toggle="modal"></a>
                             <a href="@Url.Action("Preview", "Class", new { id = @ViewBag.ClassId })" target="_blank" id="class-preview" class="btn btn-default btn-block">@Html.GetTrans(487)</a>
@@ -352,4 +352,7 @@
 </div>
 <!-- end of body -->
 @Html.Partial("_ConfirmPublishPartial")
+@if (ViewBag.IsOwner)
+{
 @Html.Partial("_VerifyMobilePartial")
+}

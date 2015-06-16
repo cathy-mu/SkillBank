@@ -152,6 +152,10 @@ namespace SkillBankWeb.Controllers
                         {
                             Response.Redirect(backUrl);
                         }
+                        else if (socialType==4)
+                        {
+                            Response.Redirect("/m");
+                        }
 
                     }
                     ViewBag.MemberId = memberId;
@@ -378,14 +382,16 @@ namespace SkillBankWeb.Controllers
 
                 Request.Cookies.Clear();
                 Response.Cookies.Clear();
-                return rs;
+                if (rs != null)
+                {
+                    return Json("", JsonRequestBehavior.AllowGet);
+                }
+
             }
-            else
-            {
-                Response.Cookies.Clear();
-                return Json("NoLoginInfo", JsonRequestBehavior.AllowGet);
-            }
+            Response.Cookies.Clear();
+            return Json("", JsonRequestBehavior.AllowGet);
         }
+
 
         //private dynamic CallGet(string url, string accessToken)
         //{

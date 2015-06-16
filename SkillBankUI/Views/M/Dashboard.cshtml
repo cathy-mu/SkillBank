@@ -59,24 +59,31 @@
                                              {<span class="tail">新浪微博</span>}
                                              else if (@ViewBag.MemberInfo.SocialType.Equals(4))
                                              {<span class="tail">微信</span>}</li>
-            <li class="table-view-cell">手机认证 <span class="tail">@System.Text.RegularExpressions.Regex.Replace(ViewBag.MemberInfo.Phone, @"(?im)(\d{3})(\d{6})(\d{2})", "$1******$3")</span></li>
+
+
+            @if (!String.IsNullOrEmpty(ViewBag.ContactMobile))
+            {
+                <li class="table-view-cell">手机认证<span class="tail">@System.Text.RegularExpressions.Regex.Replace(ViewBag.MemberInfo.Phone, @"(?im)(\d{3})(\d{6})(\d{2})", "$1******$3")</span></li>
+            }
         </ul>
     </div>
 
     <div class="card">
         <ul class="table-view">
             <li class="table-view-cell media">
-                <a class="navigate-right" href="@Url.Action("chat", "m", new { id =  Constants.BizConfig.AdminMemberId })">
+                <a class="navigate-right" href="@Url.Action("chat", "m", new { id = Constants.BizConfig.AdminMemberId })">
                     <div class="media-body">
                         给技能菌反馈
+                   
                     </div>
                 </a>
             </li>
         </ul>
     </div>
-
+    @if (ViewBag.Memberinfo.MemberId == 1 || ViewBag.Memberinfo.MemberId == 6580)
+    {
     <div class="logout">
-        <a href="#">退出登录</a>
+        <a href="#" id="dashboard-logout">退出登录</a>
     </div>
-
+    }
 </div>

@@ -1,0 +1,433 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>dotNetDR_OAuth2</name>
+    </assembly>
+    <members>
+        <member name="T:dotNetDR_OAuth2.AccessToken.AccessTokenToolkit">
+            <summary>
+            AccessToken Toolkit
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.AccessTokenToolkit.GenerateHostPath(System.Web.HttpRequest)">
+            <summary>
+            生成主机地址路径如 http://www.abc.com:8080
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.AccessTokenToolkit.GenerateHostPath(System.Uri)">
+            <summary>
+            生成主机地址路径如 http://www.abc.com:8080
+            </summary>
+            <param name="uri"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AccessToken.CtorAT">
+            <summary>
+            AccessToken接口构造机制
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.CtorAT.Sina">
+            <summary>
+            新浪微博
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.CtorAT.Tencent">
+            <summary>
+            腾讯微博
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.CtorAT.WeChat">
+            <summary>
+            腾讯微博
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AccessToken.IAuthorizationCodeBase">
+            <summary>
+            Authorization Code授权机制的接口
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AccessToken.IGetCode">
+            <summary>
+            生成访问authorize的url接口
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.IGetCode.GenerateCodeUrl(System.String)">
+            <summary>
+            生成访问authorize的url
+            文档地址
+            新浪：http://open.t.sina.com.cn/wiki/Oauth2/authorize
+            腾讯：http://wiki.open.t.qq.com/index.php/OAuth%E6%8E%88%E6%9D%83/%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83request_token
+            </summary>
+            <param name="redirectUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AccessToken.IGetAccessToken">
+            <summary>
+            生成访问access_token的url接口
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.IGetAccessToken.GenerateAccessTokenUrl(System.String,System.String)">
+            <summary>
+            生成访问access_token的url
+            文档地址
+            新浪：http://open.t.sina.com.cn/wiki/OAuth2/access_token
+            腾讯：http://wiki.open.t.qq.com/index.php/OAuth%E6%8E%88%E6%9D%83/%E4%BA%A4%E6%8D%A2access_token
+            </summary>
+            <param name="redirectUrl"></param>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AccessToken.IAccessToken">
+            <summary>
+            获取Access Token的接口
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.IAccessToken.GetResult(System.String)">
+            <summary>
+            根据请求的access_token url返回访问令牌
+            </summary>
+            <param name="getAccessTokenUrl">请求的access_token url</param>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AccessToken.Providers.WeChat.WeChatAuthorizationCode">
+            <summary>
+            腾讯Authorization Code授权机制的实现类
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AccessToken.Providers.Sina.SinaAuthorizationCode">
+            <summary>
+            新浪Authorization Code授权机制的实现类
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AccessToken.Providers.Tencent.TencentAuthorizationCode">
+            <summary>
+            腾讯Authorization Code授权机制的实现类
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.APIs.WeChatError">
+            <summary>
+            新浪错误码的实现
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.APIs.IError">
+            <summary>
+            访问资源服务器发生错误时返回的错误接口类型
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.APIs.IError.ErrorCode">
+            <summary>
+            错误码
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.WeChatError.ToString">
+            <summary>
+            返回json
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:dotNetDR_OAuth2.APIs.WeChatError.ErrorCode">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.APIs.WeChatError.request">
+            <summary>
+            请求的接口名称
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.APIs.CtorApi">
+            <summary>
+            Api接口构造机制
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.CtorApi.Sina">
+            <summary>
+            新浪微博
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.CtorApi.Tencent">
+            <summary>
+            腾讯微博
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.CtorApi.WeChat">
+            <summary>
+            腾讯微博
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.APIs.IApi">
+            <summary>
+            访问OAuth2协议API的接口
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.IApi.CallGet(System.String,System.String,System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Get请求
+            </summary>
+            <param name="url">api地址</param>
+            <param name="accessToken">访问令牌</param>
+            <param name="returnJson">true:返回json  false:返回dynamic</param>
+            <param name="paramsExt">扩展参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.IApi.CallPost(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Post请求
+            </summary>
+            <param name="url">api地址</param>
+            <param name="accessToken">访问令牌</param>
+            <param name="formData">表单数据</param>
+            <param name="returnJson">true:返回json  false:返回dynamic</param>
+            <param name="paramsExt">扩展参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.IApi.CallPost(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IDictionary{System.String,dotNetDR_OAuth2.Net.BinaryData},System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Post请求
+            </summary>
+            <param name="url">api地址</param>
+            <param name="accessToken">访问令牌</param>
+            <param name="formData">表单数据</param>
+            <param name="binaryData">上传文件数据</param>
+            <param name="returnJson">true:返回json  false:返回dynamic</param>
+            <param name="paramsExt">扩展参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.IApi.WasError``1(System.Object,``0@)">
+            <summary>
+            返回的json是否为错误
+            </summary>
+            <typeparam name="T">此泛型请传入实现IError的具体类型（如SinaError,TencentError）</typeparam>
+            <param name="obj">接口返回的结果</param>
+            <param name="error">若此方法返回true则此输出参数将不为null</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.IApi.HandlerException``1(System.Exception,System.Web.HttpContextBase)">
+            <summary>
+            调用api接口时引发异常的处理方式
+            </summary>
+            <typeparam name="T">此泛型请传入实现IError的具体类型（如SinaError,TencentError）</typeparam>
+            <param name="ex">调用api抛出的异常</param>
+            <param name="context">当前http上下文</param>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.APIs.SinaError">
+            <summary>
+            新浪错误码的实现
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.SinaError.ToString">
+            <summary>
+            返回json
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:dotNetDR_OAuth2.APIs.SinaError.error">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.APIs.SinaError.request">
+            <summary>
+            请求的接口名称
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.APIs.SinaErrorCode">
+            <summary>
+            新浪错误码的列表
+            http://open.t.sina.com.cn/wiki/Error_code
+            </summary>
+        </member>
+        <member name="F:dotNetDR_OAuth2.APIs.SinaErrorCode.invalid_access_token">
+            <summary>
+            访问令牌无效
+            </summary>
+        </member>
+        <member name="F:dotNetDR_OAuth2.APIs.SinaErrorCode.repeat_content">
+            <summary>
+            提交相同的信息
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.APIs.TencentError">
+            <summary>
+            腾讯错误码的实现
+            http://wiki.open.t.qq.com/index.php/%E8%BF%94%E5%9B%9E%E9%94%99%E8%AF%AF%E7%A0%81%E8%AF%B4%E6%98%8E
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.TencentError.ToString">
+            <summary>
+            返回json
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:dotNetDR_OAuth2.APIs.TencentError.ret">
+            <summary>
+            一级错误信息
+            0为返回成功
+            非0为失败
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.APIs.TencentError.msg">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.APIs.TencentError.data">
+            <summary>
+            相关数据(有时为null)
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.Uf">
+            <summary>
+            UnityFactory
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.Uf.C``1(System.Func{``0})">
+            <summary>
+            创建接口的实例化
+            </summary>
+            <typeparam name="T">返回的接口类型</typeparam>
+            <param name="createInstanceCallBack">具体创建接口实例化的函数</param>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AppConfig">
+            <summary>
+            服务商AppKey,AppSecret配置
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.AppConfig.AppKey">
+            <summary>
+            AppKey标示第三方应用的id
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.AppConfig.AppSecret">
+            <summary>
+            AppSecret标示第三方应用持有人的密钥（此参数请不要对外公开）
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.AppConfigs">
+            <summary>
+            web.config配置文件的AppConfig对象设置
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AppConfigs.Get(System.String)">
+            <summary>
+            获取指定微博的key, secret
+            </summary>
+            <param name="provider">微博提供商</param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AppConfigs.GetTencent">
+            <summary>
+            获取腾讯微博的key, secret
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AppConfigs.GetSina">
+            <summary>
+            获取新浪微博的key, secret
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AppConfigs.GetWeChat">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.DefaultAppConfigs">
+            <summary>
+            默认提供的服务商
+            </summary>
+        </member>
+        <member name="F:dotNetDR_OAuth2.DefaultAppConfigs.Tencent">
+            <summary>
+            腾讯
+            </summary>
+        </member>
+        <member name="F:dotNetDR_OAuth2.DefaultAppConfigs.WeChat">
+            <summary>
+            WeChat
+            </summary>
+        </member>
+        <member name="F:dotNetDR_OAuth2.DefaultAppConfigs.Sina">
+            <summary>
+            新浪
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.JSON.DynamicJsonConverter">
+            <summary>
+            json转换为.NET 4.0 dynamic对象的转换器
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.JSON.DynamicJsonConverter.Deserialize(System.Collections.Generic.IDictionary{System.String,System.Object},System.Type,System.Web.Script.Serialization.JavaScriptSerializer)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="dictionary"></param>
+            <param name="type"></param>
+            <param name="serializer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.JSON.DynamicJsonConverter.Serialize(System.Object,System.Web.Script.Serialization.JavaScriptSerializer)">
+            <summary>
+            序列化（未实现）
+            </summary>
+            <param name="obj"></param>
+            <param name="serializer"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.JSON.JsonQuick">
+            <summary>
+            JSON序列化，反序列化的静态类
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.JSON.JsonQuick.Deserialize(System.String)">
+            <summary>
+            将json反序列化成.NET 4.0的dynamic对象
+            </summary>
+            <param name="json"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.JSON.JsonQuick.Serializer(System.Object)">
+            <summary>
+            将.NET 4.0的dynamic对象序列化成json（待测试）
+            </summary>
+            <param name="jsonObj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dotNetDR_OAuth2.Net.DynamicDictionary">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.Net.NetQuick">
+            <summary>
+            封装System.Net底层，降低复杂性
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.Net.ClientRequest.Timeout">
+            <summary>
+            获取或设置 GetResponse 和 GetRequestStream 方法的超时值（毫秒）
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.Net.ClientRequest.ReadWriteTimeout">
+            <summary>
+            获取或设置写入或读取流时的超时（以毫秒为单位）。
+            </summary>
+        </member>
+        <member name="P:dotNetDR_OAuth2.Net.ClientRequest.Boundary">
+            <summary>
+            以post方式上传带附件的请求时使用
+            </summary>
+        </member>
+    </members>
+</doc>

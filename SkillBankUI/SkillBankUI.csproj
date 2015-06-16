@@ -1191,7 +1191,6 @@
     <Content Include="Scripts\Home.js" />
     <Content Include="Scripts\mcommon.js" />
     <Content Include="Scripts\site.js" />
-    <Content Include="Scripts\Verification.js" />
     <Content Include="Scripts\MemberLocation.js" />
     <Content Include="Scripts\Dashboard.js" />
     <Content Include="Scripts\MemberLearn.js" />
@@ -1447,6 +1446,7 @@
     <Content Include="Scripts\Profile.js" />
     <Content Include="Scripts\site.min.js" />
     <Content Include="Scripts\Tools.js" />
+    <Content Include="Scripts\Verification.js" />
     <Content Include="Views\Class\Photo.cshtml">
       <SubType>Code</SubType>
     </Content>

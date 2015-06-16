@@ -33,6 +33,7 @@ namespace SkillBank.Controllers
             List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
             ViewBag.IsAdmin = whiteListMem.Contains(memberId.ToString());
             ViewBag.MemberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
+            ViewBag.VerifyCode = DateTime.Now.ToString("dd-MM").Replace("-","5"+(Convert.ToByte(DateTime.Now.DayOfWeek)+1)%7);
 
             return View();
         }

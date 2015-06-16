@@ -112,6 +112,7 @@ namespace SkillBankWeb.Controllers
         {
             int memberId = WebContext.Current.MemberId;
             var result = _commonService.SendMobileVerifyCode(memberId, mobile, System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName));
+            
             var jsonObj = new JsonResult();
             jsonObj.Data = new { r = result };
             return Json(jsonObj, JsonRequestBehavior.AllowGet);

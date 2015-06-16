@@ -88,13 +88,17 @@ namespace SkillBankWeb.Controllers
                     dashboardModel.UnReadMessageNumDic = null;
                 }
                 ViewBag.MessageTitle = ResourceHelper.GetTransText(405).Replace("{0}", unreadMessageNum.ToString());
-                dashboardModel.HasBasicInfo = (memberInfo.CityId>0);
+                ViewBag.IsMobileVerified = (memberInfo.VerifyTag & 1).Equals(1);
+                dashboardModel.HasBasicInfo = (memberInfo.CityId > 0);
                 dashboardModel.HasClass = (dashboardModel.ClassEditList != null && dashboardModel.ClassEditList.Count > 0);
-                
-                var ShareText = ResourceHelper.GetTransText(606).Replace("{0}", ConfigConstants.ThirdPartySetting.SocialNetwork.SkillBankAccountName[memberInfo.SocialType]).Replace("{1}", ";").Split(';');
-                ViewBag.ShareText1 = ShareText[0];
-                ViewBag.ShareText2 = ShareText.Length > 1 ? ShareText[1] : "";
-                ViewBag.IsSocialLogin = CheckLoginStatus(true, true) ? 1 : 0;
+
+                if (memberInfo.SocialType.Equals(1))
+                {
+                    var ShareText = ResourceHelper.GetTransText(606).Replace("{0}", ConfigConstants.ThirdPartySetting.SocialNetwork.SkillBankAccountName[memberInfo.SocialType]).Replace("{1}", ";").Split(';');
+                    ViewBag.ShareText1 = ShareText[0];
+                    ViewBag.ShareText2 = ShareText.Length > 1 ? ShareText[1] : "";
+                    ViewBag.IsSocialLogin = CheckLoginStatus(true, true) ? 1 : 0;
+                }
 
                 return View(dashboardModel);
             }

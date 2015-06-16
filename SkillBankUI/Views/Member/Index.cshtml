@@ -112,7 +112,10 @@
                                                         {
                                                             <div class="span3">
                                                                 <div class="coinblock">@Html.GetTrans(665)<span>+1</span></div>@Html.GetTrans(676)
+                                                                @if (!ViewBag.IsMobileVerified)
+                                                                {
                                                                 <div><a href="#" role="button" class="btn btn-warning" id="getcoinintro-verifybtn">@Html.GetTrans(677)</a></div>
+                                                                }
                                                             </div>
                                                         }
                                                         <div class="span3">
@@ -409,8 +412,11 @@
 
                         </tr>
                     </table>
+                    if (ViewBag.ShareText1!=null)
+                    {
                     <input type="hidden" id="share-text1" value="@ViewBag.ShareText1" />
                     <input type="hidden" id="share-text2" value="@ViewBag.ShareText2" />
+                    }
                     <input type="hidden" id="share-socialtype" value="@ViewBag.MemberInfo.SocialType" />
                     <input type="hidden" id="share-token" value="@ViewBag.AccessToken" />
                     <input type="hidden" id="loginstatus-social" value="@ViewBag.IsSocialLogin" />

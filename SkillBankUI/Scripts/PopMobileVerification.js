@@ -8,7 +8,7 @@ function mobileverification_Class() {
     this.init = function () {
         //this.initEvents();
         this.verifyMobileInterval;
-        this.resendCount = 30;
+        this.resendCount = 10;
     };
 
     this.initEvents = function () {
@@ -22,10 +22,10 @@ function mobileverification_Class() {
         var btnObj = $("#verifypop-sendbtn");
         btnObj.text(mobileverification.resendCount + "秒后重发");
 
-        if (mobileverification.resendCount == 0) {
-            window.clearInterval(mobileverification.mobileVerifyCountdown);// && verification.countResendNum != undefined
+        if (mobileverification.resendCount <= 0 && mobileverification.mobileVerifyCountdown != undefined) {
+            window.clearInterval(mobileverification.mobileVerifyCountdown);
             btnObj.removeClass("disabled").text("重发验证码");
-            mobileverification.resendCount = 30;
+            mobileverification.resendCount = 10;
         }
     }
 
@@ -56,8 +56,8 @@ function mobileverification_Class() {
         var checkBtnObj = $("#verifypop-subbtn");
 
         checkBtnObj.addClass("disabled");
+        
         var paraData = { "mobile": phone, "code": code };
-
         $.ajax({
             url: verifyMobilePath,
             type: "POST",
@@ -70,7 +70,8 @@ function mobileverification_Class() {
                     $('#modal-verify-mobile .close').trigger("click");
                     var actionObj = $("#classdetail-nextaction");
                     if (actionObj.length > 0) {
-                        var nextaction = actionObj.val()
+                        var nextaction = actionObj.val();
+                        $("#bookpop-contactphone").val(phone);
                         if (nextaction == "chat") {
                             $("#class-detail-book").attr("href", "#modal-booking-request");
                             $("#class-detail-btmcontact, #class-detail-contact").attr("href", "#modal-contact-teacher").trigger("click");
@@ -110,12 +111,10 @@ function mobileverification_Class() {
             return false;
         }
 
-        $("#verifypop-smssend").addClass("disabled");
+        $("#verifypop-sendbtn").addClass("disabled");
         mobileverification.verifyMobileInterval = window.setInterval("mobileverification.mobileVerifyCountdown()", 1000);
 
         var paraData = { "mobile": phone };
-        consoleLog(paraData);
-
         $.ajax({
             url: sendVerifyCodePath,
             type: "POST",
@@ -132,6 +131,5 @@ function mobileverification_Class() {
             }
         });
     }
-
    
 }

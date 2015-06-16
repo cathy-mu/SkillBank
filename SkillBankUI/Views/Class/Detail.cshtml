@@ -311,8 +311,10 @@
                         {
                             <a href="#modal-login" data-toggle="modal" class="btn btn-warning btn-block spaced">@Html.GetTrans(199)</a>
                         }
-                        else
+                        else if (ViewBag.IsOwner)
                         {
+                            <a href="#" data-toggle="modal" class="btn btn-warning btn-block spaced">@Html.GetTrans(199)</a>
+                        } else{
                             <a id="class-detail-book" href="@((ViewBag.MemberInfo.VerifyTag & 1) == 1 ? (ViewBag.MemberInfo.Coins > 0 ? "#modal-booking-request" : "#modal-get-coin") : ("#modal-verify-mobile"))" data-toggle="modal" class="btn btn-warning btn-block spaced">@Html.GetTrans(199)</a>
                         }
                         <div class="tcenter">@Html.ActionLink(ResourceHelper.GetTransText(200), "qanda", "about", "http", "www.skillbank.cn", "qatab0s2", new { id = 0 }, new { @class = "gray-light", target = "_blank" })</div>
@@ -338,8 +340,10 @@
                         {
                             <a href="#modal-login" data-toggle="modal" class="btn btn-primary btn-block">@Html.GetTrans(202)</a>
                         }
-                        else
+                        else if (ViewBag.IsOwner)
                         {
+                            <a href="#" data-toggle="modal" class="btn btn-primary btn-block">@Html.GetTrans(202)</a>
+                        }else {
                             <a id="class-detail-contact" href="@((ViewBag.MemberInfo.VerifyTag & 1) == 1 ? (Model.IsOwner ? "#" : "#modal-contact-teacher") : "#modal-verify-mobile")" data-toggle="modal" class="btn btn-primary btn-block">@Html.GetTrans(202)</a>
                         }
                     </div>
@@ -430,7 +434,7 @@
                         {
                             <a href="#modal-login" data-toggle="modal" class="btn btn-primary">@Html.GetTrans(202)</a>
                         }
-                        else
+                        else if (!ViewBag.IsOwner)
                         {
                             <a id="class-detail-btmcontact" href="@((ViewBag.MemberInfo.VerifyTag & 1) == 1 ? "#modal-contact-teacher" : "#modal-verify-mobile")" data-toggle="modal" class="btn btn-primary">@Html.GetTrans(202)</a>                           
                         }

@@ -84,7 +84,7 @@
                                         <input type="button" id="bookpop-bookbtn" class="btn btn-warning" value="@Html.GetTrans(322)"  data-tmobile="@ViewBag.ContactMobile">
                                     </div>
                                     <input type="hidden" name="" id="bookpop-updatememberinfo" value="0" />
-                                    <input type="hidden" name="" id="bookpop-currdate" value="@DateTime.Now.ToString("yyyy/MM/dd/")" />
+                                    <input type="hidden" name="" id="bookpop-currdate" value="@DateTime.Now.ToString("yyyy/MM/dd").Replace("-","/")" />
                                 </div>
 
                             </div>

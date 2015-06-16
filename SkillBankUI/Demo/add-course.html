@@ -91,17 +91,19 @@
       </div>
     </div>
 
-    <div class="add-course-page step-1 content active">
+    <div class="post-course-page step-1 content active">
       <form>
         <div class="inner">
           <h3 align="center" class="olive mb-1">基本描述</h3>
           <input type="text" name="city" placeholder="你所在的城市" style="margin-bottom: 25px;">
-          <select id="skill-cat" name="skill-cat">
+          <select id="skill-cat" name="skill-cat" class="lighterOlive">
             <option value='' disabled selected style='display:none;'>选择一项技能</option>
           </select>
-          <select id="skill-sub-cat" name="skill-sub-cat" style="display: none;">
-            <option value='' disabled selected style='display:none;'>选择细分类别</option>
-          </select>
+          <div id="skill-sub-cat-wrapper" class="hide">
+            <select id="skill-sub-cat" name="skill-sub-cat">
+              <option value='' disabled selected style='display:none;'>选择细分类别</option>
+            </select>
+          </div>
           <h5 class="mb-05">你的技能水平</h5>
           <div class="custom-range">
             <div class="bg">
@@ -146,7 +148,7 @@
       </form>
     </div>
 
-    <div class="add-course-page step-2 content">
+    <div class="post-course-page step-2 content">
       <form>
         <div class="inner must-fill-in">
           <h3 align="center" class="olive mb-1">课程介绍</h3>
@@ -195,7 +197,7 @@
       </form>
     </div>
 
-    <div class="add-course-page step-3 content">
+    <div class="post-course-page step-3 content">
       <form>
         <div class="inner">
           <h3 align="center" class="olive mb-1">添加封面</h3>
@@ -220,7 +222,7 @@
       </form>
     </div>
     
-    <div class="add-course-page step-success content">
+    <div class="post-course-page step-success content">
       <form>
         <div class="inner">
           <h4 align="center" class="olive">我们会在2天内告知你审核结果 <br>你可以在这里修改个人信息</h4>
@@ -259,6 +261,6 @@
     <script src="bower_components/ratchet/dist/js/ratchet.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/lodash/dist/lodash.min.js"></script>
-    <script src="js/common.js"></script>
+    <script src="js/common.js?v=8"></script>
   </body>
 </html>

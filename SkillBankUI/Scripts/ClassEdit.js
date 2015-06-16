@@ -23,7 +23,9 @@ function classedit_Class() {
             this.cateIdPrefix = "#class-category-list";
             this.subCateIdPrefix = "#class-subcategory-list";
             this.initCategory();
-            mobileverification.initEvents();
+            if ($("#modal-verify-mobile").length > 0) {
+                mobileverification.initEvents();
+            }
         }
 
         this.initEvents();

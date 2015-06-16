@@ -186,6 +186,7 @@ namespace SkillBank.Controllers
                     int memberId = classInfo.Member_Id;
                     ViewBag.ContactorId = memberId;
                     //class owner
+                    ViewBag.IsOwner = memberId.Equals(currMemberId);
                     className = String.IsNullOrEmpty(classInfo.Title) ? ResourceHelper.GetTransText(560) : classInfo.Title;
 
                     var memberInfo = _commonService.GetMemberInfo(memberId);
@@ -255,6 +256,7 @@ namespace SkillBank.Controllers
                 }
                 else
                 {
+                    ViewBag.IsOwner = false;
                     classDetailModel.ClassInfo = null;
                     ViewBag.ErrorMessage = ResourceHelper.GetTransText(580);//No class info
                 }
@@ -298,6 +300,8 @@ namespace SkillBank.Controllers
             
             List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
             var IsAdmin = whiteListMem.Contains(memberId.ToString());
+            ViewBag.IsOwner = classInfo.Member_Id.Equals(memberId);
+
             //classPreviewModel.IsOwner = memberId.Equals(currMemberId);
             
             if (classInfo != null && (classInfo.Member_Id.Equals(memberId) || IsAdmin))

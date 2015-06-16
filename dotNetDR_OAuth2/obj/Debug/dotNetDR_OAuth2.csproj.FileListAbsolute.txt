@@ -1,0 +1,12 @@
+D:\CodeDemo\dotnetdroauth2-f5930815aa58_codeFromDC\dotnetdroauth2_f5930815aa58\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.csprojResolveAssemblyReference.cache
+D:\CodeDemo\dotnetdroauth2-f5930815aa58_codeFromDC\dotnetdroauth2_f5930815aa58\dotNetDR_OAuth2\bin\Debug\dotNetDR_OAuth2.XML
+D:\CodeDemo\dotnetdroauth2-f5930815aa58_codeFromDC\dotnetdroauth2_f5930815aa58\dotNetDR_OAuth2\bin\Debug\dotNetDR_OAuth2.dll
+D:\CodeDemo\dotnetdroauth2-f5930815aa58_codeFromDC\dotnetdroauth2_f5930815aa58\dotNetDR_OAuth2\bin\Debug\dotNetDR_OAuth2.pdb
+D:\CodeDemo\dotnetdroauth2-f5930815aa58_codeFromDC\dotnetdroauth2_f5930815aa58\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.dll
+D:\CodeDemo\dotnetdroauth2-f5930815aa58_codeFromDC\dotnetdroauth2_f5930815aa58\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\bin\Debug\dotNetDR_OAuth2.XML
+D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\bin\Debug\dotNetDR_OAuth2.dll
+D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\bin\Debug\dotNetDR_OAuth2.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.csprojResolveAssemblyReference.cache
+D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.dll
+D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.pdb

@@ -41,7 +41,7 @@ function verification_Class() {
         verification.countResendInterval = window.setInterval("verification.countResendNum()", 1000);
 
         var paraData = { "mobile": phone };
-
+        consoleLog(paraData);
         $.ajax({
             url: verification.SendVerifyCodePath,
             type: "POST",
@@ -65,8 +65,8 @@ function verification_Class() {
         verification.resendCount--;
         verification.sendsmsBtnObj.text(verification.resendCount + "秒后重发");
 
-        if (verification.resendCount == 0) {
-            window.clearInterval(verification.countResendInterval);// && verification.countResendNum != undefined
+        if (verification.resendCount == 0 && verification.countResendNum != undefined) {
+            window.clearInterval(verification.countResendInterval);
             verification.sendsmsBtnObj.removeClass("disabled").text("重发验证码");
             verification.resendCount = 30;
         }

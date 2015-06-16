@@ -44,16 +44,7 @@ namespace SkillBankWeb.API
         /// <returns>0号码已占用　１验证码发送  2手机格式不对</returns>
         public Byte SendMobileVerifyCode(String mobile)
         {
-            Byte result;
-            var isMobileValid = System.Text.RegularExpressions.Regex.IsMatch(mobile, Constants.ValidationExpressions.Mobile);
-            if (isMobileValid)
-            {
-                result = _commonService.SendMobileVerifyCode(0, mobile, true);
-            }
-            else
-            {
-                result = 2;
-            }
+            var result = _commonService.SendMobileVerifyCode(0, mobile, System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName));
             return result;
         }
 

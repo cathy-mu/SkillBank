@@ -89,35 +89,35 @@ function closestParent(el, selector) {
 
 // ajax
 function request(type, url, opts, callback) {
-  var xhr = new XMLHttpRequest();
-  if (typeof opts === 'function') {
-    callback = opts;
-    opts = null;
-  }
-  xhr.open(type, url);
-  xhr.onreadystatechange = function(){
-      if (xhr.readyState == 4) {
-      if( (xhr.status >= 200 && xhr.status <300) || xhr.status == 304 ){
-        // console.log(xhr.responseText)
-      } else {
-        console.log(xhr.status);
-      }
+    var xhr = new XMLHttpRequest();
+    if (typeof opts === 'function') {
+        callback = opts;
+        opts = null;
+    }
+    xhr.open(type, url);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+                // console.log(xhr.responseText)
+            } else {
+                //console.log(xhr.status);
+            }
 
-      resError(xhr.status);
+            resError(xhr.status);
+        }
     }
-  }
-  var fd = [];
-  if ((type === 'POST' || type === 'PUT') && opts) {
-      for (var key in opts) {
-      fd.push( key + '=' + opts[key] );
+    var fd = [];
+    if ((type === 'POST' || type === 'PUT') && opts) {
+        for (var key in opts) {
+            fd.push(key + '=' + opts[key]);
+        }
+        fd = fd.join('&');
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     }
-    fd = fd.join('&');
-    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  }
-  xhr.onload = function () {
-    callback(JSON.parse(xhr.response));
-  };
-  xhr.send(opts ? fd : null);
+    xhr.onload = function () {
+        callback(JSON.parse(xhr.response));
+    };
+    xhr.send(opts ? fd : null);
 }
 
 function resError(status) {
@@ -145,7 +145,7 @@ var scrollToPrevPos = _.once(function () {
 
 function checkLogin() {
     var ctlObj;
-    if ($('.bar-nav').length>0) {
+    if ($('.bar-nav').length > 0) {
         ctlObj = $('.bar-nav')[0];
     } else {
         //ctlObj = ctl;
@@ -171,321 +171,327 @@ function goToLogin() {
 }
 
 var checkPage = function () {
-  addBulletsWeget();
-  removeTrashes();
-  hackForModals();
-  initLogin();
-  initBack();
-  customRadio();
-  bindCloseEventToModal();
-  fixedPositionBug();
+    addBulletsWeget();
+    removeTrashes();
+    hackForModals();
+    initLogin();
+    initBack();
+    customRadio();
+    bindCloseEventToModal();
+    fixedPositionBug();
 
-  if (typeof (mixpanel) != "undefined") {
-      mixpanel.track("page view");
-      $(".menutab-find").on('click', function () {
-          mixpanel.track("menu find");
-      });
-      $(".menutab-message").on('click', function () {
-          mixpanel.track("menu message");
-      });
-  }
+    if (typeof (mixpanel) != "undefined") {
+        mixpanel.track("page view");
+        $(".menutab-find").on('click', function () {
+            mixpanel.track("menu find");
+        });
+        $(".menutab-message").on('click', function () {
+            mixpanel.track("menu message");
+        });
+    }
 
-  $(".login-trigger").on('click', function () {
-      checkLogin();
-  });
+    $(".login-trigger").on('click', function () {
+        checkLogin();
+    });
 
-  // course list search
-  if (document.getElementById('course-search')) {
-      // record scrollTop when go to other url
-      window.onunload = function () { window.history.pushState({ top: $('.content')[0].scrollTop }, 'toTop'); };
-      if (!location.hash.slice(1)) scrollToPrevPos();
-      switchCourseCat();
-      affix();
-      toggleLike();
-      bindClassListTrackingEvent();
-  }
+    // course list search
+    if (document.getElementById('course-search')) {
+        // record scrollTop when go to other url
+        window.onunload = function () { window.history.pushState({ top: $('.content')[0].scrollTop }, 'toTop'); };
+        if (!location.hash.slice(1)) scrollToPrevPos();
+        switchCourseCat();
+        affix();
+        toggleLike();
+        bindClassListTrackingEvent();
+    }
 
-  // course detail page
-  if ($('.course-page').length && !$('.coursepreview-page').length) {
-      toggleLike();
-  
-      // go for comment
-      $('.goto').on('click', function (event) {
-          event.preventDefault();
-          location.href = '#' + this.dataset.for;
-      });
+    // course detail page
+    if ($('.course-page').length && !$('.coursepreview-page').length) {
+        toggleLike();
 
-      $(".misscoin-trigger").on('click', function () {
-          alert("可用课币不足");
-      });
+        // go for comment
+        $('.goto').on('click', function (event) {
+            event.preventDefault();
+            location.href = '#' + this.dataset.for;
+        });
 
-      privateMsgForm();
-      reservationForm();//book class
-      commentForm();
-      followMember();
-      bindClassDetailTrackingEvent();
-  }
+        $(".misscoin-trigger").on('click', function () {
+            alert("可用课币不足");
+        });
 
-  // personal page
-  if ($('.personal-page').length) {
-      followMember();
-      privateMsgForm();
-      bindPersonalTrackingEvent();
-  }
+        privateMsgForm();
+        reservationForm();//book class
+        commentForm();
+        followMember();
+        bindClassDetailTrackingEvent();
+    }
 
-  //login page
-  if ($('.login-page').length) {
-      $('#sinaloginbtn').on('click', function () {
-          triggerTackingEvent("sina signup");
-          var backUrlKey = "backUrl";
-          var refPath = sessionStorage.getItem(backUrlKey);
-          if (refPath == undefined || refPath == "") {
-              refPath = "/m";
-          }
-          location.href = "https://api.weibo.com/oauth2/authorize?client_id=111240964&response_type=code&redirect_uri=http%3A%2F%2Fwww.skillbank.cn%2Fsignup%3Fmb%3D" + encodeURIComponent(refPath);
-      });
-      if (browser.versions.weixin) {
-          $('#wechatloginbtn').on('click', function () {
-              triggerTackingEvent("wechat signup");
-              var backUrlKey = "backUrl";
-              var refPath = sessionStorage.getItem(backUrlKey);
-              if (refPath == undefined || refPath == "") {
-                  refPath = "/m";
-              }
-              location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa10c0a8a413081b6&redirect_uri=http%3a%2f%2fwww.skillbank.cn%2fsignup%3Fmb%3D" + encodeURIComponent(refPath) + "&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
-          });
-      } else {
-          $('#wechatloginbtn label')[0].innerText = '关注订阅号SkillBank后登录';
-      }
-  }
+    // personal page
+    if ($('.personal-page').length) {
+        followMember();
+        privateMsgForm();
+        bindPersonalTrackingEvent();
+    }
 
-  if ($('#message-page').length) {
-      $('.notification-tab').on('click', function () {
-          $('.notification-tab')[0].classList.add('active');
-          $('.message-tab')[0].classList.remove('active');
-          //$('.message-tab')[0].classList.remove("control-item-no-js");
-          //$('.message-tab')[0].classList.add("control-item");
-          $('#item2mobile')[0].classList.add('active');
-          $('#item1mobile')[0].classList.remove('active');
-          post(ENV.host + "/api/alter?id=0", function () { jQuery(".red-dot").fadeOut(); });
-      });
-  }
+    //login page
+    if ($('.login-page').length) {
+        $('#sinaloginbtn').on('click', function () {
+            triggerTackingEvent("sina signup");
+            var backUrlKey = "backUrl";
+            var refPath = sessionStorage.getItem(backUrlKey);
+            if (refPath == undefined || refPath == "") {
+                refPath = "/m";
+            }
+            location.href = "https://api.weibo.com/oauth2/authorize?client_id=111240964&response_type=code&redirect_uri=http%3A%2F%2Fwww.skillbank.cn%2Fsignup%3Fmb%3D" + encodeURIComponent(refPath);
+        });
+        if (browser.versions.weixin) {
+            $('#wechatloginbtn').on('click', function () {
+                triggerTackingEvent("wechat signup");
+                var backUrlKey = "backUrl";
+                var refPath = sessionStorage.getItem(backUrlKey);
+                if (refPath == undefined || refPath == "") {
+                    refPath = "/m";
+                }
+                location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa10c0a8a413081b6&redirect_uri=http%3a%2f%2fwww.skillbank.cn%2fsignup%3Fmb%3D" + encodeURIComponent(refPath) + "&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+            });
+        } else {
+            $('#wechatloginbtn label')[0].innerText = '关注订阅号SkillBank后登录';
+        }
+    }
 
-  // chat page
-  if ($('.chat-page').length) {
+    if ($('#message-page').length) {
+        $('.notification-tab').on('click', function () {
+            $('.notification-tab')[0].classList.add('active');
+            $('.message-tab')[0].classList.remove('active');
+            //$('.message-tab')[0].classList.remove("control-item-no-js");
+            //$('.message-tab')[0].classList.add("control-item");
+            $('#item2mobile')[0].classList.add('active');
+            $('#item1mobile')[0].classList.remove('active');
+            post(ENV.host + "/api/alter?id=0", function () { jQuery(".red-dot").fadeOut(); });
+        });
+    }
 
-      // init textrea auto size
-      jQuery('#write-box').textareaAutoSize();
+    // chat page
+    if ($('.chat-page').length) {
 
-      $('#write-box')[0].on('keyup', function (event) {
-          var $submit = $('#form-write button')[0];
-          if (this.value.length) {
-              $submit.removeAttribute('disabled');
-          } else {
-              $submit.setAttribute('disabled', '');
-          }
-      })
+        // init textrea auto size
+        jQuery('#write-box').textareaAutoSize();
 
-      // bind add msg
-      chatForm();
-  }
+        var toggleButton = function (event) {
+            var $submit = $('#form-write button')[0];
+            if (this.value.length) {
+                $submit.removeAttribute('disabled');
+            } else {
+                $submit.setAttribute('disabled', '');
+            }
+        };
 
-  // register page
-  if ($('#register-page').length) {
-      if (typeof (mixpanel) != "undefined") {
-          mixpanel.track("signup page");
-      }
+        $('#write-box')[0].on('keyup', toggleButton);
+        $('#write-box')[0].on('change', toggleButton);
+        
+        // bind add msg
+        chatForm();
+    }
+
+    // register page
+    if ($('#register-page').length) {
+        triggerTackingEvent("signup page");
+
+        var $form = $('form')[0];
+        $("#registebtn").on('click', function (event) {
+            event.preventDefault();
+
+            if (!validPhone($form.phone)) {
+                return;
+            }
+            var patten = new RegExp(/^\d{6}/);
+            if (!$form.code.value || !patten.test($form.code.value)) {
+                $form.code.classList.add("error");//验证码格式不对
+                return;
+            } else {
+                $form.code.classList.remove("error");//验证码格式不对
+            }
+
+            if (!$form.registebtn.dataset.avatar || !$form.registebtn.dataset.name) {
+                alert("未获得社交账号信息，请重新登陆");
+                location.href = "/m/login";
+                return;
+            }
+
+            triggerTackingEvent("click signup");
+
+            var data = {
+                //Account: $form.registebtn.dataset.socialid,
+                //Type: $form.registebtn.dataset.socialtype,
+                Mobile: $form.phone.value,
+                Code: $form.code.value,
+                Avatar: $form.registebtn.dataset.avatar,
+                Name: $form.registebtn.dataset.name,
+                Gender: ($form.registebtn.dataset.gender === "1")
+            };
+
+            post(ENV.host + '/api/registe', data, function (fb) {
+                if (fb == 2) {
+                    alert("验证失败，请检查验证码或重新发送");
+                } else if (fb == 3) {
+                    alert("手机号码被占用");
+                } else {
+                    triggerTackingEvent("submit signup");
+                    redirectAfterLogin();
+                }
+            });
+
+        });
+
+        var $verifyBtn = $('.btn-grey')[0];
+        var seconds = 0;
+        $verifyBtn.on('click', function () {
+            if (seconds > 0) return;
+            triggerTackingEvent("click verify");
+            var patten = new RegExp(/^[1]+\d{10}/);
+            if (!$form.phone.value || !patten.test($form.phone.value)) {
+                $form.phone.classList.add('error');//手机号码格式不对
+                return;
+            } else {
+                $form.phone.classList.remove('error');
+            }
+
+            var url = ENV.host + '/api/Validation?mobile=' + $form.phone.value;
+            seconds = 60;
             
-     var $form = $('form')[0];
-     $("#registebtn").on('click', function (event) {
-          event.preventDefault();
-          
-          if (!validPhone($form.phone)) {
-              return;
-          }
-          patten = new RegExp(/^\d{6}/);
-          if (!$form.code.value || !patten.test($form.code.value)) {
-              $form.code.classList.add("error");//验证码格式不对
-              return;
-          } else {
-              $form.code.classList.remove("error");//验证码格式不对
-          }
-
-          if (!$form.registebtn.dataset.avatar || !$form.registebtn.dataset.name) {
-              alert("未获得社交账号信息，请重新登陆");
-              location.href = "/m/login";
-              return;
-          }
-
-          if (typeof (mixpanel) != "undefined") {
-              mixpanel.track("click signup");
-          }
-
-          var data = {
-              //Account: $form.registebtn.dataset.socialid,
-              //Type: $form.registebtn.dataset.socialtype,
-              Mobile: $form.phone.value,
-              Code: $form.code.value,
-              Avatar: $form.registebtn.dataset.avatar,
-              Name: $form.registebtn.dataset.name,
-              Gender: ($form.registebtn.dataset.gender === "1")
-          };
-                    
-          post(ENV.host + '/api/registe', data, function (fb) {
-              if (fb == 2) {
-                  alert("验证失败，请检查验证码或重新发送");
-              } else if (fb == 3) {
-                  alert("手机号码被占用");
-              } else {
-                  if (typeof (mixpanel) != "undefined") {
-                      mixpanel.track("submit signup");
-                  }
-                  redirectAfterLogin();
-              }
-          });
-
-      });
-
-      var $verifyBtn = $('.btn-grey');
-      var seconds;
-      $verifyBtn.on('click', function () {
-          if (seconds > 0) return;
-          var patten = new RegExp(/^[1]+\d{10}/);
-          if (!$form.phone.value || !patten.test($form.phone.value)) {
-              $form.phone.classList.add('error');//手机号码格式不对
-              return;
-          } else {
-              $form.phone.classList.remove('error');
-          }
-          var url = ENV.host + '/api/Validation?mobile=' + $form.phone.value;
-          seconds = 60;
-          post(url, function (fb) {
-              if (fb == 1) {
-                  // timer
-                  var t = setInterval(function () {
-                      if (seconds <= 0) {
-                          $verifyBtn[0].innerText = '获得验证码';
-                          clearInterval(t);
-                      } else {
-                          $verifyBtn[0].innerText = seconds+"后可重发";
-                      }
-                      seconds--;
-                  }, 1000);
-              }
-              else {
-                  if (fb == 0) {
-                      alert("手机号码已被占用");
-                  } else if (fb == 2) {
-                      alert("手机号码格式不对");
-                  }
-                  if (t != undefined) {
-                      clearInterval(t);
-                  }
-                  seconds = 0;
-              }
-          });
-      })
-  }
+            post(url, function (fb) {
+                if (fb == 1) {
+                    triggerTackingEvent("send verify");
+                    // timer
+                    var t = setInterval(function () {
+                        if (seconds == undefined || seconds <= 0) {
+                            $verifyBtn.innerText = '获得验证码';
+                            if (t != undefined) {
+                                clearInterval(t);
+                            }
+                        } else {
+                            $verifyBtn.innerText = seconds + "后可重发";
+                        }
+                        seconds--;
+                    }, 1000);
+                }
+                else {
+                    if (fb == 0) {
+                        alert("手机号码已被占用");
+                    } else if (fb == 2) {
+                        alert("手机号码格式不对");
+                    }
+                    if (t != undefined) {
+                        clearInterval(t);
+                    }
+                    seconds = 0;
+                }
+            });
+        })
+    }
 
     // add course page
-  if ($('.add-course-page.step-1').length) {
-      bindHashChangeToSteps();
-      selectSkill();
-      changeCity();
-      checkAllFillInStep1();
-      initPubClassStep1();
-      customRange();
-  }
+    if ($('.post-course-page.step-1').length) {
+        bindHashChangeToSteps();
+        selectSkill();
+        changeCity();
+        checkAllFillInStep1();
+        initPubClassStep1();
+        customRange();
+    }
 
-  // add course page 2
-  if ($('.add-course-page.step-2').length) {
-      var maxlen = 100;
-      limitedText(maxlen);
-      checkAllFillIn(maxlen);
-      initPubClassStep2();
-  }
+    // add course page 2
+    if ($('.post-course-page.step-2').length) {
+        var maxlen = 100;
+        limitedText(maxlen);
+        checkAllFillIn(maxlen);
+        initPubClassStep2();
+    }
 
-  // add course page 3
-  if ($('.add-course-page.step-3').length) {
-      //chooseCover();
-      $('.step-3 .preview').on('click', function () {
-          //update cover and go to preview page
-          initPubClassStep3(false);
-          //TO DO:go to preview page
-      });
-      $('.step-3 .next').on('click', function () {
-          location.href = "#success";
-          //update cover and publish
-          initPubClassStep3(true);
-          //$('.step-name')[0].style.display = 'none';
-          $('h3')[0].innerHTML = '内容已填完并被保存';
-      });
-      initUploadSetting();
-  }
+    // add course page 3
+    if ($('.post-course-page.step-3').length) {
+        //chooseCover();
+        $('.step-3 .preview').on('click', function () {
+            //update cover and go to preview page
+            initPubClassStep3(false);
+            //TO DO:go to preview page
+        });
+        $('.step-3 .next').on('click', function () {
+            location.href = "#success";
+            //update cover and publish
+            initPubClassStep3(true);
+            //$('.step-name')[0].style.display = 'none';
+            $('h3')[0].innerHTML = '内容已填完并被保存';
+        });
+        initUploadSetting();
+    }
 
-  if ($('.add-course-page.step-success').length) {
-      $('.profileedit-link').on('click', function () {
-          triggerTackingEvent("class edit profile");
-          location.href = "/m/profileedit";
-      });
-  }
+    if ($('.post-course-page.step-success').length) {
+        $('.profileedit-link').on('click', function () {
+            triggerTackingEvent("class edit profile");
+            location.href = "/m/profileedit";
+        });
+    }
 
-  
+
     // profile edit page
-  if ($('.add-course-page.step-private').length) {
-      checkAllFillInPrivate();
-      initUploadSetting();
-      //chooseAvatar();
-      $('#profile-savebtn').on('click', function () { updateProfile(this); });
-  }
+    if ($('.post-course-page.step-private').length) {
+        checkAllFillInPrivate();
+        initUploadSetting();
+        //chooseAvatar();
+        $('#profile-savebtn').on('click', function () { updateProfile(this); });
+    }
 
     // course manage 
-  if ($('.courses-manage-page').length) {
-  }
-  if ($('.courses-learning-page').length || $('.courses-teaching-page').length) {
-      confirmManage();
-      checkAllEvaluateModal();
+    if ($('.courses-manage-page').length) {
+    }
+    if ($('.courses-learning-page').length || $('.courses-teaching-page').length) {
+        confirmManage();
+        checkAllEvaluateModal();
 
-      // reservation modal
-      $('#contact.modal .accept-reserve').on('click', function () {
-          accpetOrder(this.parentNode);
-      });
-      
-      // set active card
-      $('.teaching.card').on('click', function () {
-          [].forEach.call($('.teaching.card'), function (el) {
-              el.classList.remove('active');
-          });
-          this.classList.add('active');
-      });
+        // reservation modal
+        $('#contact.modal .accept-reserve').on('click', function () {
+            accpetOrder(this.parentNode);
+        });
 
-      //Change phone number for contact popup
-      $('.contact-btn').on('click', function () {
-          var phone = this.parentNode.parentNode.parentNode.dataset.phone;
-          $("#phone")[0].classList.add("active");
-          $("#phone #makecall")[0].href = "tel:" + phone;
-          $("#phone #sendsms")[0].href = "sms:" + phone;
-      });
-      // show modal.  for conflict's sake
-      $('[data-modal]').on('click', function () { $('#' + this.dataset.modal)[0].classList.add('active'); });
+        // set active card
+        $('.teaching.card').on('click', function () {
+            [].forEach.call($('.teaching.card'), function (el) {
+                el.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
 
-      limitedTextLen($("#evaluate textarea")[0], 200);
-      limitedTextLen($("#paycoin textarea")[0], 200);
-  }
+        //Change phone number for contact popup
+        $('.contact-btn').on('click', function () {
+            var phone = this.parentNode.parentNode.parentNode.dataset.phone;
+            $("#phone")[0].classList.add("active");
+            $("#phone #makecall")[0].href = "tel:" + phone;
+            $("#phone #sendsms")[0].href = "sms:" + phone;
+        });
+        // show modal.  for conflict's sake
+        $('[data-modal]').on('click', function () { $('#' + this.dataset.modal)[0].classList.add('active'); });
 
-  if ($('.courses-learning-page').length) {
-      //Only for learning page
-      payClassCoin();
-      ($("#paycoin textarea")[0], 200);
-  }
+        limitedTextLen($("#evaluate textarea")[0], 200);
+        limitedTextLen($("#paycoin textarea")[0], 200);
+    }
 
-  if ($('.setting-page').length) {
-      initLikeEvent();
-      $('.profileedit-link').on('click', function () {
-          triggerTackingEvent("dashboard edit profile");
-          location.href = "/m/profileedit";
-      });
-  }
+    if ($('.courses-learning-page').length) {
+        //Only for learning page
+        payClassCoin();
+        ($("#paycoin textarea")[0], 200);
+    }
+
+    if ($('.setting-page').length) {
+        initLikeEvent();
+        $('.profileedit-link').on('click', function () {
+            triggerTackingEvent("dashboard edit profile");
+            location.href = "/m/profileedit";
+        });
+        $('#dashboard-logout').on('click', function () {
+            logOut();
+        });
+    }
 };
 
 
@@ -496,7 +502,7 @@ window.addEventListener('push', checkPage);
 
 function bindHashChangeToSteps() {
     var changeContent = function () {
-        console.log("hash"+location.hash);
+        //console.log("hash" + location.hash);
         var stepName = location.hash.slice(1);
         if (!stepName) return;
         $('.steps.active')[0].classList.remove('active');
@@ -548,12 +554,12 @@ function switchCourseCat() {
                     getCourses(url);
                 });
             }, function () {
-                console.log("no position available.")
+                //console.log("no position available.")
             }, geo_opts);
         } else if (query.by == 3) {// search
             triggerTackingEvent("search");
-            var url = ENV.host + '/api/ClassList?key=' + getQueryString("key")+ '&by=3&type=1';//encodeURIComponent() 
-             getCourses(url);
+            var url = ENV.host + '/api/ClassList?key=' + getQueryString("key") + '&by=3&type=1';//encodeURIComponent() 
+            getCourses(url);
         } else {// category ,promote
             var url = ENV.host + '/api/ClassList?' + 'by=' + query.by + '&type=' + query.type;
             getCourses(url);
@@ -582,8 +588,7 @@ function getCourses(url) {
         var $active = _.find($cats, function ($cat) {
             return location.hash == $cat.getAttribute('href');
         });
-        if (!$active && getQueryString("key"))
-        {
+        if (!$active && getQueryString("key")) {
             $active = $cats[0];
         }
         $active.classList.add('active');
@@ -643,9 +648,7 @@ function toggleLike() {
                 linkText.textContent = parseInt(linkText.textContent) + (isLike ? 1 : -1);
             });
 
-            if (typeof (mixpanel) != "undefined") {
-                mixpanel.track("like");
-            }
+            triggerTackingEvent("like");
 
         } else {
             return;
@@ -707,25 +710,25 @@ function affix() {
     }
 }
 
-function removeTrashes(){
-  var $trashes = $('body > .toBeRemoved');
-  var len = $trashes.length;
-  if(!len) return;
-  while(len--){
-    document.body.removeChild( $trashes[len] );
-  }
+function removeTrashes() {
+    var $trashes = $('body > .toBeRemoved');
+    var len = $trashes.length;
+    if (!len) return;
+    while (len--) {
+        document.body.removeChild($trashes[len]);
+    }
 }
 
-function hackForModals(){
-  // hack for: all modals append to body
-  if( $('.content .modal').length ){
+function hackForModals() {
+    // hack for: all modals append to body
+    if ($('.content .modal').length) {
 
-    var $modals = $('.content .modal');
-    var modalsLen = $modals.length;
-    while(modalsLen--){
-      document.body.appendChild( $modals[modalsLen] );
+        var $modals = $('.content .modal');
+        var modalsLen = $modals.length;
+        while (modalsLen--) {
+            document.body.appendChild($modals[modalsLen]);
+        }
     }
-  }
 }
 
 function chatForm() {
@@ -754,13 +757,12 @@ function chatForm() {
                     if (!fb) return;
                     $('.chat-content')[0].insertAdjacentHTML('beforeend',
                           _.template($('#chat-detail-tpl')[0].innerHTML, { item: data }));
-                    $input.value = "";
+                    $input.value = '';
+                    $input.style.height = 'auto';
                     $input.focus();
                     $btn.classList.remove("disabled");
 
-                    if (typeof (mixpanel) != "undefined") {
-                        mixpanel.track("chat on chatpage");
-                    }
+                    triggerTackingEvent("chat on chatpage");
                     // scroll to newest msg
                     $('.content')[0].scrollTop = 1000000;
                 });
@@ -794,9 +796,7 @@ function privateMsgForm() {
                 myAlert("私信已发送", 2);
                 $input.value = "";
                 $modal[0].classList.remove('active');
-                if (typeof (mixpanel) != "undefined") {
-                    mixpanel.track("chat");
-                }
+                triggerTackingEvent("chat");
             });
         }
     });
@@ -846,9 +846,7 @@ function reservationForm() {
                 else {
                     myAlert("订课请求已发送", 2);
                     $form[0].date.value = "";
-                    if (typeof (mixpanel) != "undefined") {
-                        mixpanel.track("book class");
-                    }
+                    triggerTackingEvent("book class");
                 }
             });
 
@@ -903,10 +901,7 @@ function commentForm() {
                       _.template($('#comment-tpl')[0].innerHTML, { item: data }));
                     //$input.focus();
 
-                    if (typeof (mixpanel) != "undefined") {
-                        mixpanel.track("leave comment");
-                    }
-
+                    triggerTackingEvent("leave comment");
                     var tagNum = $(".comment-num").length;
                     if (tagNum > 0) {
                         var commentNum = parseInt($(".comment-num")[0].innerText) + 1;
@@ -926,7 +921,7 @@ function followMember() {
     if (!$('.follow').length) return;
     $('.follow')[0].on('click', function (event) {
         event.preventDefault();
-                
+
         var patten = new RegExp(/true/i);
         if ($('.bar-nav').length > 0 && !patten.test($('.bar-nav')[0].dataset.ismember)) {
             goToLogin();
@@ -938,10 +933,10 @@ function followMember() {
         if (followId === "-1") {
             myAlert("亲，自恋不可以哦", 2);
             return false;
-        } 
+        }
         var toggleName = 'btn-olive';
         var isFollow = self.classList.contains(toggleName);
-        
+
         var data = {
             FollowingId: followId,
             IsFollow: isFollow
@@ -960,10 +955,8 @@ function followMember() {
                 }
             }
         });
-
-        if (typeof (mixpanel) != "undefined") {
-            mixpanel.track("follow");
-        }
+        triggerTackingEvent("follow");
+        
     })
 }
 
@@ -993,7 +986,7 @@ function bindClassDetailTrackingEvent() {
         $(".classdetail-book").on('click', function () {
             mixpanel.track("popup book");
         });
-        
+
         $(".classdetail-chat").on('click', function () {
             mixpanel.track("popup chat on classdetail");
         });
@@ -1016,7 +1009,7 @@ function bindPersonalTrackingEvent() {
 function initLogin() {
     var backUrlKey = "backUrl";
     var backUrl = window.location.href;
-    
+
     var patten = new RegExp(/(\/login|\/signup)/i);
     if (!patten.test(backUrl)) {
         sessionStorage.setItem(backUrlKey, backUrl);
@@ -1198,10 +1191,10 @@ function initPubClassStep2() {
             "Remark": $form.remark.value
         };
         updateClassInfo(data);
-     });
+    });
 }
 
-function initPubClassStep3(isPublish) {    
+function initPubClassStep3(isPublish) {
     var $form = $('.step-3 form')[0];
     var data = {
         "ClassId": $('#classid')[0].value,
@@ -1227,9 +1220,9 @@ function checkAllEvaluateModal() {
                     "OrderId": $('.teaching.active')[0].dataset.orderid,
                     "Feedback": feedback,
                     "Comment": comment,
-                    "IsStudent": ($subbtn.dataset.student==="1")
+                    "IsStudent": ($subbtn.dataset.student === "1")
                 };
-                console.log(data);
+                //console.log(data);
                 post(ENV.host + '/api/orderreview', data, function (fb) {
                     if (fb) {
                         $('#evaluate')[0].classList.remove('active');
@@ -1268,7 +1261,7 @@ function checkAllFillInPrivate() {
 }
 
 function checkAllFillInImage(imageType) {
-    if (imageType>1) {
+    if (imageType > 1) {
         var $form = $('form')[0];
         var $btn1 = $('.main .right .btn')[0];
         var ifAllFillIn = $('input[type="radio"]:checked').length &&
@@ -1285,7 +1278,7 @@ function checkAllFillInImage(imageType) {
         $('.right .btn')[1].classList.add('border-none');
         $('.right .btn')[1].classList.add('btn-olive');
     }
-       
+
 }
 
 function selectSkill() {
@@ -1293,32 +1286,34 @@ function selectSkill() {
     var $skillCat = $('#skill-cat')[0];
     var $skillSubCat = $('#skill-sub-cat')[0];
     var $category = $('#categoryid')[0];
-    
+
     function renderSubCat(subCats) {
         var subitems = subCats.split(";");//.substr(1, subCats.length)
         var citiesOptions = "";
-        for (i = 1; i < subitems.length;i++)
-        {
-           var optItem = subitems[i].split(",");
-           citiesOptions += "<option value=\"" + optItem[0] + "\">" + optItem[1] + "</option>";
+        for (i = 0; i < subitems.length; i++) {
+            var optItem = subitems[i].split(",");
+            citiesOptions += "<option value=\"" + optItem[0] + "\">" + optItem[1] + "</option>";
         }
         $skillSubCat.innerHTML = citiesOptions;
     }
-    
+
     $skillCat.on('change', function () {
         var subcats = this.options[this.selectedIndex].dataset.subcats;
         if (subcats && subcats != undefined) {
             renderSubCat(subcats);
             $category.value = "";
-            $skillSubCat.style.display = 'block';
+            $('#skill-sub-cat-wrapper')[0].classList.remove('hide');
+            $skillSubCat.classList.add('lighterOlive');
         } else {
             $category.value = this.value;
-            $skillSubCat.style.display = 'none';
+            $('#skill-sub-cat-wrapper')[0].classList.add('hide');
         }
+        $skillCat.classList.remove('lighterOlive');
     });
 
     $skillSubCat.on('change', function () {
         $category.value = this.value;
+        $skillSubCat.classList.remove('lighterOlive');
     });
 }
 
@@ -1450,6 +1445,12 @@ function updateProfile(btn) {
     });
 }
 
+function logOut() {
+    post(ENV.host + '/SignUp/LogOutSocialAccount', function () {
+        window.location.href = "/m/login";
+    });
+}
+
 function initLikeEvent() {
     $('.follow').on('click', function (event) {
         event.preventDefault();
@@ -1475,9 +1476,8 @@ function initLikeEvent() {
             self.textContent = isFollow ? "已关注" : "加关注";
         });
 
-        if (typeof (mixpanel) != "undefined") {
-            mixpanel.track("follow");
-        }
+        triggerTackingEvent("follow");
+
     })
 }
 
@@ -1531,7 +1531,7 @@ function accpetOrder($form) {
     var $card = $('.teaching.active')[0];
     var datas = $card.dataset;
     var orderId = datas.orderid;
-    
+
     if (validHasValue($name) && validPhone($phone)) {
         var data = {
             "Status": 4,
@@ -1543,7 +1543,7 @@ function accpetOrder($form) {
             "MyName": $name.value,
             "MyPhone": $phone.value
         };
-        console.log(data);
+        //console.log(data);
         put(ENV.host + '/api/order/' + orderId, data, function (fb) {
             if (fb === 2) {
                 //alert("学生课币不足，接受订课失败");
@@ -1576,7 +1576,7 @@ function updateOrderStatus(el, status) {
         "Phone": datas.phone,
         "Email": datas.email
     };
-    console.log(data);
+    //console.log(data);
     put(ENV.host + '/api/order/' + orderId, data, function (fb) {
         if (fb === 3) {
             alert("订单状态已经改变，请刷新");
@@ -1600,14 +1600,11 @@ function updateOrderStatus(el, status) {
         }
     });
 
-    //if (typeof (mixpanel) != "undefined") {
-    //    mixpanel.track("follow");
-    //}
 }
 
 function updateClassInfo(data) {
     put(ENV.host + '/api/course/' + data.ClassId, data, function (fb) {
-        console.log(fb);
+        //console.log(fb);
         if (fb > 0) {
             if (data.City != null) {
                 $('#preview-city')[0].innerText = data.City;
@@ -1649,8 +1646,8 @@ function payClassCoin() {
                         "Feedback": feedback,
                         "Comment": comment,
                     };
-                    console.log(data);
-                    
+                    //console.log(data);
+
                     put(ENV.host + '/api/order/' + datas.orderid, data, function (fb) {
                         if (fb === 3) {
                             alert("订单状态已经改变，请刷新");
@@ -1698,7 +1695,7 @@ function uploadImage(type) {
     if (isPublish) {
         formData.append('ispublish', "1");
     }
-    console.log(formData);
+    //console.log(formData);
     uploadFile(formData, url, function (data) {
         if (type === 0) {
             myAlert("保存成功", 2);
@@ -1722,7 +1719,7 @@ function uploadFile(formData, url, callback) {
 
 function getUpCloudOptions(imageType) {
     post(ENV.host + '/api/UpCloud?fileName=' + $('#imagefilename')[0].value + $('#imagefileext')[0].value + "&imageType=" + imageType, function (fb) {
-            if (fb) {
+        if (fb) {
             $('#policy')[0].value = fb.Policy;
             $('#signature')[0].value = fb.Signature;
             $('#savekey')[0].value = fb.SaveKey;

@@ -72,7 +72,7 @@ namespace SkillBank.Site.Services.Net.Mail
         {
             if (!String.IsNullOrEmpty(emailAddress))
             {
-                SendTemplateMail(ConfigConstants.SendCloudMailSetting.MessageReceive_EmailSubject, ConfigConstants.SendCloudMailSetting.MessageReceive_TemplateName,"{\"to\": [\"" + emailAddress + "\"], \"sub\" : { \"%name%\" : [\"" + memberName + "\"], \"%id%\" : [\"" + senderName + "\"], \"%mlink%\" : [\"" + chatLink + "\"]} }");
+                SendTemplateMail(ConfigConstants.SendCloudMailSetting.MessageReceive_EmailSubject, ConfigConstants.SendCloudMailSetting.MessageReceive_TemplateName, "{\"to\": [\"" + emailAddress + "\"], \"sub\" : { \"%name%\" : [\"" + memberName + "\"], \"%id%\" : [\"" + senderName + "\"], \"%mlink%\" : [\"" + chatLink + "\"]} }");
             }
         }
 

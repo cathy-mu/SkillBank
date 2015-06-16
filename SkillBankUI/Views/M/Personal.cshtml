@@ -144,7 +144,7 @@
                             <h5>微信</h5>
                         }
                         <img src="/img/icons/icon-correct.png"></li>
-                    @if (Model.ProfileNumDic[Enums.NumberDictionaryKey.Certification] > 1)
+                    @if (!String.IsNullOrEmpty(ViewBag.ContactMobile))
                     {
                         <li class="table-view-cell">
                             <span>手机认证</span>

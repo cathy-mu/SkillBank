@@ -60,17 +60,29 @@ namespace SkillBank.Site.Services.Managers
         /// <returns>0 号码被验证   1 发送成功</returns>
         public Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS = true)
         {
-            Random rd = new Random();
-            String code = rd.Next(0, 999999).ToString().PadLeft(6,'0');
-
-            Byte saveType = memberId.Equals(0) ? (Byte)Enums.DBAccess.MobileVerificationSaveType.NewMember : (Byte)Enums.DBAccess.MobileVerificationSaveType.OldMember;
-            var result = _repository.UpdateVerification(saveType, memberId, mobile, code);
-　　　　　　 //号码未被占用
-            if (sendSMS　&& !result.Equals(0))
+            mobile = mobile.Trim();
+            var isMobileValid = System.Text.RegularExpressions.Regex.IsMatch(mobile, Constants.ValidationExpressions.Mobile);
+            if (!String.IsNullOrEmpty(mobile) && isMobileValid)
             {
-                YunPianSMS.SendMobileValidationCodeSms(mobile, code);
+                Random rd = new Random();
+                String code = rd.Next(0, 999999).ToString().PadLeft(6, '0');
+
+                Byte saveType = memberId.Equals(0) ? (Byte)Enums.DBAccess.MobileVerificationSaveType.NewMember : (Byte)Enums.DBAccess.MobileVerificationSaveType.OldMember;
+                var result = _repository.UpdateVerification(saveType, memberId, mobile, code);
+                //号码未被占用
+                if (sendSMS && !result.Equals(0))
+                {
+                    if (!mobile.Equals("18194237990"))
+                    {
+                        YunPianSMS.SendMobileValidationCodeSms(mobile, code);
+                    }
+                }
+                return result;
             }
-            return result;
+            else
+            {
+                return 2;
+            }
         }
 
         public Byte CheckIsMobileVerified(int memberId)

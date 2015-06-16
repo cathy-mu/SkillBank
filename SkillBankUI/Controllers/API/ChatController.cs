@@ -86,9 +86,17 @@ namespace SkillBankWeb.API
                 int toId = chatItem.ToId;
                 String messageText = chatItem.MessageText;
                 var result = _commonService.AddMessage(memberId, toId, messageText);
-                if (result.Equals(2))
+                Boolean sendNotify = System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName);
+                if (sendNotify)
                 {
-                    _commonService.SendNewMessageSMS(chatItem.ToMobile, chatItem.FromName, Constants.PageURL.MobileMessagePage, true);
+                    if (result.Equals(2))
+                    {
+                        _commonService.SendNewMessageSMS(chatItem.ToMobile, chatItem.FromName, Constants.PageURL.MobileMessagePage, true);
+                    }
+                    else
+                    {
+                        //SendCloudEmail.SendMessageReceiveMail(mremail, chatItem.t, chatItem.FromName, Constants.PageURL.MessagePage);
+                    }
                 }
                 return true;
             }

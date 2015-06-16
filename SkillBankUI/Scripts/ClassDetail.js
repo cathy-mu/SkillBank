@@ -161,7 +161,7 @@ function classdetail_Class() {
             return (comparedate > currdate) ? 1 : -1;
         }
     }
-    
+
     this.addOrder = function () {
         var classId = $("#classdetail-hidclassid").val();
 
@@ -242,6 +242,7 @@ function classdetail_Class() {
             var senderName = $("#classdetail-hidmsname").val();
             var receiverName = $("#classdetail-hidmrname").val();
             var receiverEmail = $("#classdetail-hidmremail").val();
+            console.log(senderName, receiverName);
             messageCtl.removeClass("inputerror");
             var toId = $("#classdetail-hidmemberid").val();
             var classTitle = $("#classdetail-title").text();

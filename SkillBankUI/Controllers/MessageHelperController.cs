@@ -45,13 +45,17 @@ namespace SkillBankWeb.Controllers
                 message = String.Format("{0}      [{1}]", message, title);
             }
             var result = _commonService.AddMessage(fromId, to, message);
-            if (result.Equals(2) && !String.IsNullOrEmpty(mobile))
+            Boolean sendNotify = System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName);
+            if (sendNotify)
             {
-                _commonService.SendNewMessageSMS(mobile, mrname, Constants.PageURL.MobileMessagePage, true);
-            }
-            else if (!String.IsNullOrEmpty(mremail))
-            {
-                SendCloudEmail.SendMessageReceiveMail(mremail, mrname, msname, Constants.PageURL.MessagePage);
+                if (result.Equals(2) && !String.IsNullOrEmpty(mobile))
+                {
+                    _commonService.SendNewMessageSMS(mobile, msname, Constants.PageURL.MobileMessagePage, true);
+                }
+                else if (!String.IsNullOrEmpty(mremail))
+                {
+                    SendCloudEmail.SendMessageReceiveMail(mremail, mrname, msname, Constants.PageURL.MessagePage);
+                }
             }
             return Json("true", JsonRequestBehavior.AllowGet);
         }

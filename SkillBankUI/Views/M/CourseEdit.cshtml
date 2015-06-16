@@ -61,16 +61,16 @@
 </div>
 
 
-<div class="add-course-page step-1 content active">
+<div class="post-course-page step-1 content active">
     <form>
-        <div class="inner"> 
+        <div class="inner">
             <h3 align="center" class="olive mb-1">基本描述</h3>
             <input type="hidden" id="categoryid" name="categoryid" value="@(Model.ClassInfo == null ? "" : Model.ClassInfo.Category_Id.ToString())"/>
             <input type="hidden" id="classid" name="classid" value="@(Model.ClassInfo == null ? 0 : Model.ClassInfo.ClassId)"/>
             <input type="hidden" id="cityid" name="cityid" value="@(ViewBag.MemberInfo.CityId > 0 ? "" : ViewBag.MemberInfo.CityId)"/>
 
             <input type="text" id="city" name="city" placeholder="你所在的城市" style="margin-bottom: 25px;" value="@ViewBag.CityName">
-            <select id="skill-cat" name="skill-cat">
+            <select id="skill-cat" name="skill-cat" @(Model.ClassInfo.Category_Id>0?"":"class=lighterOlive")>
                 <option value='' disabled selected style='display: none;'>选择一项技能</option>
                 @if (@Model.CategoryLkp != null)
                 {
@@ -81,23 +81,25 @@
                     }
                 }
             </select>
-            <select id="skill-sub-cat" name="skill-sub-cat" @((Model.ClassInfo.Category_Id != Model.ParentCategoryId) ? "" : "style=display:none;")>
-                @if (Model.CategoryLkp != null && Model.CategoryLkp.Count > 0 && Model.ClassInfo != null)
-                {
-                    foreach (var item in Model.CategoryLkp)
+            <div id="skill-sub-cat-wrapper" @((Model.ClassInfo.Category_Id != Model.ParentCategoryId) ? "" : "class=hide lighterOlive")>
+                <select id="skill-sub-cat" name="skill-sub-cat">
+                    @if (Model.CategoryLkp != null && Model.CategoryLkp.Count > 0 && Model.ClassInfo != null)
                     {
-                        if (!String.IsNullOrEmpty(item.SubCategories))
+                        foreach (var item in Model.CategoryLkp)
                         {
-                            var subCates = item.SubCategories.Split(';');
-                            foreach (var cate in subCates)
+                            if (!String.IsNullOrEmpty(item.SubCategories))
                             {
-                                var optItem = cate.Split(',');
-                    <option value="@optItem[0]" @((Model.ParentCategoryId != null && Model.ClassInfo.Category_Id.ToString() == optItem[0]) ? "selected=\"selected\"" : "")>@optItem[1]</option>
+                                var subCates = item.SubCategories.Split(';');
+                                foreach (var cate in subCates)
+                                {
+                                    var optItem = cate.Split(',');
+                        <option value="@optItem[0]" @((Model.ParentCategoryId != null && Model.ClassInfo.Category_Id.ToString() == optItem[0]) ? "selected=\"selected\"" : "")>@optItem[1]</option>
+                                }
                             }
                         }
                     }
-                }
-            </select>
+                </select>
+            </div>
             <h5 class="mb-05">你的技能水平</h5>
             <div class="custom-range">
                 <div class="bg">
@@ -142,7 +144,7 @@
     </form>
 </div>
 
-<div class="add-course-page step-2 content">
+<div class="post-course-page step-2 content">
     <form>
         <div class="inner must-fill-in">
             <h3 align="center" class="olive mb-1">课程介绍</h3>
@@ -197,7 +199,7 @@
     </form>
 </div>
 
-<div class="add-course-page step-3 content">
+<div class="post-course-page step-3 content">
     <form>
         <div class="inner">
             <h3 align="center" class="olive mb-1">添加封面</h3>
@@ -230,7 +232,7 @@
 </div>
 
 
-<div class="add-course-page step-success content @(ViewBag.ActiveStep.Equals(3) ? "active" : "")">
+<div class="post-course-page step-success content @(ViewBag.ActiveStep.Equals(3) ? "active" : "")">
     <form>
         <div class="inner">
             <h4 align="center" class="olive">我们会在2天内告知你审核结果<br />

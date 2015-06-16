@@ -179,14 +179,17 @@ var checkPage = function(){
     // init textrea auto size
     jQuery('#write-box').textareaAutoSize();
 
-    $('#write-box')[0].on('keyup', function(event){
+    var toggleButton = function(event){
       var $submit = $('#form-write button')[0];
       if ( this.value.length ){
         $submit.removeAttribute('disabled');
       } else{
         $submit.setAttribute('disabled', '');
       }
-    })
+    }
+
+    $('#write-box')[0].on('keyup', toggleButton);
+    $('#write-box')[0].on('change', toggleButton);
 
     // bind add msg
     chatForm();
@@ -225,7 +228,7 @@ var checkPage = function(){
   }
 
   // add course page
-  if( $('.add-course-page.step-1').length ) {
+  if( $('.post-course-page.step-1').length ) {
     bindHashChangeToSteps();
     selectSkill();
     checkAllFillInStep1();
@@ -237,18 +240,18 @@ var checkPage = function(){
   }
   
   // add course page 2
-  if( $('.add-course-page.step-2').length ) {
+  if( $('.post-course-page.step-2').length ) {
     limitedText();
     checkAllFillIn();
   } 
   
   // add course page 3
-  if( $('.add-course-page.step-3').length ) {
+  if( $('.post-course-page.step-3').length ) {
     chooseCover();
   } 
   
   // add course page private
-  if( $('.add-course-page.step-private').length ) {
+  if( $('.post-course-page.step-private').length ) {
     checkAllFillInPrivate();
     chooseAvatar();
     uploadAvatar();
@@ -491,6 +494,11 @@ function chatForm(){
       ToId: 7,
       MessageText: $input.value
     };
+
+    // textarea style to origin
+    $input.value = '';
+    $input.style.height = 'auto';
+
     post(ENV.host + '/api/chat', data, function(fb){
       if( !_.isNumber(fb) ) return;
       $('.chat-content')[0].insertAdjacentHTML( 'beforeend',
@@ -501,6 +509,7 @@ function chatForm(){
       // scroll to newest msg
       $('.content')[0].scrollTop = 1000000;
     });
+
 
   });
 }
@@ -763,24 +772,35 @@ function PreviewImage() {
 }
 
 function selectSkill(){
-  var allSkills = {
-    语言类: ['英语', '法语', '德语', '日语'],
-    设计类: ['油画', '平面', '建筑']
-  };
-  var options_tpl = '<% _.forEach(list, function(name) { %><option value=<%- name %> > <%- name %> </option><% }); %>';;
+  var allSkills = [
+    {
+      name: '语言类',
+      list: ['英语', '法语', '德语', '日语']
+    },
+    {
+      name: '设计类',
+      list: ['油画', '平面', '建筑']
+    }
+  ];
+  var allSkillsNameArr = _.map(allSkills, function(obj){return obj.name; });
+  var options_tpl = 
+    '<% _.forEach(list, function(name, i) { %>' +
+      '<option value="<%- i %>" > <%- name %> </option>' +
+    '<% }); %>';
+  var provinceOptions = _.template(options_tpl, {list: allSkillsNameArr});
   var $skillCat = $('#skill-cat')[0];
   var $skillSubCat = $('#skill-sub-cat')[0];
   function renderSubCat(subCats){
     var citiesOptions = _.template(options_tpl, {list: subCats});
     $skillSubCat.innerHTML = citiesOptions;
+    // jQuery('#skill-sub-cat').html(citiesOptions);
   }
-  var provinceOptions = _.template(options_tpl, {list: _.keys(allSkills)});
   $skillCat.insertAdjacentHTML('beforeend', provinceOptions);
-  // var idx = arrProvinces.indexOf(provinceVal);
-  // renderCity(idx);
+  // jQuery('#skill-cat').append(provinceOptions);
   $skillCat.on('change', function(){
-    renderSubCat(allSkills[this.value]);
-    $skillSubCat.style.display = 'block';
+    renderSubCat(allSkills[this.value]['list']);
+    this.classList.remove('lighterOlive');
+    $('#skill-sub-cat-wrapper')[0].classList.remove('hide');
   });
 }
 
@@ -867,6 +887,10 @@ function calRangeVal (elRange, bodyW){
     var val = ((x-35)*100/(bodyW - 35*2)).toFixed();
     elRange.querySelector('.handle').innerHTML = val;
     updateHandlePos( elRange );
+    alert(!touch)
+    if (touch.x2 && Math.abs(touch.x1 - touch.x2) > 10){
+      e.preventDefault()
+    }
   }
 }
 
