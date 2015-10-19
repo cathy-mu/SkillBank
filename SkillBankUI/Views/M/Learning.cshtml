@@ -21,7 +21,7 @@
             foreach (var item in Model)
             {
                 var status = item.OrderStatus.Value;
-                var isDisable = status.Equals(2) || status.Equals(3) || status.Equals(6) || status.Equals(7) || status.Equals(8) || status.Equals(11) || ((status.Equals(9) || status.Equals(10)) && item.HasReview);
+                var isDisable = status.Equals(2) || status.Equals(3) || status.Equals(6) || status.Equals(7) || status.Equals(8) || status.Equals(11) || status.Equals(11) || status.Equals(12) || ((status.Equals(9) || status.Equals(10)) && item.HasReview);
                 <div class="teaching card @(isDisable ? "disabled" : "")"
                 data-orderid="@item.OrderId"
                 data-name="@item.MemberName"
@@ -52,7 +52,7 @@
                             {
                                 <span class="btn-tag grey">未被接受</span>
                             }
-                            else if (status.Equals(3))
+                            else if (status.Equals(3) || status.Equals(12) || status.Equals(13))
                             {
                                 <span class="btn-tag grey">已被取消</span>
                             }
@@ -104,7 +104,7 @@
                     }
                     <div class="course-info mb-1">
                         预定课程：@item.Title<br />
-                        上课日期：@TextContentHelper.GetDateString(item.BookedDate)<br />
+                        上课日期：<span>@TextContentHelper.GetDateString(item.BookedDate)</span><br />
                         @if (status.Equals(4)){
                         <span class="olive">课币状态：已被锁定</span><br>
                         <span class="olive">联系信息：@item.MemberName @item.Phone</span>
@@ -120,7 +120,7 @@
                         @if (status.Equals(1))
                         {
                             <a class="btn confirm cancel-book">取消订课</a>
-
+                            <!--<a class="btn change-date" data-modal="changeDate">修改日期</a>-->
                             <a class="btn" href="@Url.Action("chat", "m", new { id = item.MemberId })">私信对方</a>
                         }
                         else if (status.Equals(4))
@@ -140,7 +140,7 @@
                 @if (status.Equals(5))
                 {<a class="foot-bar dark-olive" data-modal="paycoin">支付课币</a>}
                 else if ((status.Equals(9) || status.Equals(10)) && !item.HasReview)
-                {<a class="foot-bar btn-evaluate" data-modal="evaluate">评价一下你的老师</a>}
+                {<a class="foot-bar btn-evaluate" data-modal="evaluate">评价老师并获得积分</a>}
 
             </div>
         
@@ -192,8 +192,8 @@
                                     </label>
                                 </li>
                             </ul>
-                            <textarea name="message" placeholder="请评价一下对方"></textarea>
-                            <a href="#" class="btn btn-primary btn-block btn-evaluate" data-student="1">发送评价</a>
+                            <textarea name="message" placeholder="评价老师并获得积分"></textarea>
+                            <a href="#" class="btn btn-primary btn-block btn-evaluate" data-student="1">评价老师并获得积分</a>
                         </form>
                     </div>
                 </div>
@@ -237,6 +237,24 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="changeDate" class="modal toBeRemoved">
+                <header class="bar bar-nav">
+                    <a class="icon icon-close pull-right grey" href="#changeDate"></a>
+                    <h1 class="title">修改订课日期</h1>
+                </header>
+
+                <div class="content">
+                    <div class="content-inner">
+                        <div class="content-padded">
+                            <form id="form-bookdate" data-id="0">
+                                <input placeholder="授课日期" type="text" name="date" onfocus="(this.type='date')" onblur="(this.type='text')" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(1).ToString("yyyy-MM-dd")">
+                                <a class="btn btn-primary btn-block">修改</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
         </div>
 
         <script type="text/template" id="teaching-disabled-tpl">

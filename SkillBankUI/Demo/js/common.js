@@ -206,22 +206,25 @@ var checkPage = function(){
 
     var $verifyBtn = $('.btn-grey');
     var seconds;
-    $verifyBtn.on('click', function(){
-      if(seconds>0 || !$form.phone.value) return;
-      var url = ENV.host + '/api/Validation?mobile=' + $form.phone.value;
-      seconds = 60;
-      post(url, function(fb){
-        // timer
-        var t = setInterval(function(){
-          if(seconds <= 0){
-            $verifyBtn[0].innerText = '获得验证码';
-            clearInterval(t);
-          } else {
-            $verifyBtn[0].innerText = seconds;
-          }
-          seconds--;
-        }, 1000);
-      });
+    $verifyBtn.on('click', function () {
+        if (seconds > 0 || !$form.phone.value) return;
+        var data = {
+            Mobile: $form.phone.value,
+            Code: ''
+        };
+        seconds = 60;
+        post(ENV.host + '/api/verification', data, function (fb) {
+            // timer
+            var t = setInterval(function () {
+                if (seconds <= 0) {
+                    $verifyBtn[0].innerText = '获得验证码';
+                    clearInterval(t);
+                } else {
+                    $verifyBtn[0].innerText = seconds;
+                }
+                seconds--;
+            }, 1000);
+        });
 
 
     })
@@ -472,17 +475,17 @@ function hackForModals(){
   }
 }
 
-function getChatDetail(uid, fid){
-  var url = ENV.host + '/api/chat/' + uid + '?contact=' + fid;
-  var $container = $('.chat-content');
-  var tpl = $('#chat-detail-tpl')[0].innerHTML;
-  get(url, function(fb){
-    if( !_.isArray(fb) ) return;
+//function getChatDetail(uid, fid){
+//  var url = ENV.host + '/api/chat/' + uid + '?contact=' + fid;
+//  var $container = $('.chat-content');
+//  var tpl = $('#chat-detail-tpl')[0].innerHTML;
+//  get(url, function(fb){
+//    if( !_.isArray(fb) ) return;
 
-    // insert html
-    $container[0].innerHTML = _.template(tpl, {items: fb, uid: uid});
-  });
-}
+//    // insert html
+//    $container[0].innerHTML = _.template(tpl, {items: fb, uid: uid});
+//  });
+//}
 
 function chatForm(){
   var $form = $('#form-write');

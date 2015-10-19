@@ -22,6 +22,8 @@ namespace SkillBank.Site.DataSource.Data
         List<MessageListItem> GetLastestMessagesByMemberId(int memberId, Byte loadBy);
         List<Message> GetMessagesByFromToId(int memberId1, int memberId2, Byte loadBy);
         List<MessageUnReadItem> GetMessageUnReadNum(int memberId);
+        List<ComplaintItem> GetComplaintList(Byte loadType);
+        Byte UpdateComplaint(Byte saveType, int memberId, int relatedId, Byte type);
     }
 
     public class MessageRepository : Entities, IMessageRepository
@@ -29,6 +31,16 @@ namespace SkillBank.Site.DataSource.Data
         public MessageRepository()
         //: base("name=Entities")
         {
+        }
+
+        public Byte UpdateComplaint(Byte saveType, int memberId, int relatedId, Byte type)
+        {
+            return Complaint_Save_p(saveType, memberId, relatedId, type);
+        }
+
+        public List<ComplaintItem> GetComplaintList(Byte loadType)
+        {
+            return Complaint_Load_p(loadType);
         }
 
         public int UpdateMessage(Byte saveType, int id, int fromId, int toId, String messageText)
@@ -102,6 +114,27 @@ namespace SkillBank.Site.DataSource.Data
 
             ObjectResult<Message_LoadUnReadNo_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Message_LoadUnReadNo_p_Result>("Message_LoadUnReadNo_p", MergeOption.NoTracking, memberIdPara);
             return MessageMapper.Map(result);
+        }
+
+        private List<ComplaintItem> Complaint_Load_p(Byte type)
+        {
+            var typePara = new ObjectParameter("LoadType", type);
+
+            ObjectResult<Complaint_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Complaint_Load_p_Result>("Complaint_Load_p", MergeOption.NoTracking, typePara);
+            return MessageMapper.Map(result);
+        }
+
+        private Byte Complaint_Save_p(Byte saveType, int memberId, int relatedId, Byte type)
+        {
+            Byte result = 0;
+            var saveTypePara = new ObjectParameter("SaveType", saveType);
+            var typePara = new ObjectParameter("Type", type);
+            var relateIdPara = new ObjectParameter("RelatedId", relatedId);
+            var memberIdPara = new ObjectParameter("MemberId", memberId);
+            var resultPara = new ObjectParameter("Result", result);
+
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Complaint_Save_p", saveTypePara, typePara, relateIdPara, memberIdPara, resultPara);
+            return (Byte)resultPara.Value;
         }
 
     }

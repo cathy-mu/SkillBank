@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
+using System.Web.Security;
 
 using SkillBank.Site.Common;
 using SkillBank.Site.Services;
@@ -12,12 +13,14 @@ using SkillBank.Site.Web;
 using SkillBank.Site.Web.ViewModel;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.DataSource.Data;
+using SkillBank.Site.Services.Providers;
 
 using dotNetDR_OAuth2;
 using dotNetDR_OAuth2.AccessToken;
 using dotNetDR_OAuth2.APIs;
 using dotNetDR_OAuth2.Net;
 using dotNetDR_OAuth2.JSON;
+using dotNetDR_OAuth2.APIs.WeChat;
 using System.Net;
 
 namespace SkillBank.Controllers
@@ -55,6 +58,21 @@ namespace SkillBank.Controllers
         }
 
         public ActionResult Login()
+        {
+            return View();
+        }
+
+        public ActionResult LoginA()
+        {
+            return View();
+        }
+
+        public ActionResult LoginM()
+        {
+            return View();
+        }
+
+        public ActionResult SignUp()
         {
             return View();
         }
@@ -130,20 +148,18 @@ namespace SkillBank.Controllers
                 if (classInfo != null)
                 {
                     int reviewNum = 0, commentNum = 0, likeNum = 0;//current class, member other class, comment, like num
-                    likeNum = classInfo.ClassId;
-                    classInfo.ClassId = id;
+                    likeNum = classInfo.LikeNum;
                     classDetailModel.ClassInfo = classInfo;
                     int teacherId = classInfo.Member_Id;
                     ViewBag.ContactorId = teacherId;
                     //class owner
                     className = String.IsNullOrEmpty(classInfo.Title) ? ResourceHelper.GetTransText(560) : classInfo.Title;
 
-                    //TO DO : Update data model add like number later
-                    var teacherInfo = _commonService.GetMemberInfo(teacherId, memberId);
-                    teacherInfo.MemberId = teacherId;
+                    var teacherInfo = _commonService.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberIdAndRelatedMemberId, teacherId, memberId);
+                    //teacherInfo.MemberId = teacherId;
                     classDetailModel.MemberInfo = teacherInfo;
 
-                    var studentReview = _commonService.GetClassReviews((Byte)Enums.DBAccess.ReviewLoadType.ByClass, teacherId, id, 0, 0);
+                    var studentReview = _commonService.GetClassReviews((Byte)Enums.DBAccess.ReviewLoadType.ByClassAll, teacherId, id, 0, 0);
                     if (studentReview != null && studentReview.Count > 0)
                     {
                         var classReviews = studentReview.Where(r => r.TabId == 0).ToList();
@@ -152,13 +168,7 @@ namespace SkillBank.Controllers
                             classDetailModel.ClassReview = classReviews;
                             reviewNum = classReviews.Count();
                         }
-                        //var otherClassReviews = studentReview.Where(r => r.TabId == 1).ToList();
-                        //if (otherClassReviews != null && otherClassReviews.Count() != 0)
-                        //{
-                        //    classDetailModel.OtherClassReview = otherClassReviews;
-                        //    sum1 = otherClassReviews.Count();
-                        //}
-
+                        
                         var classComments = studentReview.Where(r => r.TabId == 2).ToList();
                         if (classComments != null && classComments.Count() != 0)
                         {
@@ -180,13 +190,35 @@ namespace SkillBank.Controllers
                     classDetailModel.IsLogin = (memberId > 0);
                     classDetailModel.IsOwner = memberId.Equals(teacherId);
                     ViewBag.ContactMobile = (teacherInfo.NotifyTag & 1).Equals(1) ? teacherInfo.Phone : "";//for send SMS notify
-                
+
+                    if (classDetailModel.IsOwner)
+                    {
+                        _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetClassRelatedAsReadByClassId, memberId, id);
+                    }
+
                     var numDic = _commonService.GetNumsByMemberClass(teacherId, id, (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassSummary);
                     //init numbers on page
                     numDic.Add(Enums.NumberDictionaryKey.StudentReview, reviewNum);
                     numDic.Add(Enums.NumberDictionaryKey.Comment, commentNum);
                     numDic.Add(Enums.NumberDictionaryKey.Like, likeNum);
                     classDetailModel.ClassNumDic = numDic;
+
+
+                    //WeChat share function paras
+                    String timestamp = WeChatHelper.GetTimestamp().ToString();
+                    String nonceStr = WeChatHelper.GetNonceStr();
+                    String CurrUrl = Request.Url.AbsoluteUri;
+                    String jsAPITicket = GetJsAPITicket(GetAccessToken());
+
+                    String str4SHA1 = WeChatHelper.GenerateString4Signature(jsAPITicket, nonceStr, timestamp, CurrUrl);
+                    String signature = FormsAuthentication.HashPasswordForStoringInConfigFile(str4SHA1, "SHA1").ToLower();
+
+
+                    ViewBag.AppId = ConfigConstants.ThirdPartySetting.WeChatSetting.AppID;
+                    ViewBag.TimeStamp = timestamp;
+                    ViewBag.NonceStr = nonceStr;
+                    ViewBag.Signature = signature;
+                    ViewBag.JsAPITicket = jsAPITicket;
                 }
                 else
                 {
@@ -220,7 +252,6 @@ namespace SkillBank.Controllers
                 //Class Owner
                 if (classInfo != null && classInfo.Member_Id.Equals(memberId))
                 {
-                    classInfo.ClassId = id;
                     classDetailModel.ClassInfo = classInfo;
                     className = String.IsNullOrEmpty(classInfo.Title) ? ResourceHelper.GetTransText(560) : classInfo.Title;
                 }
@@ -255,7 +286,10 @@ namespace SkillBank.Controllers
                 var unReadMessageNum = _commonService.GetMessageUnReadNum(memberId);
                 messageListModel.UnReadMessageNumDic = unReadMessageNum;
 
-                _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetMessageAsPopedByMemberId, memberId, 0);
+                //_commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetMessageAsPopedByMemberId, memberId, 0);
+
+                var notifications = _commonService.GetNotification(memberId, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileNotification);
+                messageListModel.Notifications = notifications;
                 GetNotificationNums(memberId);
             }
             return View(messageListModel);
@@ -288,51 +322,56 @@ namespace SkillBank.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Personal page 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public ActionResult Personal(int id = 0)
         {
-            String userName = "";
-            int likeNum = 0, sReviewNum = 0, tReviewNum = 0;//, certificateNum = 0;
+            String userName = "";//use in metatag
+            int memberId = 0, sReviewNum = 0, tReviewNum = 0;
             int currMemberId = GetCurrentMemberInfo(false);
-
             ProfilelModel profileModel = new ProfilelModel();
 
-            int memberId = 0;
             //view other member's page
             if (id > 0)
             {
                 memberId = id;
-                var memberInfo = _commonService.GetMemberInfo(memberId, currMemberId);
+                var memberInfo = _commonService.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberIdAndRelatedMemberId, memberId, currMemberId);
                 if (memberInfo != null)
                 {
-                    likeNum = memberInfo.MemberId;
                     memberInfo.MemberId = memberId;
                     profileModel.MemberInfo = memberInfo;
-                    GetNotificationNums(currMemberId);
                     ViewBag.ContactMobile = (memberInfo.NotifyTag & 1).Equals(1) ? memberInfo.Phone : "";//for send SMS notify
                     ViewBag.IsOwner = memberId.Equals(currMemberId);
+                    userName = memberInfo.Name;
                 }
+                //member not exists
                 else
                 {
                     return View();
                 }
-                userName = (memberInfo == null ? "" : memberInfo.Name);
             }
             else if (id == 0)
             {
+                //Own page add notification
                 memberId = currMemberId;
                 profileModel.MemberInfo = ViewBag.MemberInfo;
                 userName = ViewBag.MemberInfo.Name;
                 ViewBag.IsOwner = true;
             }
-            profileModel.ClassList = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, memberId);
+
+            if (ViewBag.IsOwner)
+            {
+                _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetTeacherReviewAsRead, memberId);
+            }
+
+            GetNotificationNums(currMemberId);
 
             //Get reviews
             if (memberId > 0)
             {
+                profileModel.ClassList = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, memberId);
                 var reviews = _commonService.GetMemberReviews((Byte)Enums.DBAccess.ReviewLoadType.ByMemberAll, memberId, 0, 0);
                 if (reviews != null && reviews.Count > 0)
                 {
@@ -522,8 +561,10 @@ namespace SkillBank.Controllers
                     //message tab2
                     int systemNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("s"))) ? 1 : 0;
                     int messageNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("m"))) ? 1 : 0;
-                    alterNums.Add("nm", systemNotiNum + messageNotiNum);
+                    int actionNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("a"))) ? 1 : 0;
+                    alterNums.Add("nm", systemNotiNum + messageNotiNum + actionNotiNum);
                     alterNums.Add("s", systemNotiNum);
+                    alterNums.Add("a", actionNotiNum);
                     //course tab3
                     int classNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("c"))) ? 1 : 0;
                     int teacheNotiNum = result.Any(a => (a.Number > 0 && a.Type.Equals("t"))) ? 1 : 0;
@@ -536,8 +577,60 @@ namespace SkillBank.Controllers
                 }
             }
         }
-        
-        #endregion
+
+        private string GetAccessToken()
+        {
+
+            //String token = null;
+            //ConfigureInfo configInfo = _configureManager.GetConfigureByKey("wechat_token");
+            //if (configInfo.ExpireDate < DateTime.Now)
+            //{
+            //    DateTime expireDate = new DateTime();
+            //    token = WeChatHelper.GetToken(out expireDate);
+            //    _configureManager.UpdateConfigureInfo("wechat_token", token, expireDate);
+            //}
+            //else
+            //{
+            //    token = configInfo.InfoValue;
+            //}
+
+            SocialCacheItem cachedToken;
+            var accessToken = StaticCacheProvider.GetObject(Constants.CacheDicKeys.WeChatAccessToken);
+            if (accessToken == null)
+            {
+                DateTime expireDate = new DateTime();
+                String token = WeChatHelper.GetToken(out expireDate);
+                cachedToken = new SocialCacheItem() { ItemValue = token, ExpireDate = expireDate };
+                StaticCacheProvider.SetObject(Constants.CacheDicKeys.WeChatAccessToken, cachedToken);
+                return token;
+            }
+            else
+            {
+                cachedToken = (SocialCacheItem)StaticCacheProvider.GetObject(Constants.CacheDicKeys.WeChatAccessToken);
+                return cachedToken.ItemValue;
+            }
+        }
+
+        private string GetJsAPITicket(String accessToken)
+        {
+            SocialCacheItem cachedTicket;
+            var apiTicket = StaticCacheProvider.GetObject(Constants.CacheDicKeys.WeChatJsapiTicket);
+            if (apiTicket == null)
+            {
+                DateTime expireDate = new DateTime();
+                String ticket = WeChatHelper.GetJsAPITicket(accessToken, out expireDate);
+                cachedTicket = new SocialCacheItem() { ItemValue = ticket, ExpireDate = expireDate };
+                StaticCacheProvider.SetObject(Constants.CacheDicKeys.WeChatJsapiTicket, cachedTicket);
+                return ticket;
+            }
+            else
+            {
+                cachedTicket = (SocialCacheItem)StaticCacheProvider.GetObject(Constants.CacheDicKeys.WeChatJsapiTicket);
+                return cachedTicket.ItemValue;
+            }
+        }
+
+       #endregion
 
         #region Phase 2 pages
 
@@ -550,7 +643,7 @@ namespace SkillBank.Controllers
             ViewBag.ActiveTab = 3;
 
             var memberId = GetCurrentMemberInfo(true);
-            var result = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByMemberLiked, 0, memberId);
+            var result = _commonService.GetClassCollection((Byte)Enums.DBAccess.ClassCollectionLoadType.ByMemberLiked, memberId, 0);
             GetNotificationNums(memberId);
 
             return View(result);
@@ -740,6 +833,8 @@ namespace SkillBank.Controllers
             var ClassEditList = _commonService.GetClassEditInfoByMemberId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherId);
             GetNotificationNums(memberId, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileMyCourse);
 
+            ViewBag.IsMobileVerified = ((ViewBag.MemberInfo.VerifyTag & 1) == 1);
+            
             return View(ClassEditList);
         }
 
@@ -759,7 +854,94 @@ namespace SkillBank.Controllers
             ViewBag.CityName = cityName;
             GetNotificationNums(memberId);
 
+            //if (numDic != null && (numDic[Enums.NumberDictionaryKey.GotSharedCoins].Equals(0) || numDic[Enums.NumberDictionaryKey.Certification].Equals(0) || numDic[Enums.NumberDictionaryKey.Class].Equals(0)))
+            //{
+            //    ViewBag.ShowHowToGetCoins = true;
+            //}
+            //else
+            //{
+            //    ViewBag.ShowHowToGetCoins = false;
+            //}
+            if (ViewBag.MemberInfo.LastUpdateDate.ToString("yyyy-MM-dd").Equals(DateTime.Now.ToString("yyyy-MM-dd")))
+            {
+                ViewBag.IsSignIn = true;
+            }
+            else
+            {
+                ViewBag.IsSignIn = false;
+            }
+
+            //WeChat share function paras
+            String timestamp = WeChatHelper.GetTimestamp().ToString();
+            String nonceStr = WeChatHelper.GetNonceStr();
+            String CurrUrl = Request.Url.AbsoluteUri;
+            String jsAPITicket = GetJsAPITicket(GetAccessToken());
+
+            String str4SHA1 = WeChatHelper.GenerateString4Signature(jsAPITicket, nonceStr, timestamp, CurrUrl);
+            String signature = FormsAuthentication.HashPasswordForStoringInConfigFile(str4SHA1, "SHA1").ToLower();
+
+
+            ViewBag.AppId = ConfigConstants.ThirdPartySetting.WeChatSetting.AppID;
+            ViewBag.TimeStamp = timestamp;
+            ViewBag.NonceStr = nonceStr;
+            ViewBag.Signature = signature;
+            ViewBag.JsAPITicket = jsAPITicket;
+
             return View(numDic);
+        }
+
+        public ActionResult Verification()
+        {
+            var memberId = GetCurrentMemberInfo(true);
+            return View();
+        }
+
+        public ActionResult CourseCollection(int id = 0, Byte type = (Byte)Enums.DBAccess.ClassCollectionLoadType.ByTeacherId)
+        {
+            ViewBag.Type = type;
+            ViewBag.Title = type.Equals((Byte)Enums.DBAccess.ClassCollectionLoadType.ByTeacherId) ? "发布课程" : (type.Equals((Byte)Enums.DBAccess.ClassCollectionLoadType.ByMemberLearnt) ? "学习记录" : "教授记录");
+            int memberId = GetCurrentMemberInfo(false);//current member
+            id = id.Equals(0) ? memberId : id;//page owner
+
+            if (id.Equals(0))//invalid member
+            {
+                return View();
+            }
+            else if (id.Equals(memberId))//own page
+            {
+                ViewBag.Avatar = ViewBag.MemberInfo.Avatar;
+            }
+            else
+            {
+                var ownerInfo = _commonService.GetMemberInfo(id);
+                ViewBag.Avatar = ownerInfo.Avatar;
+            }
+            GetNotificationNums(memberId);//current member
+
+            var cityDic = _contentService.GetCities("cn");
+            var classes = _commonService.GetClassCollection(type, id);
+            var classList = DataMapper.Map(classes, cityDic);
+
+            return View(classList);
+        }
+
+        public ActionResult Credit()
+        {
+            var memberId = GetCurrentMemberInfo(true);
+            return View();
+        }
+
+        public ActionResult AboutCredit()
+        {
+            var memberId = GetCurrentMemberInfo(true);
+
+            var numDic = _commonService.GetNumsByMember(memberId, (Byte)Enums.DBAccess.MemberNumsLoadType.ByCreditGetMethods);
+            
+            ViewBag.MissStudentReview = numDic[Enums.NumberDictionaryKey.MissStudentReview];
+            ViewBag.MissTeacherReview = numDic[Enums.NumberDictionaryKey.MissTeacherReview];
+            ViewBag.IsSignIn = numDic[Enums.NumberDictionaryKey.IsSignIn];
+
+            return View();
         }
 
         #endregion

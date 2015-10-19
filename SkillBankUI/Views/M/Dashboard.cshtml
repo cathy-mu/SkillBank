@@ -7,7 +7,7 @@
 
 @Html.Partial("_MobileMenuPartial")
 
-<div class="setting-page content">
+<div class="setting-page dashboard-page content">
     <!--<a class="icon icomoon icon-redo pull-right nav-inner nav-right"></a>-->
     <div class="info clearfix">
         <a href="@Url.Action("personal", "m")">
@@ -21,12 +21,18 @@
         <table class="u-full-width">
             <tbody>
                 <tr>
+                    <td><a class="topnums-credit">
+                        <h6 class="credit-num">@ViewBag.Memberinfo.Credit</h6>
+                        积分</a></td>
+                    <td>
                     <td><a href="@Url.Action("favorites", "m")">
                         <h6>@Model[Enums.NumberDictionaryKey.Like]</h6>
                         喜欢</a></td>
-                    <td><a href="@Url.Action("mycourses", "m")">
-                        <h6>@Model[Enums.NumberDictionaryKey.Class]</h6>
-                        课程</a></td>
+                    <td>
+                        <a href="@(Model[Enums.NumberDictionaryKey.Class] > 0 ? Url.Action("coursecollection", "m", new { id = 0 ,type = 2 }) : "#")">
+                            <h6>@Model[Enums.NumberDictionaryKey.Class]</h6>
+                            课程</a>
+                    </td>
                     <td><a href="@Url.Action("following", "m")">
                         <h6>@Model[Enums.NumberDictionaryKey.Follow]</h6>
                         关注</a></td>
@@ -37,11 +43,27 @@
             </tbody>
         </table>
     </div>
-
+    <br />
+    <div class="card">
+        <ul class="table-view">
+            @if (ViewBag.IsSignIn)
+            {
+                <li class="table-view-cell" id="signin-now">
+                    <a class="navigate-right"><span class="icon icomoon icon-checked"></span><span>每日一签</span><span class="signin-status tail">今日已签到</span></a>
+                </li>
+            }
+            else
+            {
+                <li class="table-view-cell signin-now" id="signin-now">
+                    <a class="navigate-right"><span class="icon icomoon icon-checked"></span><span>每日一签</span><span class="signin-status tail">今日未签到</span></a>
+                </li>
+            }
+        </ul>
+    </div>
     <table class="card coins">
         <tr>
             <td>
-                <h1>@ViewBag.Memberinfo.Coins</h1>
+                <h1 class="current-coins">@ViewBag.Memberinfo.Coins</h1>
                 <span>可使用课币</span>
             </td>
             <td>
@@ -50,18 +72,35 @@
             </td>
         </tr>
     </table>
+    <h5>如何获得免费课币</h5>
+    <div class="card getcoin-bars">
+        <ul class="table-view">
+            @if (Model[Enums.NumberDictionaryKey.GotSharedCoins].Equals(0))
+            {
+                <li class="table-view-cell getcoin-wechat">
+                    <a class="navigate-right"><span class="addmethod">课币+2</span><label class="getcoin-wechattext">分享技能银行到朋友圈</label><label class="getcoin-notwechattext">关注微信后分享获课币</label></a>
+                </li>
+            }
+            @if (Model[Enums.NumberDictionaryKey.Certification].Equals(0))
+            {
+                <li class="table-view-cell getcoin-verify"><a class="navigate-right"><span class="addmethod">课币+1</span>认证手机号</a></li>
+            }
+            @if (Model[Enums.NumberDictionaryKey.Class].Equals(0))
+            {
+                <li class="table-view-cell getcoin-class"><a class="navigate-right"><span class="addmethod">课币+1</span>首次开课并通过审核</a></li>
+            }
+            <li class="table-view-cell getcoin-credit"><a class="navigate-right"><span class="addmethod">课币+N</span>积分换课币</a></li>
+        </ul>
+    </div>
 
     <h5>认证信息 </h5>
-
     <div class="card">
         <ul class="table-view">
             <li class="table-view-cell">社交认证 @if (@ViewBag.MemberInfo.SocialType.Equals(1))
                                              {<span class="tail">新浪微博</span>}
                                              else if (@ViewBag.MemberInfo.SocialType.Equals(4))
                                              {<span class="tail">微信</span>}</li>
-
-
-            @if (!String.IsNullOrEmpty(ViewBag.ContactMobile))
+            @if (Model[Enums.NumberDictionaryKey.Certification].Equals(1))
             {
                 <li class="table-view-cell">手机认证<span class="tail">@System.Text.RegularExpressions.Regex.Replace(ViewBag.MemberInfo.Phone, @"(?im)(\d{3})(\d{6})(\d{2})", "$1******$3")</span></li>
             }
@@ -80,10 +119,51 @@
             </li>
         </ul>
     </div>
-    @if (ViewBag.Memberinfo.MemberId == 1 || ViewBag.Memberinfo.MemberId == 6580)
-    {
     <div class="logout">
         <a href="#" id="dashboard-logout">退出登录</a>
     </div>
-    }
+
+    @Html.Partial("_HowToSharePartial")
+
 </div>
+
+
+@section FooterScripts
+{
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+        wx.config({
+            debug: false, 
+            appId: '@ViewBag.AppId', 
+            timestamp: @ViewBag.TimeStamp , 
+            nonceStr: '@ViewBag.NonceStr' , 
+            signature: '@ViewBag.Signature',
+            jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage'] 
+        });
+        //朋友圈
+        wx.ready(function(){
+            wx.onMenuShareTimeline({
+                title: '把技能存进SkillBank,来这里学技能交朋友', 
+                link: 'http://m.skillbank.cn/m/?utm_source=wechat_share&utm_content=coin_moments',
+                imgUrl: '@ContentHelper.GetAvatarPath(ViewBag.Memberinfo.Avatar, "mb")',
+                success: function () { 
+                    getShareClassCoins();
+                    
+                    triggerTackingEvent("shareonm_success");
+                    
+                },
+                cancel: function () { 
+                    triggerTackingEvent("shareonm_fail");
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '把技能存进SkillBank,来这里学技能交朋友', 
+                desc: 'SkillBank是一个基于知识技能分享的社交平台', 
+                link: 'http://m.skillbank.cn/m/?utm_source=wechat_share&utm_content=coin_chat',
+                imgUrl: '@ContentHelper.GetAvatarPath(ViewBag.Memberinfo.Avatar, "mb")'                
+            });
+        });
+    </script>
+
+}

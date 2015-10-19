@@ -15,5 +15,7 @@ namespace SkillBank.Site.DataSource.Data
         public int ClassOrderId { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
+        public string Avatar { get; set; }
+        public DateTime LastUpdateDate { get; set; }
     }
 }

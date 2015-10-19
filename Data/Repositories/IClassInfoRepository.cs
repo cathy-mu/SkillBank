@@ -24,16 +24,17 @@ namespace SkillBank.Site.DataSource.Data
         List<ClassInfo> GetClassInfo(Byte loadBy, int paraId, int memberId = 0);
         List<ClassListItem> GetClassTabList(Byte loadBy, Byte typeId, int memberId, String searchKey = "", Decimal posX = 0, Decimal posY = 0, int cityId = 0);
         List<ClassListItem> GetClassList(Byte loadBy, Byte orderByType, int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, int memberId, out int totalNum, String searchKey = "", Decimal posX = 0, Decimal posY = 0);
-        /*For class edit page 1.0*/
-        void UpdateClassInfo(Byte saveType, int classId, Byte paraValue);
-        void UpdateClassInfo(Byte saveType, int classId, Boolean isValue);
-        void UpdateClassInfo(Byte saveType, int classId, String txtValue);
+        List<ClassInfo_LoadByPage_p_Result> GetClassPagingList(Byte categoryId, int cityId, Decimal posX, Decimal posY, int memberId, int minId, int maxId, Byte orderBy);
+        List<ClassInfo_LoadByKey_p_Result> GetClassSearchList(String searchKey, int cityId, Decimal posX, Decimal posY, int minId, int maxId, Byte orderBy);
+        List<ClassCollection_Load_p_Result> GetClassCollection(Byte loadBy, int memberId, int paraId);
+    
         /*For new class edit page 1.1*/
         int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
-        void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue);
+        void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue, Boolean isValue = true);
         void UpdateClassEditInfo(Byte saveType, int classId, Boolean isValue);
         void UpdateClassEditInfo(Byte saveType, int classId, String txtValue);
 
+        [Obsolete]
         List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, String searchKey, int pageSize, int pageId, out int resultNum);
         List<ClassEditItem> GetClassEditInfo(Byte loadBy, int classId, int memberId = 0);
     }
@@ -45,15 +46,20 @@ namespace SkillBank.Site.DataSource.Data
         {
         }
 
+        public List<ClassCollection_Load_p_Result> GetClassCollection(Byte loadBy, int memberId, int paraId)
+        {
+            return ClassCollection_Load_p(loadBy, memberId, paraId);
+        }
+
         public int CreateClass(int memberId, int categoryId, Byte skillLevel, Byte teacheLevel, out Boolean isExist)
         {
             return ClassInfo_Add_p(memberId, categoryId, skillLevel, teacheLevel, out isExist);
         }
 
         /*For new class edit page 1.1*/
-        public void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue)
+        public void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue, Boolean isValue = true)
         {
-            ClassEditInfo_Save_p(saveType, classId, paraValue, true, "");
+            ClassEditInfo_Save_p(saveType, classId, paraValue, isValue, "");
         }
 
         public void UpdateClassEditInfo(Byte saveType, int classId, String txtValue)
@@ -72,30 +78,6 @@ namespace SkillBank.Site.DataSource.Data
             return result;
         }
         
-        #region For class edit page 1.0
-
-        public void UpdateClassInfo(Byte saveType, int classId, Byte paraValue)
-        {
-            ClassEditInfo_Save_p(saveType, classId, paraValue, true, "");
-        }
-
-        public void UpdateClassInfo(Byte saveType, int classId, String txtValue)
-        {
-            ClassInfo_Save_p(saveType, classId, 0, true, txtValue);
-        }
-
-        public void UpdateClassInfo(Byte saveType, int classId, Boolean isValue)
-        {
-            ClassInfo_Save_p(saveType, classId, 0, isValue, "");
-        }
-
-        private void UpdateClassInfo(Byte saveType, int classId, Byte paraValue, Boolean isValue, String txtValue)
-        {
-            ClassInfo_Save_p(saveType, classId, paraValue, isValue, txtValue);
-        }
-
-        #endregion
-
         public List<ClassEditItem> GetClassEditInfo(Byte loadBy, int classId, int memberId = 0)
         {
             var result = ClassEditInfo_Load_p(loadBy, classId, memberId);
@@ -120,10 +102,11 @@ namespace SkillBank.Site.DataSource.Data
             var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ClassInfo_Load_p_Result>("ClassInfo_Load_p", MergeOption.NoTracking, loadByParameter, paraIdParameter, memberIdParameter);
             return ClassMapper.Map(result);
         }
-        
+
+        [Obsolete]
         public List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, String searchKey, int pageSize, int pageId, out int resultNum)
         {
-            var loadBy = (Byte)Enums.DBAccess.ClassListLoadType.SearchClass;
+            Byte loadBy = 1;
             int memberId = 0;
             var result = ClassInfo_LoadAll_p(loadBy, cityId, categoryId, isParentCate, memberId, searchKey, pageSize, pageId, out resultNum);
             return result;
@@ -141,6 +124,39 @@ namespace SkillBank.Site.DataSource.Data
             return result;
         }
 
+        public List<ClassInfo_LoadByPage_p_Result> GetClassPagingList(Byte categoryId, int cityId, Decimal posX, Decimal posY, int memberId, int pageId, int pageSize, Byte orderBy)
+        {
+            return ClassInfo_LoadByPage_p(categoryId, cityId, posX, posY, memberId, pageId, pageSize, orderBy);
+        }
+
+        public List<ClassInfo_LoadByKey_p_Result> GetClassSearchList(String searchKey, int cityId, Decimal posX, Decimal posY, int minId, int maxId, Byte orderBy)
+        {
+            var keywordParameter = new ObjectParameter("keyword", searchKey);
+            var posXParameter = new ObjectParameter("posx", posX);
+            var posYParameter = new ObjectParameter("posy", posY);
+            var cityIdParameter = new ObjectParameter("cityId", cityId);
+            var minIdParameter = new ObjectParameter("minId", minId);
+            var maxIdParameter = new ObjectParameter("maxId", maxId);
+            var orderByParameter = new ObjectParameter("orderBy", orderBy);
+
+            ObjectResult<ClassInfo_LoadByKey_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ClassInfo_LoadByKey_p_Result>("ClassInfo_LoadByKey_p", MergeOption.NoTracking, cityIdParameter, keywordParameter, posXParameter, posYParameter, minIdParameter, maxIdParameter, orderByParameter);
+            return result.ToList();
+        }
+
+        private List<ClassInfo_LoadByPage_p_Result> ClassInfo_LoadByPage_p(Byte categoryId, int cityId, Decimal posX, Decimal posY, int memberId, int minId, int maxId, Byte orderBy)
+        {
+            var cateIdParameter = new ObjectParameter("categoryId", categoryId);
+            var memberIdParameter = new ObjectParameter("memberId", memberId);//left for member id
+            var posXParameter = new ObjectParameter("posx", posX);
+            var posYParameter = new ObjectParameter("posy", posY);
+            var cityIdParameter = new ObjectParameter("cityId", cityId);
+            var minIdParameter = new ObjectParameter("minId", minId);
+            var maxIdParameter = new ObjectParameter("maxId", maxId);
+            var orderByParameter = new ObjectParameter("orderBy", orderBy);
+
+            ObjectResult<ClassInfo_LoadByPage_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ClassInfo_LoadByPage_p_Result>("ClassInfo_LoadByPage_p", MergeOption.NoTracking, cityIdParameter, cateIdParameter, posXParameter, posYParameter, memberIdParameter, minIdParameter, maxIdParameter, orderByParameter);
+            return result.ToList();
+        }
 
         private List<ClassListItem> ClassInfo_LoadByTab_p(Byte loadBy, Byte typeId, int memberId, String searchKey, Decimal posX, Decimal posY, int cityId)
         {
@@ -223,16 +239,16 @@ namespace SkillBank.Site.DataSource.Data
             return (int)paraIdParameter.Value;
         }
 
-        private void ClassInfo_Save_p(Byte saveType, int classId, Byte paraValue, Boolean isValue, String txtValue)
-        {
-            ObjectParameter saveTypeParameter = new ObjectParameter("SaveType", saveType);
-            ObjectParameter paraValueParameter = new ObjectParameter("ParaValue", paraValue);
-            ObjectParameter isValueParameter = new ObjectParameter("IsValue", isValue);
-            ObjectParameter txtValueParameter = new ObjectParameter("TxtValue", txtValue);
-            ObjectParameter paraIdParameter = new ObjectParameter("ParaId", classId);
+        //private void ClassInfo_Save_p(Byte saveType, int classId, Byte paraValue, Boolean isValue, String txtValue)
+        //{
+        //    ObjectParameter saveTypeParameter = new ObjectParameter("SaveType", saveType);
+        //    ObjectParameter paraValueParameter = new ObjectParameter("ParaValue", paraValue);
+        //    ObjectParameter isValueParameter = new ObjectParameter("IsValue", isValue);
+        //    ObjectParameter txtValueParameter = new ObjectParameter("TxtValue", txtValue);
+        //    ObjectParameter paraIdParameter = new ObjectParameter("ParaId", classId);
 
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassInfo_Save_p", saveTypeParameter, paraValueParameter, isValueParameter, txtValueParameter, paraIdParameter);
-        }
+        //    ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassInfo_Save_p", saveTypeParameter, paraValueParameter, isValueParameter, txtValueParameter, paraIdParameter);
+        //}
 
         private void ClassEditInfo_Save_p(Byte saveType, int classId, Byte paraValue, Boolean isValue, String txtValue)
         {
@@ -269,5 +285,14 @@ namespace SkillBank.Site.DataSource.Data
             return result;
         }
 
+        private List<ClassCollection_Load_p_Result> ClassCollection_Load_p(Byte loadBy, int memberId, int paraId)
+        {
+            var loadByParameter = new ObjectParameter("loadBy", loadBy);
+            var memberIdParameter = new ObjectParameter("memberId", memberId);
+            var paraIdParameter = new ObjectParameter("paraId", paraId);
+
+            ObjectResult<ClassCollection_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ClassCollection_Load_p_Result>("ClassCollection_Load_p", MergeOption.NoTracking, loadByParameter, memberIdParameter, paraIdParameter);
+            return result.ToList();
+        }
     }
 }

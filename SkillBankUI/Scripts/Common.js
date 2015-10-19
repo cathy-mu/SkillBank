@@ -13,12 +13,7 @@ function sitecommon_Class() {
     this.classOrderCookieName = "clorder";//orderby and isasc  
     this.expireMins = 30;
 
-    this.socialTypeCookieName = "socialtype";
-    this.socialIdCookieName = "socialid";
-    this.socialNameCookieName = "socialname";
-    this.socialAvatarCookieName = "socialavatar";
     this.memberIdCookieName = "mid";
-    //this.isLoginCookieName = "login";
     this.skillCookieName = "classskill";
     this.shareCookieName = "sshare";
     this.backurl = "burl";
@@ -49,10 +44,6 @@ function sitecommon_Class() {
         sitecommon.resetCookie("sai");
         sitecommon.resetCookie("sid");
         sitecommon.resetCookie("stype");
-        //sitecommon.resetCookie("mtype");
-        //sitecommon.resetCookie("ohdate");
-        //sitecommon.resetCookie("ctr");
-        //sitecommon.resetCookie("lng");
     }
         
     this.initTrackEvent = function () {  
@@ -180,11 +171,6 @@ function sitecommon_Class() {
         consoleLog(memberId);
     }
 
-    this.updateHeaderMemberInfo = function (name, avatar) {
-        $("#header-membermenu-avatar").attr("src", sitecommon.getMemberAvatarPath(avatar, "s"));
-        $("#header-membermenu-name").text(name);
-    }
-
     this.setCookie = function (cookieName, cookieValue) {
         consoleLog(sitecommon.siteDomain);
         if (sitecommon.siteDomain == "") {
@@ -240,30 +226,7 @@ function sitecommon_Class() {
     this.getCookie = function (cookieName) {
         return $.cookie(cookieName);
     }
-
-    //this.initMemberInfoBySocial = function (socialType, socialId, socialName, socialAvatar) {
-    //    this.setCookie(sitecommon.socialTypeCookieName, socialType);
-    //    this.setCookie(sitecommon.socialIdCookieName, socialId);
-    //    this.setCookie(sitecommon.socialNameCookieName, decodeURIComponent(socialName));
-    //    this.setCookie(sitecommon.socialAvatarCookieName, decodeURIComponent(socialAvatar));
-    //}
-
-    this.getMemberSocialName = function () {
-        return this.getCookie(sitecommon.socialNameCookieName);
-    }
-
-    this.getMemberSocialAvatar = function () {
-        return this.getCookie(sitecommon.socialAvatarCookieName);
-    }
-
-    this.getMemberSocialId = function () {
-        return this.getCookie(this.socialIdCookieName);
-    }
-
-    this.getMemberSocialType = function () {
-        return this.getCookie(this.socialTypeCookieName);
-    }
-
+   
     this.getMemberId = function () {
         return this.getCookie(this.memberIdCookieName);
     }
@@ -287,7 +250,7 @@ function sitecommon_Class() {
                         break;
                 }
             } else {
-                if (this.getMemberSocialType() == 4 || path.indexOf("qlogo") > -1) {
+                if (path.indexOf("qlogo") > -1) {
                     switch (size) {
                         case "s":
                             path = path.replace("/132", "/46");
@@ -298,7 +261,7 @@ function sitecommon_Class() {
                         default:
                             break;
                     }
-                } else if (this.getMemberSocialType() == 1 || path.indexOf("sina") > -1) {
+                } else if (path.indexOf("sina") > -1) {
                     switch (size) {
                         case "s":
                             path = path.replace("/180/", "/30/");
@@ -419,16 +382,6 @@ function sitecommon_Class() {
         sitecommon.setCookie(sitecommon.memberIdCookieName, 0);
         sitecommon.removeCookie("sai");
         sitecommon.removeCookie("sid");
-        sitecommon.removeCookie(sitecommon.socialIdCookieName);
-        sitecommon.removeCookie(sitecommon.socialTypeCookieName);
-
-        var currHost = window.location.host;
-        //if (currHost.indexOf("m.skillbank.cn") > 0 || currHost.indexOf("/m/") > 0)
-        //{
-        //    window.location.href = "/m/";
-        //} else {
-        //    window.location.href = "/";
-        //}
     }
 
 }

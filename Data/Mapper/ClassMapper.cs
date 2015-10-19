@@ -30,7 +30,26 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objClasses != null)
             {
-                var classes = objClasses.Select(item => new ClassInfo() { Category_Id = item.Category_Id, ClassId = item.ClassId, IsActive = item.IsActive, TeacheLevel = item.TeacheLevel,/* CompleteStatus = item.CompleteStatus,*/ Cover = item.Cover, CreatedDate = item.CreatedDate, IsProved = item.IsProved, LastUpdateDate = item.LastUpdateDate, Level = item.Level, Member_Id = item.Member_Id, Rank = item.Rank, SkillLevel = item.SkillLevel, Summary = item.Summary, Title = item.Title, Detail = item.Detail}).ToList<ClassInfo>();
+                var classes = objClasses.Select(item => new ClassInfo()
+                {
+                    Category_Id = item.Category_Id,
+                    ClassId = item.ClassId,
+                    IsActive = item.IsActive,
+                    TeacheLevel = item.TeacheLevel,
+                    Cover = item.Cover,
+                    CreatedDate = item.CreatedDate,
+                    IsProved = item.IsProved,
+                    LastUpdateDate = item.LastUpdateDate,
+                    Level = item.Level,
+                    Member_Id = item.Member_Id,
+                    Rank = item.Rank,
+                    SkillLevel = item.SkillLevel,
+                    Summary = item.Summary,
+                    Title = item.Title,
+                    Detail = item.Detail,
+                    HasOffline = item.HasOffline,
+                    Tags = item.Tags
+                }).ToList<ClassInfo>();
                 return (classes.Count > 0) ? classes : null;
             }
             return null;
@@ -40,7 +59,29 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objClasses != null)
             {
-                var classes = objClasses.Select(item => new ClassEditItem() { ClassId = item.ClassId, Category_Id = item.Category_Id, TeacheLevel = item.TeacheLevel, PublishStatus = item.PublishStatus, Cover = item.Cover, IsProved = item.IsProved, Level = item.Level, Member_Id = item.Member_Id, SkillLevel = item.SkillLevel, Summary = item.Summary, Title = item.Title, Period = item.Period, Available = item.Available, Location = item.Location, Remark = item.Remark, WhyU = item.WhyU, IsLike= item.IsLike, LikeNum = item.LikeNum }).ToList<ClassEditItem>();
+                var classes = objClasses.Select(item => new ClassEditItem()
+                {
+                    ClassId = item.ClassId,
+                    Category_Id = item.Category_Id,
+                    TeacheLevel = item.TeacheLevel,
+                    PublishStatus = item.PublishStatus,
+                    Cover = item.Cover,
+                    IsProved = item.IsProved,
+                    Level = item.Level,
+                    Member_Id = item.Member_Id,
+                    SkillLevel = item.SkillLevel,
+                    Summary = item.Summary,
+                    Title = item.Title,
+                    Period = item.Period,
+                    Available = item.Available,
+                    Location = item.Location,
+                    Remark = item.Remark,
+                    WhyU = item.WhyU,
+                    IsLike = item.IsLike,
+                    LikeNum = item.LikeNum,
+                    HasOffline = item.HasOffline,
+                    Tags = item.Tags
+                }).ToList<ClassEditItem>();
                 return (classes.Count > 0) ? classes : null;
             }
             return null;
@@ -90,7 +131,6 @@ namespace SkillBank.Site.DataSource.Mapper
                     Level = item.Level,
                     LastUpdateDate = item.LastUpdateDate,
                     CompleteStatus = item.CompleteStatus
-                    //,EntityKey = new System.Data.EntityKey("ClassItemSet","CityItem_FK_ClassId",item.ClassId)
                 }).ToList<ClassItem>();
                 return (items.Count > 0) ? items : null;
             }
@@ -120,6 +160,21 @@ namespace SkillBank.Site.DataSource.Mapper
             }).ToList<ClassItem>();
             return (items.Count > 0) ? items : null;
         }
+         
+        ////public static List<ClassCollectionItem> Map(ObjectResult<ClassCollection_Load_p_Result> objItems)
+        ////{
+        ////    var items = objItems.Select(item => new ClassCollectionItem()
+        ////    {
+        ////        ClassId = item.ClassId,
+        ////        Title = item.Title,
+        ////        Cover = item.Cover,
+        ////        MemberId = item.MemberId,
+        ////        Name = item.Name,
+        ////        CityId = item.CityId
+        ////    }).ToList<ClassCollectionItem>();
+        ////    return (items.Count > 0) ? items : null;
+        ////}
+        
 
         /// <summary>
         /// 

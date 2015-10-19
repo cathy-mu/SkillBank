@@ -22,7 +22,7 @@
             foreach (var item in Model)
             {
                 var status = item.OrderStatus.Value;
-                var isDisable = status.Equals(2) || status.Equals(3) || status.Equals(7) || status.Equals(8) || status.Equals(11) || ((status.Equals(9) || status.Equals(10)) && item.HasReview);
+                var isDisable = status.Equals(2) || status.Equals(3) || status.Equals(7) || status.Equals(8) || status.Equals(11) || status.Equals(12) || status.Equals(13) || ((status.Equals(9) || status.Equals(10)) && item.HasReview);
             <div class="teaching card @(isDisable ? "disabled" : "")"
                 data-orderid="@item.OrderId"
                 data-name="@item.MemberName"
@@ -52,7 +52,7 @@
                             {
                                 <span class="btn-tag grey">未被接受</span>
                             }
-                            else if (status.Equals(3))
+                            else if (status.Equals(3) || status.Equals(12) || status.Equals(13))
                             {
                                 <span class="btn-tag grey">已被取消</span>
                             }
@@ -124,6 +124,10 @@
                         }
                         else if (status.Equals(4) || status.Equals(5))
                         {
+                            @*if (status.Equals(4) && (item.BookedDate>DateTime.Now.Date))
+                            {
+                            <a class="btn confirm cancel-acceptbook">取消订课</a>
+                            }*@
                             <a class="btn btn-phone contact-btn">电话对方</a>
                             <a class="btn" href="@Url.Action("chat", "m", new { id = item.MemberId })">私信对方</a>
                         }
@@ -137,7 +141,7 @@
                 @if (status.Equals(1))
                 {<a href="#" class="foot-bar" data-modal="contact">接受预定 </a>}
                 else if ((status.Equals(5) || status.Equals(9) || status.Equals(10)) && !item.HasReview)
-                {<a class="foot-bar" data-modal="evaluate">评价一下你的学生 </a>}
+                {<a class="foot-bar" data-modal="evaluate">评价学生并获得积分</a>}
                 else if (status.Equals(6))
                 {<a class="confirm accept-draw-back foot-bar">接受退币</a>}
             </div>
@@ -211,8 +215,8 @@
                                 </label>
                             </li>
                         </ul>
-                        <textarea name="message" placeholder="请评价一下对方"></textarea>
-                        <a href="#" class="btn btn-primary btn-block btn-evaluate" data-student="0">发送评价</a>
+                        <textarea name="message" placeholder="评价学生并获得积分"></textarea>
+                        <a href="#" class="btn btn-primary btn-block btn-evaluate" data-student="0">评价学生并获得积分</a>
                     </form>
                 </div>
             </div>

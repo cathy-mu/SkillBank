@@ -120,6 +120,29 @@ namespace dotNetDR_OAuth2.Net
                             result = responseContent;
                         }
                     }
+                    //post Json
+                    else if (webRequest.ContentType.StartsWith("application/json"))
+                    {
+                        webRequest.ContentType = "application/json;charset=UTF-8";
+                        string sbJsonData = clientRequest.FormData["json"];
+                        formDataBytes = Encoding.UTF8.GetBytes(sbJsonData.ToString());
+                        webRequest.ContentLength = formDataBytes.Length;
+
+                        requestWriteStream = webRequest.GetRequestStream();
+                        requestWriteStream.Write(formDataBytes, 0, formDataBytes.Length);
+                        requestWriteStream.Close();
+
+                        webResponse = (HttpWebResponse)webRequest.GetResponse();
+                        stream = webResponse.GetResponseStream();
+                        if (stream.CanRead)
+                        {
+                            var readStream = new StreamReader(stream, Encoding.UTF8);
+
+                            var responseContent = readStream.ReadToEnd();
+
+                            result = responseContent;
+                        }                        
+                    }
                     else if (webRequest.ContentType.StartsWith("multipart/form-data"))
                     {
                         string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");

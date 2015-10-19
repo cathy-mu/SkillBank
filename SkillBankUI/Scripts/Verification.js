@@ -63,12 +63,13 @@ function verification_Class() {
 
     this.countResendNum = function () {
         verification.resendCount--;
-        verification.sendsmsBtnObj.text(verification.resendCount + "秒后重发");
-
-        if (verification.resendCount == 0 && verification.countResendNum != undefined) {
+        
+        if (verification.resendCount <= 0 && verification.countResendInterval != undefined) {
             window.clearInterval(verification.countResendInterval);
             verification.sendsmsBtnObj.removeClass("disabled").text("重发验证码");
             verification.resendCount = 30;
+        } else {
+            verification.sendsmsBtnObj.text(verification.resendCount + "秒后重发");
         }
     }
 

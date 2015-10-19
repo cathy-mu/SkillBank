@@ -67,7 +67,7 @@ namespace SkillBankWeb.Controllers
 
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("sinup");
             ViewBag.MemberInfo = null;
-            
+
             Byte socialType = 0;
 
             //OAuth2
@@ -99,13 +99,13 @@ namespace SkillBankWeb.Controllers
                     }
                 }
                 
-                */ 
+                */
                 //wechat
                 if (!String.IsNullOrEmpty(state) && !String.IsNullOrEmpty(code))
                 {
                     ViewBag.isMobile = true;
                     socialType = 4;
-                    if (Session["accessToken"] == null)
+                    if (Session["accessToken"] == null || WebContext.Current.SocialType != socialType) 
                     {
                         var redirectUrl = AccessTokenToolkit.GenerateHostPath(Request.Url) + Url.Action("Index", "SignUp");
                         var accessToken = _authCodew.GetResult(_authCodew.GenerateAccessTokenUrl(redirectUrl, code));
@@ -123,7 +123,7 @@ namespace SkillBankWeb.Controllers
                 else
                 {
                     socialType = 1;
-                    if (Session["accessToken"] == null && !string.IsNullOrEmpty(code))
+                    if ((Session["accessToken"] == null || WebContext.Current.SocialType != socialType) && !string.IsNullOrEmpty(code))
                     {
                         var redirectUrl = AccessTokenToolkit.GenerateHostPath(Request.Url) + Url.Action("Index", "SignUp");
                         var accessToken = _authCodes.GetResult(_authCodes.GenerateAccessTokenUrl(redirectUrl, code));
@@ -142,7 +142,8 @@ namespace SkillBankWeb.Controllers
 
                 if (socialType > 0)
                 {
-                    memberId = GetUserInfo(socialType);
+                    Boolean isMobileVerified = false;
+                    memberId = GetUserInfo(socialType, out isMobileVerified);
                     if (memberId > 0)
                     {
                         WebContext.Current.MemberId = memberId;
@@ -152,7 +153,7 @@ namespace SkillBankWeb.Controllers
                         {
                             Response.Redirect(backUrl);
                         }
-                        else if (socialType==4)
+                        else if (socialType == 4)
                         {
                             Response.Redirect("/m");
                         }
@@ -160,15 +161,16 @@ namespace SkillBankWeb.Controllers
                     }
                     ViewBag.MemberId = memberId;
                 }
-                
+
             }
             return View();
         }
 
         [NonAction]
-        private int GetUserInfo(Byte socialType)
+        private int GetUserInfo(Byte socialType, out Boolean isMobileVerified)
         {
             int memberId = 0;
+            isMobileVerified = false;
             String socialAccount = "";
             var accessTokenObj = Session["accessToken"] as dynamic;
             var accessToken = accessTokenObj.access_token;
@@ -240,7 +242,7 @@ namespace SkillBankWeb.Controllers
             //    }
             //}
             //WeChat
-            
+
             ViewBag.SocialType = (Byte)socialType;
             if (!String.IsNullOrEmpty(socialAccount))
             {
@@ -248,7 +250,14 @@ namespace SkillBankWeb.Controllers
                 WebContext.Current.SocialAccount = socialAccount;
 
                 var memberInfo = _commonService.GetMemberInfo(socialAccount, (Byte)socialType);
-                memberId = (memberInfo == null ? 0 : memberInfo.MemberId);
+                if (memberInfo == null)
+                {
+                    memberId = 0;
+                }else{  
+                     memberId = memberInfo.MemberId;
+                     isMobileVerified = (memberInfo.VerifyTag & 1).Equals(1);
+                }
+               
             }
             return memberId;
         }
@@ -273,7 +282,7 @@ namespace SkillBankWeb.Controllers
         {
             int blogNum = -2;
             String socialAccount = WebContext.Current.SocialAccount;
-            
+
             //Sina
             if (socialType == (Byte)Enums.SocialTpye.Sina)
             {
@@ -323,7 +332,7 @@ namespace SkillBankWeb.Controllers
             }
             //WeChat
             else
-            {}
+            { }
         }
 
         [HttpPost]
@@ -332,7 +341,7 @@ namespace SkillBankWeb.Controllers
             int memberId = WebContext.Current.MemberId;
             //Check is this student got share class coins before
             Boolean gotCoinsBefore = _commonService.HasShareClassCoin(memberId);
-            
+
             //got share class coin before
             if (gotCoinsBefore)
             {
@@ -343,7 +352,7 @@ namespace SkillBankWeb.Controllers
                 Byte socialType = Convert.ToByte(WebContext.Current.SocialType);
                 String accessToken = WebContext.Current.SocialAccessInfo;
                 String socialAccount = WebContext.Current.SocialAccount;
-               
+
                 int blogNum = GetMicroBlogNums(socialType);
 
                 if (checknum >= 0 && blogNum > checknum)
@@ -352,7 +361,7 @@ namespace SkillBankWeb.Controllers
                 }
 
                 var jsonObj = new JsonResult();
-                jsonObj.Data = new { i = memberId, n = blogNum, t = accessToken, a = socialAccount};
+                jsonObj.Data = new { i = memberId, n = blogNum, t = accessToken, a = socialAccount };
 
                 return Json(jsonObj, JsonRequestBehavior.AllowGet);
             }
@@ -366,28 +375,28 @@ namespace SkillBankWeb.Controllers
                 Enums.SocialTpye socialType = (Enums.SocialTpye)WebContext.Current.SocialType;
                 JsonResult rs = null;
 
-                if (socialType.Equals(Enums.SocialTpye.Sina))
+                if (socialType.Equals(Enums.SocialTpye.Sina) && Session["accessToken"] != null)
                 {
                     var accessTokenObj = Session["accessToken"] as dynamic;
                     var accessToken = accessTokenObj.access_token;
-                    var result = apis.CallGet("https://api.weibo.com/oauth2/revokeoauth2", accessToken);
-                    rs = Json(result, JsonRequestBehavior.AllowGet);
+                    try
+                    {
+                        var result = apis.CallGet("https://api.weibo.com/oauth2/revokeoauth2", accessToken);
+                        rs = Json(result, JsonRequestBehavior.AllowGet);
+                    }
+                    catch (Exception e)
+                    {
+                    }
                 }
-
-                Session["accessToken"] = null;
-                WebContext.Current.SocialAccessInfo = "";
-                WebContext.Current.SocialAccount = "";
-                WebContext.Current.MemberId = 0;
-                WebContext.Current.SocialType = Constants.DefaultSetting.SocialType;
-
-                Request.Cookies.Clear();
-                Response.Cookies.Clear();
-                if (rs != null)
-                {
-                    return Json("", JsonRequestBehavior.AllowGet);
-                }
-
             }
+
+            Session["accessToken"] = null;
+            WebContext.Current.SocialAccessInfo = "";
+            WebContext.Current.SocialAccount = "";
+            WebContext.Current.MemberId = 0;
+            WebContext.Current.SocialType = Constants.DefaultSetting.SocialType;
+
+            Request.Cookies.Clear();
             Response.Cookies.Clear();
             return Json("", JsonRequestBehavior.AllowGet);
         }
@@ -400,10 +409,10 @@ namespace SkillBankWeb.Controllers
 
         //    ClientRequest cr = new ClientRequest(url + queryStringAccessToken);
         //    cr.HttpMethod = WebRequestMethods.Http.Get;
-                        
+
         //    dynamic result = null;
         //    result = NetQuick.GetResponseForText(cr);
-           
+
         //    return result;
         //}
 

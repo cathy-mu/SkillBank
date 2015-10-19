@@ -79,6 +79,8 @@ namespace SkillBank.Site.Services.CacheProviders
                 Dictionary<int, CityInfo> cities = new Dictionary<int, CityInfo>();
                 Dictionary<int, CityInfo> classCities = new Dictionary<int, CityInfo>();
                 String locale = String.Empty;
+                //Hack for offline classes city
+                classCities.Add(1000, new CityInfo() { CityId = 1000, CityKey = "Offline", CityName = "在线教授", LocaleCode = "cn", OrderRank = 100 });
                 foreach (var city in cityLkp)
                 {
                     if (city.LocaleCode != locale)
@@ -92,7 +94,7 @@ namespace SkillBank.Site.Services.CacheProviders
                         locale = city.LocaleCode;
                     }
                     cities.Add(city.CityId, city);
-                    if (city.OrderRank>0)
+                    if (city.OrderRank > 0)
                     {
                         classCities.Add(city.CityId, city);
                     }

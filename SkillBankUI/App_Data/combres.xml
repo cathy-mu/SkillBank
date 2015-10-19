@@ -71,14 +71,6 @@
       <resource path="~/scripts/classedit.js"/>
     </resourceSet>
 
-    <resourceSet type="js" name="classAddJs">
-      <resource path="~/scripts/plugins/jquery.Jcrop.min.js"/>
-      <resource path="~/Scripts/libs/jquery.form.js"/>
-      <resource path="~/Scripts/PhotoEditor.js"/>
-      <resource path="~/scripts/classadd.js"/>
-    </resourceSet>
-
-
     <resourceSet type="css" name="classDetailCss">
       <resource path="~/css/main.css"/>
       <resource path="~/css/site.css"/>

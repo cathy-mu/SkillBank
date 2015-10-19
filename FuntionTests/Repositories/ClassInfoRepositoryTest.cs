@@ -30,7 +30,7 @@ namespace SkillBank.FunctionTests
             _repHelper = new TestHelperRepository();
             _memberId = 1;
             _categoryId = 3;
-            _classId = 1;
+            _classId = 7;
             //Get Class info By ClassId
             _loadType = (Byte)Enums.DBAccess.ClassLoadType.ByClassId;
             _invalidMemberId = 99999;
@@ -114,7 +114,7 @@ namespace SkillBank.FunctionTests
             var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdateTitle;
             String classTitle = "哈达瑜伽";
 
-            _repository.UpdateClassInfo(updateType, _classId, classTitle);
+            _repository.UpdateClassEditInfo(updateType, _classId, classTitle);
 
             var classes = _repository.GetClassInfo(_loadType, _classId);
             Assert.IsNotNull(classes);
@@ -132,7 +132,7 @@ namespace SkillBank.FunctionTests
             var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdateTitle;
             String classTitle = "哈达瑜伽（基础）";
 
-            _repository.UpdateClassInfo(updateType, _classId, classTitle);
+            _repository.UpdateClassEditInfo(updateType, _classId, classTitle);
 
             var classes = _repository.GetClassInfo(_loadType, _classId);
             Assert.IsNotNull(classes);
@@ -148,7 +148,7 @@ namespace SkillBank.FunctionTests
             Random rd = new Random();
             var level = (Byte)rd.Next(1, 3);
 
-            _repository.UpdateClassInfo(updateType, _classId, level);
+            _repository.UpdateClassEditInfo(updateType, _classId, level);
 
             var classes = _repository.GetClassInfo(_loadType, _classId);
             Assert.IsNotNull(classes);
@@ -167,7 +167,7 @@ namespace SkillBank.FunctionTests
             Random rd = new Random();
             var level = (Byte)rd.Next(1, 3);
 
-            _repository.UpdateClassInfo(updateType, _classId, level);
+            _repository.UpdateClassEditInfo(updateType, _classId, level);
 
             var classes = _repository.GetClassInfo(_loadType, _classId);
             Assert.IsNotNull(classes);
@@ -183,7 +183,7 @@ namespace SkillBank.FunctionTests
             Random rd = new Random();
             Boolean isActive = (rd.Next(0, 1) == 1);
 
-            _repository.UpdateClassInfo(updateType, _classId, isActive);
+            _repository.UpdateClassEditInfo(updateType, _classId, isActive);
 
             var classes = _repository.GetClassInfo(_loadType, _classId);
             Assert.IsNotNull(classes);
@@ -200,9 +200,10 @@ namespace SkillBank.FunctionTests
         {
             var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdateProvedTag;
             Random rd = new Random();
-            Byte proveTag = (Byte)rd.Next(0, 2);
+            Boolean proveTag = rd.Next(0, 1).Equals(1);
+            Byte CateId = (Byte)rd.Next(0, 4);
 
-            _repository.UpdateClassInfo(updateType, _classId, proveTag);
+            _repository.UpdateClassEditInfo(updateType, _classId, CateId, proveTag);
 
             var classes = _repository.GetClassInfo(_loadType, _classId);
             Assert.IsNotNull(classes);
@@ -221,7 +222,7 @@ namespace SkillBank.FunctionTests
             Random rd = new Random();
             String cover = "mytest.jpg";
 
-            _repository.UpdateClassInfo(updateType,3/* _classId*/, cover);
+            _repository.UpdateClassEditInfo(updateType,3/* _classId*/, cover);
 
             var classes = _repository.GetClassInfo(_loadType, 3/* _classId*/);
             Assert.IsNotNull(classes);
@@ -324,31 +325,6 @@ namespace SkillBank.FunctionTests
             Byte loadType = (Byte)Enums.DBAccess.ClassLoadType.ByTeacherId;
             var classItem = _repository.GetClassInfo(loadType, _memberId).FirstOrDefault();
             Assert.AreEqual(classItem.Member_Id, _memberId);
-        }
-
-        [TestMethod]
-        public void Should_GetSearchClassList()
-        {
-            var resultNum = 0; 
-            int cityId = 0;
-            Byte categoryId = 0;
-            var classItems = _repository.SearchClass(cityId, categoryId,false, "", 5, 1, out resultNum);
-            Assert.IsNotNull(classItems);
-            //resultNum.AssertIsGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void Should_GetSearchClassList_ByCategory_Correctly()
-        {
-            var resultNum = 0; 
-            int cityId = 0;
-            Byte categoryId = 0;
-            var classItems = _repository.SearchClass(cityId, categoryId, false, "", 5, 1, out resultNum);
-            var classNo = classItems.Select(i => (i.Category_Id == categoryId)).Count();
-            //var nonProvedClassNo = classItems.Select(i => (i. == categoryId)).Count();
-
-            Assert.IsNotNull(classItems);
-            Assert.AreEqual(classItems.Count(), classNo);
         }
 
         //[TestMethod]

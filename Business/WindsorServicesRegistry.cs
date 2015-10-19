@@ -32,7 +32,6 @@ namespace SkillBank.Site.Services
         {
 
             container.Register(Component.For<IBlurbsRepository>().ImplementedBy<BlurbsRepository>().LifeStyle.Is(LifestyleType.Singleton));
-            container.Register(Component.For<ICategoryTagRepository>().ImplementedBy<CategoryTagRepository>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<IClassInfoRepository>().ImplementedBy<ClassInfoRepository>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<IClassTagRepository>().ImplementedBy<ClassTagRepository>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<ILookupsRepository>().ImplementedBy<LookupsRepository>().LifeStyle.Is(LifestyleType.Singleton));
@@ -44,7 +43,18 @@ namespace SkillBank.Site.Services
             container.Register(Component.For<INotificationRepository>().ImplementedBy<NotificationRepository>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<IInteractiveRepository>().ImplementedBy<InteractiveRepository>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<IReportToolsRepository>().ImplementedBy<ReportToolsRepository>().LifeStyle.Is(LifestyleType.Singleton));
-
+            
+            container.Register(Component.For<IBlurbsProvider>().ImplementedBy<BlurbsProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<ICategoryProvider>().ImplementedBy<CategoryProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<ICategoryLkpProvider>().ImplementedBy<CategoryLkpProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<ICategoryTagRepository>().ImplementedBy<CategoryTagRepository>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<ICityLkpProvider>().ImplementedBy<CityLkpProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<IMetaTagProvider>().ImplementedBy<MetaTagProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<IRecommendClassCacheMgr>().ImplementedBy<RecommendClassCacheMgr>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<IClassNumCacheMgr>().ImplementedBy<ClassNumCacheMgr>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<IClassListCacheMgr>().ImplementedBy<ClassListCacheMgr>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<IClassItemCacheMgr>().ImplementedBy<ClassItemCacheMgr>().LifeStyle.Is(LifestyleType.Singleton));
+            
             container.Register(Component.For<IContentManager>().ImplementedBy<ContentManager>().LifeStyle.Is(LifestyleType.Transient));
             container.Register(Component.For<IMemberManager>().ImplementedBy<MemberManager>().LifeStyle.Is(LifestyleType.Transient));
             container.Register(Component.For<IClassManager>().ImplementedBy<ClassManager>().LifeStyle.Is(LifestyleType.Transient));
@@ -53,11 +63,8 @@ namespace SkillBank.Site.Services
             container.Register(Component.For<IMessageManager>().ImplementedBy<MessageManager>().LifeStyle.Is(LifestyleType.Transient));
             container.Register(Component.For<INotificationManager>().ImplementedBy<NotificationManager>().LifeStyle.Is(LifestyleType.Transient));
             container.Register(Component.For<IReportToolsManager>().ImplementedBy<ReportToolsManager>().LifeStyle.Is(LifestyleType.Transient));
-
-            container.Register(Component.For<IBlurbsProvider>().ImplementedBy<BlurbsProvider>().LifeStyle.Is(LifestyleType.Singleton));
-            container.Register(Component.For<ICategoryLkpProvider>().ImplementedBy<CategoryLkpProvider>().LifeStyle.Is(LifestyleType.Singleton));
-            container.Register(Component.For<ICityLkpProvider>().ImplementedBy<CityLkpProvider>().LifeStyle.Is(LifestyleType.Singleton));
-            container.Register(Component.For<IMetaTagProvider>().ImplementedBy<MetaTagProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<ICacheContentManager>().ImplementedBy<CacheContentManager>().LifeStyle.Is(LifestyleType.Transient));
+            
 
             container.Register(Component.For<ICommonService>().ImplementedBy<CommonService>().LifeStyle.Is(LifestyleType.Transient));
             container.Register(Component.For<IContentService>().ImplementedBy<ContentService>().LifeStyle.Is(LifestyleType.Transient));
@@ -70,7 +77,7 @@ namespace SkillBank.Site.Services
         //    container.Register(Component.For<IConfigurationService>().ImplementedBy<ConfigurationService>().LifeStyle.Is(LifestyleType.Transient));
         //}
 
-       
+
 
         private static void RegisterInterceptors(IWindsorContainer container)
         {

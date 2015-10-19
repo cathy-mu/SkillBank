@@ -68,10 +68,6 @@
     <Reference Include="dotless.Core">
       <HintPath>..\packages\dotless.1.3.1.0\lib\dotless.Core.dll</HintPath>
     </Reference>
-    <Reference Include="dotNetDR_OAuth2, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SocialNetwork\dotNetDR_OAuth2.dll</HintPath>
-    </Reference>
     <Reference Include="EcmaScript.NET.modified, Version=0.1.1.0, Culture=neutral, PublicKeyToken=7d53ba4f537753a5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\YUICompressor.NET.1.7.1.0\lib\net35\EcmaScript.NET.modified.dll</HintPath>
@@ -192,6 +188,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\API\Ajax\OrderHandlerController.cs" />
+    <Compile Include="Controllers\API\Ajax\LookUpController.cs" />
+    <Compile Include="Controllers\API\Ajax\RecommendClassController.cs" />
     <Compile Include="Controllers\API\AlterController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -199,39 +198,59 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\CityController.cs" />
-    <Compile Include="Controllers\API\ClassListController.cs">
+    <Compile Include="Controllers\API\Ajax\ComplaintController.cs" />
+    <Compile Include="Controllers\API\OrderDateController.cs" />
+    <Compile Include="Controllers\API\Page\ClassDetailController.cs" />
+    <Compile Include="Controllers\API\ClassListsController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\API\CommentController.cs">
+    <Compile Include="Controllers\API\CoinsController.cs" />
+    <Compile Include="Controllers\API\Ajax\CommentController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\API\ChatListController.cs" />
+    <Compile Include="Controllers\API\Ajax\CreditController.cs" />
     <Compile Include="Controllers\API\NotificationController.cs" />
+    <Compile Include="Controllers\API\Ajax\ClassListController.cs" />
+    <Compile Include="Controllers\API\Page\ClassIndexController.cs" />
+    <Compile Include="Controllers\API\Page\ClassSearchController.cs" />
+    <Compile Include="Controllers\API\Page\MemberCollectionController.cs" />
+    <Compile Include="Controllers\API\Page\HomeController.cs" />
+    <Compile Include="Controllers\API\Page\MemberInfoController.cs" />
+    <Compile Include="Controllers\API\Page\DashboardController.cs" />
+    <Compile Include="Controllers\API\Ajax\ProfileController.cs" />
+    <Compile Include="Controllers\API\Page\CourseCollectionController.cs" />
+    <Compile Include="Controllers\API\Page\FavoriteController.cs" />
+    <Compile Include="Controllers\API\Page\OrderListController.cs" />
+    <Compile Include="Controllers\API\Page\MyCoursesController.cs" />
+    <Compile Include="Controllers\API\Page\FansController.cs" />
+    <Compile Include="Controllers\API\Page\PersonalController.cs" />
     <Compile Include="Controllers\API\UpCloudController.cs" />
     <Compile Include="Controllers\API\OrderReviewController.cs" />
     <Compile Include="Controllers\API\CourseController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\API\FollowMemberController.cs">
+    <Compile Include="Controllers\API\Ajax\FollowMemberController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\IocInstaller.cs" />
-    <Compile Include="Controllers\API\LikeClassController.cs">
+    <Compile Include="Controllers\API\Ajax\LikeClassController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\MemberController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\API\OrderController.cs">
+    <Compile Include="Controllers\API\Ajax\OrderController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\API\RegisteController.cs" />
+    <Compile Include="Controllers\API\Ajax\RegisteController.cs" />
     <Compile Include="Controllers\API\UploadAvatarController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\UploadCoverController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\API\ValidationController.cs">
+    <Compile Include="Controllers\API\Ajax\VerificationController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\ValuesController.cs">
@@ -1148,11 +1167,13 @@
     <Content Include="img\logo-115.png" />
     <Content Include="img\logo-30.png" />
     <Content Include="img\logo-square.png" />
+    <Content Include="img\mobilesite.gif" />
     <Content Include="img\pattern-skills.png" />
     <Content Include="img\pattern-worldmap.png" />
     <Content Include="img\sample-video.mp4" />
     <Content Include="img\select2-spinner.gif" />
     <Content Include="img\signup-arrow.png" />
+    <Content Include="Scripts\mcommon.js" />
     <Content Include="Scripts\PopMobileVerification.js" />
     <Content Include="Scripts\ImageUploader.js" />
     <Content Include="Scripts\PlugIns\mediaelement\background.png" />
@@ -1179,7 +1200,6 @@
     <Content Include="Scripts\PlugIns\mediaelement\mejs-skins.css" />
     <Content Include="Scripts\PlugIns\mediaelement\silverlightmediaelement.xap" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\ClassAdd.js" />
     <Content Include="Scripts\ClassEdit.js" />
     <Content Include="Scripts\ClassSkill.js" />
     <Content Include="Scripts\Common.js" />
@@ -1189,7 +1209,6 @@
     <Content Include="Scripts\ClassPublish.js" />
     <Content Include="Scripts\API.js" />
     <Content Include="Scripts\Home.js" />
-    <Content Include="Scripts\mcommon.js" />
     <Content Include="Scripts\site.js" />
     <Content Include="Scripts\MemberLocation.js" />
     <Content Include="Scripts\Dashboard.js" />
@@ -1453,6 +1472,9 @@
     <Content Include="Views\Map\AMap.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\M\Course.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1468,7 +1490,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Class\Edit.cshtml" />
-    <Content Include="Views\Class\Add.cshtml" />
     <Content Include="Views\Class\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -1532,7 +1553,6 @@
     <Content Include="Views\Tools\APITest.cshtml" />
     <Content Include="Views\Map\GetCity.cshtml" />
     <Content Include="Views\Shared\_MobileLayout.cshtml" />
-    <Content Include="Views\M\Course.cshtml" />
     <Content Include="Views\M\Index.cshtml" />
     <Content Include="Views\M\Personal.cshtml" />
     <Content Include="Views\M\Message.cshtml" />
@@ -1551,6 +1571,15 @@
     <Content Include="Views\M\Following.cshtml" />
     <Content Include="Views\M\CoursePreview.cshtml" />
     <Content Include="Views\Shared\_VerifyMobilePartial.cshtml" />
+    <Content Include="Views\M\Verification.cshtml" />
+    <Content Include="Views\M\CourseCollection.cshtml" />
+    <Content Include="Views\Shared\_HowToSharePartial.cshtml" />
+    <Content Include="Views\Member\Credit.cshtml" />
+    <Content Include="Views\M\Credit.cshtml" />
+    <Content Include="Views\M\AboutCredit.cshtml" />
+    <Content Include="Views\M\LoginA.cshtml" />
+    <Content Include="Views\M\SignUp.cshtml" />
+    <Content Include="Views\M\LoginM.cshtml" />
     <None Include="Views\Tools\ClassView.cshtml" />
     <Content Include="Views\Class\Rejected.cshtml" />
     <Content Include="Views\Member\Teach.cshtml" />
@@ -1562,6 +1591,7 @@
     <Content Include="Views\WeChat.cshtml" />
     <Content Include="Views\WeChat\Index.cshtml" />
     <Content Include="Views\WeChat\Test.cshtml" />
+    <Content Include="Views\Tools\Complaint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\images\" />
@@ -1584,6 +1614,10 @@
     <ProjectReference Include="..\Data\DataSource.csproj">
       <Project>{7d49e64b-6df5-4b06-a2d6-7a9759fec527}</Project>
       <Name>DataSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\dotNetDR_OAuth2\dotNetDR_OAuth2.csproj">
+      <Project>{7b72ffe8-bddf-4d2c-9a8e-f51b59f7b949}</Project>
+      <Name>dotNetDR_OAuth2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web\Web.csproj">
       <Project>{97ed241f-9284-4ea6-87b7-afaee1095019}</Project>

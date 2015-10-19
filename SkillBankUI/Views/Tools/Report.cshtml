@@ -25,31 +25,34 @@
        
         <tr class="reptitle">
         @if (reportItem.RowNum.Equals(0))
-        {     <td style="width:200px;">2小时注册</td><td style="width:200px;">4小时注册</td><td style="width:200px;">8小时注册</td>
-        }else if (reportItem.RowNum.Equals(1))
-        {     <td style="width:200px;">开课的</td><td style="width:200px;">注册的</td><td style="width:200px;">百分比</td>
-        }else if (reportItem.RowNum.Equals(2)){
+        {     <td style="width:250px;">2小时注册</td><td style="width:250px;">4小时注册</td><td style="width:250px;">8小时注册</td>
+        }
+        else if (reportItem.RowNum.Equals(1))
+        {     <td>@DateTime.Now.ToString("yy-MM-dd") 今天</td><td>@DateTime.Now.AddDays(-1).ToString("yy-MM-dd") 昨天</td><td>@DateTime.Now.AddDays(-2).ToString("yy-MM-dd") 前天</td>
+        }else if (reportItem.RowNum.Equals(2))
+        {     <td>开课的</td><td>注册的</td><td>百分比</td>
+        }else if (reportItem.RowNum.Equals(3)){
              <td>分享的</td><td>开课的</td><td>百分比</td>
         }
-        else if (reportItem.RowNum.Equals(3)){
+        else if (reportItem.RowNum.Equals(4)){
              <td>完成的</td><td>没有取消和拒绝的订单数</td><td>百分比</td>
         } 
-        else if (reportItem.RowNum.Equals(4)){
+        else if (reportItem.RowNum.Equals(5)){
              <td>拒绝的订单</td><td>总订单</td><td>百分比</td>
         } 
-        else if (reportItem.RowNum.Equals(5)){
+        else if (reportItem.RowNum.Equals(6)){
              <td>上完课的学生</td><td>预定课的学生</td><td>百分比</td>
         } 
-        else if (reportItem.RowNum.Equals(6)){
+        else if (reportItem.RowNum.Equals(7)){
              <td>接受预定订老师</td><td>被订课老师</td><td>百分比</td>
         } 
-        else if (reportItem.RowNum.Equals(7)){
+        else if (reportItem.RowNum.Equals(8)){
              <td>课程总数</td><td></td><td></td><td></td>
         } 
-        else if (reportItem.RowNum.Equals(8)){
+        else if (reportItem.RowNum.Equals(9)){
              <td>注册男生数</td><td>注册女生数</td><td>男生所占百分比</td>
         } 
-        else if (reportItem.RowNum.Equals(9)){
+        else if (reportItem.RowNum.Equals(10)){
              <td>开课男生数</td><td>开课女生数</td><td>男生所占百分比</td>
         }   
         </tr>

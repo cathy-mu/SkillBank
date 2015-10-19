@@ -14,13 +14,15 @@ namespace SkillBank.FunctionTests
     {
         private LookupsRepository _repository;
         private CategoryLkpProvider _provider;
-        private int _categoryId,  _invalidCategoryId;
+        private CategoryProvider _provider2;
+        private int _categoryId, _invalidCategoryId;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _repository = new LookupsRepository(); 
             _provider = new CategoryLkpProvider(_repository);
+            _provider2 = new CategoryProvider(_repository);
             _categoryId = 1;
             _invalidCategoryId = 100;
         }
@@ -54,6 +56,23 @@ namespace SkillBank.FunctionTests
             var categories = _provider.GetCategoryLkp();
             Assert.IsFalse(categories.ContainsKey(_invalidCategoryId));
         }
+
+
+
+        [TestMethod]
+        public void Should_GetCategory_Correctly()
+        {
+            var cateId = 1;
+            var categories = _provider2.GetCategory(cateId);
+            Assert.AreEqual(cateId,categories.CategoryId);
+        
+            cateId = 2;
+            var categories2 = _provider2.GetCategory(cateId);
+            Assert.AreEqual(cateId,categories2.CategoryId);
+        }
+
+
+        
 
         [TestCleanup]
         public void TestCleanup()

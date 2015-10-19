@@ -9,10 +9,12 @@
           <EntitySet Name="BlurbsMain" EntityType="SkillBank.Site.DataSource.Data.Store.BlurbsMain" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CategoryPopTag" EntityType="SkillBank.Site.DataSource.Data.Store.CategoryPopTag" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CityInfo" EntityType="SkillBank.Site.DataSource.Data.Store.CityInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ClassCategory" EntityType="SkillBank.Site.DataSource.Data.Store.ClassCategory" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ClassEditInfo" EntityType="SkillBank.Site.DataSource.Data.Store.ClassEditInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ClassInfo" EntityType="SkillBank.Site.DataSource.Data.Store.ClassInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CoinsHistory" EntityType="SkillBank.Site.DataSource.Data.Store.CoinsHistory" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Comment" EntityType="SkillBank.Site.DataSource.Data.Store.Comment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ConfigureInfo" EntityType="SkillBank.Site.DataSource.Data.Store.ConfigureInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmailAccount" EntityType="SkillBank.Site.DataSource.Data.Store.EmailAccount" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EmailTemplate" EntityType="SkillBank.Site.DataSource.Data.Store.EmailTemplate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Favorite" EntityType="SkillBank.Site.DataSource.Data.Store.Favorite" store:Type="Tables" Schema="dbo" />
@@ -54,6 +56,15 @@
           <Property Name="CityKey" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="OrderRank" Type="tinyint" Nullable="false" />
         </EntityType>
+        <EntityType Name="ClassCategory">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryKey" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="CategoryName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Blurb_Id" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ClassEditInfo">
           <Key>
             <PropertyRef Name="ClassId" />
@@ -76,6 +87,8 @@
           <Property Name="Location" Type="nvarchar" Nullable="false" MaxLength="200" />
           <Property Name="Available" Type="nvarchar" Nullable="false" MaxLength="200" />
           <Property Name="Remark" Type="nvarchar" Nullable="false" MaxLength="800" />
+          <Property Name="HasOffline" Type="bit" Nullable="false" />
+          <Property Name="Tags" Type="varchar" Nullable="false" MaxLength="200" />
         </EntityType>
         <EntityType Name="ClassInfo">
           <Key>
@@ -103,6 +116,9 @@
           <Property Name="Remark" Type="nvarchar" MaxLength="200" />
           <Property Name="ClassId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="WhyU" Type="nvarchar" Nullable="false" MaxLength="800" />
+          <Property Name="HasOffline" Type="bit" Nullable="false" />
+          <Property Name="Tags" Type="varchar" MaxLength="200" />
+          <Property Name="Cate_Id" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="CoinsHistory">
           <Key>
@@ -125,6 +141,16 @@
           <Property Name="CommentText" Type="varchar" Nullable="false" MaxLength="600" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="IsShow" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConfigureInfo">
+          <Key>
+            <PropertyRef Name="InfoId" />
+          </Key>
+          <Property Name="InfoId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="InfoKey" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="InfoValue" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastUpdateDate" Type="datetime" />
+          <Property Name="ExpireDate" Type="datetime" />
         </EntityType>
         <EntityType Name="EmailAccount">
           <Key>
@@ -184,6 +210,8 @@
           <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
           <Property Name="VerifyTag" Type="tinyint" Nullable="false" />
           <Property Name="NotifyTag" Type="tinyint" Nullable="false" />
+          <Property Name="Credit" Type="int" Nullable="false" />
+          <Property Name="Pass" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -268,6 +296,14 @@
           <Parameter Name="MinToAdd" Type="smallint" Mode="In" />
         </Function>
         <Function Name="CityInfo_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ClassCategory_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CityId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ClassCollection_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="loadBy" Type="tinyint" Mode="In" />
+          <Parameter Name="memberId" Type="int" Mode="In" />
+          <Parameter Name="paraId" Type="int" Mode="In" />
+        </Function>
         <Function Name="ClassEditInfo_Add_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SaveType" Type="tinyint" Mode="In" />
           <Parameter Name="MemberId" Type="int" Mode="In" />
@@ -321,6 +357,15 @@
           <Parameter Name="PageId" Type="int" Mode="In" />
           <Parameter Name="ResultNum" Type="int" Mode="InOut" />
         </Function>
+        <Function Name="ClassInfo_LoadByKey_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cityId" Type="int" Mode="In" />
+          <Parameter Name="keyword" Type="nvarchar" Mode="In" />
+          <Parameter Name="posX" Type="decimal" Mode="In" />
+          <Parameter Name="posY" Type="decimal" Mode="In" />
+          <Parameter Name="orderBy" Type="tinyint" Mode="In" />
+          <Parameter Name="minId" Type="int" Mode="In" />
+          <Parameter Name="maxId" Type="int" Mode="In" />
+        </Function>
         <Function Name="ClassInfo_LoadByList_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="loadType" Type="tinyint" Mode="In" />
           <Parameter Name="orderType" Type="tinyint" Mode="In" />
@@ -335,6 +380,16 @@
           <Parameter Name="memberId" Type="int" Mode="In" />
           <Parameter Name="resultNum" Type="int" Mode="InOut" />
         </Function>
+        <Function Name="ClassInfo_LoadByPage_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="categoryId" Type="tinyint" Mode="In" />
+          <Parameter Name="cityId" Type="int" Mode="In" />
+          <Parameter Name="posX" Type="decimal" Mode="In" />
+          <Parameter Name="posY" Type="decimal" Mode="In" />
+          <Parameter Name="memberId" Type="int" Mode="In" />
+          <Parameter Name="orderBy" Type="tinyint" Mode="In" />
+          <Parameter Name="minId" Type="int" Mode="In" />
+          <Parameter Name="maxId" Type="int" Mode="In" />
+        </Function>
         <Function Name="ClassInfo_LoadByTab_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="loadType" Type="tinyint" Mode="In" />
           <Parameter Name="categoryId" Type="tinyint" Mode="In" />
@@ -343,13 +398,6 @@
           <Parameter Name="posY" Type="decimal" Mode="In" />
           <Parameter Name="cityId" Type="int" Mode="In" />
           <Parameter Name="memberId" Type="int" Mode="In" />
-        </Function>
-        <Function Name="ClassInfo_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ParaId" Type="int" Mode="In" />
-          <Parameter Name="TxtValue" Type="nvarchar" Mode="In" />
-          <Parameter Name="ParaValue" Type="tinyint" Mode="In" />
-          <Parameter Name="IsValue" Type="bit" Mode="In" />
-          <Parameter Name="SaveType" Type="tinyint" Mode="In" />
         </Function>
         <Function Name="ClassNum_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="member" Type="int" Mode="In" />
@@ -386,6 +434,30 @@
           <Parameter Name="CommentText" Type="varchar" Mode="In" />
           <Parameter Name="Id" Type="int" Mode="InOut" />
         </Function>
+        <Function Name="Complaint_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LoadType" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="Complaint_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+          <Parameter Name="MemberId" Type="int" Mode="In" />
+          <Parameter Name="RelatedId" Type="int" Mode="In" />
+          <Parameter Name="Type" Type="tinyint" Mode="In" />
+          <Parameter Name="Result" Type="tinyint" Mode="InOut" />
+        </Function>
+        <Function Name="ConfigureInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Key" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ConfigureInfo_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Key" Type="int" Mode="In" />
+          <Parameter Name="Value" Type="bit" Mode="In" />
+          <Parameter Name="ExpireDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="CreditHistory_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+          <Parameter Name="MemberId" Type="int" Mode="In" />
+          <Parameter Name="ParaValue" Type="int" Mode="In" />
+          <Parameter Name="Result" Type="tinyint" Mode="InOut" />
+        </Function>
         <Function Name="EmailAccount_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Mail" Type="nvarchar" Mode="In" />
           <Parameter Name="Name" Type="nvarchar" Mode="In" />
@@ -395,6 +467,7 @@
           <Parameter Name="MemberId" Type="int" Mode="In" />
           <Parameter Name="ParaId" Type="int" Mode="In" />
         </Function>
+        <Function Name="Favorite_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Favorite_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="saveType" Type="tinyint" Mode="In" />
           <Parameter Name="favoriteType" Type="tinyint" Mode="In" />
@@ -411,7 +484,6 @@
         <Function Name="MemberInfo_Add_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="SocialId" Type="varchar" Mode="In" />
           <Parameter Name="SType" Type="tinyint" Mode="In" />
-          <Parameter Name="Id" Type="int" Mode="InOut" />
           <Parameter Name="Mail" Type="nvarchar" Mode="In" />
           <Parameter Name="Phone" Type="nvarchar" Mode="In" />
           <Parameter Name="MemberName" Type="nvarchar" Mode="In" />
@@ -419,11 +491,14 @@
           <Parameter Name="Etag" Type="nvarchar" Mode="In" />
           <Parameter Name="VerifyCode" Type="nvarchar" Mode="In" />
           <Parameter Name="Gender" Type="bit" Mode="In" />
+          <Parameter Name="Pass" Type="nvarchar" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="InOut" />
           <Parameter Name="Result" Type="int" Mode="InOut" />
         </Function>
         <Function Name="MemberInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LoadBy" Type="tinyint" Mode="In" />
           <Parameter Name="Account" Type="nvarchar" Mode="In" />
+          <Parameter Name="Para" Type="nvarchar" Mode="In" />
           <Parameter Name="Type" Type="tinyint" Mode="In" />
           <Parameter Name="Id" Type="int" Mode="In" />
           <Parameter Name="RelatedId" Type="int" Mode="In" />
@@ -437,11 +512,11 @@
           <Parameter Name="City" Type="int" Mode="In" />
           <Parameter Name="MemberName" Type="nvarchar" Mode="In" />
           <Parameter Name="Intro" Type="nvarchar" Mode="In" />
-          <Parameter Name="Result" Type="tinyint" Mode="InOut" />
           <Parameter Name="X" Type="decimal" Mode="In" />
           <Parameter Name="Y" Type="decimal" Mode="In" />
           <Parameter Name="Birthday" Type="datetime" Mode="In" />
           <Parameter Name="Img" Type="nvarchar" Mode="In" />
+          <Parameter Name="Result" Type="tinyint" Mode="InOut" />
         </Function>
         <Function Name="MemberNums_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="loadType" Type="tinyint" Mode="In" />
@@ -592,6 +667,14 @@
           <Parameter Name="VerifyAccount" Type="nvarchar" Mode="In" />
           <Parameter Name="Result" Type="tinyint" Mode="InOut" />
         </Function>
+        <Function Name="WeChatEvent_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SaveType" Type="tinyint" Mode="In" />
+          <Parameter Name="MemberId" Type="int" Mode="In" />
+          <Parameter Name="OpenId" Type="nvarchar" Mode="In" />
+          <Parameter Name="ParaId" Type="nvarchar" Mode="In" />
+          <Parameter Name="ParaValue" Type="nvarchar" Mode="In" />
+          <Parameter Name="Result" Type="tinyint" Mode="InOut" />
+        </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -663,7 +746,6 @@
           <FunctionImport Name="MemberInfo_Add_p">
             <Parameter Name="SocialId" Mode="In" Type="String" />
             <Parameter Name="SType" Mode="In" Type="Byte" />
-            <Parameter Name="Id" Mode="InOut" Type="Int32" />
             <Parameter Name="Mail" Mode="In" Type="String" />
             <Parameter Name="Phone" Mode="In" Type="String" />
             <Parameter Name="MemberName" Mode="In" Type="String" />
@@ -671,6 +753,8 @@
             <Parameter Name="Etag" Mode="In" Type="String" />
             <Parameter Name="VerifyCode" Mode="In" Type="String" />
             <Parameter Name="Gender" Mode="In" Type="Boolean" />
+            <Parameter Name="Pass" Mode="In" Type="String" />
+            <Parameter Name="Id" Mode="InOut" Type="Int32" />
             <Parameter Name="Result" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="MemberInfo_Save_p">
@@ -682,11 +766,11 @@
             <Parameter Name="City" Mode="In" Type="Int32" />
             <Parameter Name="MemberName" Mode="In" Type="String" />
             <Parameter Name="Intro" Mode="In" Type="String" />
-            <Parameter Name="Result" Mode="InOut" Type="Byte" />
             <Parameter Name="X" Mode="In" Type="Decimal" />
             <Parameter Name="Y" Mode="In" Type="Decimal" />
             <Parameter Name="Birthday" Mode="In" Type="DateTime" />
             <Parameter Name="Img" Mode="In" Type="String" />
+            <Parameter Name="Result" Mode="InOut" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="Message_LoadByFromAndToId_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Message_LoadByFromAndToId_p_Result)">
             <Parameter Name="MemberId1" Mode="In" Type="Int32" />
@@ -953,12 +1037,75 @@
             <Parameter Name="ClassId" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="MemberInfoes" EntityType="SkillBank.Site.DataSource.Data.MemberInfo" />
+          <EntitySet Name="ConfigureInfoes" EntityType="SkillBank.Site.DataSource.Data.ConfigureInfo" />
+          <FunctionImport Name="ConfigureInfo_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ConfigureInfo_Load_p_Result)">
+          <Parameter Name="Key" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConfigureInfo_Save_p">
+            <Parameter Name="Key" Mode="In" Type="Int32" />
+            <Parameter Name="Value" Mode="In" Type="Boolean" />
+            <Parameter Name="ExpireDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="ClassCollection_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ClassCollection_Load_p_Result)">
+            <Parameter Name="loadBy" Mode="In" Type="Byte" />
+            <Parameter Name="memberId" Mode="In" Type="Int32" />
+            <Parameter Name="paraId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Complaint_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Complaint_Load_p_Result)">
+          <Parameter Name="LoadType" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="Complaint_Save_p">
+            <Parameter Name="SaveType" Mode="In" Type="Byte" />
+            <Parameter Name="MemberId" Mode="In" Type="Int32" />
+            <Parameter Name="RelatedId" Mode="In" Type="Int32" />
+            <Parameter Name="Type" Mode="In" Type="Byte" />
+            <Parameter Name="Result" Mode="InOut" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="Favorite_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Favorite_LoadAll_p_Result)" />
           <FunctionImport Name="MemberInfo_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result)">
             <Parameter Name="LoadBy" Mode="In" Type="Byte" />
             <Parameter Name="Account" Mode="In" Type="String" />
+            <Parameter Name="Para" Mode="In" Type="String" />
             <Parameter Name="Type" Mode="In" Type="Byte" />
             <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="RelatedId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ClassCategory_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ClassCategory_Load_p_Result)">
+          <Parameter Name="CityId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="ClassCategories" EntityType="SkillBank.Site.DataSource.Data.ClassCategory" />
+          <FunctionImport Name="WeChatEvent_Save_p">
+            <Parameter Name="SaveType" Mode="In" Type="Byte" />
+            <Parameter Name="MemberId" Mode="In" Type="Int32" />
+            <Parameter Name="OpenId" Mode="In" Type="String" />
+            <Parameter Name="ParaId" Mode="In" Type="String" />
+            <Parameter Name="ParaValue" Mode="In" Type="String" />
+            <Parameter Name="Result" Mode="InOut" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="CreditHistory_Save_p">
+            <Parameter Name="SaveType" Mode="In" Type="Byte" />
+            <Parameter Name="MemberId" Mode="In" Type="Int32" />
+            <Parameter Name="ParaValue" Mode="In" Type="Int32" />
+            <Parameter Name="Result" Mode="InOut" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="ClassInfo_LoadByPage_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ClassInfo_LoadByPage_p_Result)">
+            <Parameter Name="categoryId" Mode="In" Type="Byte" />
+            <Parameter Name="cityId" Mode="In" Type="Int32" />
+            <Parameter Name="posX" Mode="In" Type="Decimal" />
+            <Parameter Name="posY" Mode="In" Type="Decimal" />
+            <Parameter Name="memberId" Mode="In" Type="Int32" />
+            <Parameter Name="orderBy" Mode="In" Type="Byte" />
+            <Parameter Name="minId" Mode="In" Type="Int32" />
+            <Parameter Name="maxId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ClassInfo_LoadByKey_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ClassInfo_LoadByKey_p_Result)">
+            <Parameter Name="cityId" Mode="In" Type="Int32" />
+            <Parameter Name="keyword" Mode="In" Type="String" />
+            <Parameter Name="posX" Mode="In" Type="Decimal" />
+            <Parameter Name="posY" Mode="In" Type="Decimal" />
+            <Parameter Name="orderBy" Mode="In" Type="Byte" />
+            <Parameter Name="minId" Mode="In" Type="Int32" />
+            <Parameter Name="maxId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="CategoryPopTag">
@@ -1118,6 +1265,8 @@
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
           <Property Type="Decimal" Name="Rank" Nullable="false" Precision="18" Scale="0" />
           <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Tags" Nullable="false" />
+          <Property Type="Boolean" Name="HasOffline" Nullable="false" />
         </ComplexType>
         <ComplexType Name="ClassInfo_LoadAll_p_Result">
           <Property Type="Int32" Name="ClassId" Nullable="false" />
@@ -1255,6 +1404,9 @@
           <Property Type="String" Name="Available" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Remark" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="WhyU" Nullable="false" MaxLength="800" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="HasOffline" Nullable="false" />
+          <Property Type="String" Name="Tags" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="Byte" Name="Cate_Id" Nullable="false" />
         </EntityType>
         <EntityType Name="BlurbsMain">
           <Key>
@@ -1274,6 +1426,8 @@
           <Property Type="Int32" Name="RelatedMemberId" Nullable="false" />
           <Property Type="String" Name="Title" Nullable="false" />
           <Property Type="Int32" Name="NotificationId" Nullable="false" />
+          <Property Type="String" Name="Avatar" Nullable="false" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" />
         </ComplexType>
         <ComplexType Name="NotificationAlert_Load_p_Result">
           <Property Type="String" Name="Type" Nullable="false" MaxLength="1" />
@@ -1376,6 +1530,8 @@
           <Property Type="String" Name="Available" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="Remark" MaxLength="800" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="WhyU" Nullable="false" MaxLength="800" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="HasOffline" Nullable="false" />
+          <Property Type="String" Name="Tags" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <ComplexType Name="ClassEditInfo_Load_p_Result">
           <Property Type="Int32" Name="ClassId" Nullable="false" />
@@ -1396,6 +1552,8 @@
           <Property Type="String" Name="WhyU" Nullable="false" />
           <Property Type="Boolean" Name="IsLike" Nullable="false" />
           <Property Type="Int32" Name="LikeNum" Nullable="false" />
+          <Property Type="String" Name="Tags" Nullable="false" />
+          <Property Type="Boolean" Name="HasOffline" Nullable="false" />
         </ComplexType>
         <ComplexType Name="ReportNumItem" >
           <Property Type="Int32" Name="Num1" Nullable="false" />
@@ -1491,7 +1649,49 @@
           <Property Type="String" Name="ContactName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Byte" Name="VerifyTag" Nullable="false" />
           <Property Type="Byte" Name="NotifyTag" Nullable="false" />
+          <Property Type="Int32" Name="Credit" Nullable="false" />
+          <Property Type="String" Name="Pass" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="ConfigureInfo">
+          <Key>
+            <PropertyRef Name="InfoId" />
+          </Key>
+          <Property Type="Int32" Name="InfoId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="InfoKey" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="InfoValue" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LastUpdateDate" Precision="3" />
+          <Property Type="DateTime" Name="ExpireDate" Precision="3" />
+        </EntityType>
+        <ComplexType Name="ConfigureInfo_Load_p_Result">
+          <Property Type="Int32" Name="InfoId" Nullable="false" />
+          <Property Type="String" Name="InfoKey" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="InfoValue" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="ExpireDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="ClassCollection_Load_p_Result">
+          <Property Type="Int32" Name="ClassId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="MemberId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Complaint_Load_p_Result">
+          <Property Type="Int32" Name="ComplaintId" Nullable="false" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
+          <Property Type="Byte" Name="Type" Nullable="false" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="Int32" Name="Member_Id" Nullable="false" />
+          <Property Type="Int32" Name="RelatedId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="RelatedName" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Favorite_LoadAll_p_Result">
+          <Property Type="Int32" Name="MemberId" Nullable="false" />
+          <Property Type="String" Name="ClassList" Nullable="false" />
+          <Property Type="String" Name="MemberList" Nullable="false" />
+        </ComplexType>
         <ComplexType Name="MemberInfo_Load_p_Result">
           <Property Type="Int32" Name="MemberId" Nullable="false" />
           <Property Type="Byte" Name="SocialType" Nullable="false" />
@@ -1499,6 +1699,7 @@
           <Property Type="Int32" Name="CityId" Nullable="false" />
           <Property Type="Decimal" Name="PosX" Nullable="false" Precision="10" Scale="6" />
           <Property Type="Decimal" Name="PosY" Nullable="false" Precision="10" Scale="6" />
+          <Property Type="Byte" Name="VerifyTag" Nullable="false" />
           <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
           <Property Type="Boolean" Name="Gender" Nullable="false" />
@@ -1506,19 +1707,54 @@
           <Property Type="Int32" Name="CoinsLocked" Nullable="false" />
           <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
           <Property Type="String" Name="SelfIntro" Nullable="true" MaxLength="1200" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="OpenId" Nullable="false" MaxLength="70" />
-          <Property Type="DateTime" Name="BirthDate" Nullable="false" Precision="23" />
           <Property Type="String" Name="Etag" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="Address" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="SocialAccount" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ContactName" Nullable="true" MaxLength="50" />
-          <Property Type="Byte" Name="VerifyTag" Nullable="false" />
-          <Property Type="Boolean" Name="IsLike" Nullable="false" DefaultValue="false" />
-          <Property Type="String" Name="MasterInfo" Nullable="false" MaxLength="1" />
           <Property Type="Byte" Name="NotifyTag" Nullable="false" />
+          <Property Type="Int32" Name="Credit" Nullable="false" />
+          <Property Type="Boolean" Name="IsLike" Nullable="false" />
+          <Property Type="String" Name="ExtraInfo" Nullable="false" MaxLength="1" />
+          <Property Type="DateTime" Name="BirthDate" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="ClassCategory_Load_p_Result">
+          <Property Type="Byte" Name="CategoryId" Nullable="false" />
+          <Property Type="Int32" Name="Blurb_Id" Nullable="false" />
+          <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CategoryKey" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <EntityType Name="ClassCategory">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Type="Byte" Name="CategoryId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CategoryKey" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Blurb_Id" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="ClassInfo_LoadByPage_p_Result">
+          <Property Type="Int32" Name="ClassId" Nullable="false" />
+          <Property Type="Boolean" Name="IsLike" Nullable="false" />
+          <Property Type="Int32" Name="MemberId" Nullable="false" />
+          <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
+          <Property Type="Decimal" Name="PosX" Nullable="false" Precision="10" Scale="6" />
+          <Property Type="Decimal" Name="PosY" Nullable="false" Precision="10" Scale="6" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="LikeNum" Nullable="false" />
+          <Property Type="String" Name="Avatar" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="ClassInfo_LoadByKey_p_Result">
+          <Property Type="Int32" Name="ClassId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="MemberId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="CityId" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1731,7 +1967,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="ClassInfo_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassInfo_Save_p" />
           <FunctionImportMapping FunctionImportName="ClassNum_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassNum_Load_p" />
           <FunctionImportMapping FunctionImportName="EmailAccount_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.EmailAccount_Save_p" />
           <FunctionImportMapping FunctionImportName="MemberInfo_Add_p" FunctionName="SkillBank.Site.DataSource.Data.Store.MemberInfo_Add_p" />
@@ -1863,6 +2098,9 @@
           <EntitySetMapping Name="ClassInfo">
             <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassInfo">
               <MappingFragment StoreEntitySet="ClassInfo">
+                <ScalarProperty Name="Cate_Id" ColumnName="Cate_Id" />
+                <ScalarProperty Name="Tags" ColumnName="Tags" />
+                <ScalarProperty Name="HasOffline" ColumnName="HasOffline" />
                 <ScalarProperty Name="WhyU" ColumnName="WhyU" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Available" ColumnName="Available" />
@@ -2002,6 +2240,8 @@
           <EntitySetMapping Name="ClassEditInfoes">
             <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassEditInfo">
               <MappingFragment StoreEntitySet="ClassEditInfo">
+                <ScalarProperty Name="Tags" ColumnName="Tags" />
+                <ScalarProperty Name="HasOffline" ColumnName="HasOffline" />
                 <ScalarProperty Name="WhyU" ColumnName="WhyU" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Available" ColumnName="Available" />
@@ -2128,6 +2368,8 @@
           <EntitySetMapping Name="MemberInfoes">
             <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo">
               <MappingFragment StoreEntitySet="MemberInfo">
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
                 <ScalarProperty Name="NotifyTag" ColumnName="NotifyTag" />
                 <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
                 <ScalarProperty Name="ContactName" ColumnName="ContactName" />
@@ -2155,6 +2397,64 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ConfigureInfoes">
+            <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.ConfigureInfo">
+              <MappingFragment StoreEntitySet="ConfigureInfo">
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="InfoValue" ColumnName="InfoValue" />
+                <ScalarProperty Name="InfoKey" ColumnName="InfoKey" />
+                <ScalarProperty Name="InfoId" ColumnName="InfoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ConfigureInfo_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ConfigureInfo_Load_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ConfigureInfo_Load_p_Result">
+                <ScalarProperty Name="InfoId" ColumnName="InfoId" />
+                <ScalarProperty Name="InfoKey" ColumnName="InfoKey" />
+                <ScalarProperty Name="InfoValue" ColumnName="InfoValue" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ConfigureInfo_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ConfigureInfo_Save_p" />
+          <FunctionImportMapping FunctionImportName="ClassCollection_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassCollection_Load_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassCollection_Load_p_Result">
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Cover" ColumnName="Cover" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Complaint_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Complaint_Load_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.Complaint_Load_p_Result">
+                <ScalarProperty Name="ComplaintId" ColumnName="ComplaintId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Member_Id" ColumnName="Member_Id" />
+                <ScalarProperty Name="RelatedId" ColumnName="RelatedId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RelatedName" ColumnName="RelatedName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Complaint_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Complaint_Save_p" />
+          <FunctionImportMapping FunctionImportName="Favorite_LoadAll_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Favorite_LoadAll_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.Favorite_LoadAll_p_Result">
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="ClassList" ColumnName="ClassList" />
+                <ScalarProperty Name="MemberList" ColumnName="MemberList" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="MemberInfo_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.MemberInfo_Load_p">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result">
@@ -2164,6 +2464,7 @@
                 <ScalarProperty Name="CityId" ColumnName="CityId" />
                 <ScalarProperty Name="PosX" ColumnName="PosX" />
                 <ScalarProperty Name="PosY" ColumnName="PosY" />
+                <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
@@ -2171,18 +2472,68 @@
                 <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="OpenId" ColumnName="OpenId" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
                 <ScalarProperty Name="Etag" ColumnName="Etag" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
                 <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
+                <ScalarProperty Name="NotifyTag" ColumnName="NotifyTag" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
                 <ScalarProperty Name="IsLike" ColumnName="IsLike" />
-                <ScalarProperty Name="MasterInfo" ColumnName="MasterInfo" />
+                <ScalarProperty Name="ExtraInfo" ColumnName="ExtraInfo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ClassCategory_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassCategory_Load_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassCategory_Load_p_Result">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Blurb_Id" ColumnName="Blurb_Id" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryKey" ColumnName="CategoryKey" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="ClassCategories">
+            <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassCategory">
+              <MappingFragment StoreEntitySet="ClassCategory">
+                <ScalarProperty Name="Blurb_Id" ColumnName="Blurb_Id" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryKey" ColumnName="CategoryKey" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="WeChatEvent_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.WeChatEvent_Save_p" />
+          <FunctionImportMapping FunctionImportName="CreditHistory_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.CreditHistory_Save_p" />
+          <FunctionImportMapping FunctionImportName="ClassInfo_LoadByPage_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassInfo_LoadByPage_p" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassInfo_LoadByPage_p_Result">
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="IsLike" ColumnName="IsLike" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Cover" ColumnName="Cover" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="PosX" ColumnName="PosX" />
+                <ScalarProperty Name="PosY" ColumnName="PosY" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LikeNum" ColumnName="LikeNum" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ClassInfo_LoadByKey_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassInfo_LoadByKey_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassInfo_LoadByKey_p_Result">
+                <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Cover" ColumnName="Cover" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

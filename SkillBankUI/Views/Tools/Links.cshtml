@@ -1,8 +1,10 @@
-﻿@section HeaderStyle
+﻿@model List<SkillBank.Site.DataSource.Data.ComplaintItem>
+@section HeaderStyle
 {
     @Html.CombresCustomUrl("contentCss")}
 @section FooterJs
 {@Html.CombresCustomUrl("toolsJs")}
+
 <style type="text/css">
     .toolgroup {
         margin: 50px 0 50px 100px;
@@ -86,22 +88,53 @@
 
             </fieldset>
         </div>
+        
         <div class="toolgroup">
             <fieldset>
                 <legend>课币/报表</legend>
-                <a href="@Url.Action("coins", "tools")" target="_blank">课币</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;收回 @(DateTime.Now.AddDays(-60).ToString("yy-MM-dd")) 至 @(DateTime.Now.AddDays(-30).ToString("yy-MM-dd")) 免费课币&nbsp;&nbsp;<input type="button" value="收回" id="getcoinbackbtn" />
+                <a href="@Url.Action("coins", "tools")" target="_blank">课币/积分</a>
                 <br />
                 <br />
                 <a href="@Url.Action("report", "tools")" target="_blank">用户数据报表</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="@Url.Action("orderreport", "tools", new { b = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd"), e = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd") })" target="_blank">订单状态报表</a>
+                <br />
+                <br />
+                <!--<a href="@Url.Action("complaint", "tools")" target="_blank">查看近期举报</a>-->
+                
             </fieldset>
         </div>
+                
+        if(Model != null)
+        {
+        <div class="toolgroup">
+            <fieldset>
+                <legend>用户举报</legend>
+                <table>
+                <tr>
+                    <td style="width: 200px;">举报号</td>
+                    <td style="width: 200px;">嫌疑人</td>
+                    <td style="width: 200px;">类型</td>
+                    <td style="width: 200px;">举报人</td>
+                    <td style="width: 200px;">举报时间</td>
+                    <td style="width: 200px;">处理</td>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ComplaintId</td>
+                        <td><a href="@Url.Action("index", "profile", new {id = item.RelatedId })" target="_blank">@item.RelatedName</a></td>
+                        <td>@(item.Type.Equals(1)?"收费":(item.Type.Equals(21)?"骚扰":"其它"))</td>
+                        <td><a href="@Url.Action("index", "profile", new {id = item.Member_Id })" target="_blank">@item.Name</a></td>
+                        <td>@item.CreatedDate.ToString("yy-MM-dd hh:mm")</td>
+                        <td><a class="handlecomplaint" data-id="@item.ComplaintId">处理 @item.ComplaintId</a></td>
+                    </tr>
+                }
+            </table></fieldset>
+        </div>
+        }
+       
     }
-
-
-
-
-
+    
 
 </div>
 <!-- end of body -->

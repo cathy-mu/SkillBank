@@ -441,8 +441,8 @@
                     </h4>
                 </div>
                 <div class="span4 tright">
-                    <span class="high-light spaced-right">@Html.GetTrans(285)</span>
-                    <span class="spaced-right"><i id="class-detail-linkicon" class="fa fa-heart icon-large @(Model.ClassInfo.IsLike ? "fa-heart-like" : "")"></i><span id="class-detail-linknum" class="gray-light bold">@(Model.ClassNumDic == null ? 0 : Model.ClassNumDic[Enums.NumberDictionaryKey.Like])</span></span>
+                    <span class="high-light spaced-right">@Html.GetTrans(285)</span><!--@Model.ClassInfo.IsLike-->
+                    <span class="spaced-right"><i id="class-detail-linkicon" class="fa fa-heart icon-large @(ViewBag.IsLike? "fa-heart-like" : "")"></i><span id="class-detail-linknum" class="gray-light bold">@(Model.ClassNumDic == null ? 0 : Model.ClassInfo.LikeNum)</span></span>
                 </div>
             </div>
         </div>

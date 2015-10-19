@@ -34,7 +34,7 @@ namespace SkillBankWeb.Controllers
             int memberId;
             
             String etag = (WebContext.Current.Etag == null)? "" : WebContext.Current.Etag;
-            var result = _commonService.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, etag, gender);
+            var result = _commonService.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, "", etag, gender);
             if (memberId > 0)
             {
                 WebContext.Current.MemberId = memberId;
@@ -54,7 +54,7 @@ namespace SkillBankWeb.Controllers
             int memberId = WebContext.Current.MemberId;
             var isSaved = _commonService.UpdateMemberInfo(memberId, saveType, saveValue, saveValue2);
             var jsonObj = new JsonResult();
-            jsonObj.Data = new object[] { new { t = saveType, r = isSaved ? 1 : 0 } };
+            jsonObj.Data = new object[] { new { t = saveType, r = 1 } };
 
             //Create class
             return Json(jsonObj, JsonRequestBehavior.AllowGet);
@@ -111,7 +111,9 @@ namespace SkillBankWeb.Controllers
         public JsonResult SendMobileVerifyCode(String mobile)
         {
             int memberId = WebContext.Current.MemberId;
-            var result = _commonService.SendMobileVerifyCode(memberId, mobile, System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName));
+            Byte saveType = (Byte)Enums.DBAccess.MobileVerificationSaveType.GetVerifyCode;
+
+            var result = _commonService.SendMobileVerifyCode(saveType, memberId, mobile, System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName));
             
             var jsonObj = new JsonResult();
             jsonObj.Data = new { r = result };

@@ -10,6 +10,7 @@ using SkillBank.Site.DataSource.Data;
 using SkillBank.Site.Common;
 using SkillBank.Site.Services;
 using SkillBank.Site.Services.Managers;
+using SkillBank.Site.Services.CacheProviders;
 
 namespace SkillBank.FunctionTests
 {
@@ -38,7 +39,9 @@ namespace SkillBank.FunctionTests
             MessageManager _messageMgr = new MessageManager(new MessageRepository());
             NotificationManager _notificationMgr = new NotificationManager(new NotificationRepository());
             ReportToolsManager _repMgr = new ReportToolsManager(new ReportToolsRepository());
-            _svr = new CommonService(_memberMgr, _classMgr, _orderMgr, _feedbackMgr, _messageMgr, _notificationMgr, _repMgr);
+            //CacheContentManager _cacheMgr = new CacheContentManager(new RecommendClassCacheMgr(new ClassInfoRepository()), new ClassListCacheMgr(new ClassInfoRepository()), new ClassItemCacheMgr(new ClassInfoRepository()));
+            CacheContentManager _cacheMgr = new CacheContentManager(new RecommendClassCacheMgr(), new ClassListCacheMgr(new ClassInfoRepository()), new ClassItemCacheMgr(new ClassInfoRepository()));
+            _svr = new CommonService(_memberMgr, _classMgr, _orderMgr, _feedbackMgr, _messageMgr, _notificationMgr, _repMgr, _cacheMgr);
         }
 
          
@@ -309,7 +312,7 @@ namespace SkillBank.FunctionTests
             var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdateTitle;
             String classTitle = "哈达瑜伽";
 
-            _svr.UpdateClassInfo(updateType, _classId, classTitle);
+            _svr.UpdateClassEditInfo(updateType, _classId, classTitle);
 
             var classItem = _svr.GetClassInfoByClassId(_classId);
             Assert.IsNotNull(classItem);
@@ -326,7 +329,7 @@ namespace SkillBank.FunctionTests
             var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdateTitle;
             String classTitle = "哈达瑜伽（基础）";
 
-            _svr.UpdateClassInfo(updateType, _classId, classTitle);
+            _svr.UpdateClassEditInfo(updateType, _classId, classTitle);
 
             var classItem = _svr.GetClassInfoByClassId(_classId);
             Assert.IsNotNull(classItem);

@@ -9,7 +9,7 @@ using SkillBank.Site.Common;
 
 namespace SkillBank.Site.Web.Context
 {
-    public class WebContext : WebContextBase<WebContext>, IMemberTypeContext, IServerContext
+    public class WebContext : WebContextBase<WebContext>, IServerContext
     {
         #region Constructors
 
@@ -17,29 +17,21 @@ namespace SkillBank.Site.Web.Context
             : base(builder.MarketCode, builder.LanguageCode)
         {
             // Set custom properties
+            MemberId = builder.MemberId;
             ServerName = builder.ServerName;
-            MemberType = builder.MemberTypeCode;
             SocialAccount = builder.SocialAccount;
             SocialType = builder.SocialType;
             Etag = builder.Etag;
             ShowLL = builder.ShowLL;
             OrderHandleDate = builder.OrderHandleDate;
             SocialAccessInfo = builder.SocialAccessInfo;
+            OpenId = builder.OpenId;
         }
 
         #endregion
 
         #region Public Properties
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Enums.MemberType MemberType
-        {
-            get;
-            set;
-        }
-
+         
         /// <summary>
         /// 
         /// </summary>
@@ -109,6 +101,15 @@ namespace SkillBank.Site.Web.Context
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public String OpenId
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Public Methods
@@ -119,7 +120,7 @@ namespace SkillBank.Site.Web.Context
         /// <returns></returns>
         public override string ToString()
         {
-            return LanguageCode + ":" + MarketCode + ":" + MemberType + ":" + SocialType + ":" + ServerName + ":" + MemberId + ":" + ShowLL;
+            return LanguageCode + ":" + MarketCode + ":" + SocialAccount + ":" + SocialType + ":" + ServerName + ":" + MemberId + ":" + ShowLL;
         }
 
         #endregion

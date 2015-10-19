@@ -15,15 +15,6 @@ namespace SkillBank.Site.Web.Context
         /// <summary>
         /// 
         /// </summary>
-        public Enums.MemberType MemberTypeCode
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public Byte SocialType
         {
             get;
@@ -90,6 +81,15 @@ namespace SkillBank.Site.Web.Context
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public String OpenId
+        {
+            get;
+            set;
+        }
+
         #endregion
 
         #region Public Methods
@@ -103,7 +103,6 @@ namespace SkillBank.Site.Web.Context
             var context = new WebContext(this);
             
             context.MemberId = this.MemberId;
-            context.MemberType = this.MemberTypeCode;
             
             return context;
         }
@@ -115,7 +114,6 @@ namespace SkillBank.Site.Web.Context
         public void ReadContext(WebContext context)
         {
             base.ReadContext(context);
-            this.MemberTypeCode = context.MemberType;
             this.SocialAccount = context.SocialAccount;
             this.SocialType = context.SocialType;
             this.ServerName = context.ServerName;
@@ -124,6 +122,7 @@ namespace SkillBank.Site.Web.Context
             this.OrderHandleDate = context.OrderHandleDate;
             this.MemberId = context.MemberId;
             this.SocialAccessInfo = context.SocialAccessInfo;
+            this.OpenId = context.OpenId;
         }
 
         #endregion

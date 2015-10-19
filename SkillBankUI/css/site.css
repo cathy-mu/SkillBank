@@ -462,6 +462,13 @@ p.classdetail-method span{
     background-color:#eee;
 }
 
+.mypage-mobilesite {
+    padding:20px 50px 0px 50px;
+    text-align:center;
+    height:320px;
+    background-color:#eee;
+}
+
 .mypage-getcoinintro a.btn-warning{
     margin-top:10px;
     background:#FED049;
@@ -745,3 +752,50 @@ color: #fff;
     height:111px;
     background:url(../img/btn-playvideo.png) center bottom no-repeat;
 }
+
+.mypage-mobilesite .mobilesite-img {
+  display: block;
+  width:300px;
+  height:265px;
+  background: url('../img/mobilesite.gif') top right no-repeat;
+}
+
+.mypage-mobilesite .mobilesite-qrlogin{
+  display: block;
+  width:300px;
+  text-align:center;
+  padding-left:50px;
+}
+
+.mypage-mobilesite .mobilesite-intro1, .mypage-mobilesite .mobilesite-intro2 {
+        font-size: 16px;
+        font-weight:700;
+        margin:0 0 6px;
+}
+
+.mypage-mobilesite .mobilesite-qrlogin  .mobilesite-qrstep1 {
+    padding-top:60px;
+}
+
+.mypage-mobilesite .mobilesite-qrlogin  .mobilesite-qrstep2 {
+    display:none;
+    padding-top:30px;
+}
+
+.mypage-mobilesite .mobilesite-qrlogin  .mobilesite-qrstep3 {
+    display:none;
+    padding-top:70px;
+}
+
+.mypage-mobilesite .mobilesite-qrlogin  .mobilesite-qrstep3  .mobilesite-intro1{
+    margin-top:20px;
+}
+
+.mypage-mobilesite .mobilesite-qrlogin  .mobilesite-qrstep1  .mobilesite-intro2{
+    margin-bottom:40px;
+}
+
+.mypage-mobilesite .mobilesite-qrlogin  .mobilesite-qrstep2  .mobilesite-intro2{
+    margin-bottom:20px;
+}
+

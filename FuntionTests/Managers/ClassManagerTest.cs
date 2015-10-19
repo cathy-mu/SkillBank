@@ -126,17 +126,6 @@ namespace SkillBank.FunctionTests
             Assert.AreEqual(true, result[3]);
         }
 
-
-        [TestMethod]
-        public void Should_GetSearhClassResult()
-        {
-            var orderBy = (Byte)ClientSetting.ClassListOrderType.ByLastUpdate;
-            int resultNum = 0;
-            int pageNum = 0;
-            var result = _mgr.SearchClass(0, 0, false, 5, 0, out resultNum, out pageNum, orderBy, false);
-            Assert.IsNotNull(result);
-        }
-
         [TestMethod]
         public void Should_CreateClass()
         {
@@ -154,7 +143,7 @@ namespace SkillBank.FunctionTests
             var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdateTitle;
             String classTitle = "哈达瑜伽";
 
-            _mgr.UpdateClassInfo(updateType, _classId, classTitle);
+            _mgr.UpdateClassEditInfo(updateType, _classId, classTitle);
 
             var classItem = _mgr.GetClassInfoByClassId(_classId);
             Assert.IsNotNull(classItem);
@@ -171,7 +160,7 @@ namespace SkillBank.FunctionTests
             var updateType = (Byte)Enums.DBAccess.ClassSaveType.UpdateTitle;
             String classTitle = "哈达瑜伽（基础）";
 
-            _mgr.UpdateClassInfo(updateType, _classId, classTitle);
+            _mgr.UpdateClassEditInfo(updateType, _classId, classTitle);
 
             var classItem = _mgr.GetClassInfoByClassId(_classId);
             Assert.IsNotNull(classItem);

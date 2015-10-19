@@ -53,6 +53,8 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Net" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -72,6 +74,7 @@
     </Compile>
     <Compile Include="ITestHelperRepository.cs" />
     <Compile Include="Managers\ClassManagerTest.cs" />
+    <Compile Include="Managers\ClassCacheMgrTest.cs" />
     <Compile Include="Managers\SMSManagerTest.cs" />
     <Compile Include="Managers\OrderManagerTest.cs" />
     <Compile Include="Managers\MessageManagerTest.cs" />
@@ -92,6 +95,8 @@
     <Compile Include="Repositories\MemberRepositoryTest.cs" />
     <Compile Include="Services\CommonServiceTest.cs" />
     <Compile Include="Services\ContentServiceTest.cs" />
+    <Compile Include="Utility\DataTagHelperTest.cs" />
+    <Compile Include="Utility\XMLHelperTest.cs" />
     <Compile Include="Utility\VerficationHelperTest.cs" />
     <Compile Include="Web\LookupHelperTest.cs" />
     <Compile Include="Web\PagingHelperTest.cs" />
@@ -113,6 +118,10 @@
     <ProjectReference Include="..\Data\DataSource.csproj">
       <Project>{7d49e64b-6df5-4b06-a2d6-7a9759fec527}</Project>
       <Name>DataSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\dotNetDR_OAuth2\dotNetDR_OAuth2.csproj">
+      <Project>{7b72ffe8-bddf-4d2c-9a8e-f51b59f7b949}</Project>
+      <Name>dotNetDR_OAuth2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web\Web.csproj">
       <Project>{97ed241f-9284-4ea6-87b7-afaee1095019}</Project>

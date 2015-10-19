@@ -6,9 +6,8 @@ function mobileverification_Class() {
     this.VerifyMobilePath = "/MemberHelper/VerifyMobile";
 
     this.init = function () {
-        //this.initEvents();
         this.verifyMobileInterval;
-        this.resendCount = 10;
+        this.resendCount = 30;
     };
 
     this.initEvents = function () {
@@ -18,19 +17,19 @@ function mobileverification_Class() {
     
     //mobile validation popup
     this.mobileVerifyCountdown = function () {
-        mobileverification.resendCount--;
         var btnObj = $("#verifypop-sendbtn");
-        btnObj.text(mobileverification.resendCount + "秒后重发");
-
-        if (mobileverification.resendCount <= 0 && mobileverification.mobileVerifyCountdown != undefined) {
-            window.clearInterval(mobileverification.mobileVerifyCountdown);
+        mobileverification.resendCount--;
+        
+        if (mobileverification.resendCount <= 0 && mobileverification.verifyMobileInterval != undefined) {
+            window.clearInterval(mobileverification.verifyMobileInterval);
             btnObj.removeClass("disabled").text("重发验证码");
-            mobileverification.resendCount = 10;
+            mobileverification.resendCount = 30;
+        } else {
+            btnObj.text(mobileverification.resendCount + "秒后重发");
         }
     }
 
     this.verifyMobile = function () {
-        var verifyMobilePath = "/MemberHelper/VerifyMobile";
         $("#verify-errormobile").hide();
         $("#verify-errorcode").hide();
 
@@ -59,7 +58,7 @@ function mobileverification_Class() {
         
         var paraData = { "mobile": phone, "code": code };
         $.ajax({
-            url: verifyMobilePath,
+            url: mobileverification.VerifyMobilePath,
             type: "POST",
             dataType: "Json",
             data: paraData,
@@ -98,8 +97,6 @@ function mobileverification_Class() {
     }
     
     this.sendVerifyCode = function () {
-        var sendVerifyCodePath = "/MemberHelper/SendMobileVerifyCode";
-
         $("#verifypop-errormobile").hide();
         $("#verifypop-errorcode").hide();
         var mobileObj = $("#verifypop-mobile");
@@ -113,10 +110,9 @@ function mobileverification_Class() {
 
         $("#verifypop-sendbtn").addClass("disabled");
         mobileverification.verifyMobileInterval = window.setInterval("mobileverification.mobileVerifyCountdown()", 1000);
-
         var paraData = { "mobile": phone };
         $.ajax({
-            url: sendVerifyCodePath,
+            url: mobileverification.SendVerifyCodePath,
             type: "POST",
             dataType: "Json",
             data: paraData,
@@ -125,7 +121,7 @@ function mobileverification_Class() {
                 var result = data.Data;
                 if (result.r == 1) {
                     $("#verifypop-subbtn").show();
-                } else {
+                } else {//error
                     $("#verifypop-errormobile").show();
                 }
             }

@@ -213,9 +213,9 @@ namespace SkillBank.Site.Web
                 case Enums.SocialTpye.Sina:
                     socialName = ResourceHelper.GetTransText(574);
                     break;
-                case Enums.SocialTpye.RenRen:
-                    socialName = ResourceHelper.GetTransText(575);
-                    break;
+                //case Enums.SocialTpye.Mobile:
+                //    socialName = "";
+                //    break;
                 case Enums.SocialTpye.QQ:
                     socialName = ResourceHelper.GetTransText(576);
                     break;

@@ -20,5 +20,7 @@ namespace SkillBank.Site.DataSource.Data
         public int RelatedMemberId { get; set; }
         public string Title { get; set; }
         public int NotificationId { get; set; }
+        public string Avatar { get; set; }
+        public System.DateTime LastUpdateDate { get; set; }
     }
 }

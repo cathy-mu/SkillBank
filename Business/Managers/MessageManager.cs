@@ -18,6 +18,8 @@ namespace SkillBank.Site.Services.Managers
         List<MessageListItem> GetLastestMessagesByMemberId(int memberId, int pageSize, Byte loadBy);
         List<Message> GetMessagesByFromToId(int memberId1, int memberId2, Byte loadBy);
         Dictionary<int, int> GetMessagesUnReadNum(int memberId);
+        List<ComplaintItem> GetComplaintList(Byte loadType);
+        Byte UpdateComplaint(Byte saveType, int memberId, int relatedId, Byte type);
     }
 
     public class MessageManager : IMessageManager
@@ -27,6 +29,16 @@ namespace SkillBank.Site.Services.Managers
         public MessageManager(IMessageRepository messageRep)
         {
             _messageRep = messageRep;
+        }
+
+        public Byte UpdateComplaint(Byte saveType, int memberId, int relatedId, Byte type)
+        {
+            return _messageRep.UpdateComplaint(saveType, memberId, relatedId, type);
+        }
+
+        public List<ComplaintItem> GetComplaintList(Byte loadType)
+        {
+            return _messageRep.GetComplaintList(loadType);
         }
 
         public int AddMessage(int fromId, int toId, String messageText)
@@ -77,7 +89,7 @@ namespace SkillBank.Site.Services.Managers
             var messages = _messageRep.GetLastestMessagesByMemberId(memberId, loadBy);
             if (messages != null && messages.Count > 0)
             {
-                return messages.OrderByDescending(m => m.MessageId).ToList();
+                return messages.ToList();
             }
             return null;
         }

@@ -12,6 +12,7 @@ namespace SkillBank.Site.Services.Managers
     public interface IOrderManager
     {
         int AddOrder(int studentId, int classId, DateTime bookDate, String remark);
+        Byte UpdateOrderDate(int orderId, DateTime bookDate);
         Byte UpdateOrderStatusWithCoins(int orderId, Byte orderStatus, int studentId, int teacherId);
         Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0);
         //void UpdateBookDate(int orderId, DateTime bookedDate);
@@ -37,7 +38,13 @@ namespace SkillBank.Site.Services.Managers
         {
             _orderRep.HandleMemberOrder(memberId);
         }
-        
+
+        public Byte UpdateOrderDate(int orderId, DateTime bookDate)
+        {
+            var result = _orderRep.UpdateOrderDate(orderId, bookDate);
+            return result;
+        }
+
         public int AddOrder(int studentId, int classId, DateTime bookDate, String remark)
         {
             var result = _orderRep.AddOrder(studentId, classId, bookDate, remark);

@@ -19,6 +19,11 @@ namespace dotNetDR_OAuth2.AccessToken.Providers.WeChat
 
         #region IGetCode 成员
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="redirectUrl"></param>
+        /// <returns></returns>
         public string GenerateCodeUrl(string redirectUrl)
         {
             return string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=SCOPE&state=STATE#wechat_redirect", _appConfig.AppKey, redirectUrl);
@@ -27,7 +32,12 @@ namespace dotNetDR_OAuth2.AccessToken.Providers.WeChat
         #endregion
 
         #region IGetAccessToken 成员
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="redirectUrl"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public string GenerateAccessTokenUrl(string redirectUrl, string code)
         {
             return string.Format("https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code", _appConfig.AppKey, _appConfig.AppSecret, code);
@@ -36,7 +46,11 @@ namespace dotNetDR_OAuth2.AccessToken.Providers.WeChat
         #endregion
 
         #region IAccessToken 成员
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="getAccessTokenUrl"></param>
+        /// <returns></returns>
         public dynamic GetResult(string getAccessTokenUrl)
         {
             ClientRequest cr = new ClientRequest(getAccessTokenUrl);

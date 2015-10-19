@@ -5,11 +5,16 @@ function dashboard_Class() {
 
     this.init = function () {
         this.isTracked = false;
+        this.bindWeChatInterval;
+        this.resendTimeout = 5000;
+        this.resendCount;
+
         $(".class-share").click(function () { dashboard.shareClass($(this)); });
         $(".mypage-notifications").find(".notify-clear").click(function () { dashboard.setMemberNotificationAsRead($(this)); });
         $(".notification-item").find(".notify-remove").click(function () { dashboard.setOrderNotificationAsRead($(this)); });
         sitecommon.showLoginPop(true);
         $("#getcoinintro-verifybtn").click(function () { dashboard.gotoVerifyPage(); });
+        $(".qacode-trigger").click(function () { dashboard.showQACode(); });
     };
 
     this.gotoVerifyPage = function () {
@@ -63,9 +68,7 @@ function dashboard_Class() {
                 if (data == "true") {
                     clearObj.parent().parent().slideUp();
                 }
-            }/*, error: function (e) {
-                    console.log(e);
-                }*/
+            }
         });
     }
 
@@ -86,6 +89,48 @@ function dashboard_Class() {
         });
     }
 
-    
+    this.showQACode = function () {
+        //var qrImg = $("#qrcode-img");
+        //qrImg.attr("src", qrImg.attr("data-src"));
+
+        $(".mobilesite-qrstep1").hide();
+        $(".mobilesite-qrstep2").fadeIn();
+        sitecommon.addTrackEvent("creat qr");
+        //check if bind wechat each 5s * 10times
+        dashboard.resendCount = 10;
+        dashboard.bindWeChatInterval = window.setInterval("dashboard.bindWeChatCountdown()", dashboard.resendTimeout);
+    }
+
+    this.bindWeChatCountdown = function () {
+        var btnObj = $("#verifypop-sendbtn");
+        dashboard.resendCount--;
+        
+        if (dashboard.resendCount <= 0 && dashboard.bindWeChatInterval != undefined) {
+            window.clearInterval(dashboard.bindWeChatInterval);
+            dashboard.bindWeChatInterval = null;
+        }
+
+        var savePath = "/API/Member";
+        $.ajax({
+            url: savePath,
+            type: "GET",
+            dataType: "Json",
+            data: null,
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    if (data.OpenId != "" && data.SocailAccount != data.OpenId) {
+                        $(".mobilesite-qrstep2").hide();
+                        $(".mobilesite-qrstep3").fadeIn();
+                        if (dashboard.bindWeChatInterval != undefined) {
+                            window.clearInterval(dashboard.bindWeChatInterval);
+                            dashboard.bindWeChatInterval = null;
+                        }
+                        dashboard.resendCount = 0;//to clear timer
+                    }
+                }
+            }
+        });
+    }
 
 }

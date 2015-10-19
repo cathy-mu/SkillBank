@@ -36,8 +36,9 @@ namespace SkillBank.FunctionTests
             CityLkpProvider _cityLkpProvider =new CityLkpProvider(new LookupsRepository());
             MetaTagProvider _metaTagProvider = new MetaTagProvider(new LookupsRepository());
             CategoryLkpProvider _categoryLkpProvider = new CategoryLkpProvider(new LookupsRepository());
+            CategoryProvider _categoryProvider = new CategoryProvider(new LookupsRepository());
 
-            _svr = new ContentService(_contentMgr, _blurbProvider, _cityLkpProvider, _metaTagProvider, _categoryLkpProvider);
+            _svr = new ContentService(_contentMgr, _blurbProvider, _cityLkpProvider, _metaTagProvider, _categoryLkpProvider, _categoryProvider);
         }
 
         #region Review Test Functions
@@ -91,8 +92,17 @@ namespace SkillBank.FunctionTests
 
         #endregion
 
+        #region Category Test Functions
+        [TestMethod]
+        public void Should_GetCategoryByCityId()
+        {
+            int cityId = 0;
+            var categories = _svr.GetCategories(cityId);
+            Assert.IsNotNull(categories);
+            categories.Count.AssertIsGreaterThan(0);
+        }
+        #endregion
 
-        
         [TestCleanup]
         public void TestCleanup()
         {

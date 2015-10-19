@@ -18,12 +18,13 @@ namespace SkillBank.Site.Services
         String GetTranslation(int BlurbId);//, Boolean showBlurbId = false
         String GetTranslation(int BlurbId, String LanguageCode, Byte siteVersion);
 
+        ClassCategory GetCategory(int categoryId);
+        List<ClassCategory> GetCategories(int cityId);
         Dictionary<int, CategoryLkpItem> GetAllCategories();
+
         Dictionary<int, CityInfo> GetCities(String localeCode);
         Dictionary<int, CityInfo> GetClassCities(String localeCode);
         String GetCityNameById(String localeCode, int cityId);
-        //MetaTag GetPageMetaTags(String metaKey);
-        //Dictionary<int, String> GetBLurbDic(String LanguageCode, Byte siteVersion);
     }
 
     public class ContentService : IContentService
@@ -31,18 +32,20 @@ namespace SkillBank.Site.Services
         private readonly IContentManager _contentMgr;
         private readonly IBlurbsProvider _blurbProvider;
         private readonly ICityLkpProvider _cityLkpProvider;
+        private readonly ICategoryProvider _categoryProvider;
         private readonly IMetaTagProvider _metaTagProvider;
         private readonly ICategoryLkpProvider _categoryLkpProvider;
 
         #region Constructors
 
-        public ContentService(IContentManager contentMgr, IBlurbsProvider blurbProvider, ICityLkpProvider cityLkpProvider, IMetaTagProvider metaTagProvider, ICategoryLkpProvider categoryLkpProvider)
+        public ContentService(IContentManager contentMgr, IBlurbsProvider blurbProvider, ICityLkpProvider cityLkpProvider, IMetaTagProvider metaTagProvider, ICategoryLkpProvider categoryLkpProvider, ICategoryProvider categoryProvider)
         {
             this._contentMgr = contentMgr;
             this._blurbProvider = blurbProvider;
             this._cityLkpProvider = cityLkpProvider;
             this._metaTagProvider = metaTagProvider;
             this._categoryLkpProvider = categoryLkpProvider;
+            this._categoryProvider = categoryProvider;
         }
 
         #endregion
@@ -147,6 +150,18 @@ namespace SkillBank.Site.Services
 
         }
 
+        public List<ClassCategory> GetCategories(int cityId)
+        {
+            var result = _categoryProvider.GetCategoryLkp(cityId);
+            return result;
+        }
+
+        public ClassCategory GetCategory(int categoryId)
+        {
+            var result = _categoryProvider.GetCategory(categoryId);
+            return result;
+        }
+        
         #endregion
 
     }

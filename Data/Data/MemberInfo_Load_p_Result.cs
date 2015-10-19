@@ -13,17 +13,13 @@ namespace SkillBank.Site.DataSource.Data
     
     public partial class MemberInfo_Load_p_Result
     {
-        public MemberInfo_Load_p_Result()
-        {
-            this.IsLike = false;
-        }
-    
         public int MemberId { get; set; }
         public byte SocialType { get; set; }
         public string Name { get; set; }
         public int CityId { get; set; }
         public decimal PosX { get; set; }
         public decimal PosY { get; set; }
+        public byte VerifyTag { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public bool Gender { get; set; }
@@ -31,18 +27,17 @@ namespace SkillBank.Site.DataSource.Data
         public int CoinsLocked { get; set; }
         public string Avatar { get; set; }
         public string SelfIntro { get; set; }
-        public bool IsActive { get; set; }
         public System.DateTime LastUpdateDate { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public string OpenId { get; set; }
-        public System.DateTime BirthDate { get; set; }
         public string Etag { get; set; }
         public string Address { get; set; }
         public string SocialAccount { get; set; }
         public string ContactName { get; set; }
-        public byte VerifyTag { get; set; }
-        public bool IsLike { get; set; }
-        public string MasterInfo { get; set; }
         public byte NotifyTag { get; set; }
+        public int Credit { get; set; }
+        public bool IsLike { get; set; }
+        public string ExtraInfo { get; set; }
+        public System.DateTime BirthDate { get; set; }
     }
 }

@@ -11,29 +11,32 @@ namespace SkillBank.Site.Services.Managers
 {
     public interface IMemberManager
     {
-        MemberInfo GetMemberInfo(int memberId, int relatedMemberId = 0);
-        MemberInfo GetMemberInfo(String openId);
-        MemberInfo GetMemberInfo(String socialAccount, Byte socialType);
+        MemberInfo GetMemberInfo(int memberId);
+        MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0);
+        MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para="");
         List<MemberInfo> GetMemberInfos(Byte loadType, String searchKey);
 
         Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy);
         Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId);
 
-        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "", Boolean gender = true);
-        Boolean UpdateMemberInfo(Byte saveType, MemberInfo memberInfo);
+        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true);
+        Byte UpdateMemberInfo(Byte saveType, MemberInfo memberInfo);
         void SaveEmailAccount(String name, String email);
         Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd);//admin tool
-        void AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
+        Boolean AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
         //void AddShareClassCoin(int memberId);
         bool HasShareClassCoin(int memberId);
 
-        Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS);
+        Byte SendMobileVerifyCode(Byte type, int memberId, String mobile, Boolean sendSMS);
         Byte VerifyMobile(int memberId, String mobile, String verifyCode);
         Byte CheckIsMobileVerified(int memberId);
         Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount);
 
         void UpdateMemberLikeTag(int memberId, int relatedId, bool isLike);
         List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId);
+
+        Byte SaveWeChatEvent(Byte saveType, int memberId, String openId, String paraId, String paraValue);
+        Byte UpdateCredit(Byte saveType, int memberId, int paraValue);
     }
 
     public class MemberManager : IMemberManager
@@ -46,10 +49,17 @@ namespace SkillBank.Site.Services.Managers
             _repository = repository;
             _intRep = intRep;
         }
+
         public void UpdateMemberLikeTag(int memberId, int relatedId, bool isLike)
         {
             _intRep.UpdateLike((Byte)Enums.DBAccess.FavoriteSaveType.SaveFavoriteTag, (Byte)Enums.FavoriteType.LikeMember, memberId, relatedId, isLike);
         }
+
+        public Byte UpdateCredit(Byte saveType, int memberId, int paraValue)
+        {
+            return _repository.UpdateCredit(saveType, memberId, paraValue);
+        }
+
 
         /// <summary>
         /// Generate mobile verify code and send SMS
@@ -57,8 +67,8 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="memberId"></param>
         /// <param name="mobile"></param>
         /// <param name="sendSMS"></param>
-        /// <returns>0 号码被验证   1 发送成功</returns>
-        public Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS = true)
+        /// <returns>0 号码被验证   1 发送成功   2格式错误   3微博账号存在   4微信账号存在</returns>
+        public Byte SendMobileVerifyCode(Byte saveType, int memberId, String mobile, Boolean sendSMS = true)
         {
             mobile = mobile.Trim();
             var isMobileValid = System.Text.RegularExpressions.Regex.IsMatch(mobile, Constants.ValidationExpressions.Mobile);
@@ -67,21 +77,18 @@ namespace SkillBank.Site.Services.Managers
                 Random rd = new Random();
                 String code = rd.Next(0, 999999).ToString().PadLeft(6, '0');
 
-                Byte saveType = memberId.Equals(0) ? (Byte)Enums.DBAccess.MobileVerificationSaveType.NewMember : (Byte)Enums.DBAccess.MobileVerificationSaveType.OldMember;
                 var result = _repository.UpdateVerification(saveType, memberId, mobile, code);
+
                 //号码未被占用
-                if (sendSMS && !result.Equals(0))
+                if (sendSMS && result.Equals(1))
                 {
-                    if (!mobile.Equals("18194237990"))
-                    {
-                        YunPianSMS.SendMobileValidationCodeSms(mobile, code);
-                    }
+                    YunPianSMS.SendMobileValidationCodeSms(mobile, code);
                 }
                 return result;
             }
             else
             {
-                return 2;
+                return 2;//invalid mobile
             }
         }
 
@@ -91,12 +98,24 @@ namespace SkillBank.Site.Services.Managers
             var result = _repository.UpdateVerification(saveType, memberId, "", "");
             return result;
         }
-        
+
         public Byte VerifyMobile(int memberId, String mobile, String verifyCode)
         {
-            Byte saveType = (Byte)Enums.DBAccess.MobileVerificationSaveType.Verify;
-            var result = _repository.UpdateVerification(saveType, memberId, mobile, verifyCode);
-            return result;
+            mobile = mobile.Trim();
+            var isMobileValid = System.Text.RegularExpressions.Regex.IsMatch(mobile, Constants.ValidationExpressions.Mobile);
+            verifyCode = verifyCode.Trim();
+            var isCodeValid = System.Text.RegularExpressions.Regex.IsMatch(verifyCode, Constants.ValidationExpressions.ValidationCode);
+
+            if (isMobileValid && isCodeValid)
+            {
+                Byte saveType = (Byte)Enums.DBAccess.MobileVerificationSaveType.Verify;
+                var result = _repository.UpdateVerification(saveType, memberId, mobile, verifyCode);
+                return result;
+            }
+            else
+            {
+                return 2;
+            }
         }
 
         public Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount)
@@ -105,28 +124,33 @@ namespace SkillBank.Site.Services.Managers
             return result;
         }
 
-        public MemberInfo GetMemberInfo(int memberId, int relatedMemberId = 0)
+        public MemberInfo GetMemberInfo(int memberId)
         {
-            Byte loadType = relatedMemberId.Equals(0) ? (Byte)Enums.DBAccess.MemberLoadType.ByMemberId : (Byte)Enums.DBAccess.MemberLoadType.ByMemberIdAndRelatedMemberId;
-            var result = _repository.GetMemberInfo(loadType, "", 0, memberId, relatedMemberId);
+            var result = _repository.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, memberId, 0);
             return result;
         }
 
-        public MemberInfo GetMemberInfo(String openId)
+        public MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0)
         {
-            Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.ByOpenId;
-            var result = _repository.GetMemberInfo(loadType, openId, 0, 0);
+            var result = _repository.GetMemberInfo(loadType, memberId, relatedMemberId);
             return result;
         }
 
-        public MemberInfo GetMemberInfo(String socialAccount, Byte socialType)
+        public MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para="")
         {
-            Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.BySocialAccount;
-            var result = _repository.GetMemberInfo(loadType, socialAccount, socialType, 0);
+            Byte loadType;
+            if (socialType.Equals((Byte)Enums.SocialTpye.Mobile) && !String.IsNullOrEmpty(para))
+            {
+                loadType = (Byte)Enums.DBAccess.MemberLoadType.ByMobileAPass;
+            }else
+            {
+                loadType = (Byte)Enums.DBAccess.MemberLoadType.BySocialAccount;
+            }
+            var result = _repository.GetMemberInfo(loadType, socialAccount, socialType, para);
             return result;
         }
 
-        public List<MemberInfo> GetMemberInfos(Byte loadType,String  searchKey)
+        public List<MemberInfo> GetMemberInfos(Byte loadType, String searchKey)
         {
             var result = _repository.GetMemberInfos(loadType, searchKey);
             return result;
@@ -141,13 +165,13 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="memberName"></param>
         /// <param name="email"></param>
         /// <returns>1 new member, 0 exists member</returns>
-        public int CreateMember(out int memberId, String socialId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "", Boolean gender = true)
+        public int CreateMember(out int memberId, String socialId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true)
         {
-            int result = _repository.CreateMember(out memberId, socialId, socialType, memberName, email, avatar, mobile, code, etag, gender);
+            int result = _repository.CreateMember(out memberId, socialId, socialType, memberName, email, avatar, mobile, code, pass, etag, gender);
             return result;
         }
 
-        public Boolean UpdateMemberInfo(Byte saveType, MemberInfo memberInfo)
+        public Byte UpdateMemberInfo(Byte saveType, MemberInfo memberInfo)
         {
             memberInfo.Phone = (String.IsNullOrEmpty(memberInfo.Phone) ? "" : memberInfo.Phone);
             memberInfo.SelfIntro = (String.IsNullOrEmpty(memberInfo.SelfIntro) ? "" : memberInfo.SelfIntro);
@@ -157,10 +181,10 @@ namespace SkillBank.Site.Services.Managers
             memberInfo.Name = (String.IsNullOrEmpty(memberInfo.Name) ? "" : memberInfo.Name);
             memberInfo.PosX = (memberInfo.PosX.Equals(null) ? 0 : memberInfo.PosX);
             memberInfo.PosY = (memberInfo.PosY.Equals(null) ? 0 : memberInfo.PosY);
-            memberInfo.BirthDate = ((memberInfo.BirthDate.Equals(null) || memberInfo.BirthDate.Year<1900) ? new DateTime(1900, 01, 01) : memberInfo.BirthDate);
-            memberInfo.Avatar = (String.IsNullOrEmpty(memberInfo.Avatar) ? "" : memberInfo.Avatar); 
+            memberInfo.BirthDate = ((memberInfo.BirthDate.Equals(null) || memberInfo.BirthDate.Year < 1900) ? new DateTime(1900, 01, 01) : memberInfo.BirthDate);
+            memberInfo.Avatar = (String.IsNullOrEmpty(memberInfo.Avatar) ? "" : memberInfo.Avatar);
 
-            var result = _repository.UpdateMemberInfo(memberInfo.MemberId, saveType, memberInfo.Phone, memberInfo.CityId, memberInfo.Name, memberInfo.SelfIntro, memberInfo.Gender, memberInfo.Email, memberInfo.PosX, memberInfo.PosY, memberInfo.BirthDate,memberInfo.Avatar);
+            var result = _repository.UpdateMemberInfo(memberInfo.MemberId, saveType, memberInfo.Phone, memberInfo.CityId, memberInfo.Name, memberInfo.SelfIntro, memberInfo.Gender, memberInfo.Email, memberInfo.PosX, memberInfo.PosY, memberInfo.BirthDate, memberInfo.Avatar);
             return (result);
         }
 
@@ -184,16 +208,11 @@ namespace SkillBank.Site.Services.Managers
             return _repository.GetMemberNums(memberId, classId, loadBy);
         }
 
-        public void AddMembersCoin(int memberId, int coinsToAdd, Byte addType)
+        public Boolean AddMembersCoin(int memberId, int coinsToAdd, Byte addType)
         {
-            _repository.AddMembersCoin(memberId, coinsToAdd, addType);
+            return _repository.AddMembersCoin(memberId, coinsToAdd, addType);
         }
 
-        //public void AddShareClassCoin(int memberId)
-        //{
-        //    _repository.AddMembersCoin(memberId, 3, (Byte)Enums.DBAccess.CoinUpdateType.AddClassShareCoin);
-        //}
-                
         public bool HasShareClassCoin(int memberId)
         {
             return _repository.HasShareClassCoin(memberId);
@@ -203,6 +222,12 @@ namespace SkillBank.Site.Services.Managers
         {
             return _intRep.GetFavorites(loadType, memberId, paraId);
         }
+
+        public Byte SaveWeChatEvent(Byte saveType, int memberId, String openId, String paraId, String paraValue)
+        {
+            return _repository.SaveWeChatEvent(saveType, memberId, openId, paraId, paraValue);
+        }
+
 
     }
 

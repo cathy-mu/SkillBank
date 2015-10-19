@@ -32,6 +32,6 @@ namespace SkillBank.Site.DataSource.Data
         public byte IsMobileVerified { get; set; }
         public byte IsEmailVerified { get; set; }
         public bool IsLike { get; set; }
-        public string MasterInfo { get; set; }
+        public string ExtraInfo { get; set; }
     }
 }

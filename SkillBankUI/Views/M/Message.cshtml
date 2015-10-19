@@ -7,9 +7,11 @@
 <div class="content" id="message-page">
     <nav>
         <div class="segmented-control card">
-            <a class="control-item active red-dot-wrapper message-tab" href="#item1mobile">私信</a>
-            <a class="control-item red-dot-wrapper notification-tab" href="#">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["s"] > 0)
-                                                                                                {<span class="red-dot"></span>}通知</a>
+            <a class="control-item active red-dot-wrapper message-tab" href="#item1mobile" data-memberid="@ViewBag.MemberInfo.MemberId">私信</a>
+            <a class="control-item red-dot-wrapper action-tab" href="#" data-memberid="@ViewBag.MemberInfo.MemberId">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["a"] > 0)
+                                                                                                                     {<span class="red-dot"></span>}动态</a>
+            <a class="control-item red-dot-wrapper notification-tab" href="#" data-memberid="@ViewBag.MemberInfo.MemberId">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["s"] > 0)
+                                                                                                                           {<span class="red-dot"></span>}通知</a>
         </div>
     </nav>
     <div>
@@ -44,15 +46,96 @@
             </ul>
         </div>
         <div id="item2mobile" class="control-content">
+            <ul class="avatar-text private-msg">
+                @if (Model.Notifications != null && ViewBag.MemberInfo != null)
+                {
+                    foreach (var notification in Model.Notifications)
+                    {
+                    <li class="card">
+                        <a href="#" data-transition="slide-in">
+                            <div class="pull-left flag-num">
+                                <a href="@Url.Action("personal", "m", new { id = notification.RelatedMemberId })">
+                                    <img class="avatar" src="@ContentHelper.GetAvatarPath(notification.Avatar, "mm")">
+                                </a>
+                                @if (notification.TypeRank < 2)
+                                {
+                                    <span class="badge">1</span>
+                                }
+                            </div>
+                            @if (notification.TypeId.Equals(6))
+                            {
+                                <div class="msg-title">
+                                    <a href="@Url.Action("course", "m", new { id = notification.ClassOrderId })#comment">
+                                        <time class="pull-right">@TextContentHelper.GetDateString(notification.LastUpdateDate)</time>
+                                        <h4 class="flag-num">@notification.Name</h4>
+                                    </a>
+                                </div>
+                                <a href="@Url.Action("course", "m", new { id = notification.ClassOrderId })#comment">
+                                    <p>在你的课程《 @Html.Raw(TagHelper.GetTextSubSting(notification.Title, 20, true)) 》上留言</p>
+                                </a>}
+                            else if (notification.TypeId.Equals(7))
+                            {
+                                <div class="msg-title">
+                                    <a href="@Url.Action("course", "m", new { id = notification.ClassOrderId })#reviewtab">
+                                        <time class="pull-right">@TextContentHelper.GetDateString(notification.LastUpdateDate)</time>
+                                        <h4 class="flag-num">@notification.Name</h4>
+                                    </a>
+                                </div>
+                                <a href="@Url.Action("course", "m", new { id = notification.ClassOrderId })#reviewtab">
+                                    <p>评价了你教授的课程《 @Html.Raw(TagHelper.GetTextSubSting(notification.Title, 20, true)) 》</p>
+                                </a>}
+                            else if (notification.TypeId.Equals(8))
+                            {
+                                <div class="msg-title">
+                                    <a href="@Url.Action("personal", "m")#reviewtab">
+                                        <time class="pull-right">@TextContentHelper.GetDateString(notification.LastUpdateDate)</time>
+                                        <h4 class="flag-num">@notification.Name</h4>
+                                    </a>
+                                </div>
+                                <a href="@Url.Action("personal", "m")#reviewtab">
+                                    <p>评价了你学习的课程《 @Html.Raw(TagHelper.GetTextSubSting(notification.Title, 20, true)) 》</p>
+                                </a>
+                            }
+                            else if (notification.TypeId.Equals(9))
+                            {
+                                <div class="msg-title">
+                                    <a href="@Url.Action("course", "m", new { id = notification.ClassOrderId })">
+                                        <time class="pull-right">@TextContentHelper.GetDateString(notification.LastUpdateDate)</time>
+                                        <h4 class="flag-num">@notification.Name</h4>
+                                    </a>
+                                </div>
+                                <a href="@Url.Action("course", "m", new { id = notification.ClassOrderId })">
+                                    <p>喜欢了你的课程《 @Html.Raw(TagHelper.GetTextSubSting(notification.Title, 20, true)) 》</p>
+                                </a>
+                            }
+                            else if (notification.TypeId.Equals(30))
+                            {
+                                <div class="msg-title">
+                                    <a href="@Url.Action("personal", "m")">
+                                        <time class="pull-right">@TextContentHelper.GetDateString(notification.LastUpdateDate)</time>
+                                        <h4 class="flag-num">@notification.Name</h4>
+                                    </a>
+                                </div>
+                                <a href="@Url.Action("personal", "m")">
+                                    <p>关注了你</p>
+                                </a>
+                            }
+                        </a>
+                    </li>
+                    }
+                }
+            </ul>
+        </div>
+        <div id="item3mobile" class="control-content">
             <ul class="avatar-text">
                 <li class="card">
                     <div class="msg-title">
                         <time class="pull-right">@TextContentHelper.GetDateString(new DateTime(2015, 05, 13))</time>
-                        <h4 class="flag-num">技能银行手机公测版正式上线啦<!--<span class="badge">1</span>-->
+                        <h4 class="flag-num">@Html.GetTrans(696)<!--<span class="badge">1</span>-->
                         </h4>
                     </div>
                     <p>
-                        关注技能银行订阅号SkillBank,可以随时访问我们的手机平台。公测期间如有任何问题或反馈，请通过订阅号或平台私信技能菌。
+                        @Html.GetTrans(697)
                     </p>
                 </li>
 

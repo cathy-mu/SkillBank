@@ -11,7 +11,8 @@ using SkillBank.Site.Web;
 using SkillBank.Site.Common;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.Web.ViewModel;
-
+using dotNetDR_OAuth2.APIs.WeChat;
+using SkillBank.Site.Services.Providers;
 
 namespace SkillBankWeb.Controllers
 {
@@ -38,6 +39,26 @@ namespace SkillBankWeb.Controllers
         }
 
         /// <summary>
+        /// Student's Booked Class and BookedOrder
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Credit()
+        {
+            int memberId = WebContext.Current.MemberId;
+            var memberInfo = (memberId > 0) ? _commonService.GetMemberInfo(memberId) : null;
+            ViewBag.MemberInfo = memberInfo;
+            ViewBag.ShowSignUp = true;
+           
+            if (memberInfo.LastUpdateDate.ToString("yyyy-MM-dd").Equals(DateTime.Now.ToString("yyyy-MM-dd")))
+            {
+                ViewBag.ShowSignUp = false;
+            }
+    
+            return View();
+
+        }
+
+        /// <summary>
         /// Dashboard
         /// </summary>
         /// <returns></returns>
@@ -45,12 +66,9 @@ namespace SkillBankWeb.Controllers
         {
             if (IsMobile())
             {
-                Response.Status = "301 Moved Permanently";
-                Response.AddHeader("Location", Constants.PageURL.MobileDashboard);
-                Response.End();
+                Response.Redirect(Constants.PageURL.MobileDashboard);
             }
-
-
+            
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("dashboard");
 
             var memberId = WebContext.Current.MemberId;
@@ -92,13 +110,32 @@ namespace SkillBankWeb.Controllers
                 dashboardModel.HasBasicInfo = (memberInfo.CityId > 0);
                 dashboardModel.HasClass = (dashboardModel.ClassEditList != null && dashboardModel.ClassEditList.Count > 0);
 
+                ViewBag.ShowQRCode = false;
                 if (memberInfo.SocialType.Equals(1))
                 {
+                    if (memberInfo.SocialAccount.Equals(memberInfo.OpenId))
+                    {
+                        ViewBag.ShowQRCode = true;
+                        String scenceId = String.Concat("1", memberId.ToString());
+                        String accessTonken = GetAccessToken();
+                        ViewBag.AccessToken = accessTonken;
+                        String postJsonData = "{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\":" + scenceId + "}}}";
+                        String ticket = "";
+                        String QRCodeUrl = WeChatHelper.GetQRCode(accessTonken, postJsonData, ref ticket);
+
+                        ViewBag.QRCodeURL = QRCodeUrl;
+                        if (memberId > 0)
+                        {
+                            var result = _commonService.SaveWeChatEvent((Byte)Enums.DBAccess.WeChatEventSaveType.AddEvent, memberId, "", scenceId, ticket);
+                        }
+                    }
+
                     var ShareText = ResourceHelper.GetTransText(606).Replace("{0}", ConfigConstants.ThirdPartySetting.SocialNetwork.SkillBankAccountName[memberInfo.SocialType]).Replace("{1}", ";").Split(';');
                     ViewBag.ShareText1 = ShareText[0];
                     ViewBag.ShareText2 = ShareText.Length > 1 ? ShareText[1] : "";
                     ViewBag.IsSocialLogin = CheckLoginStatus(true, true) ? 1 : 0;
                 }
+                
 
                 return View(dashboardModel);
             }
@@ -156,12 +193,15 @@ namespace SkillBankWeb.Controllers
                 MemberTeachModel teachModel = new MemberTeachModel();
                 teachModel.ClassEditList = _commonService.GetClassEditInfoByMemberId(memberId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherId);
                 teachModel.Orders = _commonService.GetOrderListByTeacher(memberId, shouldCheckOrder);
-                teachModel.IsMemberInfoCompleted = (memberInfo.CityId>0); 
-
-                var ShareText = ResourceHelper.GetTransText(606).Replace("{0}", ConfigConstants.ThirdPartySetting.SocialNetwork.SkillBankAccountName[memberInfo.SocialType]).Replace("{1}", ";").Split(';');
-                ViewBag.ShareText1 = ShareText[0];
-                ViewBag.ShareText2 = ShareText.Length > 1 ? ShareText[1] : "";
-                ViewBag.IsSocialLogin = CheckLoginStatus(true, true) ? 1 : 0;
+                teachModel.IsMemberInfoCompleted = (memberInfo.CityId>0);
+                
+                if (ConfigConstants.ThirdPartySetting.SocialNetwork.SkillBankAccountName.ContainsKey(memberInfo.SocialType))
+                {
+                    var ShareText = ResourceHelper.GetTransText(606).Replace("{0}", ConfigConstants.ThirdPartySetting.SocialNetwork.SkillBankAccountName[memberInfo.SocialType]).Replace("{1}", ";").Split(';');
+                    ViewBag.ShareText1 = ShareText[0];
+                    ViewBag.ShareText2 = ShareText.Length > 1 ? ShareText[1] : "";
+                    ViewBag.IsSocialLogin = CheckLoginStatus(true, true) ? 1 : 0;
+                }
                 return View(teachModel);
             }
             else
@@ -342,6 +382,30 @@ namespace SkillBankWeb.Controllers
                 return true;
             }
             return false;
+        }
+
+
+        private string GetAccessToken()
+        {
+            SocialCacheItem cachedToken;
+            var accessToken = StaticCacheProvider.GetObject(Constants.CacheDicKeys.WeChatAccessToken);
+            if (System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName))
+            {
+                if (accessToken == null)
+                {
+                    DateTime expireDate = new DateTime();
+                    String token = WeChatHelper.GetToken(out expireDate);
+                    cachedToken = new SocialCacheItem() { ItemValue = token, ExpireDate = expireDate };
+                    StaticCacheProvider.SetObject(Constants.CacheDicKeys.WeChatAccessToken, cachedToken);
+                    return token;
+                }
+                else
+                {
+                    cachedToken = (SocialCacheItem)StaticCacheProvider.GetObject(Constants.CacheDicKeys.WeChatAccessToken);
+                    return cachedToken.ItemValue;
+                }
+            }
+            return "";
         }
 
 

@@ -36,13 +36,13 @@
         width: 120px;
     }
 
-    input.s{
-        width: 50px;
-    }
+        input.s {
+            width: 50px;
+        }
 
-    input.l{
-        width: 300px;
-    }
+        input.l {
+            width: 300px;
+        }
 
 
     .funbtn {
@@ -106,11 +106,20 @@
     </div>
 
     <div class="func">
-        <div class="funcinlinetitle">5 发送验证码到手机:</div>
+        <div class="funcinlinetitle">5 发送验证码/验证手机:</div>
         <span>
-            <input type="text" value="13564813923" id="valid-mobile" /></span>
+            <input type="text" value="13564813923" id="valid-mobile" />
+            <input type="text" value="0" id="valid-memberid" />(获得验证码老用户的用户id，0为新用户)
+            <input type="text" value="@ViewBag.VerifyCode" id="valid-code" />
+        </span>
         <div class="funinlinebtn">
-            <input type="button" value="send" id="sendcodebtn" />
+            <input type="button" value="新用户发送验证" id="sendcodebtn" />
+        </div>
+        <div class="funinlinebtn">
+            <input type="button" value="手机注册/发送验证" id="sendmobilebtn" />
+        </div>
+        <div class="funinlinebtn">
+            <input type="button" value="验证手机" id="verifybtn" />
         </div>
     </div>
 
@@ -192,10 +201,20 @@
         <input type="text" value="15000000000" id="memberinfo-mobile" />
         <span class="funclabel">自我介绍 :</span>
         <input type="text" value="self introduction" id="memberinfo-intro" />
+        <span class="funclabel">验证码 :</span>
+        <input type="text" value="@ViewBag.VerifyCode" id="memberinfo-code" />
+        <span class="funclabel">密码 :</span>
+        <input type="text" value="" id="memberinfo-pass" />
         <span class="funclabel">avatar :</span>
         <input type="text" value="/2/profile/m_1.jpg" id="memberinfo-avatar" />
         <div class="funinlinebtn">
             <input type="button" value="Update Member" id="updatemember" />
+        </div>
+        <div class="funbtn">
+            <input type="button" value="Update Profile" id="updateprofile" />
+        </div>
+        <div class="funbtn">
+            <input type="button" value="Update Password" id="updatepassword" />
         </div>
     </div>
 
@@ -204,7 +223,7 @@
         <span class="funclabel">学生/老师 :</span>
         <input type="text" value="1" id="order-mid" />
         <span class="funclabel">课程id :</span>
-        <input type="text" value="7" id="order-cid"/>
+        <input type="text" value="7" id="order-cid" />
         <span class="funclabel">订课时间 :</span>
         <input type="text" value="2015-01-08" id="order-date" />
         <span class="funclabel">备注 :</span><input type="text" value="Test remark for order" id="order-remark" style="width: 300px" />
@@ -221,12 +240,17 @@
         <input type="text" value="2" id="order-status" />
         <span class="funclabel">课程名 :</span>
         <input type="text" value="课程名" id="order-title" />
+        <span class="funclabel">订课日期 :</span>
+        <input type="text" value="15-10-10" id="order-date" />
         <br />
         <div class="funbtn">
             <input type="button" value="Update Order" id="updateorder" />
         </div>
         <div class="funbtn">
             <input type="button" value="Add Order" id="addorder" />
+        </div>
+        <div class="funbtn">
+            <input type="button" value="Update Order Date" id="updateorderdate" />
         </div>
     </div>
 

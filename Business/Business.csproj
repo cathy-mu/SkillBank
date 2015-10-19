@@ -70,7 +70,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheManager\CacheContentManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CacheManager\ClassListCacheMgr.cs" />
+    <Compile Include="CacheManager\ClassItemCacheMgr.cs" />
     <Compile Include="Managers\ClassManager.cs" />
+    <Compile Include="CacheManager\ClassNumCacheMgr.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Managers\ReportToolsManager.cs" />
     <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\MessageManager.cs" />
@@ -88,17 +96,24 @@
     <Compile Include="Providers\BlurbsProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Providers\CategoryLkpProvider.cs" />
+    <Compile Include="Providers\CategoryProvider.cs" />
     <Compile Include="Providers\CategoryTagProvider.cs" />
     <Compile Include="Providers\CityLkpProvider.cs" />
+    <Compile Include="CacheManager\RecommendClassCacheMgr.cs" />
+    <Compile Include="Providers\CategoryLkpProvider.cs" />
     <Compile Include="Providers\MailTemplateProvider.cs" />
     <Compile Include="Providers\MetaTagProvider.cs" />
+    <Compile Include="Providers\StaticCacheProvider.cs" />
     <Compile Include="Service\CommonService.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Service\ContentService.cs" />
     <Compile Include="Tencent\Cryptography.cs" />
     <Compile Include="Tencent\WXBizMsgCrypt.cs" />
+    <Compile Include="Models\WeChatBaseMessage.cs" />
+    <Compile Include="Utility\DataTagHelper.cs" />
+    <Compile Include="Utility\CryptographyHelper.cs" />
+    <Compile Include="Utility\XMLHelper.cs" />
     <Compile Include="WindsorServicesRegistry.cs">
       <SubType>Code</SubType>
     </Compile>

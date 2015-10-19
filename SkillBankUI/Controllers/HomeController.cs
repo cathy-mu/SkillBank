@@ -60,13 +60,17 @@ namespace SkillBank.Controllers
             String envCode = System.Configuration.ConfigurationManager.AppSettings["ENV"];
             if (isMobileRedirect || envCode.Equals(ConfigConstants.EnvSetting.Web1EnvName))
             {
+                Response.Redirect(ConfigConstants.EnvSetting.MobileHome[envCode]);
+            }
+            else if (envCode.Equals(ConfigConstants.EnvSetting.Web1EnvName))
+            {
                 Response.Status = "301 Moved Permanently";
-                Response.AddHeader("Location", isMobileRedirect ? ConfigConstants.EnvSetting.MobileHome[envCode] : ConfigConstants.EnvSetting.SiteHome[envCode]);
+                Response.AddHeader("Location", ConfigConstants.EnvSetting.SiteHome[envCode]);
                 Response.End();
             }
-            
+
             HomePageModel homePageModel = new HomePageModel();
-            
+
             int memberId = WebContext.Current.MemberId;
             LoadNotificationAlert(memberId);
             var metaTags = MetaTagHelper.GetMetaTags("home");
@@ -77,14 +81,20 @@ namespace SkillBank.Controllers
             ViewBag.MemberId = memberId;
             ViewBag.MemberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
 
-
-            var result = _commonService.GetRecommendationClassPopList(memberId);
+            //class list without cache
+            /*var result = _commonService.GetRecommendationClassPopList(memberId);
             if (result != null && result.Count > 0)
             {
                 homePageModel.MasterClassList = result.Take(4).ToList();
                 homePageModel.LatestClassList = (result.Count > 4) ? result.Skip(4).Take(4).ToList() : null;
                 homePageModel.OddClassList = (result.Count > 8) ? result.Skip(8).Take(4).ToList() : null;
-            }
+            }*/
+
+            //class list with cache
+            int classNum = 0;
+            homePageModel.MasterClassList = _commonService.GetCachedRecommendationClassList(1, 4, 1, 1, out classNum);
+            homePageModel.LatestClassList = _commonService.GetCachedRecommendationClassList(2, 4, 1, 1, out classNum);
+            homePageModel.OddClassList = _commonService.GetCachedRecommendationClassList(3, 4, 1, 1, out classNum);
 
             return View(homePageModel);
         }

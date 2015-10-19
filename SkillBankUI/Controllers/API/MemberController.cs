@@ -25,10 +25,14 @@ namespace SkillBankWeb.Controllers.API
             public Boolean Gender { get; set; }
             public String CityName { get; set; }
             public String Intro { get; set; }
-            //public String Mobile { get; set; }
             public String Avatar { get; set; }
+            //web site check wechat binding for socail
+            public Byte SocailType { get; set; }
+            public String SocailAccount { get; set; }
+            public String OpenId { get; set; }
         }
 
+        //only for login user check own info
         public MemberController(ICommonService commonService, IContentService contentService)
         {
             _commonService = commonService;
@@ -36,7 +40,7 @@ namespace SkillBankWeb.Controllers.API
         }
 
         /// <summary>
-        /// 
+        /// Mobile site update profile
         /// </summary>
         /// <param name="item"></param>
         /// <returns>1保存成功，2:数据保存失败，3 城市无效，4 名字无效，5 自我介绍为空</returns>
@@ -67,12 +71,17 @@ namespace SkillBankWeb.Controllers.API
 
                 Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateBasicInfo;
                 MemberInfo memberInfo = new MemberInfo() { MemberId = memberId, Gender = item.Gender, Name = item.Name, SelfIntro = item.Intro, CityId = cityId, Avatar = item.Avatar };
-                var isSaved = _commonService.UpdateMemberProfile(memberInfo, saveType);
+                var result = _commonService.UpdateMemberProfile(memberInfo, saveType);
 
-                return isSaved ? 1 : 2;//saved or not
+                return result;
             }
         }
 
+        /// <summary>
+        /// PC site check wechat binding
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public MemberInfoItem Get(int id = 0)
         {
             int memberId = WebContext.Current.MemberId;
@@ -82,7 +91,7 @@ namespace SkillBankWeb.Controllers.API
             {
                 var cityDic = _contentService.GetCities("cn");
                 String cityName = LookupHelper.GetCityNameById(cityDic, item.CityId);
-                return new MemberInfoItem { Gender = item.Gender, Name = item.Name, Intro = item.SelfIntro, CityName = cityName };
+                return new MemberInfoItem { Gender = item.Gender, Name = item.Name, Intro = item.SelfIntro, CityName = cityName, SocailType = item.SocialType, SocailAccount = item.SocialAccount, OpenId = item.OpenId };
             }
             else
             {

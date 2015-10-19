@@ -37,8 +37,10 @@ namespace SkillBank.Site.DataSource.Data
         public string SocialAccount { get; set; }
         public string ContactName { get; set; }
         public byte VerifyTag { get; set; }
-        public bool IsLike { get; set; }
-        public string MasterInfo { get; set; }
         public byte NotifyTag { get; set; }
+        public int Credit { get; set; }
+        public string Pass { get; set; }
+        public bool IsLike { get; set; }
+        public string ExtraInfo { get; set; }
     }
 }

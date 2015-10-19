@@ -16,27 +16,26 @@ namespace SkillBank.Site.Services.Managers
         void UpdateClassLikeTag(int memberId, int classId, Boolean isLike);
 
         int CreateClass(int memberId, int categoryId, Byte skillLevel, Byte teacheLevel, out Boolean isExist);
-        Boolean UpdateClassInfo(Byte updateType, int classId, Byte paraValue, Byte completeStatus = 1);
-        Boolean UpdateClassInfo(Byte updateType, int classId, Boolean paraValue, Byte completeStatus = 1);
-        Boolean UpdateClassInfo(Byte updateType, int classId, String paraValue, Byte completeStatus = 1);
-
         int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
-        Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue);
+        Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, String paraValue);
         List<ClassEditItem> GetClassEditInfoForAdmin(Boolean isRejected);
         List<ClassEditItem> GetClassEditInfoByMemberId(int memberId, Byte loadType);
 
+        List<ClassInfo_LoadByPage_p_Result> GetClassPagingList(Byte categoryId, int cityId, Decimal posX, Decimal posY, int memberId, int minId, int maxId, Byte orderBy);
+        List<ClassInfo_LoadByKey_p_Result> GetClassSearchList(String searchKey, int cityId, Decimal posX, Decimal posY, int minId, int maxId, Byte orderBy);
         List<ClassListItem> GetClassTabList(Byte loadBy, Byte typeId, int memberId, String searchKey = "", Decimal posX = 0, Decimal posY = 0, int cityId = 0);
         List<ClassListItem> GetClassList(Byte loadBy, Byte OrderByType, int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, int memberId, out int totalNum, String searchKey = "", Decimal posX = 0, Decimal posY = 0);
-        List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int totalNum, out int pageNum, Byte OrderByType, Boolean isAsc, Decimal posX = 0, Decimal posY = 0, String searchKey = "");
+        //List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int totalNum, out int pageNum, Byte OrderByType, Boolean isAsc, Decimal posX = 0, Decimal posY = 0, String searchKey = "");
         ClassInfo GetClassInfoByClassId(int paraId);
-        ClassInfo GetClassInfoByClassMemberId(int paraId, int memberId = 0);
+        //ClassInfo GetClassInfoByClassMemberId(int paraId, int memberId = 0);
         List<ClassInfo> GetClassInfo(Byte loadType, int paraId, int memberId = 0);
         List<ClassInfo> GetClassInfoForAdmin(Boolean isRejected);
         //void AddShareClassCoin(int memberId);
         //Boolean HasShareClassCoin(int memberId);
         ClassEditItem GetClassInfoItem(Byte loadType, int classId, int memberId = 0);
+        List<ClassCollection_Load_p_Result> GetClassCollection(Byte loadBy, int memberId, int paraId);
     }
 
     public class ClassManager : IClassManager
@@ -50,6 +49,11 @@ namespace SkillBank.Site.Services.Managers
             _classRep = classRep;
             _tagRep = tagRep;
             _intRep = intRep;
+        }
+
+        public List<ClassCollection_Load_p_Result> GetClassCollection(Byte loadBy, int memberId, int paraId)
+        {
+            return _classRep.GetClassCollection(loadBy, memberId, paraId);
         }
         
         public int AddComment(int memberId, int classId, String commentText)
@@ -101,9 +105,9 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="classId"></param>
         /// <param name="paraValue"></param>
         /// <returns></returns>
-        public Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue)
+        public Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true)
         {
-            _classRep.UpdateClassEditInfo(updateType, classId, paraValue);
+            _classRep.UpdateClassEditInfo(updateType, classId, paraValue, isValue);
             return true;
         }
 
@@ -137,7 +141,7 @@ namespace SkillBank.Site.Services.Managers
             var result = _classRep.UpdateClassEditInfo(savaType, classInfo);
             return result;
         }
-        
+
 
         public List<ClassListItem> GetClassTabList(Byte loadBy, Byte typeId, int memberId, String searchKey = "", Decimal posX = 0, Decimal posY = 0, int cityId = 0)
         {
@@ -175,74 +179,14 @@ namespace SkillBank.Site.Services.Managers
             return null;
         }
 
-        public List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int totalNum, out int pageNum, Byte OrderByType, Boolean isAsc, Decimal posX = 0, Decimal posY = 0, String searchKey = "")
+        public List<ClassInfo_LoadByPage_p_Result> GetClassPagingList(Byte categoryId, int cityId, Decimal posX, Decimal posY, int memberId, int minId, int maxId, Byte orderBy)
         {
-            totalNum = 0;
-            pageNum = 0;
-            var classes = _classRep.SearchClass(cityId, categoryId, isParentCate, searchKey, pageSize, pageId, out totalNum);
-            if (classes != null && classes.Count() > 0)
-            {
-                List<ClassItem> result;
-                switch ((ClientSetting.ClassListOrderType)OrderByType)
-                {
-                    case ClientSetting.ClassListOrderType.ByRank:
-                        if (isAsc)
-                        {
-                            result = classes.OrderBy(c => c.Rank).ThenByDescending(c => c.LastUpdateDate).ToList();
-                        }
-                        else
-                        {
-                            result = classes.OrderByDescending(c => c.Rank).ThenByDescending(c => c.LastUpdateDate).ToList();
-                        }
-                        break;
-                    case ClientSetting.ClassListOrderType.ByLevel:
-                        if (isAsc)
-                        {
-                            result = classes.OrderBy(c => c.Level).ThenByDescending(c => c.LastUpdateDate).ToList();
-                        }
-                        else
-                        {
-                            result = classes.OrderByDescending(c => c.Level).ThenByDescending(c => c.LastUpdateDate).ToList();
-                        }
-                        break;
-                    case ClientSetting.ClassListOrderType.ByLastUpdate:
-                        if (isAsc)
-                        {
-                            result = classes.OrderBy(c => c.LastUpdateDate).ToList();
-                        }
-                        else
-                        {
-                            result = classes.OrderByDescending(c => c.LastUpdateDate).ToList();
-                        }
-                        break;
-                    default://by Distince
-                        result = classes;
-                        if (isAsc)
-                        {
-                            result = classes.OrderBy(c => (posX - c.PosX) * (posX - c.PosX) + (posY - c.PosY) * (posY - c.PosY)).ToList();
-                        }
-                        else
-                        {
-                            result = classes.OrderByDescending(c => (posX - c.PosX) * (posX - c.PosX) + (posY - c.PosY) * (posY - c.PosY)).ToList();
-                        }
-                        break;
-                }
+            return _classRep.GetClassPagingList(categoryId, cityId, posX, posY, memberId, minId, maxId, orderBy);
+        }
 
-                totalNum = result.Count();
-                pageNum = (totalNum % pageSize == 0) ? (totalNum / pageSize) : (totalNum / pageSize) + 1;
-
-                // return null when selected page id bigger than page number
-                if (pageId > pageNum)
-                {
-                    return null;
-                }
-
-                result = result.Skip(pageSize * (pageId - 1))
-                                   .Take(pageSize)
-                                   .ToList();
-                return result;
-            }
-            return null;
+        public List<ClassInfo_LoadByKey_p_Result> GetClassSearchList(String searchKey, int cityId, Decimal posX, Decimal posY, int minId, int maxId, Byte orderBy)
+        {
+           return _classRep.GetClassSearchList(searchKey, cityId, posX, posY, minId, maxId, orderBy);
         }
 
         /// <summary>
@@ -258,11 +202,11 @@ namespace SkillBank.Site.Services.Managers
             return ((classes != null && classes.Count > 0) ? classes[0] : null);
         }
 
-        public ClassInfo GetClassInfoByClassMemberId(int classId, int memberId = 0)
-        {
-            var classes = _classRep.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByClassAndCurrMemberId, classId, memberId);
-            return ((classes != null && classes.Count > 0) ? classes[0] : null);
-        }
+        //public ClassInfo GetClassInfoByClassMemberId(int classId, int memberId = 0)
+        //{
+        //    var classes = _classRep.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByClassAndCurrMemberId, classId, memberId);
+        //    return ((classes != null && classes.Count > 0) ? classes[0] : null);
+        //}
 
         public List<ClassEditItem> GetClassEditInfoByMemberId(int memberId, Byte loadType)
         {
@@ -279,27 +223,7 @@ namespace SkillBank.Site.Services.Managers
         {
             return _classRep.GetClassInfo(loadType, paraId, memberId);
         }
-                
 
-        #region For class edit page 1.0, old class edit process
-
-        public Boolean UpdateClassInfo(Byte updateType, int classId, Byte paraValue, Byte completeStatus = 1)
-        {
-            _classRep.UpdateClassInfo(updateType, classId, paraValue);
-            return true;
-        }
-
-        public Boolean UpdateClassInfo(Byte updateType, int classId, Boolean paraValue, Byte completeStatus = 1)
-        {
-            _classRep.UpdateClassInfo(updateType, classId, paraValue);
-            return true;
-        }
-
-        public Boolean UpdateClassInfo(Byte updateType, int classId, String paraValue, Byte completeStatus = 1)
-        {
-            _classRep.UpdateClassInfo(updateType, classId, paraValue);
-            return true;
-        }
 
         public List<ClassInfo> GetClassInfoForAdmin(Boolean isRejected)
         {
@@ -313,7 +237,6 @@ namespace SkillBank.Site.Services.Managers
             }
         }
 
-        #endregion
 
         public List<Boolean> CheckClassSteps(Int16 stepNo)
         {

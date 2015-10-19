@@ -91,54 +91,7 @@ namespace SkillBankWeb.Controllers
             _commonService.UpdateClassLikeTag(memberId, classId, isLike);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-
-        #region old class edit process
-        /// <summary>
-        /// Ajax update class info (4 create class and class info edit page)
-        /// </summary>
-        /// <param name="updateType"></param>
-        /// <param name="classId"></param>
-        /// <param name="infoValue"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult UpdateClassTextInfo(Byte updateType, int classId, String infoValue, Byte completeStatus = 1)
-        {
-            var result = true;
-            _commonService.UpdateClassInfo(updateType, classId, infoValue, completeStatus);
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        /// <summary>
-        /// Ajax update class info (4 create class and class info edit page)
-        /// </summary>
-        /// <param name="updateType"></param>
-        /// <param name="classId"></param>
-        /// <param name="infoValue"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult UpdateClassSByteInfo(Byte updateType, int classId, Byte infoValue, Byte completeStatus = 1)
-        {
-            var result = _commonService.UpdateClassInfo(updateType, classId, infoValue, completeStatus);
-            //Send Class Prove
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="updateType"></param>
-        /// <param name="classId"></param>
-        /// <param name="infoValue"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult UpdateClassBoolInfo(Byte updateType, int classId, Boolean infoValue, Byte completeStatus = 1)
-        {
-            var result = _commonService.UpdateClassInfo(updateType, classId, infoValue);
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-              
-        #endregion
-
+                
         /// <summary>
         /// Ajax update class info (4 create class and class info edit page)
         /// </summary>
@@ -193,37 +146,43 @@ namespace SkillBankWeb.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UpdateClassStatus(int classId, Byte infoValue, Boolean forActive = false, String className = "", String name = "", String email = "", String mobile = "")
+        public JsonResult UpdateClassStatus(int classId, Byte infoValue, Boolean forActive = false, Boolean isProved = true, String className = "", String name = "", String email = "", String mobile = "")
         {
+            Boolean result;
             Byte updateType = forActive ? (Byte)Enums.DBAccess.ClassSaveType.SetActiveTag : (Byte)Enums.DBAccess.ClassSaveType.UpdateProvedTag;
-
-            var result = _commonService.UpdateClassEditInfo(updateType, classId, infoValue);
-            Boolean sendNotify = System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName);
-
-            if (!forActive && sendNotify)
+            if (forActive)
             {
-                if (infoValue.Equals(1))
+                result = _commonService.UpdateClassEditInfo(updateType, classId, infoValue);
+            }
+            //prove course
+            else
+            {
+                result = _commonService.UpdateClassEditInfo(updateType, classId, infoValue, isProved);
+                Boolean sendNotify = System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName);
+
+                if (sendNotify)
                 {
-                    //Send Class Prove email 
-                    if (!String.IsNullOrEmpty(mobile))
+                    if (isProved)//Send Class Prove notify
                     {
-                        _commonService.SendClassProveSMS(true, mobile, className, Constants.PageURL.MobileMyCoursePage);
+                        if (!String.IsNullOrEmpty(mobile))
+                        {
+                            _commonService.SendClassProveSMS(true, mobile, className, Constants.PageURL.MobileMyCoursePage);
+                        }
+                        else if (!String.IsNullOrEmpty(className))
+                        {
+                            SendCloudEmail.SendClassProvedMail(email, name, className);
+                        }
                     }
-                    else
+                    else //Send reject notify
                     {
-                        SendCloudEmail.SendClassProvedMail(email, name, className);
-                    }
-                }
-                else if (infoValue.Equals(2))
-                {
-                    //Send reject email
-                    if (!String.IsNullOrEmpty(mobile))
-                    {
-                        _commonService.SendClassProveSMS(false, mobile, className, Constants.PageURL.MobileMyCoursePage);
-                    }
-                    else
-                    {
-                        SendCloudEmail.SendClassRejectMail(email, name, className);
+                        if (!String.IsNullOrEmpty(mobile))
+                        {
+                            _commonService.SendClassProveSMS(false, mobile, className, Constants.PageURL.MobileMyCoursePage);
+                        }
+                        else
+                        {
+                            SendCloudEmail.SendClassRejectMail(email, name, className);
+                        }
                     }
                 }
             }
@@ -308,29 +267,29 @@ namespace SkillBankWeb.Controllers
         }
 
 
-        [HttpPost]
-        public JsonResult GetClassInfo(int cityId, Byte categoryId, Boolean isParentCate, int pageId, Byte type = (Byte)ClientSetting.ClassListOrderType.ByDisctince, Boolean asc = true)
-        {
-            int memberId = WebContext.Current.MemberId;
-            var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
-            ViewBag.MemberInfo = memberInfo;
+        //[HttpPost]
+        //public JsonResult GetClassInfo(int cityId, Byte categoryId, Boolean isParentCate, int pageId, Byte type = (Byte)ClientSetting.ClassListOrderType.ByDisctince, Boolean asc = true)
+        //{
+        //    int memberId = WebContext.Current.MemberId;
+        //    var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
+        //    ViewBag.MemberInfo = memberInfo;
 
-            int pageSize = 12;
-            int classNum = 0;
-            int pageNum = 0;
-            //List<ClassItem> result;
-            if (memberInfo != null)
-            {
-                var result = _commonService.SearchClass(cityId, categoryId, isParentCate, pageSize, pageId, out classNum, out pageNum, type, asc, memberInfo.PosX, memberInfo.PosY);
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                //not a member
-                var result = _commonService.SearchClass(cityId, categoryId, isParentCate, pageSize, pageId, out classNum, out pageNum, type, asc, 0, 0);
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //    int pageSize = 12;
+        //    int classNum = 0;
+        //    int pageNum = 0;
+        //    //List<ClassItem> result;
+        //    if (memberInfo != null)
+        //    {
+        //        var result = _commonService.SearchClass(cityId, categoryId, isParentCate, pageSize, pageId, out classNum, out pageNum, type, asc, memberInfo.PosX, memberInfo.PosY);
+        //        return Json(result, JsonRequestBehavior.AllowGet);
+        //    }
+        //    else
+        //    {
+        //        //not a member
+        //        var result = _commonService.SearchClass(cityId, categoryId, isParentCate, pageSize, pageId, out classNum, out pageNum, type, asc, 0, 0);
+        //        return Json(result, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
 
         [HttpPost]
         public JsonResult AddComment(int classId, String comment)

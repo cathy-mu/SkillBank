@@ -19,6 +19,7 @@ namespace SkillBank.Site.DataSource.Data
         List<SkillCategory> GetSkillCategories();
         Dictionary<String, MetaTag> GetMetaTagLkp();
         List<CityInfo> GetCityLkp();
+        List<ClassCategory> GetClassCategories(int cityId);
     }
 
     public class LookupsRepository : Entities, ILookupsRepository
@@ -29,19 +30,30 @@ namespace SkillBank.Site.DataSource.Data
         }
 
         /// <summary>
-        /// Get skill categories
+        /// Get new categories by cityid
         /// </summary>
         /// <returns></returns>
-        public List<SkillCategory> GetSkillCategories()
+        public List<ClassCategory> GetClassCategories(int cityId)
         {
-            return SkillCategory_LoadAll_p();
+            return ClassCategory_Load_p(cityId);
         }
 
         /// <summary>
         /// Load all skill categories
         /// </summary>
         /// <returns></returns>
-        private List<SkillCategory> SkillCategory_LoadAll_p()
+        private List<ClassCategory> ClassCategory_Load_p(int cityId)
+        {
+            var cityIdParameter = new ObjectParameter("CityId", cityId);
+            ObjectResult<ClassCategory_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ClassCategory_Load_p_Result>("ClassCategory_Load_p", cityIdParameter);
+            return LookupsMapper.Map(result);
+        }
+
+        /// <summary>
+        /// Get skill categories
+        /// </summary>
+        /// <returns></returns>
+        public List<SkillCategory> GetSkillCategories()
         {
             ObjectResult<SkillCategory_LoadAll_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SkillCategory_LoadAll_p_Result>("SkillCategory_LoadAll_p");
             return LookupsMapper.Map(result);

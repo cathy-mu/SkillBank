@@ -36,5 +36,8 @@ namespace SkillBank.Site.DataSource.Data
         public string Available { get; set; }
         public string Remark { get; set; }
         public string WhyU { get; set; }
+        public bool HasOffline { get; set; }
+        public string Tags { get; set; }
+        public byte Cate_Id { get; set; }
     }
 }

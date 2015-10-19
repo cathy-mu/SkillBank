@@ -9,6 +9,7 @@ using SkillBank.Site.Services.CacheProviders;
 using SkillBank.Site.Services.Managers;
 using SkillBank.Site.Web.Context;
 using System.Configuration;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBank.Site.Web
 {
@@ -89,6 +90,20 @@ namespace SkillBank.Site.Web
                 return "";
             }
            
+        }
+
+        public static Boolean GetIsLike(String likeList, int classId)
+        {
+            //if (!String.IsNullOrEmpty(likeList))
+            //{
+            //    var classTag = String.Concat(classId, ",");
+            //    if (likeList.StartsWith(classTag) || likeList.Contains(String.Concat(",", classTag)))
+            //    {
+            //        return true;
+            //    }
+            //}
+            //return false;
+            return DataTagHelper.GetIsLike(likeList, classId);
         }
 
 

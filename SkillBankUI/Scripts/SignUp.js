@@ -9,7 +9,10 @@ function signup_Class() {
         this.nameObj = $("#signup-name");
         this.isEnable = true;
         
-        this.initInfo();
+        if (typeof (mixpanel) != "undefined") {
+            mixpanel.track("signup page");
+        }
+
         this.initEvents();
     };
 
@@ -40,37 +43,7 @@ function signup_Class() {
             signup.validSignUpForm();
         });
     };
-
-    this.initInfo = function () {
-        var isAuth = $.getUrlParam("code");
-        if (isAuth == undefined || isAuth == "") {
-            var name = sitecommon.getMemberSocialName();
-            var socialType = sitecommon.getMemberSocialType();
-            var avatarPath = sitecommon.getMemberSocialAvatar();
-            this.updateHeaderMemberInfo = function (name, avatar) {
-                $("#header-membermenu-avatar").attr("src", sitecommon.getMemberAvatarPath(avatarPath, "s"));
-                $("#header-membermenu-name").text(name);
-            }
-
-            $("#signup-socialname").text(name);
-            $("#signup-socialavatar").attr("src", sitecommon.getMemberAvatarPath(avatarPath, "m"));
-            //$("#signup-hidavatar").val(sitecommon.getMemberSocialAvatar());
-            //$("#signup-hidsid").val(sitecommon.getMemberSocialId());
-            //$("#signup-hidtype").val(sitecommon.getMemberSocialType());
-        }
-        //Redirect if user already log in
-        else if ($("#signup-mid").val() != undefined)
-        {
-            var memberId = $("#signup-mid").val();
-            if (memberId != "" && memberId > 0) {
-                //signup.redirectAfterLogin();
-            } else {
-                if (typeof (mixpanel) != "undefined") {
-                    mixpanel.track("signup page");
-                }
-            }
-        }
-    }
+        
 
     /* For account (Social login) */
     this.createMember = function () {
@@ -110,25 +83,11 @@ function signup_Class() {
     }
 
     this.redirectAfterLogin = function () {
-        var backUrl = sitecommon.getCookie(sitecommon.backurl);
-
-        if (backUrl == undefined || backUrl == "") {
-            backUrl = document.referrer.toLowerCase();
-        } else {
-            backUrl = decodeURIComponent(backUrl);
-        }
-
         if ($.getUrlParam("code") == "y") {
             
-        }/*
-        else if (backUrl.indexOf("/login") > 0) {
-            location.href = "/m/register";
-        }*/
-        else if (backUrl == "" || backUrl.indexOf("/signup") > 0) {
-            location.href = "/";
-        }
-        else {
-            location.href = backUrl;
+        }else {
+            //location.href = backUrl;
+            location.href = "/member";
         }
     }
     

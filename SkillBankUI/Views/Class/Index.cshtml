@@ -7,50 +7,54 @@
     <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.2&key=7f937514830a46ce132a30aa3253073d"></script>
     @Html.CombresCustomUrl("classListJs")
 }
-
 <div class="body">
     <div class="inner">
 
         <div class="class-results">
-            
+
             <div class="class-filter">
                 <div class="form-inline">
-                    <div class="class-tabs-holder @((Model.TabId == 1)?"active":"")" data-id="1">
+                    <div class="class-tabs-holder @((Model.TabId == 1) ? "active" : "")" data-id="1">
                         <span>@Html.GetTrans(686)</span>
                     </div>
-                    <div class="class-tabs-holder @((Model.TabId == 3)?"active":"")" data-id="3">
+                    <div class="class-tabs-holder @((Model.TabId == 3) ? "active" : "")" data-id="3">
                         <span>@Html.GetTrans(690)</span>
                     </div>
                     @if (Model.TabId == 0)
                     {
-                    <div class="class-filter-cityholder">
-                    <select name="" id="class-city-list" class="form-control chosen span6">
-                        <option value="0" @(Model.SelCityId==0?"selected=selected":"")>@Html.GetTrans(579) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-                        @if (Model.CityLkp != null)
-                        {
-                            foreach (var item in Model.CityLkp)
-                            {
-                            <option value="@item.Value.CityId" @(Model.SelCityId==item.Value.CityId?"selected=selected":"")>@item.Value.CityName</option>
-                            }
-                        }
-                    </select>
-                    </div>
-                    <div class="class-filter-categoryholder">
-                    <select name="" id="class-category-list" class="form-control chosen span6">
-                        <option value="0" data-hassub="0" @(Model.SelCategoryId==0?"selected=selected":"")>@Html.GetTrans(578)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-                        @if (Model.CategoryLkp != null)
-                        {
-                            foreach (var item in Model.CategoryLkp)
-                            {
-                            <option value="@item.CateId" data-hassub="@(String.IsNullOrEmpty(item.SubCategories)?0:1)" @(Model.SelCategoryId==item.CateId?"selected=selected":"")>@Html.GetTrans(item.BlubId)</option>
-                            }
-                        }
-                    </select>  
-                    </div>
-                    }else{
-                    <div class="class-tabs-holder" data-id="0">
-                        <span>所有课程</span>
-                    </div>
+                        <div class="class-filter-cityholder">
+                            <select name="" id="class-city-list" class="form-control chosen span6">
+                                <option value="0" @(Model.SelCityId == 0 ? "selected=selected" : "")>@Html.GetTrans(579) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                @if (Model.CityLkp != null)
+                                {
+                                    foreach (var item in Model.CityLkp)
+                                    {
+                                        if (@item.Value.CityId != 1000)
+                                        {
+                                         <option value="@item.Value.CityId" @(Model.SelCityId == item.Value.CityId ? "selected=selected" : "")>@item.Value.CityName</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="class-filter-categoryholder">
+                            <select name="" id="class-category-list" class="form-control chosen span6">
+                                <option value="0" data-hassub="0" @(Model.SelCategoryId == 0 ? "selected=selected" : "")>@Html.GetTrans(578)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                @if (Model.CategoryLkp != null)
+                                {
+                                    foreach (var item in Model.CategoryLkp)
+                                    {
+                                    <option value="@item.CateId" data-hassub="@(String.IsNullOrEmpty(item.SubCategories) ? 0 : 1)" @(Model.SelCategoryId == item.CateId ? "selected=selected" : "")>@Html.GetTrans(item.BlubId)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="class-tabs-holder" data-id="0">
+                            <span>所有课程</span>
+                        </div>
                     }
                     <!--<span id="class-subcategory-list-frame">
                         <select name="" id="class-subcategory-list" class="form-control span6 chosen">
@@ -62,7 +66,7 @@
                                     foreach (var cate in subCates)
                                     {
                                         var optItem = cate.Split(',');
-                                    <option value="@optItem[0]" @((Model.SelSubCategoryId!=null && Model.SelSubCategoryId.ToString()==optItem[0])?"selected=selected":"") >@optItem[1]</option>
+                                    <option value="@optItem[0]" @((Model.SelSubCategoryId != null && Model.SelSubCategoryId.ToString() == optItem[0]) ? "selected=selected" : "") >@optItem[1]</option>
                                     }
                                 }
                             }
@@ -70,94 +74,97 @@
                     </span>-->
                 </div>
             </div>
-            
+
             <!---->
             <!-- end of class filter -->
             @if (Model.OrderByKey != null)
             {
-            <div class="class-sorting row-fluid">
-                <div class="span5">
-                    <h4>@Model.SearchResultTitle</h4><input id="order-column" value="0" type="hidden" /><input id="order-asc" value="0" type="hidden" />
-                </div>
-                @if (ViewBag.MemberInfo != null && ViewBag.MemberInfo.PosX != 0 && ViewBag.MemberInfo.PosY != 0)
-                {
-                    <div class="span7 tright" id="classlist-orderby">
-                    <span class="gray-light spaced-right">@Html.GetTrans(217)</span>
-                         <a href="#" class="btn btn-sm btn-default @(Model.OrderByKey.Equals("0_0")?"selected":"")" id="classlist-bydate" data-id="0_0">@Html.GetTrans(634) <i class="fa fa-long-arrow-down"></i></a>
-                         <a href="#" class="btn btn-sm btn-default @(Model.OrderByKey.Equals("1_1")?"selected":"")" id="classlist-bydistance" data-id="1_1">@Html.GetTrans(218) <i class="fa fa-long-arrow-up"></i></a>
-                    <!--<a href="#" class="btn btn-sm btn-default" id="classlist-byrank" data-id="3">@Html.GetTrans(219) <i class="fa fa-long-arrow-up"></i></a>
+                <div class="class-sorting row-fluid">
+                    <div class="span5">
+                        <h4>@Model.SearchResultTitle</h4>
+                        <input id="order-column" value="0" type="hidden" /><input id="order-asc" value="0" type="hidden" />
+                    </div>
+                    @if (ViewBag.MemberInfo != null && ViewBag.MemberInfo.PosX != 0 && ViewBag.MemberInfo.PosY != 0)
+                    {
+                        <div class="span7 tright" id="classlist-orderby">
+                            <span class="gray-light spaced-right">@Html.GetTrans(217)</span>
+                            <a href="#" class="btn btn-sm btn-default @(Model.OrderByKey.Equals("0_0") ? "selected" : "")" id="classlist-bydate" data-id="0_0">@Html.GetTrans(634) <i class="fa fa-long-arrow-down"></i></a>
+                            <a href="#" class="btn btn-sm btn-default @(Model.OrderByKey.Equals("1_1") ? "selected" : "")" id="classlist-bydistance" data-id="1_1">@Html.GetTrans(218) <i class="fa fa-long-arrow-up"></i></a>
+                            <a href="#" class="btn btn-sm btn-default @(Model.OrderByKey.Equals("2_0") ? "selected" : "")" id="classlist-byreview" data-id="2_0">按评价次数 <i class="fa fa-long-arrow-down"></i></a>
+                            <!--<a href="#" class="btn btn-sm btn-default" id="classlist-byrank" data-id="3">@Html.GetTrans(219) <i class="fa fa-long-arrow-up"></i></a>
                     <a href="#" class="btn btn-sm btn-default" id="classlist-bylevel" data-id="2">@Html.GetTrans(220) <i class="fa fa-long-arrow-down"></i></a>-->
+                        </div>
+                    }
                 </div>
-                }
-            </div>
             }
             <!-- end of class sorting -->
             @if (Model.ClassList != null)
             {
-            <div class="class-list">
-                <ul class="cf">
+                <div class="class-list">
+                    <ul class="cf">
                         @foreach (var classItem in Model.ClassList)
                         {
-                        var index = (Model.ClassList.IndexOf(classItem));
-                        <li class="@((index % 3 == 0) ? "row-start" : "")">
-                            <div class="class-item">
-                                <div class="class-item-hd">
-                                    <a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" target="_blank">
-                                        <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "b")"></a>
-                                    <div class="class-item-bar">
+                            var index = (Model.ClassList.IndexOf(classItem));
+                            <li class="@((index % 3 == 0) ? "row-start" : "")">
+                                <div class="class-item">
+                                    <div class="class-item-hd">
+                                        <a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" target="_blank">
+                                            <img src="@ContentHelper.GetClassCoverPath(classItem.Cover, "b")"></a>
+                                        <div class="class-item-bar">
+                                            <div class="row-fluid">
+                                                <div class="span6">@TextContentHelper.GetLevelName(classItem.Level)</div>
+                                                <div class="span6 tright"><i class="fa fa-comment icon-large"></i>&nbsp;@classItem.ReviewNum&nbsp;&nbsp;&nbsp;<i class="class-list-linkicon fa fa-heart icon-large @((String.IsNullOrEmpty(ViewBag.FavoriteClassList) ? classItem.IsLike : TagHelper.GetIsLike(ViewBag.FavoriteClassList, classItem.ClassId)) ? "fa-heart-like" : "")" data-id="@classItem.ClassId"></i>&nbsp;<label class="class-list-linknum">@classItem.LikeNum</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="class-item-bd">
+                                        <h3><a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" target="_blank">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 50, true))</a></h3>
+                                    </div>
+                                    <div class="class-item-ft">
                                         <div class="row-fluid">
-                                            <div class="span6">@TextContentHelper.GetLevelName(classItem.Level)</div>
-                                            <div class="span6 tright"><i class="fa fa-comment icon-large"></i>&nbsp;@classItem.ReviewNum&nbsp;&nbsp;&nbsp;<i class="class-list-linkicon fa fa-heart icon-large @(classItem.IsLike ? "fa-heart-like" : "")" data-id="@classItem.ClassId"></i>&nbsp;<label class="class-list-linknum">@classItem.LikeNum</label></div>
+                                            <div class="span2">
+                                                <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">
+                                                    <img src="@ContentHelper.GetAvatarPath(classItem.Avatar, "m")" class="avatar-m"></a>
+                                            </div>
+                                            <div class="span10">
+                                                <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">@classItem.Name<br>
+                                                    <span class="gray-light"><i class="fa fa-map-marker icon-large"></i>
+                                                        @if (ViewBag.MemberInfo == null)
+                                                        { @Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(0, classItem.CityId, 0, 0))
+                                                        }
+                                                        else if (ViewBag.MemberInfo.MemberId == classItem.Member_Id && ViewBag.MemberInfo.PosX == 0)
+                                                        { <a href="@Url.Action("Location", "Member")">设置我的坐标</a>
+                                                        }
+                                                        else if (ViewBag.MemberInfo.MemberId == classItem.Member_Id)
+                                                        { @Html.GetTrans(593)
+                                                        }
+                                                        else
+                                                        {@Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(ViewBag.MemberInfo.CityId, classItem.CityId, classItem.PosX, classItem.PosY))
+                                                        }
+                                                    </span></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="class-item-bd">
-                                    <h3><a href="@Url.Action("detail", "class", new { id = classItem.ClassId })" target="_blank">@Html.Raw(TagHelper.GetTextSubSting(classItem.Title, 50, true))</a></h3>
-                                </div>
-                                <div class="class-item-ft">
-                                    <div class="row-fluid">
-                                        <div class="span2">
-                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">
-                                                <img src="@ContentHelper.GetAvatarPath(classItem.Avatar,"m")" class="avatar-m"></a>
-                                        </div>
-                                        <div class="span10">
-                                            <a href="@Url.Action("index", "profile", new { id = classItem.Member_Id })" class="gray-dark">@classItem.Name<br>
-                                                <span class="gray-light"><i class="fa fa-map-marker icon-large"></i>
-                                                    @if (ViewBag.MemberInfo == null)
-                                                    { @Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(0, classItem.CityId, 0, 0))
-                                                    }else if (ViewBag.MemberInfo.MemberId == classItem.Member_Id && ViewBag.MemberInfo.PosX == 0)
-                                                    { <a href="/class/add/@classItem.ClassId">设置我的坐标</a>
-                                                    }
-                                                    else if (ViewBag.MemberInfo.MemberId == classItem.Member_Id)
-                                                    { @Html.GetTrans(593)
-                                                    }
-                                                    else
-                                                    {@Html.Raw(TextContentHelper.GetClassOwnerDistinceTag(ViewBag.MemberInfo.CityId, classItem.CityId, classItem.PosX, classItem.PosY))
-                                                    }
-                                                </span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
                         }
-                </ul>
-            </div>
-            <!-- end of class list -->
+                    </ul>
+                </div>
+                <!-- end of class list -->
             
-            <div class="cf">
-                <ul class="pagination pull-right">
-                 @if(Model.PageId!=1)
-                 {<li data-id="pre"><span>&laquo;</span></li>}
-                 @for (int i = 1; i <= Model.PageNum; i++)
-                 {
-                     <li data-id="@i" @((i == Model.PageId)?"class=curr":"")><span>@i</span></li>
-                 }
-                 @if(Model.PageId!=Model.PageNum)
-                 {<li data-id="next"><span>&raquo;</span></li>}
-                </ul>
-            </div>
-            <!-- end of pagination -->
+                <div class="cf">
+                    <ul class="pagination pull-right">
+                        @if (Model.PageId != 1)
+                        {<li data-id="pre"><span>&laquo;</span></li>}
+                        @for (int i = 1; i <= Model.PageNum; i++)
+                        {
+                            <li data-id="@i" @((i == Model.PageId) ? "class=curr" : "")><span>@i</span></li>
+                        }
+                        @if (Model.PageId != Model.PageNum)
+                        {<li data-id="next"><span>&raquo;</span></li>}
+                    </ul>
+                </div>
+                <!-- end of pagination -->
             }
         </div>
 

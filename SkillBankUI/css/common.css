@@ -789,24 +789,26 @@ nav.bar.bar-tab .tab-item {
   margin-top: 0; }
 
 /*register.html*/
-#register-page.content .register_form {
+#register-page.content .register_form, #verification-page.content .register_form {
   margin: 25px 5% 0; }
-  #register-page.content .register_form .input-group {
+  #register-page.content .register_form .input-group, #verification-page.content .register_form .input-group {
     position: relative;
     background: none;
     margin-bottom: 5px; }
-    #register-page.content .register_form .input-group input[type=number], #register-page.content .register_form .input-group input[type=text], #register-page.content .register_form .input-group input[type=tel] {
+    #register-page.content .register_form .input-group input[type=number], #register-page.content .register_form .input-group input[type=text], #register-page.content .register_form .input-group input[type=tel]
+    , #verification-page.content .register_form .input-group input[type=number], #verification-page.content .register_form .input-group input[type=text], #verification-page.content .register_form .input-group input[type=tel] {
       background-color: #fff;
       height: 40px;
       border: 1px solid #ddd; }
-      #register-page.content .register_form .input-group input[type=number]#verifyCode, #register-page.content .register_form .input-group input[type=text]#verifyCode, #register-page.content .register_form .input-group input[type=tel]#verifyCode {
+      #register-page.content .register_form .input-group input[type=number]#verifyCode, #register-page.content .register_form .input-group input[type=text]#verifyCode, #register-page.content .register_form .input-group input[type=tel]#verifyCode 
+      ,#verification-page.content .register_form .input-group input[type=number]#verifyCode, #verification-page.content .register_form .input-group input[type=text]#verifyCode, #verification-page.content .register_form .input-group input[type=tel]#verifyCode {
         padding-right: 110px; }
     #register-page.content .register_form .input-group input[type=checkbox] {
       background: #333;
       border-radius: 5px; }
-    #register-page.content .register_form .input-group button[type=submit] {
+    #register-page.content .register_form .input-group button[type=submit], #verification-page.content .register_form .input-group button[type=submit] {
       margin: 15px 0; }
-    #register-page.content .register_form .input-group .btn-grey {
+    #register-page.content .register_form .input-group .btn-grey, #verification-page.content .register_form .input-group .btn-grey {
       position: absolute;
       right: 7px;
       top: 5px;
@@ -818,7 +820,7 @@ nav.bar.bar-tab .tab-item {
   #register-page.content .register_form a {
     text-decoration: underline; }
 
-#register-page.content .info {
+#register-page.content .info, #register-page.content .info {
   text-align: center;
   clear: both; }
   #register-page.content .info img {
@@ -1959,31 +1961,134 @@ h3.nocourse-title {
 .post-course-page form {
   margin-top: 30px;
 }
-/*
-.search-bar .input-group .input-group-addon {
-    top:2px;
-}
-
-#course-search .input-group input.icon-search {
-  margin-bottom: 0;
-  background-color: transparent;
-  border-top: 0;
-  border-right: 0;
-  border-left: 0;
-  border-radius: 6px;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  padding:10px 10px 10px 25px;
-  border:solid 1px #415561;
-  color:#fff;
-}*/
 
 .courses-manage-page .red-dot-wrapper .red-dot {
     margin-left: 30px;
 }
 
+/*dash board new functions*/
 .btn-wechat {
   color: #fff;
   background-color: #54c21d;
   border: 1px solid #54c21d;
+}
+
+.navigate-right span.addmethod, .getcredit-method span.addmethod {
+  border-radius: 5px;
+  height: auto;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px;
+  background-color:#FFD048;
+  color:#FFF;
+  margin-right:10px;
+}
+
+#howToShare .content {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#howToShare .arrowicon{
+    overflow: hidden;
+    color: #FFF;
+    padding: 20px 30px 0 0;
+}
+
+#howToShare .desc {
+    overflow: hidden;
+    color: #FFF;
+    margin-top: 10px;
+}
+
+#howToShare .desc p {
+    width:100%;
+    color: #FFF;
+    text-align: center;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.setting-page .table-view-cell .navigate-right span.signin-status {
+	font-size: 12px;
+	float: right;
+	color: #999;
+	padding-right: 30px;
+}
+
+.navigate-right .icon-checked {
+	margin: 0 30px 0px 7px;
+}
+
+.navigate-right .icon-checked:before {
+	position: absolute;
+	top: 50%;
+        /*display: inline-block;*/
+	color: #FFD048;
+	font-size: 20px;
+	line-height: 1;
+	text-decoration: none;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	-webkit-font-smoothing: antialiased;
+}
+.desc, .desc-nums {
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-justify-content: space-between;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 12px;
+	font-size: 12px;
+}
+.desc span {
+	width: 100%;
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+}
+.desc-nums span {
+	width: 50%;
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	font-size: 16px;
+	padding: 0 10px;
+}
+.desc-nums span label {
+	color: #126f8f;
+	font-weight: 700;
+	text-align: left;
+}
+input#exchange-coin {
+	text-align: center;
+}
+.credit-twinkling {
+	-webkit-animation: twinkling 1s 2 ease-in-out;
+	animation: twinkling 1s 2 ease-in-out;
+}
+.desc-bottom a {
+	color: #126f8f;
+	font-size: 16px;
+}
+
+@keyframes twinkling
+{
+from {color: #666;font-weight:400;} 
+to {color: #126f8f;font-weight:700;}
+}
+
+@-moz-keyframes twinkling /* Firefox */
+{
+from {color: #666;font-weight:400;} 
+to {color: #126f8f;font-weight:700;}
+}
+
+@-webkit-keyframes twinkling /* Safari 和 Chrome */
+{
+from {color: #666;font-weight:400;} 
+to {color: #126f8f;font-weight:700;}
 }

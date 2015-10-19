@@ -18,8 +18,7 @@ namespace SkillBankWeb.API
     public class AlterController : ApiController
     {
         public readonly ICommonService _commonService;
-        //
-        // GET: /Alter/
+
 
         public AlterController(ICommonService commonService)
         {
@@ -33,12 +32,13 @@ namespace SkillBankWeb.API
         /// </summary>
         /// <param name="type">1:Update Notification to altered(Use server code ,but not API for now) 2:Update messages to altered</param>
         /// <returns></returns>
-        public Boolean UpdateAlter(int id = 0)
+        public Boolean UpdateAlter(Byte type)
         {
             int memberId = GetMemberId(true);
             if (memberId > 0)
             {
-                _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetSystemAsReadByMemberAndNotiId, memberId);
+                //(Byte)Enums.DBAccess.NotificationTagUpdateType
+                _commonService.UpdateNotification(type, memberId);
                 return true;
             }
             return false;

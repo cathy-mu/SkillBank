@@ -20,5 +20,6 @@ namespace SkillBank.Site.Web.ViewModel
 
         //public List<RecommendationItem> RecommendationList;
         public Dictionary<Byte, RecommendationItem> RecommendationDic;
+        public List<ClassCategory> ClassCategoryLkp;
     }
 }

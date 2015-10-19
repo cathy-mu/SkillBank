@@ -99,6 +99,28 @@
             腾讯Authorization Code授权机制的实现类
             </summary>
         </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.Providers.WeChat.WeChatAuthorizationCode.GenerateCodeUrl(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="redirectUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.Providers.WeChat.WeChatAuthorizationCode.GenerateAccessTokenUrl(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="redirectUrl"></param>
+            <param name="code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.AccessToken.Providers.WeChat.WeChatAuthorizationCode.GetResult(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="getAccessTokenUrl"></param>
+            <returns></returns>
+        </member>
         <member name="T:dotNetDR_OAuth2.AccessToken.Providers.Sina.SinaAuthorizationCode">
             <summary>
             新浪Authorization Code授权机制的实现类
@@ -428,6 +450,55 @@
             <summary>
             以post方式上传带附件的请求时使用
             </summary>
+        </member>
+        <member name="T:dotNetDR_OAuth2.APIs.WeChat.WeChatHelper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.WeChat.WeChatHelper.GenerateString4Signature(System.String,System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="jsapiTicket"></param>
+            <param name="noncestr"></param>
+            <param name="timestamp"></param>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.WeChat.WeChatHelper.GetResult(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="requestUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.WeChat.WeChatHelper.GetToken(System.DateTime@)">
+            <summary>
+            
+            </summary>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.WeChat.WeChatHelper.GetJsAPITicket(System.String,System.DateTime@)">
+            <summary>
+            
+            </summary>
+            <param name="accessToken"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.WeChat.WeChatHelper.GetTimestamp">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dotNetDR_OAuth2.APIs.WeChat.WeChatHelper.GetNonceStr">
+            <summary>
+            创建随机字符串
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

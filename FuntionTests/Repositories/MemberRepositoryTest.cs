@@ -29,7 +29,7 @@ namespace SkillBank.FunctionTests
         public void Should_GetMemberInfo_ByMemberId()
         {
             Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.ByMemberId;
-            var result = _repository.GetMemberInfo(loadType,"",0,memberId);
+            var result = _repository.GetMemberInfo(loadType, memberId, 0);
             Assert.IsNotNull(result);
         }
 
@@ -37,7 +37,7 @@ namespace SkillBank.FunctionTests
         public void Should_GetMemberInfo_Correctly_ByMemberId()
         {
             Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.ByMemberId;
-            var result = _repository.GetMemberInfo(loadType, "", 0, memberId);
+            var result = _repository.GetMemberInfo(loadType, memberId, 0);
             result.MemberId.AssertIsGreaterThan(0);
             Assert.AreEqual(memberId, result.MemberId);
             Assert.IsNotNull(result.CreatedDate);
@@ -47,7 +47,7 @@ namespace SkillBank.FunctionTests
         public void ShouldNot_GetMemberInfo_ByIncorrectUserId()
         {
             Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.ByMemberId;
-            var result = _repository.GetMemberInfo(loadType, "", 0, incorrectUserId);
+            var result = _repository.GetMemberInfo(loadType, incorrectUserId, 0);
             Assert.IsNull(result);
         }
 
@@ -55,7 +55,7 @@ namespace SkillBank.FunctionTests
         public void Should_GetMemberInfo_BySocialAccount()
         {
             Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.BySocialAccount;
-            var result = _repository.GetMemberInfo(loadType, socialAccount, (Byte)Enums.SocialTpye.Sina, 0);
+            var result = _repository.GetMemberInfo(loadType, socialAccount, (Byte)Enums.SocialTpye.Sina);
             Assert.IsNotNull(result);
         }
 
@@ -63,35 +63,18 @@ namespace SkillBank.FunctionTests
         public void Should_GetMemberInfo_Correctly_BySocialAccount()
         {
             Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.BySocialAccount;
-            var result = _repository.GetMemberInfo(loadType, socialAccount, (Byte)Enums.SocialTpye.Sina, 0);
+            var result = _repository.GetMemberInfo(loadType, socialAccount, (Byte)Enums.SocialTpye.Sina);
             result.MemberId.AssertIsGreaterThan(0);
             Assert.IsNotNull(result.SocialAccount);
             Assert.AreEqual(socialAccount, result.SocialAccount);
         }
-
-        [TestMethod]
-        public void Should_GetMemberInfo_ByOpenId()
-        {
-            Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.ByOpenId;
-            var result = _repository.GetMemberInfo(loadType, socialOpenId, 0, 0);
-            Assert.IsNotNull(result);
-        }
-
-        [TestMethod]
-        public void Should_GetMemberInfo_Correctly_ByOpenId()
-        {
-            Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.ByOpenId;
-            var result = _repository.GetMemberInfo(loadType, socialOpenId, 0, 0);
-            result.MemberId.AssertIsGreaterThan(0);
-            Assert.IsNotNull(result.SocialAccount);
-            Assert.AreEqual(socialAccount, result.SocialAccount);
-        }
-
+        
+        
         [TestMethod]
         public void ShouldNot_GetMemberInfo_ByIncorrectSocialAccount()
         {
             Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.BySocialAccount;
-            var result = _repository.GetMemberInfo(loadType, invalidSocialAccount, (Byte)Enums.SocialTpye.Sina, 0);
+            var result = _repository.GetMemberInfo(loadType, invalidSocialAccount, (Byte)Enums.SocialTpye.Sina);
             Assert.IsNull(result);
         }
 

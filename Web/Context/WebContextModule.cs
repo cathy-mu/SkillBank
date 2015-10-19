@@ -40,7 +40,6 @@ namespace SkillBank.Site.Web.Context
             try
             {
                 base.LoadContext(context);
-                WebContextModule.SetMemberType(contextBuilder, context.Request);
                 WebContextModule.SetMemberId(contextBuilder, context.Request);
                 WebContextModule.SetBebugLL(contextBuilder, context.Request);
                 WebContextModule.SetEtag(contextBuilder, context.Request);
@@ -48,6 +47,7 @@ namespace SkillBank.Site.Web.Context
                 WebContextModule.SetSocialAccount(contextBuilder, context.Request);
                 WebContextModule.SetSocialType(contextBuilder, context.Request);
                 WebContextModule.SetSocialAccessInfo(contextBuilder, context.Request);
+                WebContextModule.SetOpenId(contextBuilder, context.Request);
                 this.SetCustomProperties(contextBuilder, context);
                 webContext = contextBuilder.GetContext();
             }
@@ -74,19 +74,19 @@ namespace SkillBank.Site.Web.Context
             // Recall base method
             base.SaveContext(context, httpContext);
 
-            // Member Type
-            HttpCookie cookie = httpContext.Request.Cookies[Constants.CookieKeys.MemberType];
-            var reqVal = (cookie == null ? null : cookie.Value);
-            var newVal = context.MemberType.ToString();
-            if (reqVal != newVal)
-            {
-                CookieManager.SetCookie(Constants.CookieKeys.MemberType, newVal, /*isPersistent*/ true, domain, httpContext);
-            }
+            //// Member Type
+            //HttpCookie cookie = httpContext.Request.Cookies[Constants.CookieKeys.MemberType];
+            //var reqVal = (cookie == null ? null : cookie.Value);
+            //var newVal = context.MemberType.ToString();
+            //if (reqVal != newVal)
+            //{
+            //    CookieManager.SetCookie(Constants.CookieKeys.MemberType, newVal, /*isPersistent*/ true, domain, httpContext);
+            //}
 
             // Social Type
-            cookie = httpContext.Request.Cookies[Constants.CookieKeys.MemberId];
-            reqVal = (cookie == null ? null : cookie.Value);
-            newVal = context.MemberId.ToString();
+            HttpCookie cookie = httpContext.Request.Cookies[Constants.CookieKeys.MemberId];
+            var reqVal = (cookie == null ? null : cookie.Value);
+            var newVal = context.MemberId.ToString();
             if (reqVal != newVal)
             {
                 CookieManager.SetCookie(Constants.CookieKeys.MemberId, newVal, /*isPersistent*/ true, domain, httpContext);
@@ -144,6 +144,14 @@ namespace SkillBank.Site.Web.Context
             {
                 CookieManager.SetCookie(Constants.CookieKeys.SocialType, newVal, /*isPersistent*/ true, domain, httpContext);
             }
+            
+            cookie = httpContext.Request.Cookies[Constants.CookieKeys.OpenId];
+            reqVal = (cookie == null ? null : cookie.Value);
+            newVal = context.OpenId.ToString();
+            if (reqVal != newVal)
+            {
+                CookieManager.SetCookie(Constants.CookieKeys.OpenId, newVal, /*isPersistent*/ true, domain, httpContext);
+            }
         }
 
         /// <summary>
@@ -155,13 +163,13 @@ namespace SkillBank.Site.Web.Context
             // Recall base method
             base.SetCustomProperties(contextBuilder, context);
             SetMemberId(contextBuilder, context.Request);
-            SetMemberType(contextBuilder, context.Request);
             SetEtag(contextBuilder, context.Request);
             SetBebugLL(contextBuilder, context.Request);
             SetOrderHandleDate(contextBuilder, context.Request);
             SetSocialAccessInfo(contextBuilder, context.Request);
             SetSocialAccount(contextBuilder, context.Request);
             SetSocialType(contextBuilder, context.Request);
+            SetOpenId(contextBuilder, context.Request);
             //TO DO:Phase2 Set server property later
             //SetServer(contextBuilder, context.Request);
         }
@@ -195,32 +203,7 @@ namespace SkillBank.Site.Web.Context
             }
             return result;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="contextBuilder"></param>
-        /// <param name="request"></param>
-        private static void SetMemberType(WebContextBuilder contextBuilder, HttpRequest request)
-        {
-            String memberTypeCode = request.QueryString[Constants.QueryStringKeys.MemberType];
-            if (!WebContextModule.IsValidMemberType(memberTypeCode))
-            {
-                memberTypeCode = null;
-            }
-            memberTypeCode = CookieManager.GetCookie(Constants.CookieKeys.MemberType, request);
-            if (!WebContextModule.IsValidMemberType(memberTypeCode))
-            {
-                memberTypeCode = null;
-            }
-
-            if (string.IsNullOrEmpty(memberTypeCode))
-            {
-                memberTypeCode = Constants.DefaultSetting.MemberType.ToString();
-            }
-            contextBuilder.MemberTypeCode = (Enums.MemberType)Enum.Parse(typeof(Enums.MemberType), memberTypeCode);
-        }
-
+                
         private static void SetSocialType(WebContextBuilder contextBuilder, HttpRequest request)
         {
             String socialType = CookieManager.GetCookie(Constants.CookieKeys.SocialType, request);
@@ -332,6 +315,18 @@ namespace SkillBank.Site.Web.Context
                 socialAccount = "";
             }
             contextBuilder.SocialAccount = socialAccount;
+
+
+        }
+
+        private static void SetOpenId(WebContextBuilder contextBuilder, HttpRequest request)
+        {
+            String openId = CookieManager.GetCookie(Constants.CookieKeys.OpenId, request);
+            if (string.IsNullOrWhiteSpace(openId))
+            {
+                openId = "";
+            }
+            contextBuilder.OpenId = openId;
         }
 
         /// <summary>

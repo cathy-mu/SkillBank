@@ -11,5 +11,6 @@ namespace SkillBank.Site.Web.ViewModel
     {
         public List<MessageListItem> Messages;
         public Dictionary<int,int> UnReadMessageNumDic;
+        public List<NotificationItem> Notifications;
     }
 }

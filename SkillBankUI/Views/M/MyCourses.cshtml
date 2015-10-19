@@ -13,11 +13,11 @@
             <a href="@Url.Action("teaching", "m")" class="control-item red-dot-wrapper">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["t"] > 0)
                                                                                         {<span class="red-dot"></span>}教课记录</a>
             <a href="@Url.Action("learning", "m")" class="control-item red-dot-wrapper">@if (ViewBag.AlterNums != null && ViewBag.AlterNums["l"] > 0)
-                                                                        {<span class="red-dot"></span>}学习记录</a>
+                                                                                        {<span class="red-dot"></span>}学习记录</a>
         </div>
     </nav>
     <div class="well">
-        <a href="@Url.Action("courseedit", "m")" class="icon icomoon icon-ionic-plus round add-course"></a>
+        <a href="@(ViewBag.IsMobileVerified?Url.Action("courseedit", "m"):Url.Action("verification", "m"))" class="icon icomoon icon-ionic-plus round add-course"></a>
     </div>
     <div class="course-list">
         @if (Model == null)
@@ -32,7 +32,7 @@
                 <div class="title-bar u-full-width">
                     <a class="pull-left">@(String.IsNullOrEmpty(item.Title) ? ResourceHelper.GetTransText(560) : item.Title)</a>
                     <div class="pull-right">
-                        <a href="@Url.Action("courseedit", "m", new { id = item.ClassId })" class="icon icomoon icon-pencil round yellow"></a>
+                        <a href="@(ViewBag.IsMobileVerified?Url.Action("courseedit", "m", new { id = item.ClassId }):Url.Action("verification", "m"))" class="icon icomoon icon-pencil round yellow"></a>
                         <!--<a href="#" class="icon icomoon icon-redo round white"></a>-->
                     </div>
                 </div>

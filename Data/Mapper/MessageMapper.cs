@@ -53,6 +53,16 @@ namespace SkillBank.Site.DataSource.Mapper
             return null;
         }
 
+        public static List<ComplaintItem> Map(ObjectResult<Complaint_Load_p_Result> objItems)
+        {
+            if (objItems != null)
+            {
+                var items = objItems.Select(item => new ComplaintItem() { ComplaintId = item.ComplaintId, Member_Id = item.Member_Id, RelatedId = item.RelatedId, Type = item.Type, IsActive = item.IsActive, Name = item.Name, RelatedName = item.RelatedName, CreatedDate = item.CreatedDate }).ToList();
+                return (items.Count > 0) ? items : null;
+            }
+            return null;
+        }
+
         //SQL
         //public static List<MessageListItem> Map(ObjectResult<Message_LoadByMemberId_p_Result> objMessages)
         //{

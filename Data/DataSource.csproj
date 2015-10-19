@@ -74,6 +74,15 @@
     <Compile Include="Data\CityInfo_LoadAll_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\ClassCategory.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassCategory_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassCollection_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\ClassEditInfo.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
@@ -86,7 +95,13 @@
     <Compile Include="Data\ClassInfo_LoadAll_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\ClassInfo_LoadByKey_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\ClassInfo_LoadByList_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ClassInfo_LoadByPage_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\ClassInfo_LoadByTab_p_Result.cs">
@@ -104,6 +119,15 @@
     <Compile Include="Data\Comment.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\Complaint_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ConfigureInfo.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ConfigureInfo_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\EmailAccount.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
@@ -111,6 +135,9 @@
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Favorite.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Favorite_LoadAll_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Favorite_Load_p_Result.cs">
@@ -224,11 +251,15 @@
     <Compile Include="Mapper\OrderMapper.cs" />
     <Compile Include="Model\Blurbs.cs" />
     <Compile Include="Model\CategoryTag.cs" />
+    <Compile Include="Model\ClassCollectionItem.cs" />
     <Compile Include="Model\ClassEditItem.cs" />
     <Compile Include="Model\ClassItem.cs" />
     <Compile Include="Model\ClassReviewItem.cs" />
     <Compile Include="Model\ClassListItem.cs" />
+    <Compile Include="Model\ComplaintItem.cs" />
+    <Compile Include="Model\ClassLinkItem.cs" />
     <Compile Include="Model\FavoriteItem.cs" />
+    <Compile Include="Model\FavoriteListItem.cs" />
     <Compile Include="Model\MemberInfoItem.cs" />
     <Compile Include="Model\MemberReviewItem.cs" />
     <Compile Include="Model\MemberViewInfo.cs" />
@@ -238,6 +269,7 @@
     <Compile Include="Model\NotificationItem.cs" />
     <Compile Include="Model\OrderItem.cs" />
     <Compile Include="Model\ReviewItem.cs" />
+    <Compile Include="Model\SocialCacheItem.cs" />
     <Compile Include="Model\StudentReviewItem.cs" />
     <Compile Include="Model\TeacherReviewItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -251,8 +283,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\IInteractiveRepository.cs" />
     <Compile Include="Repositories\IReportToolsRepository.cs" />
-    <Compile Include="Repositories\IInteractive.cs" />
     <Compile Include="Repositories\IBlurbsRepository.cs" />
     <Compile Include="Repositories\ICategotyTagRepository.cs" />
     <Compile Include="Repositories\IClassInfoRepository.cs" />

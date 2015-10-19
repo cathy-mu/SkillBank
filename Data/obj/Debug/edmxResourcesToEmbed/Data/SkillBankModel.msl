@@ -206,7 +206,6 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="ClassInfo_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassInfo_Save_p" />
     <FunctionImportMapping FunctionImportName="ClassNum_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassNum_Load_p" />
     <FunctionImportMapping FunctionImportName="EmailAccount_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.EmailAccount_Save_p" />
     <FunctionImportMapping FunctionImportName="MemberInfo_Add_p" FunctionName="SkillBank.Site.DataSource.Data.Store.MemberInfo_Add_p" />
@@ -338,6 +337,9 @@
     <EntitySetMapping Name="ClassInfo">
       <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassInfo">
         <MappingFragment StoreEntitySet="ClassInfo">
+          <ScalarProperty Name="Cate_Id" ColumnName="Cate_Id" />
+          <ScalarProperty Name="Tags" ColumnName="Tags" />
+          <ScalarProperty Name="HasOffline" ColumnName="HasOffline" />
           <ScalarProperty Name="WhyU" ColumnName="WhyU" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
           <ScalarProperty Name="Available" ColumnName="Available" />
@@ -477,6 +479,8 @@
     <EntitySetMapping Name="ClassEditInfoes">
       <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassEditInfo">
         <MappingFragment StoreEntitySet="ClassEditInfo">
+          <ScalarProperty Name="Tags" ColumnName="Tags" />
+          <ScalarProperty Name="HasOffline" ColumnName="HasOffline" />
           <ScalarProperty Name="WhyU" ColumnName="WhyU" />
           <ScalarProperty Name="Remark" ColumnName="Remark" />
           <ScalarProperty Name="Available" ColumnName="Available" />
@@ -603,6 +607,8 @@
     <EntitySetMapping Name="MemberInfoes">
       <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo">
         <MappingFragment StoreEntitySet="MemberInfo">
+          <ScalarProperty Name="Pass" ColumnName="Pass" />
+          <ScalarProperty Name="Credit" ColumnName="Credit" />
           <ScalarProperty Name="NotifyTag" ColumnName="NotifyTag" />
           <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
           <ScalarProperty Name="ContactName" ColumnName="ContactName" />
@@ -630,6 +636,64 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ConfigureInfoes">
+      <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.ConfigureInfo">
+        <MappingFragment StoreEntitySet="ConfigureInfo">
+          <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="InfoValue" ColumnName="InfoValue" />
+          <ScalarProperty Name="InfoKey" ColumnName="InfoKey" />
+          <ScalarProperty Name="InfoId" ColumnName="InfoId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ConfigureInfo_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ConfigureInfo_Load_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ConfigureInfo_Load_p_Result">
+          <ScalarProperty Name="InfoId" ColumnName="InfoId" />
+          <ScalarProperty Name="InfoKey" ColumnName="InfoKey" />
+          <ScalarProperty Name="InfoValue" ColumnName="InfoValue" />
+          <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+          <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ConfigureInfo_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ConfigureInfo_Save_p" />
+    <FunctionImportMapping FunctionImportName="ClassCollection_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassCollection_Load_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassCollection_Load_p_Result">
+          <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Cover" ColumnName="Cover" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Complaint_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Complaint_Load_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.Complaint_Load_p_Result">
+          <ScalarProperty Name="ComplaintId" ColumnName="ComplaintId" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Member_Id" ColumnName="Member_Id" />
+          <ScalarProperty Name="RelatedId" ColumnName="RelatedId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="RelatedName" ColumnName="RelatedName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Complaint_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Complaint_Save_p" />
+    <FunctionImportMapping FunctionImportName="Favorite_LoadAll_p" FunctionName="SkillBank.Site.DataSource.Data.Store.Favorite_LoadAll_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.Favorite_LoadAll_p_Result">
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="ClassList" ColumnName="ClassList" />
+          <ScalarProperty Name="MemberList" ColumnName="MemberList" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="MemberInfo_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.MemberInfo_Load_p">
       <ResultMapping>
         <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.MemberInfo_Load_p_Result">
@@ -639,6 +703,7 @@
           <ScalarProperty Name="CityId" ColumnName="CityId" />
           <ScalarProperty Name="PosX" ColumnName="PosX" />
           <ScalarProperty Name="PosY" ColumnName="PosY" />
+          <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Gender" ColumnName="Gender" />
@@ -646,18 +711,68 @@
           <ScalarProperty Name="CoinsLocked" ColumnName="CoinsLocked" />
           <ScalarProperty Name="Avatar" ColumnName="Avatar" />
           <ScalarProperty Name="SelfIntro" ColumnName="SelfIntro" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
           <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="OpenId" ColumnName="OpenId" />
-          <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
           <ScalarProperty Name="Etag" ColumnName="Etag" />
           <ScalarProperty Name="Address" ColumnName="Address" />
           <ScalarProperty Name="SocialAccount" ColumnName="SocialAccount" />
           <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-          <ScalarProperty Name="VerifyTag" ColumnName="VerifyTag" />
+          <ScalarProperty Name="NotifyTag" ColumnName="NotifyTag" />
+          <ScalarProperty Name="Credit" ColumnName="Credit" />
           <ScalarProperty Name="IsLike" ColumnName="IsLike" />
-          <ScalarProperty Name="MasterInfo" ColumnName="MasterInfo" />
+          <ScalarProperty Name="ExtraInfo" ColumnName="ExtraInfo" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ClassCategory_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassCategory_Load_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassCategory_Load_p_Result">
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="Blurb_Id" ColumnName="Blurb_Id" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryKey" ColumnName="CategoryKey" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="ClassCategories">
+      <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassCategory">
+        <MappingFragment StoreEntitySet="ClassCategory">
+          <ScalarProperty Name="Blurb_Id" ColumnName="Blurb_Id" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryKey" ColumnName="CategoryKey" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="WeChatEvent_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.WeChatEvent_Save_p" />
+    <FunctionImportMapping FunctionImportName="CreditHistory_Save_p" FunctionName="SkillBank.Site.DataSource.Data.Store.CreditHistory_Save_p" />
+    <FunctionImportMapping FunctionImportName="ClassInfo_LoadByPage_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassInfo_LoadByPage_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassInfo_LoadByPage_p_Result">
+          <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+          <ScalarProperty Name="IsLike" ColumnName="IsLike" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="Cover" ColumnName="Cover" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
+          <ScalarProperty Name="PosX" ColumnName="PosX" />
+          <ScalarProperty Name="PosY" ColumnName="PosY" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="LikeNum" ColumnName="LikeNum" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ClassInfo_LoadByKey_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ClassInfo_LoadByKey_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ClassInfo_LoadByKey_p_Result">
+          <ScalarProperty Name="ClassId" ColumnName="ClassId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Cover" ColumnName="Cover" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CityId" ColumnName="CityId" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>

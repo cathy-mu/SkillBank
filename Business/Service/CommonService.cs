@@ -17,44 +17,51 @@ namespace SkillBank.Site.Services
     {
         //Member
         List<MemberInfo> GetMemberInfos(Byte loadBy, String searchKey);
-        MemberInfo GetMemberInfo(int memberId, int relatedMemberId = 0);
-        MemberInfo GetMemberInfo(String openId);
-        MemberInfo GetMemberInfo(String socialAccount, Byte socialType);
-        int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", string etag = "", Boolean isMale = true);
-        Boolean UpdateMemberInfo(int memberId, Byte saveType, String saveValue, String saveValue2 = "");
-        Boolean UpdateMemberProfile(MemberInfo memberInfo,Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile);
+        MemberInfo GetMemberInfo(int memberId);
+        MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0);
+        MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para = "");
+        int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", String pass = "", string etag = "", Boolean isMale = true);
+        Byte UpdateMemberInfo(int memberId, Byte saveType, String saveValue, String saveValue2 = "");
+        Byte UpdateMemberProfile(MemberInfo memberInfo, Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile);
         void SaveEmailAccount(String name, String email);
         Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd);//tool
         Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberId);
         Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId);
-        void AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
+        Boolean AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
         Boolean HasShareClassCoin(int memberId);
-        Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS = true);
+        Byte SendMobileVerifyCode(Byte type, int memberId, String mobile, Boolean sendSMS = true);
         Byte VerifyMobile(int memberId, String mobile, String verifyCode);
         //[Obsolete]
         //Byte CheckIsMobileVerified(int memberId);
         Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount);
         void UpdateMemberLikeTag(int memberId, int relatedId, Boolean isLike);
         List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId);
-        
+        Byte SaveWeChatEvent(Byte saveType, int memberId, String openId, String paraId, String paraValue);
+        Byte UpdateCredit(Byte saveType, int memberId, int paraValue);
+
         //Class
         int CreateClass(int memberId, int categoryId, Byte teacheLevel, Byte skillLevel, out Boolean isExist);
-        Boolean UpdateClassInfo(Byte updateType, int classId, Byte paraValue, Byte completeStatus = 1);
-        Boolean UpdateClassInfo(Byte updateType, int classId, Boolean paraValue, Byte completeStatus = 1);
-        Boolean UpdateClassInfo(Byte updateType, int classId, String paraValue, Byte completeStatus = 1);
         int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
-        Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue);
+        Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, String paraValue);
         List<ClassEditItem> GetClassEditInfoByMemberId(int memberId, Byte loadType);
 
-        List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int resultNum, out int pageNum, Byte OrderByType = (Byte)ClientSetting.ClassListOrderType.ByDisctince, Boolean isAsc = false, Decimal posX = 0, Decimal posY = 0, String searchKey = "");
+        //List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int resultNum, out int pageNum, Byte OrderByType = (Byte)ClientSetting.ClassListOrderType.ByDisctince, Boolean isAsc = false, Decimal posX = 0, Decimal posY = 0, String searchKey = "");
         List<ClassListItem> GetClassTabList(Byte loadBy, Byte typeId, int memberId, String searchKey = "", Decimal posX = 0, Decimal posY = 0, int cityId = 0);
         List<ClassListItem> GetClassList(Byte loadBy, Byte OrderByType, int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, int memberId, out int totalNum, String searchKey = "", Decimal posX = 0, Decimal posY = 0);
+        //un-cached class list
+        List<ClassInfo_LoadByPage_p_Result> GetClassPagingList(Byte categoryId, int cityId, Decimal posX, Decimal posY, int memberId, int minId, int maxId, Byte orderBy);
+        List<ClassInfo_LoadByKey_p_Result> GetClassSearchList(String searchKey, int cityId, Decimal posX, Decimal posY, int minId, int maxId, Byte orderBy);
+        
         List<ClassListItem> GetRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum);
         List<ClassListItem> GetRecommendationClassPopList(int memberId);
+        //cached class list
+        List<ClassListItem> GetCachedRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum);
+        List<ClassListItem> GetClassList(Byte loadType, int pageId, int pageSize, out int classNum);
+        ClassEditItem GetClassItem(int id);
+
         ClassInfo GetClassInfoByClassId(int paraId);
-        ClassInfo GetClassInfoByClassMemberId(int paraId, int memberId = 0);
         ClassEditItem GetClassInfoItem(Byte loadType, int classId, int memberId = 0);
         List<ClassEditItem> GetClassEditInfoForAdmin(Boolean isRejected);
         List<ClassInfo> GetClassInfo(Byte loadType, int paraId, int memberId = 0);
@@ -63,7 +70,8 @@ namespace SkillBank.Site.Services
         int AddComment(int memberId, int classId, String commentText);
         void RemoveComment(int memberId, int commentId);
         void UpdateClassLikeTag(int memberId, int classId, Boolean isLike);
-
+        List<ClassCollection_Load_p_Result> GetClassCollection(Byte loadBy, int memberId, int paraId = 0);
+        
         //Review
         List<TeacherReviewItem> GetTeacherReviewsByMemberId(int memberId, int maxReviewId = 0);
         //List<StudentReviewItem> GetStudentReviewsByMemberId(int memberId, int minReviewId = 0);
@@ -77,12 +85,15 @@ namespace SkillBank.Site.Services
         Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0);
         Byte UpdateOrderStatusWithCoins(int orderId, Byte orderStatus, int studentId, int teacherId = 0);
         Boolean AddOrder(int studentId, int classId, DateTime bookDate, String remark, String studentName = "", String studentPhone = "", String studentEmail = "");
+        Byte UpdateOrderDate(int orderId, DateTime bookDate);
         Byte AcceptOrder(int orderId, int studentId, int teacherId, String name = "", String phone = "", String email = "");
         List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck);
         List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck);
         void HandleMemberOrder(int memberId);
-        
+
         //Message
+        List<ComplaintItem> GetComplaintList(Byte loadType);
+        Byte UpdateComplaint(Byte saveType, int memberId, int relatedId, Byte type);
         int AddMessage(int fromId, int toId, String messageText);
         Boolean SetMessageAsRead(int maxId, int memberId, int contactorId);
         Boolean SetMessageAsDeleted(int maxId, int memberId, int contactorId);
@@ -98,7 +109,7 @@ namespace SkillBank.Site.Services
         void SendOrderUpdateSMS(Byte statusType, String mobile, String className, Boolean sendSMS = true);
         void SendClassProveSMS(Boolean isProve, String mobile, String className, String link, Boolean sendSMS = true);
         void SendNewMessageSMS(String mobile, String name, String link, Boolean sendSMS = true);
-        
+
         // report and tools
         List<ReportNumItem> GetReportClassMemberNum();
         List<ReportOrderStatus_Load_p_Result> GetReportClassMemberNum(Byte loadBy, DateTime beginDate, DateTime endDate);
@@ -116,10 +127,11 @@ namespace SkillBank.Site.Services
         private readonly IMessageManager _messageMgr;
         private readonly INotificationManager _notificationMgr;
         private readonly IReportToolsManager _repMgr;
-        
+        private readonly ICacheContentManager _cacheMgr;
+
         #region Constructors
 
-        public CommonService(IMemberManager memberMgr, IClassManager classManager, IOrderManager orderMgr, IFeedBackManager feedbackMgr, IMessageManager messageMgr, INotificationManager notificationMgr, IReportToolsManager repMgr)
+        public CommonService(IMemberManager memberMgr, IClassManager classManager, IOrderManager orderMgr, IFeedBackManager feedbackMgr, IMessageManager messageMgr, INotificationManager notificationMgr, IReportToolsManager repMgr, ICacheContentManager cacheMgr)
         {
             this._memberMgr = memberMgr;
             this._classMgr = classManager;
@@ -128,7 +140,7 @@ namespace SkillBank.Site.Services
             this._messageMgr = messageMgr;
             this._notificationMgr = notificationMgr;
             this._repMgr = repMgr;
-
+            this._cacheMgr = cacheMgr;
         }
 
         #endregion
@@ -151,7 +163,7 @@ namespace SkillBank.Site.Services
         {
             _notificationMgr.UpdateNotification(saveType, memberId, paraId);
         }
-        
+
         public void SendOrderUpdateSMS(Byte statusType, String mobile, String className, Boolean sendSMS = true)
         {
             _notificationMgr.SendOrderUpdateSMS(statusType, mobile, className, sendSMS);
@@ -184,18 +196,18 @@ namespace SkillBank.Site.Services
         public Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount)
         {
             return _memberMgr.UpdateVerification(saveType, memberId, verifyAccount);
-        }        
+        }
 
         public Byte VerifyMobile(int memberId, String mobile, String verifyCode)
         {
             return _memberMgr.VerifyMobile(memberId, mobile, verifyCode);
         }
 
-        public Byte SendMobileVerifyCode(int memberId, String mobile, Boolean sendSMS = true)
+        public Byte SendMobileVerifyCode(Byte type, int memberId, String mobile, Boolean sendSMS = true)
         {
-            return _memberMgr.SendMobileVerifyCode(memberId, mobile, sendSMS);
+            return _memberMgr.SendMobileVerifyCode(type, memberId, mobile, sendSMS);
         }
-        
+
         public Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd)//tool
         {
             return _memberMgr.CoinUpdate(updateType, memberId, classId, coinsToAdd);
@@ -212,28 +224,19 @@ namespace SkillBank.Site.Services
             return this._memberMgr.GetMemberInfos(loadBy, searchKey);
         }
 
-        public MemberInfo GetMemberInfo(String socialAccount, Byte socialType)
+        public MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para = "")
         {
-            return this._memberMgr.GetMemberInfo(socialAccount, socialType);
+            return this._memberMgr.GetMemberInfo(socialAccount, socialType, para);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="memberId"></param>
-        /// <returns></returns>
-        public MemberInfo GetMemberInfo(int memberId, int relatedMemberId = 0)
+        
+        public MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0)
         {
-            return this._memberMgr.GetMemberInfo(memberId, relatedMemberId);
+            return this._memberMgr.GetMemberInfo(loadType, memberId, relatedMemberId);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="openId"></param>
-        /// <returns></returns>
-        public MemberInfo GetMemberInfo(String openId)
+        public MemberInfo GetMemberInfo(int memberId)
         {
-            return this._memberMgr.GetMemberInfo(openId);
+            return this._memberMgr.GetMemberInfo(memberId);
         }
 
         /// <summary>
@@ -246,9 +249,9 @@ namespace SkillBank.Site.Services
         /// <param name="email"></param>
         /// <param name="cityId"></param>
         /// <returns></returns>
-        public int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", String etag = "", Boolean gender = true)
+        public int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true)
         {
-            return this._memberMgr.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, etag, gender);
+            return this._memberMgr.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, pass, etag, gender);
         }
 
         /// <summary>
@@ -257,9 +260,9 @@ namespace SkillBank.Site.Services
         /// <param name="saveType"></param>
         /// <param name="memberInfo"></param>
         /// <returns></returns>
-        public Boolean UpdateMemberInfo(int memberId, Byte saveType, String saveValue, String saveValue2 = "")
+        public Byte UpdateMemberInfo(int memberId, Byte saveType, String saveValue, String saveValue2 = "")
         {
-            Boolean result = false;
+            Byte result = 0;
             Boolean isValid = false;
             int tempValue;
 
@@ -326,7 +329,7 @@ namespace SkillBank.Site.Services
             return result;
         }
 
-        public Boolean UpdateMemberProfile(MemberInfo memberInfo,Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile)
+        public Byte UpdateMemberProfile(MemberInfo memberInfo, Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile)
         {
             return this._memberMgr.UpdateMemberInfo(saveType, memberInfo);
         }
@@ -351,10 +354,10 @@ namespace SkillBank.Site.Services
         {
             return this._memberMgr.GetNumsByMemberClass(memberId, classId, loadBy);
         }
-        
-        public void AddMembersCoin(int memberId, int coinsToAdd, Byte addType)
+
+        public Boolean AddMembersCoin(int memberId, int coinsToAdd, Byte addType)
         {
-            _memberMgr.AddMembersCoin(memberId, coinsToAdd, addType);
+            return _memberMgr.AddMembersCoin(memberId, coinsToAdd, addType);
         }
 
         public Boolean HasShareClassCoin(int memberId)
@@ -366,6 +369,17 @@ namespace SkillBank.Site.Services
         {
             return _memberMgr.GetFavorites(loadType, memberId, paraId);
         }
+
+        public Byte SaveWeChatEvent(Byte saveType, int memberId, String openId, String paraId, String paraValue)
+        {
+            return _memberMgr.SaveWeChatEvent(saveType, memberId, openId, paraId, paraValue);
+        }
+
+        public Byte UpdateCredit(Byte saveType, int memberId, int paraValue)
+        {
+            return _memberMgr.UpdateCredit(saveType, memberId, paraValue);
+        }
+
 
         /*
         /// <summary>
@@ -439,9 +453,14 @@ namespace SkillBank.Site.Services
         #endregion
 
         #region Class Management
+        public List<ClassCollection_Load_p_Result> GetClassCollection(Byte loadBy, int memberId, int paraId = 0)
+        {
+            return _classMgr.GetClassCollection(loadBy, memberId, paraId);
+        }
+
         public int AddComment(int memberId, int classId, String commentText)
         {
-             return _classMgr.AddComment(memberId, classId, commentText);
+            return _classMgr.AddComment(memberId, classId, commentText);
         }
 
         public void RemoveComment(int memberId, int commentId)
@@ -453,7 +472,7 @@ namespace SkillBank.Site.Services
         {
             _classMgr.UpdateClassLikeTag(memberId, classId, isLike);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -480,45 +499,9 @@ namespace SkillBank.Site.Services
             return _classMgr.CreateClass(memberId, categoryId, skillLevel, teacheLevel, out isExist);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="updateType"></param>
-        /// <param name="classId"></param>
-        /// <param name="paraValue"></param>
-        /// <returns></returns>
-        public Boolean UpdateClassInfo(Byte updateType, int classId, Byte paraValue, Byte completeStatus = 1)
+        public Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true)
         {
-            return _classMgr.UpdateClassInfo(updateType, classId, paraValue, completeStatus);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="updateType"></param>
-        /// <param name="classId"></param>
-        /// <param name="paraValue"></param>
-        /// <returns></returns>
-        public Boolean UpdateClassInfo(Byte updateType, int classId, Boolean paraValue, Byte completeStatus = 1)
-        {
-            return _classMgr.UpdateClassInfo(updateType, classId, paraValue, completeStatus);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="updateType"></param>
-        /// <param name="classId"></param>
-        /// <param name="paraValue"></param>
-        /// <returns></returns>
-        public Boolean UpdateClassInfo(Byte updateType, int classId, String paraValue, Byte completeStatus = 1)
-        {
-            return _classMgr.UpdateClassInfo(updateType, classId, paraValue, completeStatus);
-        }
-
-        public Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue)
-        {
-            return _classMgr.UpdateClassEditInfo(updateType, classId, paraValue);
+            return _classMgr.UpdateClassEditInfo(updateType, classId, paraValue, isValue);
         }
 
         public Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue)
@@ -550,7 +533,7 @@ namespace SkillBank.Site.Services
             return _classMgr.GetClassEditInfoByMemberId(memberId, loadType);
         }
 
-        public ClassEditItem GetClassInfoItem(Byte loadType, int classId,  int memberId)
+        public ClassEditItem GetClassInfoItem(Byte loadType, int classId, int memberId)
         {
             return _classMgr.GetClassInfoItem(loadType, classId, memberId);
         }
@@ -559,47 +542,84 @@ namespace SkillBank.Site.Services
         {
             return _classMgr.GetClassTabList(loadBy, typeId, memberId, searchKey, posX, posY, cityId);
         }
-        
+
         public List<ClassListItem> GetClassList(Byte loadBy, Byte orderByType, int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, int memberId, out int totalNum, String searchKey = "", Decimal posX = 0, Decimal posY = 0)
         {
             return _classMgr.GetClassList(loadBy, orderByType, cityId, categoryId, isParentCate, pageSize, pageId, memberId, out totalNum, searchKey, posX, posY);
         }
 
+        public List<ClassInfo_LoadByPage_p_Result> GetClassPagingList(Byte categoryId, int cityId, Decimal posX, Decimal posY, int memberId, int minId, int maxId, Byte orderBy)
+        {
+            return _classMgr.GetClassPagingList(categoryId, cityId, posX, posY, memberId, minId, maxId, orderBy);
+        }
+
+        public List<ClassInfo_LoadByKey_p_Result> GetClassSearchList(String searchKey, int cityId, Decimal posX, Decimal posY, int minId, int maxId, Byte orderBy)
+        {
+            return _classMgr.GetClassSearchList( searchKey, cityId, posX, posY, minId, maxId, orderBy);
+        }
+        
         public List<ClassListItem> GetRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum)
         {
-            Byte loadBy = 1;
+            Byte loadBy = (Byte)Enums.DBAccess.ClassListLoadType.ByRecommendation;
             return GetClassList(loadBy, 0, 0/*cityId*/, typeId/*categoryId*/, false, pageSize, pageId, 0, out totalNum, "", 0, 0);
         }
 
         public List<ClassListItem> GetRecommendationClassPopList(int memberId)
         {
-            Byte loadBy = 2;
+            Byte loadBy = (Byte)Enums.DBAccess.ClassListLoadType.ByRecommendationTop;
             int totalNum = 0;
             return GetClassList(loadBy, 0, 0/*cityId*/, 0/*categoryId*/, false, 0, 0, 0, out totalNum, "", 0, 0);
         }
         
-        /// <summary>
-        /// Get Class for List page
-        /// </summary>
-        /// <param name="cityId"></param>
-        /// <param name="categoryId"></param>
-        /// <param name="memberId"></param>
-        /// <param name="OrderByType"></param>
-        /// <param name="isAsc"></param>
-        /// <returns></returns>
-        public List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int resultNum, out int pagetNum, Byte OrderByType = (Byte)ClientSetting.ClassListOrderType.ByDisctince, Boolean isAsc = false, Decimal posX = 0, Decimal posY = 0, String searchKey = "")
+        public ClassEditItem GetClassItem(int id)
         {
-            return _classMgr.SearchClass(cityId, categoryId, isParentCate, pageSize, pageId, out resultNum, out pagetNum, OrderByType, isAsc, posX, posY, searchKey);
+            return _cacheMgr.GetClassItem(id);
         }
-        
+
+        //public List<ClassListItem> GetCachedRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum)
+        //{
+        //    String key = String.Concat(Constants.CacheItemKey.RecommendClassListPrefix, typeId.ToString());
+        //    //var list = _cacheMgr.GetRecommendClassList(key);
+        //    var list = _cacheMgr.GetRecommendClassList(typeId, pageSize, pageId);
+        //    totalNum = list.Count();
+        //    int minId = pageSize * (pageId - 1);
+        //    if (minId < totalNum)
+        //    {
+        //        var result = list.Skip(minId).Take(pageSize).ToList();
+        //        return result;
+        //    }
+        //    return null;
+        //}
+
+        public List<ClassListItem> GetCachedRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum)
+        {
+            totalNum = 0;
+            var result = _cacheMgr.GetRecommendClassList(typeId, pageSize, pageId);
+            return result;
+        }
+
+        public List<ClassListItem> GetClassList(Byte loadType, int pageId, int pageSize, out int classNum)
+        {
+            return _cacheMgr.GetClassList(loadType, pageId, pageSize, out classNum);
+        }
+
+        /////// <summary>
+        /////// Get Class for List page
+        /////// </summary>
+        /////// <param name="cityId"></param>
+        /////// <param name="categoryId"></param>
+        /////// <param name="memberId"></param>
+        /////// <param name="OrderByType"></param>
+        /////// <param name="isAsc"></param>
+        /////// <returns></returns>
+        ////public List<ClassItem> SearchClass(int cityId, Byte categoryId, Boolean isParentCate, int pageSize, int pageId, out int resultNum, out int pagetNum, Byte OrderByType = (Byte)ClientSetting.ClassListOrderType.ByDisctince, Boolean isAsc = false, Decimal posX = 0, Decimal posY = 0, String searchKey = "")
+        ////{
+        ////    return _classMgr.SearchClass(cityId, categoryId, isParentCate, pageSize, pageId, out resultNum, out pagetNum, OrderByType, isAsc, posX, posY, searchKey);
+        ////}
+
         public ClassInfo GetClassInfoByClassId(int classId)
         {
             return _classMgr.GetClassInfoByClassId(classId);
-        }
-
-        public ClassInfo GetClassInfoByClassMemberId(int classId, int memberId)
-        {
-            return _classMgr.GetClassInfoByClassMemberId(classId, memberId);
         }
 
         public List<ClassInfo> GetClassInfo(Byte loadType, int paraId, int memberId = 0)
@@ -661,7 +681,7 @@ namespace SkillBank.Site.Services
             {
                 return false;
             }
-                
+
             return _feedbackMgr.AddStudentReview(orderId, classId, feedBack, comment, privateComment);
         }
 
@@ -706,6 +726,12 @@ namespace SkillBank.Site.Services
             return _orderMgr.GetOrderListByTeacher(teacherId, shouldCheck);
         }
 
+        public Byte UpdateOrderDate(int orderId, DateTime bookDate)
+        {
+            var result = _orderMgr.UpdateOrderDate(orderId, bookDate);
+            return result;
+        }
+        
         /// <summary>
         /// Add new Order and check if new order id great than 0
         /// </summary>
@@ -779,6 +805,16 @@ namespace SkillBank.Site.Services
 
         #region Message Management
 
+        public Byte UpdateComplaint(Byte saveType, int memberId, int relatedId, Byte type)
+        {
+            return _messageMgr.UpdateComplaint(saveType, memberId, relatedId, type);
+        }
+
+        public List<ComplaintItem> GetComplaintList(Byte loadType)
+        {
+            return _messageMgr.GetComplaintList(loadType);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -834,7 +870,7 @@ namespace SkillBank.Site.Services
 
 
         #region report and tools
-        
+
         public List<ReportNumItem> GetReportClassMemberNum()
         {
             return _repMgr.GetReportClassMemberNum();
@@ -849,7 +885,7 @@ namespace SkillBank.Site.Services
         {
             return _repMgr.GetRecommendation(classId);
         }
-        
+
         public void SaveMasterMember(int memberId, String paraStr, char split)
         {
             _repMgr.SaveMasterMember(memberId, paraStr, split);

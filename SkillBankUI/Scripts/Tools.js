@@ -27,7 +27,29 @@
                 }
             });
         });
-    } else {
+    }
+    else if ($("#exchange-coin").length > 0) {
+        $("#exchange-btn").click(function () {
+            var exchange = parseInt($("#exchange-coin").val());
+            var credit = parseInt($(".member-credit").text());
+            if (exchange>0) {
+                if (credit < exchange*30) {
+                    alert("积分不足");
+                } else {
+                    //var coin = parseInt($(".member-coin").text());
+                    var type = 2;
+                    updateCredit(type, exchange, 0)
+                }
+            } else {
+                alert("请输入正整数");
+            }
+        });
+        $("#signupbtn").click(function () {
+            var type = 5;
+            updateCredit(type, 0, 0);
+        });
+    }
+    else {
         var llCookieName = "debugll";
         var memberIdCookieName = "mid";
         $("#showll").click(function () {
@@ -107,6 +129,7 @@
 
         }
 
+        
         $('#btn1').click(function () {
             var memberId = $('#memberid1').val();
             if (memberId != "" && memberId > 0) {
@@ -165,21 +188,16 @@
             }
         });
 
-        $("#getcoinbackbtn").click(function () {
-            var paraData = { "type": 10, "member": 0, "id": 0, "amount": 0 };
-            console.log(paraData);
-            $.ajax({
-                url: "/Tools/CoinUpdate",
-                type: "POST",
-                dataType: "Json",
-                data: paraData,
-                cache: false,
-                async: false,
-                success: function (data) {
-                    alert("课币收回来啦");
-                }
-            });
+        $('#btn-creditadd').click(function () {
+            var memberId = $('#creditadd-memberid').val();
+            var amount = $('#creditadd').val();
+            if (memberId != "" && memberId > 0 && amount != "") {
+                updateCredit(0, amount, memberId);
+            } else {
+                alert("我是无辜的机器人。麻烦你检查下参数都填好了吗？");
+            }
         });
+                      
 
         $("#logoutbtn").click(function () {
             $.ajax({
@@ -197,10 +215,7 @@
             sitecommon.setCookie(sitecommon.memberIdCookieName, 0);
             sitecommon.removeCookie("sai");
             sitecommon.removeCookie("sid");
-            sitecommon.removeCookie(sitecommon.socialIdCookieName);
-            sitecommon.removeCookie(sitecommon.socialTypeCookieName);
-
-        });
+         });
 
 
         $("#unbindmobile").click(function () {
@@ -216,7 +231,7 @@
                 alert("我只想做一段安静的程序，麻烦你填对码1/4，确认你是认真的好吗");
                 return;
             }
-            var paraData = { "type":11, "account": mobile };
+            var paraData = { "type": 11, "account": mobile };
             $.ajax({
                 url: "/Tools/UnbindAccount",
                 type: "POST",
@@ -286,6 +301,75 @@
 
 
         });
+
+
+        //$("#complaintbtn").click(function () {
+        //    var paraData = { Type: 2, RelatedId: 8, MemberId : 1 };
+        //    $.ajax({
+        //        url: "/api/Complaint",
+        //        type: "POST",
+        //        dataType: "Json",
+        //        data: paraData,
+        //        cache: false,
+        //        success: function (data) {
+        //            alert("举报成功");
+        //        }
+        //    });
+         
+        //});
+
+        $(".handlecomplaint").click(function () {
+            if (confirm("确认处理此条举报吗？")) {
+                var id = $(this).attr("data-id");
+                $.ajax({
+                    url: "/api/Complaint?id=" + id,
+                    type: "PUT",
+                    dataType: "Json",
+                    cache: false,
+                    success: function (data) {
+                        window.location.reload();
+                    }, error: function (e) {
+                        alert("出错啦，确认以管理员身份登录啊~");
+                    }
+                });
+            }
+
+        });
     }
+
+
+    function updateCredit(type, value, memberid) {
+        if (memberid != 0) {
+            var paraData = { Type: type, ParaValue: value, MemberId: memberid };
+        } else {
+            var paraData = { Type: type, ParaValue: value };
+        }
+        console.log(paraData);
+        $.ajax({
+            url: "/api/credit",
+            type: "POST",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            async: false,
+            success: function (data) {
+                if (type == 0 && data == 1) {
+                    alert("积分成功添加/扣除");
+                }
+                else if (type == 2 && data == 1) {
+                    $(".member-credit").text(parseInt($(".member-credit").text()) - value*30);
+                    $(".member-coin").text(parseInt($(".member-coin").text()) + value);
+                    alert("积分成功兑换为课币");
+                }
+                else if (type == 5 && data == 1) {
+                    alert("打卡成功");
+                }
+                else if (data == 2) {
+                    alert("操作失败");
+                }
+            }
+        });
+    }
+
 
 });

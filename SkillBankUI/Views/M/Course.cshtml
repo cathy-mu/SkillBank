@@ -21,21 +21,32 @@
     }
     else
     {
-        if (ViewBag.MemberInfo.Coins <= 0)
+        if ((ViewBag.MemberInfo.VerifyTag & 1) == 1)
         {
-        <a class="misscoin-trigger">
-            <button class="btn btn-yellow">预定课程</button>
-        </a>
+            if (ViewBag.MemberInfo.Coins <= 0)
+            {
+            <a class="misscoin-trigger">
+                <button class="btn btn-yellow">预定课程</button>
+            </a>
+            }
+            else
+            {
+            <a class="classdetail-book" href="#reservation">
+                <button class="btn btn-yellow">预定课程</button>
+            </a>
+            }
+            <a class="classdetail-chat" href="#privateMsg">
+                <button class="btn btn-yellow">私信老师</button>
+            </a>
         }
-        else
-        {
-        <a class="classdetail-book" href="#reservation">
-            <button class="btn btn-yellow">预定课程</button>
-        </a>
+        else{
+            <a href="@Url.Action("verification", "m")">
+                <button class="btn btn-yellow">预定课程</button>
+            </a>
+            <a href="@Url.Action("verification", "m")">
+                <button class="btn btn-yellow">私信老师</button>
+            </a>
         }
-        <a class="classdetail-chat" href="#privateMsg">
-            <button class="btn btn-yellow">私信老师</button>
-        </a>
     }
 </div>
 @if (Model.ClassInfo != null)
@@ -74,13 +85,13 @@
                         <span>喜欢</span>
                     </a>
                 }
-                <a href="#" class="olive">
+                <a class="olive class-share">
                     <span class="icon icomoon icon-redo"></span>
                     <span>转发</span>
                 </a>
             </div>
         </div>
-        
+
         <div class="info">
             <a class="classdetail-avatar" href="@Url.Action("personal", "m", new { id = Model.MemberInfo.MemberId })">
                 <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "h", Model.MemberInfo.SocialType)" alt="" class="avatar">
@@ -163,7 +174,7 @@
                         <h3 class="comment-num">@Model.ClassNumDic[Enums.NumberDictionaryKey.Comment]</h3>
                         <h6>用户留言</h6>
                     </a>
-                    <a class="@(Model.ClassNumDic[Enums.NumberDictionaryKey.StudentReview].Equals(0) ? "control-item-no-js" : "control-item")" href="#item2mobile">
+                    <a id="reviewtab" class="@(Model.ClassNumDic[Enums.NumberDictionaryKey.StudentReview].Equals(0) ? "control-item-no-js" : "control-item")" href="#item2mobile">
                         <h3>@Model.ClassNumDic[Enums.NumberDictionaryKey.StudentReview]</h3>
                         <h6>学生评价</h6>
                     </a>
@@ -322,8 +333,15 @@
                                         <p>@Html.GetTrans(672)</p>
                                         @if (ViewBag.MemberInfo == null)
                                         {
-                                        <button class="btn btn-olive"><a href="@Url.Action("login", "m")" style="color:#fff;">现在就去注册</a></button>
+                                            <button class="btn btn-olive"><a href="@Url.Action("login", "m")" style="color:#fff;">现在就去注册</a></button>
                                         }
+                                    </div>
+                                    <div class="slide">
+                                        <div class="circle mb-1">
+                                            <h4>@Html.GetTrans(670)</h4>
+                                            <span class="golden">+ 2</span>
+                                        </div>
+                                        <p>在"个人"页面分享技能银行到<br />"朋友圈"可获2枚课币</p>
                                     </div>
                                     <div class="slide">
                                         <div class="circle mb-1">
@@ -331,13 +349,6 @@
                                             <span class="golden">+ 1</span>
                                         </div>
                                         <p>@Html.GetTrans(673)</p>
-                                    </div>
-                                    <div class="slide">
-                                        <div class="circle mb-1">
-                                            <h4>@Html.GetTrans(670)</h4>
-                                            <span class="golden">+ 2</span>
-                                        </div>
-                                        <p>@Html.GetTrans(674)</p>
                                     </div>
                                     <div class="slide">
                                         <div class="circle mb-1">
@@ -362,6 +373,7 @@
                 </div>
             </div>
         </div>
+        @Html.Partial("_HowToSharePartial")
 
         <script type="text/template" id="comment-tpl">
         <li class="card">
@@ -383,4 +395,42 @@
         </script>
 
     </div>
+   
+}
+
+@section FooterScripts
+{
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+        wx.config({
+            debug: false, 
+            appId: '@ViewBag.AppId', 
+            timestamp: @ViewBag.TimeStamp , 
+            nonceStr: '@ViewBag.NonceStr' , 
+            signature: '@ViewBag.Signature',
+            jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage'] 
+        });
+        //朋友圈
+        wx.ready(function(){
+            wx.onMenuShareTimeline({
+                title: '技能银行－@Model.ClassInfo.Title', 
+                link: 'http://www.skillbank.cn/m/course/@Model.ClassInfo.ClassId?utm_source=wechat_share&utm_content=class_moments',
+                imgUrl: '@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "mb")',
+                    success: function () { 
+                        triggerTackingEvent("shareonm_success_class");
+                    
+                    },
+                    cancel: function () { 
+                        triggerTackingEvent("shareonm_fail_class");
+                    }
+                });
+
+                wx.onMenuShareAppMessage({
+                    title: '技能银行－@Model.ClassInfo.Title', 
+                    desc: 'SkillBank是一个基于知识技能分享的社交平台', 
+                    link: 'http://www.skillbank.cn/m/course/@Model.ClassInfo.ClassId?utm_source=wechat_share&utm_content=class_chat',
+                    imgUrl: '@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "mb")'                
+                    });
+            });
+    </script>
 }

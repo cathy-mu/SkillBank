@@ -224,6 +224,23 @@ var checkPage = function () {
         commentForm();
         followMember();
         bindClassDetailTrackingEvent();
+
+        if (browser.versions.weixin) {
+            $('.title-list .class-share').on('click', function () {
+                $("#howToShare")[0].classList.add('active');
+                triggerTackingEvent("class_share");
+            });
+            $("#howToShare").on('click', function () {
+                $("#howToShare")[0].classList.remove('active');
+            });
+        }
+
+        if (location.hash == "#reviewtab") {
+            $("#comment a")[0].classList.remove('active');
+            $("#comment a")[1].classList.add('active');
+            $('#item1mobile')[0].classList.remove('active');
+            $('#item2mobile')[0].classList.add('active');
+        }
     }
 
     // personal page
@@ -231,6 +248,12 @@ var checkPage = function () {
         followMember();
         privateMsgForm();
         bindPersonalTrackingEvent();
+        if (location.hash == "#reviewtab") {
+            $("#comment a")[0].classList.remove('active');
+            $("#comment a")[1].classList.add('active');
+            $('#item1mobile')[0].classList.remove('active');
+            $('#item2mobile')[0].classList.add('active');
+        }
     }
 
     //login page
@@ -263,11 +286,39 @@ var checkPage = function () {
         $('.notification-tab').on('click', function () {
             $('.notification-tab')[0].classList.add('active');
             $('.message-tab')[0].classList.remove('active');
-            //$('.message-tab')[0].classList.remove("control-item-no-js");
-            //$('.message-tab')[0].classList.add("control-item");
+            $('.action-tab')[0].classList.remove('active');
+            $('#item3mobile')[0].classList.add('active');
+            $('#item1mobile')[0].classList.remove('active');
+            $('#item2mobile')[0].classList.remove('active');
+
+            var currIcon = jQuery(".notification-tab .red-dot");
+            var redIcons = jQuery(".red-dot:visible");
+            post(ENV.host + "/api/alter?type=6", function () {
+                if (redIcons.length == 2) {
+                    redIcons.fadeOut();
+                } else if (currIcon.length > 0) {
+                    currIcon.fadeOut();
+                }
+            });
+        });
+
+        $('.action-tab').on('click', function (e) {
+            $('.action-tab')[0].classList.add('active');
+            $('.message-tab')[0].classList.remove('active');
+            $('.notification-tab')[0].classList.remove('active');
             $('#item2mobile')[0].classList.add('active');
             $('#item1mobile')[0].classList.remove('active');
-            post(ENV.host + "/api/alter?id=0", function () { jQuery(".red-dot").fadeOut(); });
+            $('#item3mobile')[0].classList.remove('active');
+
+            var currIcon = jQuery(".action-tab .red-dot");
+            var redIcons = jQuery(".red-dot:visible");
+            post(ENV.host + "/api/alter?type=7", function () {
+                if (redIcons.length == 2) {
+                    redIcons.fadeOut();
+                } else if (currIcon.length > 0) {
+                    currIcon.fadeOut();
+                }
+            });
         });
     }
 
@@ -288,7 +339,7 @@ var checkPage = function () {
 
         $('#write-box')[0].on('keyup', toggleButton);
         $('#write-box')[0].on('change', toggleButton);
-        
+
         // bind add msg
         chatForm();
     }
@@ -296,9 +347,15 @@ var checkPage = function () {
     // register page
     if ($('#register-page').length) {
         triggerTackingEvent("signup page");
+        initVerficationForm(true);
+    }
 
+
+    function initVerficationForm(isRegister) {
         var $form = $('form')[0];
-        $("#registebtn").on('click', function (event) {
+        var $submitBtn = isRegister ? $("#registebtn") : $("#verifybtn")
+        var $verifyBtn = $('.btn-grey')[0];
+        $submitBtn.on('click', function (event) {
             event.preventDefault();
 
             if (!validPhone($form.phone)) {
@@ -312,38 +369,57 @@ var checkPage = function () {
                 $form.code.classList.remove("error");//验证码格式不对
             }
 
-            if (!$form.registebtn.dataset.avatar || !$form.registebtn.dataset.name) {
-                alert("未获得社交账号信息，请重新登陆");
-                location.href = "/m/login";
-                return;
-            }
-
-            triggerTackingEvent("click signup");
-
-            var data = {
-                //Account: $form.registebtn.dataset.socialid,
-                //Type: $form.registebtn.dataset.socialtype,
-                Mobile: $form.phone.value,
-                Code: $form.code.value,
-                Avatar: $form.registebtn.dataset.avatar,
-                Name: $form.registebtn.dataset.name,
-                Gender: ($form.registebtn.dataset.gender === "1")
-            };
-
-            post(ENV.host + '/api/registe', data, function (fb) {
-                if (fb == 2) {
-                    alert("验证失败，请检查验证码或重新发送");
-                } else if (fb == 3) {
-                    alert("手机号码被占用");
-                } else {
-                    triggerTackingEvent("submit signup");
-                    redirectAfterLogin();
+            if (isRegister) {
+                if (!$form.registebtn.dataset.avatar || !$form.registebtn.dataset.name) {
+                    alert("未获得社交账号信息，请重新登陆");
+                    location.href = "/m/login";
+                    return;
                 }
-            });
+                triggerTackingEvent("click signup");
+                var data = {
+                    Mobile: $form.phone.value,
+                    Code: $form.code.value,
+                    Pass: "",
+                    Avatar: $form.registebtn.dataset.avatar,
+                    Name: $form.registebtn.dataset.name,
+                    Gender: ($form.registebtn.dataset.gender === "1")
+                };
 
+                post(ENV.host + '/api/registe', data, function (fb) {
+                    if (fb == 2) {
+                        alert("验证失败，请检查验证码或重新发送");
+                    } else if (fb > 2) {
+                        alert("手机号码被占用");
+                    } else if (fb == 1) {
+                        triggerTackingEvent("submit signup");
+                        redirectAfterLogin();
+                    }
+                });
+            } else {
+                //verify mobile
+                triggerTackingEvent("click verify");
+                var data = {
+                    Type: isRegister ? 1 : 2,
+                    Mobile: $form.phone.value,
+                    Code: $form.code.value
+                };
+                post(ENV.host + '/api/verification', data, function (fb) {
+                    if (fb == 0) {
+                        alert("验证失败，请检查验证码或重新发送");
+                    } else if (fb == 2) {
+                        alert("手机号码/验证码 格式不对");
+                    } else {//pass validation
+                        triggerTackingEvent("submit signup");
+                        if (document.referrer) {
+                            location.href = document.referrer;
+                        } else {
+                            location.href = "/m/dashboard";
+                        }
+                    }
+                });
+            }
         });
 
-        var $verifyBtn = $('.btn-grey')[0];
         var seconds = 0;
         $verifyBtn.on('click', function () {
             if (seconds > 0) return;
@@ -356,12 +432,21 @@ var checkPage = function () {
                 $form.phone.classList.remove('error');
             }
 
-            var url = ENV.host + '/api/Validation?mobile=' + $form.phone.value;
+            var data = {
+                Mobile: $form.phone.value,
+                Code: $form.code.value
+            };
+
+            console.log(data);
+
             seconds = 60;
-            
-            post(url, function (fb) {
+            post(ENV.host + '/api/verification', data, function (fb) {
                 if (fb == 1) {
-                    triggerTackingEvent("send verify");
+                    if (isRegister) {
+                        triggerTackingEvent("send verify");
+                    }
+                    else {
+                    }
                     // timer
                     var t = setInterval(function () {
                         if (seconds == undefined || seconds <= 0) {
@@ -376,10 +461,14 @@ var checkPage = function () {
                     }, 1000);
                 }
                 else {
-                    if (fb == 0) {
+                    if (fb > 2) {
                         alert("手机号码已被占用");
                     } else if (fb == 2) {
-                        alert("手机号码格式不对");
+                        if (isRegister) {
+                            alert("手机号码格式不对");
+                        } else {
+                            alert("手机号码/验证码格式不对");
+                        }
                     }
                     if (t != undefined) {
                         clearInterval(t);
@@ -387,7 +476,13 @@ var checkPage = function () {
                     seconds = 0;
                 }
             });
-        })
+        });
+    }
+
+    // verify page
+    if ($('#verification-page').length) {
+        triggerTackingEvent("vphone_page");
+        initVerficationForm(false);
     }
 
     // add course page
@@ -447,6 +542,7 @@ var checkPage = function () {
     }
     if ($('.courses-learning-page').length || $('.courses-teaching-page').length) {
         confirmManage();
+        //changeBookDate();
         checkAllEvaluateModal();
 
         // reservation modal
@@ -482,7 +578,7 @@ var checkPage = function () {
         ($("#paycoin textarea")[0], 200);
     }
 
-    if ($('.setting-page').length) {
+    if ($('.dashboard-page').length) {
         initLikeEvent();
         $('.profileedit-link').on('click', function () {
             triggerTackingEvent("dashboard edit profile");
@@ -491,14 +587,126 @@ var checkPage = function () {
         $('#dashboard-logout').on('click', function () {
             logOut();
         });
+
+        if ($('.getcoin-wechat').length) {
+            if (browser.versions.weixin) {
+                $('.getcoin-notwechattext')[0].style.display = 'none';
+                //move to we chat
+                $('.getcoin-wechat').on('click', function () {
+                    $("#howToShare")[0].classList.add('active');
+                    triggerTackingEvent("coin_share");
+                });
+                $("#howToShare").on('click', function () {
+                    $("#howToShare")[0].classList.remove('active');
+                });
+            } else {
+                $('.getcoin-wechattext')[0].style.display = 'none';
+            }
+        }
+
+        $('.getcoin-verify').on('click', function () {
+            triggerTackingEvent("coin_vphone");
+            location.href = "/m/verification";
+        });
+
+        $('.getcoin-class').on('click', function () {
+            triggerTackingEvent("coin_createclass");
+            location.href = "/m/mycourses";
+        });
+
+        $('.getcoin-credit').on('click', function () {
+            triggerTackingEvent("coin credits");
+            location.href = "/m/credit";
+        });
+
+        $('.topnums-credit').on('click', function () {
+            triggerTackingEvent("dashtop credits");
+            location.href = "/m/aboutcredit";
+        });
+
+        $('#signin-now').on('click', function () {
+            var $signinbtn = this;
+            if ($signinbtn.classList.contains('signin-now')) {
+                var data = { Type: 5, ParaValue: 0 };
+                post(ENV.host + '/api/credit', data, function (fb) {
+                    if (fb === 1) {
+                        $signinbtn.classList.remove('signin-now');
+                        $('.signin-status')[0].textContent = "今日已签到";
+                        $('.credit-num')[0].textContent = parseInt(parseInt($('.credit-num')[0].textContent) + 2);
+                        myAlert("签到成功啦！<br />积分 + 2", 2);
+                        triggerTackingEvent("signin daily");
+                    }
+                    else if (fb === 2) {
+                        myAlert("签到失败", 2);
+                    }
+                    return;
+                });
+            } else {
+                myAlert("今日已经签到", 2);
+            }
+        });
+    }
+
+    if ($('.setting-credit-page').length) {
+        $('#exchange-btn').on('click', function () {
+            exchangeToCoin();
+        });
     }
 };
-
 
 
 // start here
 checkPage();
 window.addEventListener('push', checkPage);
+
+function exchangeToCoin() {
+    var patten = new RegExp(/^[0-9]*$/i);
+    var $exinput = $("#exchange-coin")[0];
+    var $exbtn = $('#exchange-btn')[0];
+    var exchange = $exinput.value;
+    if (exchange && patten.test(exchange)) {
+        exchange = parseInt(exchange);
+        var credit = parseInt($(".member-credit")[0].textContent);
+        if (exchange > 0) {
+            if (credit < exchange * 30) {
+                myAlert("抱歉，您的积分不足", 2);
+                $exinput.classList.add("error");
+            } else {
+                $exinput.classList.remove("error");
+                $exbtn.classList.add("disabled");
+                var $mcredit = $(".member-credit")[0];
+                var $mcoin = $(".member-coin")[0];
+                $mcredit.classList.remove("credit-twinkling");
+                $mcoin.classList.remove("credit-twinkling");
+                var data = { Type: 2, ParaValue: exchange };
+                console.log(data);
+                post(ENV.host + '/api/credit', data, function (fb) {
+                    if (fb === 1) {
+                        $mcredit.textContent = parseInt($mcredit.textContent) - exchange * 30;
+                        $mcoin.textContent = parseInt($mcoin.textContent) + exchange;
+                        $mcredit.classList.add("credit-twinkling");
+                        $mcoin.classList.add("credit-twinkling");
+                        myAlert("恭喜，积分成功兑换为课币", 2);
+                        triggerTackingEvent("convert credits");
+                        var left = parseInt(parseInt($mcredit.textContent) / 30);
+                        $(".member-creditleft")[0].textContent = left;
+                        $exinput.value = "";
+                        if (left > 0) {
+                            $exbtn.classList.remove("disabled");
+                        }
+                    }
+                    else if (fb === 2) {
+                        myAlert("操作失败", 2);
+                    }
+                    return;
+                });
+            }
+        }
+    } else {
+        myAlert("请输入要兑换的课币数", 2);
+        $exinput.classList.add("error");
+    }
+}
 
 function bindHashChangeToSteps() {
     var changeContent = function () {
@@ -535,7 +743,6 @@ function switchCourseCat() {
             maximumAge: 30000,
             timeout: 27000
         };
-
         // nearby skill
         if (query.by == 0) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -548,20 +755,20 @@ function switchCourseCat() {
                 geoc.getLocation(point, function (rs) {
                     var addComp = rs.addressComponents;
                     cityName = addComp.city;
-                    var url = ENV.host + '/api/ClassList?' + 'by=' + query.by + '&type=' + query.type +
+                    var url = ENV.host + '/api/ClassLists?' + 'by=' + query.by + '&type=' + query.type +
                               '&x=' + posX + '&y=' + posY + '&city=' + encodeURIComponent(cityName);
                     savePosition(posX, posY);
                     getCourses(url);
                 });
             }, function () {
-                //console.log("no position available.")
+                console.log("no position available.")
             }, geo_opts);
         } else if (query.by == 3) {// search
             triggerTackingEvent("search");
-            var url = ENV.host + '/api/ClassList?key=' + getQueryString("key") + '&by=3&type=1';//encodeURIComponent() 
+            var url = ENV.host + '/api/ClassLists?key=' + getQueryString("key") + '&by=3&type=1';//encodeURIComponent() 
             getCourses(url);
         } else {// category ,promote
-            var url = ENV.host + '/api/ClassList?' + 'by=' + query.by + '&type=' + query.type;
+            var url = ENV.host + '/api/ClassLists?' + 'by=' + query.by + '&type=' + query.type;
             getCourses(url);
         }
     }
@@ -881,7 +1088,7 @@ function commentForm() {
 
         if (validHasValue($input)) {
             var data = {
-                //MemberId: 1,
+                //MemberId: 0,
                 ClassId: $form[0].dataset.classid,
                 CommentText: $input.value
             };
@@ -956,7 +1163,7 @@ function followMember() {
             }
         });
         triggerTackingEvent("follow");
-        
+
     })
 }
 
@@ -1215,12 +1422,12 @@ function checkAllEvaluateModal() {
                 $subbtn.classList.add("disable");
                 var feedback = $('#evaluate input[type="radio"]:checked')[0].value;
                 var comment = $form.message.value;
-
+                var isStudent = ($subbtn.dataset.student === "1");
                 var data = {
                     "OrderId": $('.teaching.active')[0].dataset.orderid,
                     "Feedback": feedback,
                     "Comment": comment,
-                    "IsStudent": ($subbtn.dataset.student === "1")
+                    "IsStudent": isStudent
                 };
                 //console.log(data);
                 post(ENV.host + '/api/orderreview', data, function (fb) {
@@ -1228,8 +1435,13 @@ function checkAllEvaluateModal() {
                         $('#evaluate')[0].classList.remove('active');
                         toDidabledState($('.teaching.active')[0], "授课结束");
                         $form.message.value = "";
+                        if (isStudent) {
+                            myAlert("成功提交评价<br />积分 + 10", 2);
+                        } else {
+                            myAlert("成功提交评价<br />积分 + 6", 2);
+                        }
                     } else {
-                        alert("提交失败或已被评价");
+                        myAlert("提交失败或已被评价", 2);
                     }
                     $subbtn.classList.remove("disable");
                 });
@@ -1433,7 +1645,7 @@ function updateProfile(btn) {
             }
             $('#profile-savebtn')[0].classList.add("disabled");
         }
-        else if (fb === 2) {
+        else if (fb === 0) {
             if (noAvatar) {
                 myAlert("保存失败,请稍后再试", 2);
             }
@@ -1449,6 +1661,19 @@ function logOut() {
     post(ENV.host + '/SignUp/LogOutSocialAccount', function () {
         window.location.href = "/m/login";
     });
+}
+
+function getShareClassCoins() {
+    if ($('.getcoin-wechat')[0].style.display != "none") {
+        post(ENV.host + '/api/coins', function (fb) {
+            if (fb == 0) {
+                $('.current-coins')[0].textContent = parseInt($('.current-coins')[0].textContent) + 2;
+            }
+            $("#howToShare")[0].classList.remove('active');
+
+            jQuery('.getcoin-wechat').slideUp();
+        });
+    }
 }
 
 function initLikeEvent() {
@@ -1481,6 +1706,48 @@ function initLikeEvent() {
     })
 }
 
+//change order book date before accept
+function changeBookDate() {
+    $('.change-date').on('click', function () {
+        var $card = closestParent(this, '.card');
+        var datas = $card.dataset;
+        var orderId = datas.orderid;
+        var bookDate = datas.date;
+        var $form = $('#form-bookdate')[0];
+        var $input = $form.querySelector('input');
+        $form.dataset.id = orderId;
+        $input.value = bookDate;
+    });
+
+    $('#form-bookdate .btn-block').on('click', function () {
+        var $form = $('#form-bookdate')[0];
+        var $input = $form.querySelector('input');
+        if ($input.value) {
+            $input.classList.remove("error");
+            var orderId = $form.dataset.id;
+            var data = {
+                BookDate: $input.value,
+                Status: 0
+            };
+
+           put(ENV.host + '/api/Order/' + orderId, data, function (fb) {
+               if (fb < 2) {
+                   alert("修改成功");
+                   var $card = $('.teaching.active')[0];
+                   var $dateEl = $card.querySelector(".course-info span");
+                   $dateEl.innerText = $input.value.replace("-0", ".").replace("-", ".");
+               }
+               else { alert("修改失败"); }
+               $('#changeDate')[0].classList.remove('active');
+               return;
+            });
+        } else {
+            $input.classList.add("error");
+            return;
+        }
+    });
+}
+
 //For order status change (Teaching & Learning page)
 function confirmManage() {
     [].forEach.call($('.confirm'), function (el) {
@@ -1496,277 +1763,264 @@ function confirmManage() {
                 if (window.confirm("申请退币?")) updateOrderStatus(el, 6);
             } else if (el.classList.contains('cancel-book')) {
                 if (window.confirm("取消订课?")) updateOrderStatus(el, 3);
+            } else if (el.classList.contains('cancel-acceptbook')) {
+                if (window.confirm("取消接受的预订?")) updateOrderStatus(el, 12);
             }
         })
     });
 }
 
-function toDidabledState(el, desc) {
-    var $card = closestParent(el, '.card');
-    var $tpl = $('#teaching-disabled-tpl')[0].innerHTML;
-    $tpl = _.template($tpl, { person: $card.dataset, text: desc });
-    $card.outerHTML = $tpl;
-}
-
-function toAcceptedState($card, isAccept) {
-    $('#contact')[0].classList.remove('active');
-    var $tpl;
-    if (isAccept) {
-        var $tpl = $('#teaching-accepted-tpl')[0].innerHTML;
-        if ($card.dataset.message === "") {
-            $tpl = _.template($tpl, { person: $card.dataset, showmessage: "none" });
-        } else {
-            $tpl = _.template($tpl, { person: $card.dataset, showmessage: "" });
-        }
-    } else {
+    function toDidabledState(el, desc) {
+        var $card = closestParent(el, '.card');
         var $tpl = $('#teaching-disabled-tpl')[0].innerHTML;
-        $tpl = _.template($tpl, { person: $card.dataset, text: "已被取消" });
+        $tpl = _.template($tpl, { person: $card.dataset, text: desc });
+        $card.outerHTML = $tpl;
     }
-    $card.outerHTML = $tpl;
-}
 
-function accpetOrder($form) {
-    var $name = $form.name;
-    var $phone = $form.phone;
-    var $card = $('.teaching.active')[0];
-    var datas = $card.dataset;
-    var orderId = datas.orderid;
+    function toAcceptedState($card, isAccept) {
+        $('#contact')[0].classList.remove('active');
+        var $tpl;
+        if (isAccept) {
+            var $tpl = $('#teaching-accepted-tpl')[0].innerHTML;
+            if ($card.dataset.message === "") {
+                $tpl = _.template($tpl, { person: $card.dataset, showmessage: "none" });
+            } else {
+                $tpl = _.template($tpl, { person: $card.dataset, showmessage: "" });
+            }
+        } else {
+            var $tpl = $('#teaching-disabled-tpl')[0].innerHTML;
+            $tpl = _.template($tpl, { person: $card.dataset, text: "已被取消" });
+        }
+        $card.outerHTML = $tpl;
+    }
 
-    if (validHasValue($name) && validPhone($phone)) {
+    function accpetOrder($form) {
+        var $name = $form.name;
+        var $phone = $form.phone;
+        var $card = $('.teaching.active')[0];
+        var datas = $card.dataset;
+        var orderId = datas.orderid;
+
+        if (validHasValue($name) && validPhone($phone)) {
+            var data = {
+                "Status": 4,
+                "MemberId": datas.memberid,
+                "Title": datas.course,
+                "Name": datas.name,
+                "Phone": datas.phone,
+                "Email": datas.email,
+                "MyName": $name.value,
+                "MyPhone": $phone.value
+            };
+            //console.log(data);
+            put(ENV.host + '/api/order/' + orderId, data, function (fb) {
+                if (fb === 2) {
+                    //alert("学生课币不足，接受订课失败");
+                    toAcceptedState($card, false);
+                } else if (fb === 3) {
+                    alert("订单状态已经改变，请刷新");
+                } else if (fb === -1) {
+                    alert("操作失败");
+                } else {
+                    triggerTackingEvent("accept booking");
+                    toAcceptedState($card, true);
+                }
+                return;
+            });
+        } else {
+            return;
+        }
+    }
+
+    function updateOrderStatus(el, status) {
+        var $card = closestParent(el, '.card');
+        var datas = $card.dataset;
+        var orderId = datas.orderid;
+
         var data = {
-            "Status": 4,
+            "Status": status,
             "MemberId": datas.memberid,
             "Title": datas.course,
             "Name": datas.name,
             "Phone": datas.phone,
-            "Email": datas.email,
-            "MyName": $name.value,
-            "MyPhone": $phone.value
+            "Email": datas.email
         };
         //console.log(data);
         put(ENV.host + '/api/order/' + orderId, data, function (fb) {
-            if (fb === 2) {
-                //alert("学生课币不足，接受订课失败");
-                toAcceptedState($card, false);
-            } else if (fb === 3) {
+            if (fb === 3) {
                 alert("订单状态已经改变，请刷新");
-            } else if (fb === -1) {
+                return;
+            } else if (fb === 0) {
                 alert("操作失败");
+                return;
             } else {
-                triggerTackingEvent("accept booking");
-                toAcceptedState($card, true);
-            }
-            return;
-        });
-    } else {
-        return;
-    }
-}
-
-function updateOrderStatus(el, status) {
-    var $card = closestParent(el, '.card');
-    var datas = $card.dataset;
-    var orderId = datas.orderid;
-
-    var data = {
-        "Status": status,
-        "MemberId": datas.memberid,
-        "Title": datas.course,
-        "Name": datas.name,
-        "Phone": datas.phone,
-        "Email": datas.email
-    };
-    //console.log(data);
-    put(ENV.host + '/api/order/' + orderId, data, function (fb) {
-        if (fb === 3) {
-            alert("订单状态已经改变，请刷新");
-            return;
-        } else if (fb === -1) {
-            alert("操作失败");
-            return;
-        } else {
-            if (status === 2) {//T
-                toDidabledState(el, "未被接受");
-                triggerTackingEvent("reject booking");
-            } else if (status === 3) {//S
-                toDidabledState(el, "已被取消");
-            } else if (status === 6) {//S
-                toDidabledState(el, "退币申请");
-            } else if (status === 7) {//T
-                toDidabledState(el, "退币成功");
-            } else if (status === 8) {//T
-                toDidabledState(el, "退币失败");
-            }
-        }
-    });
-
-}
-
-function updateClassInfo(data) {
-    put(ENV.host + '/api/course/' + data.ClassId, data, function (fb) {
-        //console.log(fb);
-        if (fb > 0) {
-            if (data.City != null) {
-                $('#preview-city')[0].innerText = data.City;
-            } else if (data.Title != null) {
-                $('#preview-title1')[0].innerText = data.Title;
-                $('#preview-title2')[0].innerText = data.Title;
-            }
-            else if (data.IsPublish != null) {
-                triggerTackingEvent("publish class");
-            }
-            return;
-        } else {
-            myAlert("保存失败", 2);
-        }
-    });
-}
-
-//TO DO:Test API later
-function payClassCoin() {
-    var $form = $('#paycoin form')[0];
-    if ($form.length > 0) {
-        $('#paycoin .btn-paycoin')[0].on('click', function () {
-            $subbtn = this;
-            if (!$subbtn.classList.contains('disable') && $('#evaluate input[type="radio"]:checked').length) {
-                if (validHasValue($form.message)) {
-                    $subbtn.classList.add("disable");
-                    var feedback = $('#evaluate input[type="radio"]:checked')[0].value;
-                    var comment = $form.message.value;
-                    var $card = $('.teaching.active')[0];
-                    var datas = $card.dataset;
-
-                    var data = {
-                        "Status": 9,
-                        "MemberId": datas.memberid,
-                        "Title": datas.course,
-                        "Name": datas.name,
-                        "Phone": datas.phone,
-                        "Email": datas.email,
-                        "Feedback": feedback,
-                        "Comment": comment,
-                    };
-                    //console.log(data);
-
-                    put(ENV.host + '/api/order/' + datas.orderid, data, function (fb) {
-                        if (fb === 3) {
-                            alert("订单状态已经改变，请刷新");
-                            return;
-                        } else if (fb === -1) {
-                            alert("操作失败");
-                            return;
-                        } else {
-                            $('#paycoin')[0].classList.remove('active');
-                            toDidabledState($card, "授课结束");
-                            $form.message.value = "";
-                            return;
-                        }
-                        $subbtn.classList.remove("disable");
-                    });
+                if (status === 2) {//T
+                    toDidabledState(el, "未被接受");
+                    triggerTackingEvent("reject booking");
+                } else if (status === 3 || status === 12) {//S 3 T12
+                    toDidabledState(el, "已被取消");
+                } else if (status === 6) {//S
+                    toDidabledState(el, "退币申请");
+                } else if (status === 7) {//T
+                    toDidabledState(el, "退币成功");
+                } else if (status === 8) {//T
+                    toDidabledState(el, "退币失败");
                 }
             }
         });
-    }
-}
 
-// Upload images para:type 0 avatar 1publish 2preview
-function uploadImage(type) {
-    var url;
-    var isPublish = false;
-    if (type === 0) {
-        $input = $('.edit-avatar input[type=file]')[0];
-        url = "/API/UploadAvatar";
-    } else if (type === 1) {
-        $input = $('.course-list input[type=file]')[0];
-        url = "/API/UploadCover";
-    } else if (type === 2) {
-        $input = $('.course-list input[type=file]')[0];
-        url = "/API/UploadCover";
-        isPublish = true;
     }
 
-    if (!$input.files.length) return;
-    var formData = new FormData();
-    var file = $input.files[0];
-    formData.append('file', file);
-    formData.append('imagefileext', $('#imagefileext')[0].value);
-    formData.append('imagefilesetting', $('#imagefilesetting')[0].value);
-    formData.append('imagefilename', $('#imagefilename')[0].value);
-    if (isPublish) {
-        formData.append('ispublish', "1");
+    function updateClassInfo(data) {
+        put(ENV.host + '/api/course/' + data.ClassId, data, function (fb) {
+            //console.log(fb);
+            if (fb > 0) {
+                if (data.City != null) {
+                    $('#preview-city')[0].innerText = data.City;
+                } else if (data.Title != null) {
+                    $('#preview-title1')[0].innerText = data.Title;
+                    $('#preview-title2')[0].innerText = data.Title;
+                }
+                else if (data.IsPublish != null) {
+                    triggerTackingEvent("publish class");
+                }
+                return;
+            } else {
+                myAlert("保存失败", 2);
+            }
+        });
     }
-    //console.log(formData);
-    uploadFile(formData, url, function (data) {
+
+    //TO DO:Test API later
+    function payClassCoin() {
+        var $form = $('#paycoin form')[0];
+        if ($form.length > 0) {
+            $('#paycoin .btn-paycoin')[0].on('click', function () {
+                $subbtn = this;
+                if (!$subbtn.classList.contains('disable') && $('#evaluate input[type="radio"]:checked').length) {
+                    if (validHasValue($form.message)) {
+                        $subbtn.classList.add("disable");
+                        var feedback = $('#evaluate input[type="radio"]:checked')[0].value;
+                        var comment = $form.message.value;
+                        var $card = $('.teaching.active')[0];
+                        var datas = $card.dataset;
+
+                        var data = {
+                            "Status": 9,
+                            "MemberId": datas.memberid,
+                            "Title": datas.course,
+                            "Name": datas.name,
+                            "Phone": datas.phone,
+                            "Email": datas.email,
+                            "Feedback": feedback,
+                            "Comment": comment,
+                        };
+                        //console.log(data);
+
+                        put(ENV.host + '/api/order/' + datas.orderid, data, function (fb) {
+                            if (fb === 3) {
+                                alert("订单状态已经改变，请刷新");
+                                return;
+                            } else if (fb === -1) {
+                                alert("操作失败");
+                                return;
+                            } else {
+                                $('#paycoin')[0].classList.remove('active');
+                                toDidabledState($card, "授课结束");
+                                $form.message.value = "";
+                                return;
+                            }
+                            $subbtn.classList.remove("disable");
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    // Upload images para:type 0 avatar 1publish 2preview
+    function uploadImage(type) {
+        var url;
+        var isPublish = false;
         if (type === 0) {
-            myAlert("保存成功", 2);
+            $input = $('.edit-avatar input[type=file]')[0];
+            url = "/API/UploadAvatar";
         } else if (type === 1) {
-            myAlert("保存成功", 2);
-            //location.href = '/m/classpreview';
+            $input = $('.course-list input[type=file]')[0];
+            url = "/API/UploadCover";
         } else if (type === 2) {
-            myAlert("发布成功", 2);
+            $input = $('.course-list input[type=file]')[0];
+            url = "/API/UploadCover";
+            isPublish = true;
         }
-    });
-}
 
-function uploadFile(formData, url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', url);
-    xhr.onload = function () {
-        callback(JSON.parse(xhr.response));
-    };
-    xhr.send(formData);
-}
-
-function getUpCloudOptions(imageType) {
-    post(ENV.host + '/api/UpCloud?fileName=' + $('#imagefilename')[0].value + $('#imagefileext')[0].value + "&imageType=" + imageType, function (fb) {
-        if (fb) {
-            $('#policy')[0].value = fb.Policy;
-            $('#signature')[0].value = fb.Signature;
-            $('#savekey')[0].value = fb.SaveKey;
+        if (!$input.files.length) return;
+        var formData = new FormData();
+        var file = $input.files[0];
+        formData.append('file', file);
+        formData.append('imagefileext', $('#imagefileext')[0].value);
+        formData.append('imagefilesetting', $('#imagefilesetting')[0].value);
+        formData.append('imagefilename', $('#imagefilename')[0].value);
+        if (isPublish) {
+            formData.append('ispublish', "1");
         }
-    });
-    checkAllFillInImage(imageType);
-}
+        //console.log(formData);
+        uploadFile(formData, url, function (data) {
+            if (type === 0) {
+                myAlert("保存成功", 2);
+            } else if (type === 1) {
+                myAlert("保存成功", 2);
+                //location.href = '/m/classpreview';
+            } else if (type === 2) {
+                myAlert("发布成功", 2);
+            }
+        });
+    }
 
-//validation functions
-function validHasValue(el) {
-    if (!el.value || el.value.trim() === "") {
-        el.classList.add("error");
-        return false;
-    } else {
-        el.classList.remove("error");
-        return true;
+    function uploadFile(formData, url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url);
+        xhr.onload = function () {
+            callback(JSON.parse(xhr.response));
+        };
+        xhr.send(formData);
     }
-}
 
-function validPhone(el) {
-    var patten = new RegExp(/^[1]+\d{10}$/);
-    if (el.value && patten.test(el.value)) {
-        el.classList.remove("error");
-        return true;
-    } else {
-        el.classList.add("error");//手机号码格式不对
-        return false;
+    function getUpCloudOptions(imageType) {
+        post(ENV.host + '/api/UpCloud?fileName=' + $('#imagefilename')[0].value + $('#imagefileext')[0].value + "&imageType=" + imageType, function (fb) {
+            if (fb) {
+                $('#policy')[0].value = fb.Policy;
+                $('#signature')[0].value = fb.Signature;
+                $('#savekey')[0].value = fb.SaveKey;
+            }
+        });
+        checkAllFillInImage(imageType);
     }
-}
 
-function triggerTackingEvent(eventCode) {
-    if (typeof (mixpanel) != "undefined") {
-        mixpanel.track(eventCode);
+    //validation functions
+    function validHasValue(el) {
+        if (!el.value || el.value.trim() === "") {
+            el.classList.add("error");
+            return false;
+        } else {
+            el.classList.remove("error");
+            return true;
+        }
     }
-}
-/*
-$(".menutab-course").on('click', function () {
-    if (typeof (mixpanel) != "undefined") {
-        mixpanel.track("menu course");
-    }
-    myAlert("此功能将稍后开放", 2);
-});
 
-$(".menutab-mypage").on('click', function () {
-    if (typeof (mixpanel) != "undefined") {
-        mixpanel.track("menu mypage");
+    function validPhone(el) {
+        var patten = new RegExp(/^[1]+\d{10}$/);
+        if (el.value && patten.test(el.value)) {
+            el.classList.remove("error");
+            return true;
+        } else {
+            el.classList.add("error");//手机号码格式不对
+            return false;
+        }
     }
-    myAlert("此功能将稍后开放", 2);
-});
-*/
+
+    function triggerTackingEvent(eventCode) {
+        if (typeof (mixpanel) != "undefined") {
+            mixpanel.track(eventCode);
+        }
+    }

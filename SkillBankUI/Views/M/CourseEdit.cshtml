@@ -181,8 +181,8 @@
                 <textarea placeholder="具体课程内容有什么？需要上几节课？需要学生有一定基础吗？不少于100字" rows="5" name="intro">@(Model.ClassInfo == null ? "" : Model.ClassInfo.Summary)</textarea>
                 <p class="warning" align="right"><small>还差<span>@(100 - ((Model.ClassInfo == null || String.IsNullOrEmpty(Model.ClassInfo.Summary)) ? 0 : (Model.ClassInfo.Summary.Length > 100 ? 100 : Model.ClassInfo.Summary.Length)))</span>字</small></p>
             </div>
-            <h5 class="mb-1">你的闪光点</h5>
-            <textarea placeholder="你的优势和吸引别人的理由是什么？" name="highlight">@(Model.ClassInfo == null ? "" : Model.ClassInfo.WhyU)</textarea>
+            <h5 class="mb-1">你的技能水平</h5>
+            <textarea placeholder="这门技能你掌握了多久？到达了什么水平？你的优势是什么？" name="highlight">@(Model.ClassInfo == null ? "" : Model.ClassInfo.WhyU)</textarea>
         </div>
         <div id="extra">
             <div class="inner">

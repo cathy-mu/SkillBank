@@ -17,7 +17,7 @@ namespace SkillBank.Site.DataSource.Mapper
             if (objOrders != null)
             {
                 //var notifications = objOrders.Select(item => new NotificationItem() {  TypeId = item.TypeId,  ClassOrderId = item.ClassOrderId,  Name = item.Name }).ToList();
-                var notifications = objOrders.Select(item => new NotificationItem() { NotificationId = item.NotificationId, TypeId = item.TypeId, TypeRank = item.TypeRank, RelatedMemberId = item.RelatedMemberId, ClassOrderId = item.ClassOrderId, Name = item.Name, Title = item.Title }).ToList();
+                var notifications = objOrders.Select(item => new NotificationItem() { NotificationId = item.NotificationId, TypeId = item.TypeId, TypeRank = item.TypeRank, RelatedMemberId = item.RelatedMemberId, ClassOrderId = item.ClassOrderId, Name = item.Name, Title = item.Title, Avatar = item.Avatar,LastUpdateDate = item.LastUpdateDate}).ToList();
                 return (notifications.Count > 0) ? notifications : null;
             }
             return null;

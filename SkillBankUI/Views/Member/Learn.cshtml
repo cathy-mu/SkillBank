@@ -50,7 +50,7 @@
                                                 {
                                                     <p><span class="label label-default">@Html.GetTrans(607)</span></p><span class="gray-light">@TextContentHelper.GetDateString(order.LastUpdateDate)</span>
                                                 }
-                                                else if (order.OrderStatus == 3)
+                                                else if (order.OrderStatus == 3 || order.OrderStatus == 12 || order.OrderStatus == 13)
                                                 {
                                                     <p><span class="label label-default">@Html.GetTrans(445)</span></p><span class="gray-light">@TextContentHelper.GetDateString(order.LastUpdateDate)</span>
                                                 }

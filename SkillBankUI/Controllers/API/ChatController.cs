@@ -16,8 +16,8 @@ namespace SkillBankWeb.API
 {
     public class ChatController : ApiController
     {
-        //public readonly ICommonService _commonService;
         public readonly ICommonService _commonService;
+        
         public class ChatItem
         {
             public int ToId { get; set; }
@@ -32,53 +32,29 @@ namespace SkillBankWeb.API
         {
             _commonService = commonService;
         }
-        
+             
         /// <summary>
-        /// GET api/chat/1
+        /// GET api/chat/?id=1
         /// </summary>
-        /// <param name="id">memberId</param>
+        /// <param name="id">contact member id</param>
         /// <returns></returns>
-        public List<MessageListItem> Get()
-        {
-            int memberId = GetMemberId(true);
-            if (memberId > 0)
-            {
-                //LoadNotificationAlert(memberId);
-                var messages = _commonService.GetMessageList(memberId);
-                var unReadMessageNum = _commonService.GetMessageUnReadNum(memberId);
-                foreach (var item in messages)
-                {
-                    var contactId = item.From_Id.Equals(memberId) ? item.To_Id : item.From_Id;
-                    item.UnReadNumber = (unReadMessageNum!=null&&unReadMessageNum.ContainsKey(contactId)) ? unReadMessageNum[contactId] : 0;
-                }
-                return messages;
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// GET api/chat/?from=1&to=2
-        /// </summary>
-        /// <param name="from">from member id</param>
-        /// <param name="to">to member id</param>
-        /// <returns></returns>
-        public List<Message> GetDetail(int id)
+        public List<Message> Get(int id)
         {
             int contactId = id;
             int memberId = GetMemberId(true);
-            
+
             if (memberId > 0)
             {
                 var messages = _commonService.GetMessageDetail(memberId, contactId);
                 //TO DO:set message as read after test
                 //_commonService.SetMessageAsRead(0, memberId, contactId);
-                
+
                 return messages;
             }
             return null;
         }
 
-        public Boolean AddMessage(ChatItem chatItem)
+        public Boolean Post(ChatItem chatItem)
         {
             int memberId = GetMemberId(true);
             if (memberId > 0)

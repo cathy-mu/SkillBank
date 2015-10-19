@@ -90,14 +90,12 @@ namespace SkillBankWeb.Controllers
             //Let exists member login 
             if (memberInfo != null)
             {
-                WebContext.Current.MemberType = Enums.MemberType.Member;
                 WebContext.Current.MemberId = memberInfo.MemberId;
                 result = true;
             }
             else// not regist yet
             {
                 result = false;
-                WebContext.Current.MemberType = Enums.MemberType.Visiter;
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }

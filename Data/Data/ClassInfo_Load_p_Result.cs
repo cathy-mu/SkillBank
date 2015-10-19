@@ -30,5 +30,7 @@ namespace SkillBank.Site.DataSource.Data
         public System.DateTime CreatedDate { get; set; }
         public decimal Rank { get; set; }
         public string Cover { get; set; }
+        public string Tags { get; set; }
+        public bool HasOffline { get; set; }
     }
 }

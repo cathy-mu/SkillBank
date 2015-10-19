@@ -147,7 +147,11 @@ function classdetail_Class() {
         if ($("#classpreview-prove").length > 0) {
             $("#classpreview-prove").click(function () { classdetail.setClassTag($(this), 1, false); });
             $("#classpreview-reject").click(function () { classdetail.setClassTag($(this), 2, false); });
-            $("#classpreview-cancle").click(function () { classdetail.setClassTag($(this), 0, false); });
+            $("#classpreview-setcate").click(function () { classdetail.setClassTag($(this), 1, false); });
+            $("#classpreview-cate").change(function () {
+                var selObj = $(this).children('option:selected');
+                $("#classdetail-hidcateid").val(selObj.val());
+            });
         } else {
             $("#classpreview-active").click(function () { classdetail.setClassTag($(this), 1, true); });
             $("#classpreview-disactive").click(function () { classdetail.setClassTag($(this), 2, true); });
@@ -268,23 +272,29 @@ function classdetail_Class() {
         }
     }
 
-    this.setClassTag = function (btnObj, isProved, isForActive) {
+    this.setClassTag = function (btnObj, infoValue, isForActive) {
         var savePath = "/ClassHelper/UpdateClassStatus";//Class update 1.1
         var saveType = 2;
+        var isSetCate = false;
         var paraData;
         var classId = $("#classdetail-hidclassid").val();
         if (isForActive) {
-            paraData = { classId: classId, infoValue: isProved, forActive: isForActive };
+            paraData = { classId: classId, infoValue: infoValue, forActive: isForActive };
         }
-        else if (isProved == 1) {
-            if (typeof (mixpanel) != "undefined") {
+        else {
+            var isProved = (infoValue==1);
+            var cateId = $("#classdetail-hidcateid").val();
+            if (isProved && typeof (mixpanel) != "undefined") {
                 ga('send', 'event', 'class', 'click', 'peo_create_class');
                 mixpanel.track("prove class");
             }
-            paraData = { classId: classId, infoValue: isProved, forActive: isForActive, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile") };
-        } else if (isProved == 2) {
-            paraData = { classId: classId, infoValue: isProved, forActive: isForActive, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile") };
-        } 
+            if (btnObj.attr("data-classname")) {
+                paraData = { classId: classId, infoValue: cateId, forActive: isForActive, isProved: isProved, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile") };
+            } else {
+                isSetCate = true;
+                paraData = { classId: classId, infoValue: cateId, forActive: isForActive, isProved: isProved };
+            }
+        }
         consoleLog(paraData);
         $.ajax({
             url: savePath,
@@ -293,21 +303,22 @@ function classdetail_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                if (isProved == 1) {
+                if (infoValue == 1) {
                     if (isForActive) {
                         $("#classpreview-active").addClass("saved").removeClass("btn-primary").text("已上线");
+                    } else if (isSetCate) {
+                        $("#classpreview-setcate").addClass("saved").removeClass("btn-primary").text("已修改");
                     } else {
                         $("#classpreview-prove").addClass("saved").removeClass("btn-primary").text("已批准");
                     }
-                } else if (isProved == 2) {
+                } else if (infoValue == 2) {
                     if (isForActive) {
                         $("#classpreview-disactive").addClass("saved").removeClass("btn-warning").text("已下架");
                     } else {
                         $("#classpreview-reject").addClass("saved").removeClass("btn-warning").text("已拒绝");
                     }
-                } else {
-                    $("#classpreview-cancle").addClass("saved").removeClass("btn-warning").text("已取消");
                 }
+                
             }
         });
     }

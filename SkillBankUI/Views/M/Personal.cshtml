@@ -23,9 +23,13 @@
             { 
                 <a class="btn btn-default login-trigger border-none">私信 TA</a>
             }
-            else
+            else if ((ViewBag.MemberInfo.VerifyTag & 1) == 1)
             {
                 <a @(ViewBag.IsOwner ? "" : "href=#privateMsg") class="btn btn-default border-none personal-chat">私信 TA</a>
+            }
+            else 
+            {
+                <a href="@Url.Action("verification", "m")" class="btn btn-default border-none personal-chat">私信 TA</a>
             }
             @if (ViewBag.MemberInfo != null && Model.MemberInfo.IsLike)
             {
@@ -44,10 +48,10 @@
             <table class="u-full-width">
                 <tbody>
                     <tr>
-                        <td><a href="#">
+                        <td><a href="@(Model.ProfileNumDic[Enums.NumberDictionaryKey.Class] > 0 ? Url.Action("coursecollection", "m", new { type = 4, id = Model.MemberInfo.MemberId }) : "#")">
                             <h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Class]</h6>
                             教授</a></td>
-                        <td><a href="#">
+                        <td><a href="@(Model.ProfileNumDic[Enums.NumberDictionaryKey.Student] > 0 ? Url.Action("coursecollection", "m", new { type = 3, id = Model.MemberInfo.MemberId }) : "#")">
                             <h6>@Model.ProfileNumDic[Enums.NumberDictionaryKey.Student]</h6>
                             学习</a></td>
                         <td><a href="@Url.Action("following", "m", new { id = Model.MemberInfo.MemberId })">
@@ -125,7 +129,7 @@
                 <h3>@Model.ProfileNumDic[Enums.NumberDictionaryKey.StudentReview]</h3>
                 <h6>学生评价</h6>
             </a>
-            <a class="@(Model.ProfileNumDic[Enums.NumberDictionaryKey.TeacherReview] > 0 ? "control-item " : "control-item-no-js")" href="#item3mobile">
+            <a id="reviewtab" class="@(Model.ProfileNumDic[Enums.NumberDictionaryKey.TeacherReview] > 0 ? "control-item " : "control-item-no-js")" href="#item3mobile">
                 <h3>@Model.ProfileNumDic[Enums.NumberDictionaryKey.TeacherReview]</h3>
                 <h6>老师评价</h6>
             </a>

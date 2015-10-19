@@ -248,12 +248,12 @@ namespace SkillBank.FunctionTests
         [TestMethod]
         public void Should_LockCoins_Correctly()
         {
-            var memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, "", 0, _memberId);
+            var memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, _memberId);
             int coinsBeforeLock = memberInfo.CoinsLocked;
             Random rd = new Random();
             Byte coinsToLock = (Byte)rd.Next(0, 5);
             _repository.LockCoinsByMemberId(_memberId, coinsToLock);
-            memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.BySocialAccount, "cathy.mu@hotmail.com", 1, _memberId);
+            memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.BySocialAccount, "cathy.mu@hotmail.com", 1);
             int coinsAfterLock = memberInfo.CoinsLocked;
             Assert.AreEqual(coinsBeforeLock + coinsToLock, coinsAfterLock);
         }
@@ -261,12 +261,12 @@ namespace SkillBank.FunctionTests
         [TestMethod]
         public void Should_UnLockCoins_Correctly()
         {
-            var memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, "", 0, _memberId);
+            var memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, _memberId);
             int coinsBeforeUnLock = memberInfo.CoinsLocked;
             Random rd = new Random();
             Byte coinsToUnLock = (Byte)rd.Next(0, 5);
             _repository.UnLockCoinsByMemberId(_memberId, coinsToUnLock);
-            memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, "", 0, _memberId);
+            memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, _memberId);
             int coinsAfterUnLock = memberInfo.CoinsLocked;
             Assert.AreEqual(coinsBeforeUnLock - coinsToUnLock, coinsAfterUnLock);
         }
@@ -274,15 +274,15 @@ namespace SkillBank.FunctionTests
         [TestMethod]
         public void Should_PayCoins_Correctly()
         {
-            var memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, "", 0, _memberId);
-            var teacherInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, "", 0, _memberBId);
+            var memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, _memberId);
+            var teacherInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, _memberBId);
             int coinsBeforePay = memberInfo.Coins;
             int teacheCoinsBeforePay = teacherInfo.Coins;
             Random rd = new Random();
             Byte coinsToPay = (Byte)rd.Next(0, 5);
             _repository.PayCoinsByMemberId(_memberId,_memberBId, coinsToPay);
-            memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, "", 0, _memberId);
-            teacherInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, "", 0, _memberBId);
+            memberInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, _memberId);
+            teacherInfo = _memberRep.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberId, _memberBId);
             int coinsAfterPay = memberInfo.Coins;
             int teacheCoinsAfterPay = teacherInfo.Coins;
             Assert.AreEqual(coinsBeforePay - coinsToPay, coinsAfterPay);

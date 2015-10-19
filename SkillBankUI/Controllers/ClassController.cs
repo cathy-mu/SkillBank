@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
 using SkillBank.Site.Common;
 using SkillBank.Site.Services;
@@ -12,6 +13,8 @@ using SkillBank.Site.Web;
 using SkillBank.Site.Web.ViewModel;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.DataSource.Data;
+using SkillBank.Site.Services.Utility;
+            
 
 namespace SkillBank.Controllers
 {
@@ -70,21 +73,36 @@ namespace SkillBank.Controllers
 
             return View();
         }
-            
+
         /// <summary>
         /// default page show class list for search
         /// </summary>
         /// <returns></returns>
         public ActionResult Index(int id = 1, String k = "", Byte tabid = 0)
         {
+            Boolean isMobileRedirect = (IsMobile());
+            String envCode = System.Configuration.ConfigurationManager.AppSettings["ENV"];
+            if (isMobileRedirect)
+            {
+                Response.Redirect(ConfigConstants.EnvSetting.MobileHome[envCode]);
+            }
+
             var metaTags = MetaTagHelper.GetMetaTags("classsearch");
             ViewBag.MetaTagTitle = metaTags[0];
             ViewBag.MetaTagKeyWords = metaTags[1];
             ViewBag.MetaTagDescription = metaTags[2];
 
             int memberId = WebContext.Current.MemberId;
-            var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
+            var memberInfo = memberId > 0 ? _commonService.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByMemberExtraInfo, memberId, 0) : null;
             ViewBag.MemberInfo = memberInfo;
+            if (!tabid.Equals(0) && memberInfo != null)
+            {
+                ViewBag.FavoriteClassList = memberInfo.ExtraInfo;
+            }
+            else
+            {
+                ViewBag.FavoriteClassList = "";
+            }
             LoadNotificationAlert(memberId);
 
             ClassListModel classListModel = new ClassListModel();
@@ -167,20 +185,45 @@ namespace SkillBank.Controllers
         /// <returns></returns>
         public ActionResult Detail(int id = 0)
         {
+            String envCode = System.Configuration.ConfigurationManager.AppSettings["ENV"];
+            if (IsMobile() && envCode.Equals(ConfigConstants.EnvSetting.LiveEnvName))
+            {
+                Response.Redirect(String.Concat(Constants.PageURL.MobileClassPage, id.ToString()));
+            }
+
             String className = "";
             ClassDetailModel classDetailModel = new ClassDetailModel();
 
             int currMemberId = WebContext.Current.MemberId;
-            ViewBag.MemberInfo = currMemberId > 0 ? _commonService.GetMemberInfo(currMemberId): null ;
+            //Update to cached class info content
+            //ViewBag.MemberInfo = currMemberId > 0 ? _commonService.GetMemberInfo(currMemberId) : null;
+            var currMemberInfo = currMemberId > 0 ? _commonService.GetMemberInfo((Byte)Enums.DBAccess.MemberLoadType.ByWebClassDetail, currMemberId, 0) : null;
+            ViewBag.MemberInfo = currMemberInfo;
+            if (currMemberInfo != null && !String.IsNullOrEmpty(currMemberInfo.ExtraInfo))
+            {
+                //ViewBag.IsLike = (currMemberInfo.ExtraInfo.StartsWith(id.ToString() + ",") || currMemberInfo.ExtraInfo.Contains("," + id.ToString() + ","));
+                ViewBag.IsLike = DataTagHelper.GetIsLike(currMemberInfo.ExtraInfo, id);
+            }
+            else
+            {
+                ViewBag.IsLike = false;
+            }
+                                 
             LoadNotificationAlert(currMemberId);
 
             if (id > 0)
             {
-                var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassAndCurrMemberId, id, currMemberId);
+                //var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassAndCurrMemberId, id, currMemberId);
+                var classInfo = _commonService.GetClassItem(id);
                 if (classInfo != null)
                 {
                     int maxId0 = 0, minId0 = 0, maxId1 = 0, minId1 = 0, maxId2 = 0, minId2 = 0, likeNum = 0;
-                    likeNum = classInfo.ClassId;
+                    likeNum = classInfo.LikeNum;
+                    //hack to make cache like number like real
+                    if (ViewBag.IsLike && likeNum.Equals(0))
+                    {
+                        classInfo.LikeNum = 1;
+                    }
                     classInfo.ClassId = id;
                     classDetailModel.ClassInfo = classInfo;
                     int memberId = classInfo.Member_Id;
@@ -237,7 +280,7 @@ namespace SkillBank.Controllers
                     classDetailModel.IsLogin = (currMemberId > 0);
                     classDetailModel.IsOwner = memberId.Equals(currMemberId);
                     ViewBag.ContactMobile = (memberInfo.NotifyTag & 1).Equals(1) ? memberInfo.Phone : "";//for send SMS notify
-                    
+
                     //init numbers on page
                     var numDic = _commonService.GetNumsByMemberClass(memberId, id);
                     int sum0 = numDic[Enums.NumberDictionaryKey.Result01] + numDic[Enums.NumberDictionaryKey.Result02] + numDic[Enums.NumberDictionaryKey.Result03];
@@ -250,8 +293,7 @@ namespace SkillBank.Controllers
                     numDic.Add(Enums.NumberDictionaryKey.Max1, maxId1);
                     numDic.Add(Enums.NumberDictionaryKey.Min2, minId2);
                     numDic.Add(Enums.NumberDictionaryKey.Max2, maxId2);
-                    numDic.Add(Enums.NumberDictionaryKey.Like, likeNum);
-
+                    
                     classDetailModel.ClassNumDic = numDic;
                 }
                 else
@@ -266,7 +308,7 @@ namespace SkillBank.Controllers
             ViewBag.MetaTagTitle = metaTags[0].Replace("{0}", className);
             ViewBag.MetaTagKeyWords = metaTags[1];
             ViewBag.MetaTagDescription = metaTags[2];
-            
+
             return View(classDetailModel);
         }
 
@@ -285,25 +327,25 @@ namespace SkillBank.Controllers
             var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
             ViewBag.MemberInfo = memberInfo;
             LoadNotificationAlert(memberId);
-                
+
             var categoryLkp = _contentService.GetAllCategories();
             var categories = LookupHelper.GetCatagory4Picker(categoryLkp);
             if (categories != null)
             {
                 classEditModel.CategoryLkp = categories;
             }
-            
+
             classEditModel.isEdit = (edit == 1);//0 new class, 1 edit class
 
             //Load class info by class id or get lastest course if not course id
             var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassId, id, memberId);
-            
+
             List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
             var IsAdmin = whiteListMem.Contains(memberId.ToString());
             ViewBag.IsOwner = classInfo.Member_Id.Equals(memberId);
 
             //classPreviewModel.IsOwner = memberId.Equals(currMemberId);
-            
+
             if (classInfo != null && (classInfo.Member_Id.Equals(memberId) || IsAdmin))
             {
                 if (classInfo.IsProved.Equals(3) && !IsAdmin)
@@ -334,7 +376,7 @@ namespace SkillBank.Controllers
                         classEditModel.ParentCategoryName = categoryLkp.ContainsKey(classEditModel.ParentCategoryId) ? categoryLkp[classEditModel.ParentCategoryId].CategoryInfo.CategoryName : "";
                     }
                     ViewBag.ClassId = id;
-                    
+
                 }
 
                 ViewBag.CharacterCountText = ResourceHelper.GetTransText(283).Replace("{0}", ";").Split(';');
@@ -355,7 +397,7 @@ namespace SkillBank.Controllers
             var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
             ViewBag.MemberInfo = memberInfo;
             LoadNotificationAlert(memberId);
-                
+
             ClassAddModel classAddModel = new ClassAddModel();
             var classInfo = _commonService.GetClassInfoByClassId(id);
             var localeCode = WebContext.Current.MarketCode;
@@ -411,13 +453,14 @@ namespace SkillBank.Controllers
             LoadNotificationAlert(currMemberId);
             if (id > 0 && currMemberId > 0)
             {
-                var classInfo = _commonService.GetClassInfoItem((Byte)Enums.DBAccess.ClassLoadType.ByClassId, id, 0);
+                List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
+                classPreviewModel.IsAdmin = whiteListMem.Contains(currMemberId.ToString());
+                Byte loadType = (Byte)(classPreviewModel.IsAdmin ? Enums.DBAccess.ClassLoadType.ByAdminPreview : Enums.DBAccess.ClassLoadType.ByClassId);
+                var classInfo = _commonService.GetClassInfoItem(loadType, id, 0);
                 if (classInfo != null)
                 {
                     className = classInfo.Title;
                     int memberId = classInfo.Member_Id;
-                    List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
-                    classPreviewModel.IsAdmin = whiteListMem.Contains(currMemberId.ToString());
                     classPreviewModel.IsOwner = memberId.Equals(currMemberId);
 
                     //administrator or class owner
@@ -426,15 +469,21 @@ namespace SkillBank.Controllers
                         classPreviewModel.ClassEditInfo = classInfo;
                         var memberInfo = memberId.Equals(currMemberId) ? currMemberInfo : _commonService.GetMemberInfo(memberId);//class owner info
                         classPreviewModel.MemberInfo = memberInfo;
-                        var RecommendationList = _commonService.GetRecommendation(id);
-                        if (RecommendationList != null)
+                        if (classPreviewModel.IsAdmin)
                         {
-                            Dictionary<Byte, RecommendationItem> recommendationDic = new Dictionary<byte, RecommendationItem>();
-                            foreach (var item in RecommendationList)
+                            var RecommendationList = _commonService.GetRecommendation(id);
+                            if (RecommendationList != null)
                             {
-                                recommendationDic.Add(item.GroupId, item);
+                                Dictionary<Byte, RecommendationItem> recommendationDic = new Dictionary<byte, RecommendationItem>();
+                                foreach (var item in RecommendationList)
+                                {
+                                    recommendationDic.Add(item.GroupId, item);
+                                }
+                                classPreviewModel.RecommendationDic = recommendationDic;
                             }
-                            classPreviewModel.RecommendationDic = recommendationDic;
+
+                            var categories = _contentService.GetCategories(0);
+                            classPreviewModel.ClassCategoryLkp = categories;
                         }
                     }
                     else
@@ -454,13 +503,13 @@ namespace SkillBank.Controllers
             return View(classPreviewModel);
         }
 
-        
+
         public ActionResult Skill()
         {
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("classskill");
 
             var memberId = WebContext.Current.MemberId;
-            
+
             var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
             if (memberId > 0 && memberInfo != null)
             {
@@ -503,6 +552,19 @@ namespace SkillBank.Controllers
                     Session["AlertStatus"] = "1";
                 }
             }
+        }
+
+        public Boolean IsMobile()
+        {
+            string u = Request.ServerVariables["HTTP_USER_AGENT"];
+            Regex b = new Regex(@"android.+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            Regex v = new Regex(@"1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
+            if (b.IsMatch(u) || v.IsMatch(u.Substring(0, 4)))
+            {
+                return true;
+            }
+            return false;
         }
 
         #region old class edit process
@@ -574,8 +636,8 @@ namespace SkillBank.Controllers
             }
             return View(classProveModel);
         }
-        
-        
+
+
         #endregion
 
     }

@@ -35,12 +35,9 @@
                                     <div class="classcoin-badge">
                                         <div class="classcoin-number">@ViewBag.MemberInfo.Coins</div>
                                         <h3>@Html.GetTrans(380)</h3>
-
                                     </div>
                                 </div>
-
                                 <!-- end of my class coin -->
-
                                 <!--<div class="mypage-verification">
                                     <div class="row-fluid spaced-large">
                                         <div class="span9">
@@ -75,15 +72,6 @@
                             @if (Model != null)
                             {
                                 <td class="mypage-main">
-                                    @if (!Model.HasClass)
-                                    {
-
-                                        <div class="mypage-shareskill">
-                                            <h2>@Html.GetTrans(374)</h2>
-                                            <h5>@Html.GetTrans(375)</h5>
-                                            <p><a href="@Url.Action("beteacher", "class")" class="btn btn-primary">@Html.GetTrans(376)</a></p>
-                                        </div>
-                                    }
                                     <div class="mypage-intro">
                                         <!--<span class="coinintro-remove"><i class="fa fa-times"></i></span>-->
                                         <!---->
@@ -92,13 +80,47 @@
 
                                             <!-- Indicators -->
                                             <ol class="carousel-indicators">
-                                                <li data-target="#coin-intro" data-slide-to="0" class="active"></li>
-                                                <li data-target="#coin-intro" data-slide-to="1"></li>
+                                                @if (ViewBag.ShowQRCode)
+                                                {
+                                                    <li data-target="#coin-intro" data-slide-to="0" class="active"></li>
+                                                    <li data-target="#coin-intro" data-slide-to="1"></li>
+                                                    <li data-target="#coin-intro" data-slide-to="2"></li>
+                                                }
+                                                else
+                                                {
+                                                    <li data-target="#coin-intro" data-slide-to="0" class="active"></li>
+                                                    <li data-target="#coin-intro" data-slide-to="1"></li>
+                                                }
                                             </ol>
 
                                             <!-- Wrapper for slides -->
                                             <div class="carousel-inner">
-                                                <div class="mypage-getcoinintro item active">
+                                                @if (ViewBag.ShowQRCode)
+                                                {
+                                                    <div class="mypage-mobilesite item active">
+                                                        <div class="row-fluid">
+                                                            <div class="span8 mobilesite-img"></div>
+                                                            <div class="span4 mobilesite-qrlogin">
+                                                                <div class="mobilesite-qrstep1">
+                                                                    <p class="mobilesite-intro1">技能银行手机网站已完全上线</p>
+                                                                    <p class="mobilesite-intro2">更多功能都在手机端等你发现</p>
+                                                                    <a href="#" class="btn btn-primary qacode-trigger">生成技能银行微信绑定二维码</a>
+                                                                </div>
+                                                                <div class="mobilesite-qrstep2">
+                                                                    <p class="mobilesite-intro1">请使用手机微信扫描二维码</p>
+                                                                    <p class="mobilesite-intro2">进入技能银行微信服务号</p>
+                                                                    <img id="qrcode-img" data-src="@ViewBag.QRCodeURL" src="@ViewBag.QRCodeURL" width="150"/>
+                                                                </div>
+                                                                <div class="mobilesite-qrstep3">
+                                                                    <span class="icon icon-circle-overview success"></span>
+                                                                    <p class="mobilesite-intro1">微信账号已成功绑定</p>
+                                                                    <p class="mobilesite-intro2">可以直接用微信登录手机网站了</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                <div class="mypage-getcoinintro item @(ViewBag.ShowQRCode ? "" : "active") ">
                                                     <h3>@Html.GetTrans(666)</h3>
                                                     <h5>@Html.GetTrans(667)</h5>
                                                     <div class="row-fluid">
@@ -114,7 +136,7 @@
                                                                 <div class="coinblock">@Html.GetTrans(665)<span>+1</span></div>@Html.GetTrans(676)
                                                                 @if (!ViewBag.IsMobileVerified)
                                                                 {
-                                                                <div><a href="#" role="button" class="btn btn-warning" id="getcoinintro-verifybtn">@Html.GetTrans(677)</a></div>
+                                                                    <div><a href="#" role="button" class="btn btn-warning" id="getcoinintro-verifybtn">@Html.GetTrans(677)</a></div>
                                                                 }
                                                             </div>
                                                         }
@@ -135,9 +157,11 @@
                                                     <h5>&nbsp;</h5>
                                                     <div class="row-fluid">
                                                         <div class="span3">
-                                                                <div class="coinblock">@Html.GetTrans(679)<span>+</span></div>你可以使用课币来<br />预订感兴趣的课程
+                                                            <div class="coinblock">@Html.GetTrans(679)<span>+</span></div>
+                                                            你可以使用课币来<br />
+                                                            预订感兴趣的课程
 
-                                                            </div>
+                                                        </div>
                                                         <div class="span3">
                                                             <div class="coinblock">@Html.GetTrans(680)<span>+</span></div>@Html.GetTrans(683)
                                                         </div>
@@ -146,7 +170,9 @@
 
                                                         </div>
                                                         <div class="span3">
-                                                            <div class="coinblock lastcoinblock"><span>+</span></div>我们将会给课币<br />赋予更多的价值哦
+                                                            <div class="coinblock lastcoinblock"><span>+</span></div>
+                                                            我们将会给课币<br />
+                                                            赋予更多的价值哦
 
                                                         </div>
                                                     </div>
@@ -232,7 +258,7 @@
                                                     </div>
                                                 </div>
                                                 }
-                                                else if (notificationItem.TypeId == 13)
+                                                else if (notificationItem.TypeId == 13 || notificationItem.TypeId == 20)
                                                 {
                                                 <div class="notification-item">
                                                     <div class="row-fluid">
@@ -412,13 +438,13 @@
 
                         </tr>
                     </table>
-                    if (ViewBag.ShareText1!=null)
-                    {
+                            if (ViewBag.ShareText1 != null)
+                            {
                     <input type="hidden" id="share-text1" value="@ViewBag.ShareText1" />
                     <input type="hidden" id="share-text2" value="@ViewBag.ShareText2" />
-                    }
+                            }
                     <input type="hidden" id="share-socialtype" value="@ViewBag.MemberInfo.SocialType" />
-                    <input type="hidden" id="share-token" value="@ViewBag.AccessToken" />
+                    <input type="hidden" id="share-token" value="" />
                     <input type="hidden" id="loginstatus-social" value="@ViewBag.IsSocialLogin" />
                 }
             </div>
@@ -427,6 +453,8 @@
     </div>
 
 </div>
+
+
 
 
 

@@ -22,6 +22,8 @@
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassEditInfo" Width="1.5" PointX="6.75" PointY="5.5" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Comment" Width="1.5" PointX="10.75" PointY="6.125" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.MemberInfo" Width="1.5" PointX="2.75" PointY="3.375" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ConfigureInfo" Width="1.5" PointX="4.9260157239278852" PointY="11.59015310350347" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassCategory" Width="1.5" PointX="11.47298615028755" PointY="4.2587871571345195" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

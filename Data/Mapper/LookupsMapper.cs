@@ -9,11 +9,21 @@ namespace SkillBank.Site.DataSource.Mapper
 {
     public class LookupsMapper
     {
+        public static List<ClassCategory> Map(ObjectResult<ClassCategory_Load_p_Result> objectCategories)
+        {
+            if (objectCategories != null)
+            {
+                var categories = objectCategories.Select(item => new ClassCategory() { CategoryId = item.CategoryId, CategoryName = item.CategoryName, Blurb_Id = item.Blurb_Id, CategoryKey = item.CategoryKey }).ToList<ClassCategory>();
+                return (categories.Count > 0) ? categories : null;
+            }
+            return null;
+        }
+
         public static List<SkillCategory> Map(ObjectResult<SkillCategory_LoadAll_p_Result> objectCategories)
         {
             if (objectCategories != null)
             {
-                var categories = objectCategories.Select(item => new SkillCategory() { CategoryId = item.CategoryId, CategoryName = item.CategoryName, Blurb_Id= item.Blurb_Id, Parent_CategoryId = item.Parent_CategoryId}).ToList<SkillCategory>();
+                var categories = objectCategories.Select(item => new SkillCategory() { CategoryId = item.CategoryId, CategoryName = item.CategoryName, Blurb_Id = item.Blurb_Id, Parent_CategoryId = item.Parent_CategoryId }).ToList<SkillCategory>();
                 return (categories.Count > 0) ? categories : null;
             }
             return null;

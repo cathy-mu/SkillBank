@@ -25,7 +25,8 @@ namespace SkillBank.Site.DataSource.Mapper
                     CreatedDate = result.CreatedDate,
                     Email = result.Email,
                     Gender = result.Gender,
-                    IsActive = result.IsActive,
+                    BirthDate = result.BirthDate,
+                    IsActive = true,
                     LastUpdateDate = result.LastUpdateDate,
                     Name = result.Name,
                     OpenId = result.OpenId,
@@ -37,12 +38,13 @@ namespace SkillBank.Site.DataSource.Mapper
                     ContactName = result.ContactName,
                     SocialType = result.SocialType,
                     Address = result.Address,
-                    BirthDate = result.BirthDate,
                     Etag = result.Etag,
                     VerifyTag = result.VerifyTag,
                     NotifyTag = result.NotifyTag,
+                    Credit = result.Credit,
                     IsLike = result.IsLike,
-                    MasterInfo = result.MasterInfo
+                    ExtraInfo = result.ExtraInfo
+                    
                 };
                 return memberInfo;
             }
@@ -63,7 +65,8 @@ namespace SkillBank.Site.DataSource.Mapper
                     CreatedDate = item.CreatedDate,
                     Email = item.Email,
                     Gender = item.Gender,
-                    IsActive = item.IsActive,
+                    BirthDate = item.BirthDate,
+                    IsActive = true,
                     LastUpdateDate = item.LastUpdateDate,
                     Name = item.Name,
                     OpenId = item.OpenId,
@@ -75,12 +78,12 @@ namespace SkillBank.Site.DataSource.Mapper
                     ContactName = item.ContactName,
                     SocialType = item.SocialType,
                     Address = item.Address,
-                    BirthDate = item.BirthDate,
                     Etag = item.Etag,
                     VerifyTag = item.VerifyTag,
                     NotifyTag = item.NotifyTag,
+                    Credit = item.Credit,
                     IsLike = item.IsLike,
-                    MasterInfo = item.MasterInfo
+                    ExtraInfo = item.ExtraInfo
                 }).ToList();
                 return (members.Count > 0) ? members : null;
             }

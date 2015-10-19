@@ -34,8 +34,24 @@ namespace SkillBank.Controllers
             ViewBag.IsAdmin = whiteListMem.Contains(memberId.ToString());
             ViewBag.MemberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
             ViewBag.VerifyCode = DateTime.Now.ToString("dd-MM").Replace("-","5"+(Convert.ToByte(DateTime.Now.DayOfWeek)+1)%7);
-
             return View();
+
+            //Byte loadType = (Byte)Enums.DBAccess.ComplaintLoadType.OnlyActive;
+            //var result = _commonService.GetComplaintList(loadType);
+
+            //return View(result);
+        }
+
+        public ActionResult Complaint()
+        {
+            int memberId = WebContext.Current.MemberId;
+
+            List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
+            ViewBag.IsAdmin = whiteListMem.Contains(memberId.ToString());
+            Byte loadType = (Byte)Enums.DBAccess.ComplaintLoadType.Latest;
+            var result = _commonService.GetComplaintList(loadType);
+
+            return View(result);
         }
 
         public ActionResult Coins()
@@ -257,14 +273,14 @@ namespace SkillBank.Controllers
             if (id > 0)
             {
                 memberId = id;
-                var memberInfo = _commonService.GetMemberInfo(memberId, currMemberId);
+                var memberInfo = _commonService.GetMemberInfo(memberId);
                 if (memberInfo != null)
                 {
                     likeNum = memberInfo.MemberId;
                     memberInfo.MemberId = memberId;
                     profileModel.MemberInfo = memberInfo;
 
-                    String masterInfo = memberInfo.MasterInfo;
+                    String masterInfo = memberInfo.ExtraInfo;
                     if (!String.IsNullOrEmpty(masterInfo))
                     {
                         var masterInfoDic = new Dictionary<Byte, String>();
@@ -349,6 +365,8 @@ namespace SkillBank.Controllers
             ViewBag.Divice4 = regexMobile.IsMatch(u);
             ViewBag.Agent = u;
 
+            ViewBag.VerifyCode = DateTime.Now.ToString("dd-MM").Replace("-", "5" + (Convert.ToByte(DateTime.Now.DayOfWeek) + 1) % 7);
+            
             return View();
         }
 

@@ -19,22 +19,30 @@ namespace SkillBank.Site.DataSource.Data
     public interface IMemberRepository
     {
         List<MemberInfo> GetMemberInfos(Byte loadBy, String searchKey);
-        MemberInfo GetMemberInfo(Byte loadType, String socialAccount, Byte socialType, int memberId, int relatedMemberId = 0);
-        Boolean UpdateMemberInfo(int memberId, Byte saveType, String phoneNo, int cityId, String memberName, String intro, Boolean isMale, String eMail, Decimal posX, Decimal poxY, DateTime birthday, String avatar);
-        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "", Boolean gender = true);
-        void LeaveEmailAddress(String name,String mail);
+        MemberInfo GetMemberInfo(Byte loadType, String account, Byte socialType, String para="");
+        MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0);
+        Byte UpdateMemberInfo(int memberId, Byte saveType, String phoneNo, int cityId, String memberName, String intro, Boolean isMale, String eMail, Decimal posX, Decimal poxY, DateTime birthday, String avatar);
+        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true);
+        void LeaveEmailAddress(String name, String mail);
         Boolean CoinUpdate(Byte saveType, int memberId, int classId, int amount);
         Dictionary<Enum, int> GetMemberNums(int memberId, int classId, Byte loadBy);
-        void AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
+        Boolean AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
         Boolean HasShareClassCoin(int memberId);
         Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount, String code);
+        Byte SaveWeChatEvent(Byte saveType, int memberId, String openId, String paraId, String paraValue);
+        Byte UpdateCredit(Byte saveType, int memberId, int paraValue);
     }
 
     public class MemberRepository : Entities, IMemberRepository//Entities
     {
         public MemberRepository()
-            //: base("name=Entities")
+        //: base("name=Entities")
         {
+        }
+
+        public Byte SaveWeChatEvent(Byte saveType, int memberId, String openId, String paraId, String paraValue)
+        {
+            return WeChatEvent_Save_p(saveType, memberId, openId, paraId, paraValue);
         }
 
         public Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount, String code)
@@ -42,9 +50,9 @@ namespace SkillBank.Site.DataSource.Data
             return MobileVerification_Save_p(saveType, memberId, verifyAccount, code);
         }
 
-        public void AddMembersCoin(int memberId, int coinsToAdd, Byte addType)
+        public Boolean AddMembersCoin(int memberId, int coinsToAdd, Byte addType)
         {
-            Coin_Update_p(memberId, coinsToAdd, addType);
+            return Coin_Update_p(memberId, coinsToAdd, addType);
         }
 
         public Boolean HasShareClassCoin(int memberId)
@@ -52,8 +60,13 @@ namespace SkillBank.Site.DataSource.Data
             return Coin_Update_p(memberId, 0, (Byte)Enums.DBAccess.CoinUpdateType.CheckShareClassCoin);
         }
 
+        public Byte UpdateCredit(Byte saveType, int memberId, int paraValue)
+        {
+            return CreditHistory_Save_p(saveType, memberId, paraValue);
+        }
+        
         //for admin
-        public Boolean CoinUpdate(Byte saveType, int memberId, int classId , int amount)
+        public Boolean CoinUpdate(Byte saveType, int memberId, int classId, int amount)
         {
             var loadByParameter = new ObjectParameter("saveType", saveType);
             var memberIdParameter = new ObjectParameter("memberId", memberId);
@@ -74,73 +87,59 @@ namespace SkillBank.Site.DataSource.Data
         /// <param name="email"></param>
         /// <param name="cityId"></param>
         /// <returns></returns>
-        public int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String etag = "", Boolean gender = true)
+        public int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass="", String etag = "", Boolean gender = true)
         {
-            return MemberInfo_Add_p(out memberId, socialOpenId, socialType, avatar, memberName, email, mobile, code, etag, gender);
+            return MemberInfo_Add_p(out memberId, socialOpenId, socialType, avatar, memberName, email, mobile, code, pass, etag, gender);
         }
-                
+
 
         /// <summary>
         /// Get member info by social account 
         /// </summary>
-        /// <param name="loadType"></param>
-        /// <param name="socialAccount"></param>
-        /// <param name="socialType"></param>
-        /// <param name="memberId"></param>
-        /// <returns></returns>
-        public MemberInfo GetMemberInfo(Byte loadType, String socialAccount, Byte socialType, int memberId, int relatedMemberId = 0)
+        public MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0)
         {
-            return MemberInfo_Load_p(loadType, socialAccount, socialType, memberId, relatedMemberId);
+            return MemberInfo_Load_p(loadType, "", 0, "", memberId, relatedMemberId);
         }
 
-        public Boolean UpdateMemberInfo(int memberId, Byte saveType, String phoneNo, int cityId, String memberName, String intro, Boolean isMale, String eMail, Decimal posX, Decimal poxY, DateTime birthday,String avatar)
+        public MemberInfo GetMemberInfo(Byte loadType, String socialAccount, Byte socialType, String para="")
         {
-            return MemberInfo_Save_p(memberId, saveType, phoneNo, cityId, memberName, intro, isMale, eMail,posX,poxY, birthday, avatar);
-            //int result = 0;
-            //return base.MemberInfo_Save_p(saveType, memberId, /*isMale*/0, new ObjectParameter("Mail", eMail), phoneNo, cityId, memberName, intro, new ObjectParameter("result", result), posX, poxY, birthday) == 0;
+            return MemberInfo_Load_p(loadType, socialAccount, socialType, para, 0, 0);
         }
 
-        private MemberInfo MemberInfo_Load_p(Byte loadType, String socialAccount, Byte socialType, int memberId, int relatedMemberId)
+        public Byte UpdateMemberInfo(int memberId, Byte saveType, String phoneNo, int cityId, String memberName, String intro, Boolean isMale, String eMail, Decimal posX, Decimal poxY, DateTime birthday, String avatar)
+        {
+            return MemberInfo_Save_p(memberId, saveType, phoneNo, cityId, memberName, intro, isMale, eMail, posX, poxY, birthday, avatar);
+        }
+
+        private MemberInfo MemberInfo_Load_p(Byte loadType, String account, Byte socialType, String para, int memberId, int relatedMemberId)
         {
             var loadByParameter = new ObjectParameter("LoadBy", loadType);
-            var socialAccountParameter = new ObjectParameter("Account", socialAccount);
+            var accountParameter = new ObjectParameter("Account", account);
+            var paraParameter = new ObjectParameter("Para", para);
             var socialTypeParameter = new ObjectParameter("Type", socialType);
             var memberIdParameter = new ObjectParameter("Id", memberId);
             var relatedIdParameter = new ObjectParameter("RelatedId", relatedMemberId);
             var Context = ((IObjectContextAdapter)this).ObjectContext;
-            var result = Context.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, socialAccountParameter, socialTypeParameter, memberIdParameter, relatedIdParameter).FirstOrDefault();
+            var result = Context.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, accountParameter, paraParameter, socialTypeParameter, memberIdParameter, relatedIdParameter).FirstOrDefault();
             //Context.Refresh(System.Data.Objects.RefreshMode.StoreWins, result);
 
             return MemberMapper.Map(result);
         }
-
-        //private MemberInfoItem MemberInfo_Load_p(int memberId, int relatedMemberId)
-        //{
-        //    var loadByParameter = new ObjectParameter("LoadBy", Enums.DBAccess.MemberLoadType.ByMemberIdAndRelatedMemberId);
-        //    var socialAccountParameter = new ObjectParameter("Account", "");
-        //    var socialTypeParameter = new ObjectParameter("Type", 0);
-        //    var memberIdParameter = new ObjectParameter("Id", memberId);
-        //    var relatedIdParameter = new ObjectParameter("RelatedId", relatedMemberId);
-        //    var Context = ((IObjectContextAdapter)this).ObjectContext;
-        //    var result = Context.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, socialAccountParameter, socialTypeParameter, memberIdParameter, relatedIdParameter).FirstOrDefault();
-        //    //Context.Refresh(System.Data.Objects.RefreshMode.StoreWins, result);
-
-        //    return MemberMapper.MapItem(result);
-        //}
-
+        
         public List<MemberInfo> GetMemberInfos(Byte loadBy, String searchKey)
         {
             var loadByParameter = new ObjectParameter("LoadBy", loadBy);
-            var socialAccountParameter = new ObjectParameter("Account", searchKey);
+            var accountParameter = new ObjectParameter("Account", searchKey);
+            var paraParameter = new ObjectParameter("Para", "");
             var socialTypeParameter = new ObjectParameter("Type", 0);
             var memberIdParameter = new ObjectParameter("Id", 0);
             var relatedIdParameter = new ObjectParameter("RelatedId", 0);
 
-            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, socialAccountParameter, socialTypeParameter, memberIdParameter, relatedIdParameter);
+            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, accountParameter, paraParameter, socialTypeParameter, memberIdParameter, relatedIdParameter);
             return MemberMapper.Map(result);
         }
 
-        private Boolean MemberInfo_Save_p(int memberId, Byte saveType, String phoneNo, int cityId, String memberName, String intro, Boolean isMale, String eMail, Decimal posX, Decimal posY, DateTime birthday, String avatar)
+        private Byte MemberInfo_Save_p(int memberId, Byte saveType, String phoneNo, int cityId, String memberName, String intro, Boolean isMale, String eMail, Decimal posX, Decimal posY, DateTime birthday, String avatar)
         {
             var loadByParameter = new ObjectParameter("SaveType", saveType);
             var memberIdParameter = new ObjectParameter("Id", memberId);
@@ -157,10 +156,10 @@ namespace SkillBank.Site.DataSource.Data
             var avatarParameter = new ObjectParameter("Img", avatar);
             var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MemberInfo_Save_p", loadByParameter, memberIdParameter, phoneNoParameter, cityIdParameter, memberNameParameter, introParameter, genderParameter, eMaileParameter, resultParameter, posXParameter, posYParameter, birthdayParameter, avatarParameter);
 
-            return ((Byte)resultParameter.Value == 0);
+            return ((Byte)resultParameter.Value);
         }
 
-        private int MemberInfo_Add_p(out int memberId, String socialId, Byte socialType, String avatar, String memberName, String eMail, string mobile = "", string code = "", String etag = "", Boolean gender = true)
+        private int MemberInfo_Add_p(out int memberId, String socialId, Byte socialType, String avatar, String memberName, String eMail, string mobile = "", string code = "", string pass = "", String etag = "", Boolean gender = true)
         {
             memberId = 0;
             var socialAccountParameter = new ObjectParameter("SocialId", socialId);
@@ -173,13 +172,14 @@ namespace SkillBank.Site.DataSource.Data
             var avatarPathParameter = new ObjectParameter("AvatarPath", avatar);
             var etagParameter = new ObjectParameter("Etag", etag);
             var genderParameter = new ObjectParameter("Gender", gender);
+            var passParameter = new ObjectParameter("Pass", pass);
             var resultParameter = new ObjectParameter("Result", 0);
-            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MemberInfo_Add_p", socialAccountParameter, socialTypeParameter, memberIdParameter, mobileParameter, codeParameter, memberNameParameter, avatarPathParameter, eMailParameter, genderParameter, etagParameter, resultParameter);
+            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MemberInfo_Add_p", socialAccountParameter, socialTypeParameter, memberIdParameter, mobileParameter, codeParameter, passParameter, memberNameParameter, avatarPathParameter, eMailParameter, genderParameter, etagParameter, resultParameter);
             memberId = (int)memberIdParameter.Value;
             return (int)resultParameter.Value;
         }
 
-        public void LeaveEmailAddress(String name,String mail)
+        public void LeaveEmailAddress(String name, String mail)
         {
             var nameParameter = new ObjectParameter("Name", name);
             var mailParameter = new ObjectParameter("Mail", mail);
@@ -191,9 +191,9 @@ namespace SkillBank.Site.DataSource.Data
         public Dictionary<Enum, int> GetMemberNums(int memberId, int classId, Byte loadBy)
         {
             return MemberNums_Load_p(loadBy, memberId, classId);
-        }                
+        }
 
-        
+
         private Dictionary<Enum, int> MemberNums_Load_p(Byte loadType, int memberId, int classId)
         {
             Dictionary<Enum, int> numDic = new Dictionary<Enum, int>();
@@ -263,7 +263,7 @@ namespace SkillBank.Site.DataSource.Data
             {
                 numDic.Add(Enums.NumberDictionaryKey.Class, Convert.ToInt32(result1Parameter.Value));
                 numDic.Add(Enums.NumberDictionaryKey.Student, Convert.ToInt32(result2Parameter.Value));
-                numDic.Add(Enums.NumberDictionaryKey.Certification, Convert.ToInt32(result3Parameter.Value)+1);
+                numDic.Add(Enums.NumberDictionaryKey.Certification, Convert.ToInt32(result3Parameter.Value) + 1);
                 numDic.Add(Enums.NumberDictionaryKey.Follow, Convert.ToInt32(resulto1Parameter.Value));
                 numDic.Add(Enums.NumberDictionaryKey.Fans, Convert.ToInt32(resulto2Parameter.Value));
             }
@@ -271,8 +271,16 @@ namespace SkillBank.Site.DataSource.Data
             {
                 numDic.Add(Enums.NumberDictionaryKey.Class, Convert.ToInt32(result1Parameter.Value));
                 numDic.Add(Enums.NumberDictionaryKey.Like, Convert.ToInt32(result2Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Certification, Convert.ToInt32(result3Parameter.Value));
                 numDic.Add(Enums.NumberDictionaryKey.Follow, Convert.ToInt32(resulto1Parameter.Value));
                 numDic.Add(Enums.NumberDictionaryKey.Fans, Convert.ToInt32(resulto2Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.GotSharedCoins, Convert.ToInt32(resulto3Parameter.Value));
+            }
+            else if (loadType.Equals((Byte)Enums.DBAccess.MemberNumsLoadType.ByCreditGetMethods))
+            {
+                numDic.Add(Enums.NumberDictionaryKey.MissStudentReview, Convert.ToInt32(result1Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.MissTeacherReview, Convert.ToInt32(result2Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.IsSignIn, Convert.ToInt32(result3Parameter.Value));
             }
 
             return numDic;
@@ -302,6 +310,30 @@ namespace SkillBank.Site.DataSource.Data
             return (Byte)resultParameter.Value;
         }
 
+        private Byte WeChatEvent_Save_p(Byte saveType, int memberId, String openId, String paraId, String paraValue)
+        {
+            Byte result = 0;
+            var saveTypePara = new ObjectParameter("SaveType", saveType);
+            var memberIdPara = new ObjectParameter("MemberId", memberId);
+            var openIdPara = new ObjectParameter("OpenId", openId);
+            var paraIdPara = new ObjectParameter("ParaId", paraId);
+            var paraValuePara = new ObjectParameter("ParaValue", paraValue);
+            var resultPara = new ObjectParameter("Result", result);
 
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("WeChatEvent_Save_p", saveTypePara, memberIdPara, openIdPara, paraIdPara, paraValuePara, resultPara);
+            return (Byte)resultPara.Value;
+        }
+
+        private Byte CreditHistory_Save_p(Byte saveType, int memberId, int paraValue)
+        {
+            Byte result = 0;
+            var saveTypePara = new ObjectParameter("SaveType", saveType);
+            var memberIdPara = new ObjectParameter("MemberId", memberId);
+            var paraValuePara = new ObjectParameter("ParaValue", paraValue);
+            var resultPara = new ObjectParameter("Result", result);
+
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreditHistory_Save_p", saveTypePara, memberIdPara, paraValuePara, resultPara);
+            return (Byte)resultPara.Value;
+        }
     }
 }

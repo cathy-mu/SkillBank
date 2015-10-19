@@ -291,7 +291,7 @@ namespace SkillBank.FunctionTests
         public void Should_SendAndSaveVerificationCode()
         {
             String mobile = "22222222222";
-            var result = _mgr.SendMobileVerifyCode(_memberId, mobile, false);
+            var result = _mgr.SendMobileVerifyCode((Byte)Enums.DBAccess.MobileVerificationSaveType.GetVerifyCode,_memberId, mobile, false);
             Assert.AreEqual(1, result);
         }
 

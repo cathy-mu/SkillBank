@@ -19,6 +19,7 @@ namespace SkillBank.Site.DataSource.Data
     public interface IOrderRepository
     {
         Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark);
+        Byte UpdateOrderDate(int orderId, DateTime bookDate);
         //void UpdateBookDate(int orderId, DateTime bookedDate);
         Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId, int teacherId = 0);
         Byte UpdateOrderStatusWithCoins(int orderId, Byte status, int studentId, int teacherId);
@@ -46,6 +47,12 @@ namespace SkillBank.Site.DataSource.Data
         public void HandleMemberOrder(int memberId)
         {
             OrderStatus_ListHandler_p(memberId);
+        }
+
+        public Byte UpdateOrderDate(int orderId, DateTime bookDate)
+        {
+            Byte saveType = (Byte)Enums.DBAccess.OrderSaveType.UpdateBookedDate;
+            return Order_Save(saveType, 0, 0, 0, bookDate, "", orderId);
         }
 
         public Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark)

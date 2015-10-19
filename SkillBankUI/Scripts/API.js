@@ -22,8 +22,16 @@ function apitest_Class() {
         });
 
         $("#sendcodebtn").click(function () {
-            apitest.sendValidCode();
+            apitest.sendValidCode(1);
         });
+
+        $("#sendmobilebtn").click(function () {
+            apitest.sendValidCode(5);
+        });
+
+        $("#verifybtn").click(function () {
+            apitest.verfyMobileCode();
+        });               
 
         $("#creatememberbtn").click(function () {
             apitest.createMember();
@@ -31,6 +39,14 @@ function apitest_Class() {
 
         $("#updatemember").click(function () {
             apitest.updateMember();
+        });
+
+        $("#updateprofile").click(function () {
+            apitest.updateProfile();
+        });
+
+        $("#updatepassword").click(function () {
+            apitest.updatePassword();
         });
 
         $("#addcourse").click(function () {
@@ -51,6 +67,10 @@ function apitest_Class() {
 
         $("#updateorder").click(function () {
             apitest.updateOrder();
+        });
+
+        $("#updateorderdate").click(function () {
+            apitest.updateOrderDate();
         });
 
         $("#studentreviewbtn").click(function () {
@@ -97,16 +117,60 @@ function apitest_Class() {
     this.updateMember = function () {
         var name = $("#memberinfo-name").val();
         var gender = $("#memberinfo-gender").val();
-        var mobile = $("#memberinfo-mobile").val();
         var avatar = $("#memberinfo-avatar").val();
         var city = $("#memberinfo-city").val();
         var intro = $("#memberinfo-intro").val();
 
 
-        var paraData = { "Name": name, "Mobile": mobile, "Gender": gender, "Intro": intro, "CityName": city, "Avatar": avatar };
+        var paraData = { "Name": name, "Gender": gender, "Intro": intro, "CityName": city, "Avatar": avatar };
         console.log(paraData);
 
         var savePath = "/API/Member/";
+        $.ajax({
+            url: savePath,
+            type: "PUT",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    this.updateProfile = function () {
+        var name = $("#memberinfo-name").val();
+        var gender = $("#memberinfo-gender").val();
+        var avatar = $("#memberinfo-avatar").val();
+        var city = $("#memberinfo-city").val();
+        var intro = $("#memberinfo-intro").val();
+        var id = 1;
+        var paraData = { "Id": id, "Name": name, "Gender": gender, "Intro": intro, "CityName": city, "Avatar": avatar };
+        console.log(paraData);
+
+        var savePath = "/API/profile/"+id;
+        $.ajax({
+            url: savePath,
+            type: "PUT",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+
+    this.updatePassword = function () {
+        var pass = $("#memberinfo-pass").val();
+        var code = $("#memberinfo-code").val();
+        var mobile = $("#memberinfo-mobile").val();
+        var id = 1;
+
+        var paraData = { "Id": id, "Password": pass, "Mobile": mobile, "Code": code };
+        console.log(paraData);
+
+        var savePath = "/API/profile/"+id;
         $.ajax({
             url: savePath,
             type: "PUT",
@@ -288,15 +352,28 @@ function apitest_Class() {
         });
     }
 
-    this.updateOrder = function () {
-        var orderId = 100;
+    this.updateOrder = function () 
+    {
+        var orderId = $("#order-id").val();
         var memberId = $("#order-mid").val();
         var classId = $("#order-cid").val();
         var statusId = $("#order-status").val();
         var remark = $("#order-remark").val();
         var name = $("#order-name").val();
         var mobile = $("#order-mobile").val();
-        var paraData = { "memberId": memberId, "OrderId": classId, "Status": statusId, "name": name, "mobile": mobile };
+        var title = $("#order-title").val();
+        var paraData = {
+            "memberId": memberId,
+            "Status": statusId,
+            "Title": title,
+            "Name": name,
+            "Phone": mobile,
+            "Email": "test@send.com",
+            "Feedback": "feedback",
+            "Comment": "comment",
+            "MyId": 1
+        };
+        //var paraData = { "memberId": memberId, "Status": statusId, "name": name, "Phone": mobile };
         var savePath = "/API/Order/" + orderId;
         console.log(paraData);
         $.ajax({
@@ -311,11 +388,54 @@ function apitest_Class() {
         });
     }
 
-    this.sendValidCode = function () {
-        var mobile = $("#valid-mobile").val();
-        var paraData = { "mobile": mobile };
-        var savePath = "/API/Validation?mobile=" + mobile;
+    this.updateOrderDate = function () {
+        var orderId = $("#order-id").val();
+        var paraData = {
+            "Status": 0,
+            "BookDate": "2015-10-10"
+        };
+        var savePath = "/API/Order/" + orderId;
         console.log(paraData);
+        $.ajax({
+            url: savePath,
+            type: "PUT",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+        
+    this.verfyMobileCode = function () {
+        var mobile = $("#valid-mobile").val();
+        var code = $("#valid-code").val();
+        var memberid = $("#valid-memberid").val();
+
+        var paraData = { "mobile": mobile, "code": code, "memberid": memberid };
+        var savePath = "/api/verification";
+        
+        $.ajax({
+            url: savePath,
+            type: "POST",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+    
+    this.sendValidCode = function (type) {
+        var mobile = $("#valid-mobile").val();
+        var memberid = $("#valid-memberid").val();
+
+        var paraData = { "type": type, "mobile": mobile, "code": "", "memberid": memberid };
+        var savePath = "/api/verification";
+        console.log(paraData);
+
         $.ajax({
             url: savePath,
             type: "POST",
@@ -328,15 +448,33 @@ function apitest_Class() {
         });
     }
 
+
     this.createMember = function () {
-        var name = $("#member-name").val();
-        var code = $("#member-code").val();
-        var mobile = $("#member-mobile").val();
-        var account = $("#member-account").val();
-        var avatar = $("#member-avatar").val();
-        var type = 1;
-        var paraData = { "Mobile": mobile, "Name": name, "Type": type, "Account": account, "Avatar": avatar, "Code": code };
-        var savePath = "/API/Registe";
+        //var name = $("#member-name").val();
+        //var code = $("#member-code").val();
+        //var mobile = $("#member-mobile").val();
+        //var account = $("#member-account").val();
+        //var avatar = $("#member-avatar").val();
+        //var type = 1;
+        ////var paraData = { "Mobile": mobile, "Name": name, "Type": type, "Account": account, "Avatar": avatar, "Code": code }; 
+        //var paraData = { "Mobile": mobile, "Name": name, "Type": 2, "Avatar": avatar, "Code": code , "Pass": "123sdg$%"};
+        //var savePath = "/API/Registe";
+        //console.log(paraData);
+        //$.ajax({
+        //    url: savePath,
+        //    type: "POST",
+        //    dataType: "Json",
+        //    data: paraData,
+        //    cache: false,
+        //    success: function (data) {
+        //        alert(data);
+        //    }
+        //});
+        
+     
+        //var paraData = { "Mobile": mobile, "Name": name, "Type": type, "Account": account, "Avatar": avatar, "Code": code }; 
+        var paraData = { account: "1885646861", socialType: "1", memberName: "cathytest", email: "cathy.test@hotmail.com", avatar: "http://tp2.sinaimg.cn/1885646861/180/1298686485/0"};
+        var savePath = "/MemberHelper/CreateMember";
         console.log(paraData);
         $.ajax({
             url: savePath,
