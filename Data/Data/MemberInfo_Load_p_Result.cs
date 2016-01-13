@@ -39,5 +39,7 @@ namespace SkillBank.Site.DataSource.Data
         public bool IsLike { get; set; }
         public string ExtraInfo { get; set; }
         public System.DateTime BirthDate { get; set; }
+        public string RCToken { get; set; }
+        public string DeviceToken { get; set; }
     }
 }

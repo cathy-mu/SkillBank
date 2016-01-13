@@ -48,9 +48,6 @@ E:\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.dll
 E:\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.pdb
 E:\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.xml
 E:\SourceCode\VS\SkillBank\Web\bin\Debug\CodeScales.Http.dll
-D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
-D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\SkillBank.Site.Web.dll
-D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\SkillBank.Site.Web.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.Web.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.Web.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\Castle.Core.dll
@@ -67,6 +64,7 @@ D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.Common.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.DataSource.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.Services.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\CodeScales.Http.dll
+D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\RongCloudServerSDK.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\log4net.dll
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.Services.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\SkillBank.Site.Common.pdb
@@ -78,3 +76,9 @@ D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\dotNetDR_OAuth2.xml
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\EntityFramework.xml
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\NetDimension.Weibo.xml
+D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\RongCloudServerSDK.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
+D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\SkillBank.Site.Web.dll
+D:\SkillBank\SourceCode\VS\SkillBank\Web\obj\Debug\SkillBank.Site.Web.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\Newtonsoft.Json.dll
+D:\SkillBank\SourceCode\VS\SkillBank\Web\bin\Debug\Newtonsoft.Json.xml

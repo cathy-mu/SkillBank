@@ -143,6 +143,12 @@
     <Compile Include="Data\Favorite_Load_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\LinkMap.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\LinkMap_LoadAll_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\MemberInfo.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
@@ -180,6 +186,12 @@
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\Order_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\PortalBanner.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\PortalBanner_LoadAll_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\RecommendationItem.cs">
@@ -233,10 +245,22 @@
     <Compile Include="Data\StudentReview_Load_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\SystemNotification.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\SystemNotification_LoadAll_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\TeacherReview.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\TeacherReview_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\TopBanner.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\TopBanner_LoadAll_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Mapper\BlurbMapper.cs" />

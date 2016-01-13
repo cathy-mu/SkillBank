@@ -58,16 +58,17 @@ namespace SkillBank.Controllers
         {
             Boolean isMobileRedirect = (IsMobile() || Request.Url.Host.Contains("m.skill"));
             String envCode = System.Configuration.ConfigurationManager.AppSettings["ENV"];
-            if (isMobileRedirect || envCode.Equals(ConfigConstants.EnvSetting.Web1EnvName))
-            {
-                Response.Redirect(ConfigConstants.EnvSetting.MobileHome[envCode]);
-            }
-            else if (envCode.Equals(ConfigConstants.EnvSetting.Web1EnvName))
+            if (envCode.Equals(ConfigConstants.EnvSetting.Web1EnvName))
             {
                 Response.Status = "301 Moved Permanently";
                 Response.AddHeader("Location", ConfigConstants.EnvSetting.SiteHome[envCode]);
                 Response.End();
             }
+            else if (isMobileRedirect)
+            {
+                Response.Redirect(ConfigConstants.EnvSetting.MobileHome[envCode]);
+            }
+             
 
             HomePageModel homePageModel = new HomePageModel();
 
@@ -92,9 +93,9 @@ namespace SkillBank.Controllers
 
             //class list with cache
             int classNum = 0;
-            homePageModel.MasterClassList = _commonService.GetCachedRecommendationClassList(1, 4, 1, 1, out classNum);
-            homePageModel.LatestClassList = _commonService.GetCachedRecommendationClassList(2, 4, 1, 1, out classNum);
-            homePageModel.OddClassList = _commonService.GetCachedRecommendationClassList(3, 4, 1, 1, out classNum);
+            homePageModel.MasterClassList = _commonService.GetCachedRecommendationClassList(1, 1, 4, 1, out classNum);
+            homePageModel.LatestClassList = _commonService.GetCachedRecommendationClassList(2, 1, 4, 1, out classNum);
+            homePageModel.OddClassList = _commonService.GetCachedRecommendationClassList(3, 1, 4, 1, out classNum);
 
             return View(homePageModel);
         }

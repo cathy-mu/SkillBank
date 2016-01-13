@@ -74,7 +74,7 @@ namespace SkillBank.Site.DataSource.Data
 
         public int UpdateClassEditInfo(Byte savaType, ClassInfo classinfo)
         {
-            var result = ClassEditInfo_Add_p(savaType, classinfo.ClassId, classinfo.Member_Id, classinfo.Category_Id, classinfo.Level, classinfo.SkillLevel, classinfo.TeacheLevel, classinfo.Title, classinfo.Summary, classinfo.WhyU, classinfo.Cover, classinfo.Location, classinfo.Period, classinfo.Remark, classinfo.Available);
+            var result = ClassEditInfo_Add_p(savaType, classinfo.ClassId, classinfo.Member_Id, classinfo.Category_Id, classinfo.Level, classinfo.SkillLevel, classinfo.TeacheLevel, classinfo.Title, classinfo.Summary, classinfo.WhyU, classinfo.Cover, classinfo.Location, classinfo.Period, classinfo.Remark, classinfo.Available, classinfo.Tags, classinfo.HasOnline);
             return result;
         }
         
@@ -261,7 +261,7 @@ namespace SkillBank.Site.DataSource.Data
             ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassEditInfo_Save_p", paraIdParameter, txtValueParameter, paraValueParameter, isValueParameter, saveTypeParameter);
         }
 
-        private int ClassEditInfo_Add_p(Byte saveType, int classId, int memberId, Byte categoryId, Byte level, int skill, int teach, String title, String summary, String whyU, String cover, String location, String period, String remark, String available)
+        private int ClassEditInfo_Add_p(Byte saveType, int classId, int memberId, Byte categoryId, Byte level, int skill, int teach, String title, String summary, String whyU, String cover, String location, String period, String remark, String available, String tags, Boolean hasOnline)
         {
             ObjectParameter saveTypeParameter = new ObjectParameter("saveType", saveType);
             ObjectParameter memberIdParameter = new ObjectParameter("memberId", memberId);
@@ -279,8 +279,10 @@ namespace SkillBank.Site.DataSource.Data
             ObjectParameter remarkParameter = new ObjectParameter("remark", remark);
             ObjectParameter coverParameter = new ObjectParameter("cover", cover);
             ObjectParameter classIdParameter = new ObjectParameter("classId", classId);
+            ObjectParameter tagsParameter = new ObjectParameter("Tags", tags);
+            ObjectParameter hasOnlineParameter = new ObjectParameter("HasOnline", hasOnline);
 
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassEditInfo_Add_p", saveTypeParameter, memberIdParameter, classIdParameter, categoryIdParameter, levelParameter, skillParameter, teachParameter, titleParameter, summaryParameter, whyUParameter, periodParameter, locationParameter, availableParameter, remarkParameter, coverParameter);
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClassEditInfo_Add_p", saveTypeParameter, memberIdParameter, classIdParameter, categoryIdParameter, levelParameter, skillParameter, teachParameter, titleParameter, summaryParameter, whyUParameter, periodParameter, locationParameter, availableParameter, remarkParameter, coverParameter, tagsParameter, hasOnlineParameter);
             var result = Convert.ToInt32(classIdParameter.Value);
             return result;
         }

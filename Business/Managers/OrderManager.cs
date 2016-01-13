@@ -11,14 +11,14 @@ namespace SkillBank.Site.Services.Managers
 {
     public interface IOrderManager
     {
-        int AddOrder(int studentId, int classId, DateTime bookDate, String remark);
+        Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark);
         Byte UpdateOrderDate(int orderId, DateTime bookDate);
         Byte UpdateOrderStatusWithCoins(int orderId, Byte orderStatus, int studentId, int teacherId);
         Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0);
         //void UpdateBookDate(int orderId, DateTime bookedDate);
 
-        List<Order> GetOrdersByStudentId(int memberId);
-        List<Order> GetOrdersByTeacherId(int memberId);
+        //List<Order> GetOrdersByStudentId(int memberId);
+        //List<Order> GetOrdersByTeacherId(int memberId);
         List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck);
         List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck);
 
@@ -45,29 +45,23 @@ namespace SkillBank.Site.Services.Managers
             return result;
         }
 
-        public int AddOrder(int studentId, int classId, DateTime bookDate, String remark)
+        public Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark)
         {
             var result = _orderRep.AddOrder(studentId, classId, bookDate, remark);
             return result;
         }
 
-        //public List<Order> GetOrdersById(int orderId)
+        //public List<Order> GetOrdersByStudentId(int memberId)
         //{
         //    Byte loadBy = (Byte)Enums.DBAccess.OrderLoadType.ByOrderId;
-        //    return _orderRep.GetOrders(loadBy, orderId);
+        //    return _orderRep.GetOrders(loadBy, memberId);
         //}
 
-        public List<Order> GetOrdersByStudentId(int memberId)
-        {
-            Byte loadBy = (Byte)Enums.DBAccess.OrderLoadType.ByOrderId;
-            return _orderRep.GetOrders(loadBy, memberId);
-        }
-
-        public List<Order> GetOrdersByTeacherId(int memberId)
-        {
-            Byte loadBy = (Byte)Enums.DBAccess.OrderLoadType.ByTeacherId;
-            return _orderRep.GetOrders(loadBy, memberId);
-        }
+        //public List<Order> GetOrdersByTeacherId(int memberId)
+        //{
+        //    Byte loadBy = (Byte)Enums.DBAccess.OrderLoadType.ByTeacherId;
+        //    return _orderRep.GetOrders(loadBy, memberId);
+        //}
 
         public List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck)
         {

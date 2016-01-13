@@ -22,7 +22,8 @@ namespace SkillBank.Site.DataSource.Data
         MemberInfo GetMemberInfo(Byte loadType, String account, Byte socialType, String para="");
         MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0);
         Byte UpdateMemberInfo(int memberId, Byte saveType, String phoneNo, int cityId, String memberName, String intro, Boolean isMale, String eMail, Decimal posX, Decimal poxY, DateTime birthday, String avatar);
-        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true);
+        //int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true);
+        int CreateMember(out int memberId, ref Byte verifyTag, ref String accessToken, ref String rcToken, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "");
         void LeaveEmailAddress(String name, String mail);
         Boolean CoinUpdate(Byte saveType, int memberId, int classId, int amount);
         Dictionary<Enum, int> GetMemberNums(int memberId, int classId, Byte loadBy);
@@ -87,9 +88,9 @@ namespace SkillBank.Site.DataSource.Data
         /// <param name="email"></param>
         /// <param name="cityId"></param>
         /// <returns></returns>
-        public int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass="", String etag = "", Boolean gender = true)
+        public int CreateMember(out int memberId, ref Byte verifyTag, ref String accessToken,ref String rcToken, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "")
         {
-            return MemberInfo_Add_p(out memberId, socialOpenId, socialType, avatar, memberName, email, mobile, code, pass, etag, gender);
+            return MemberInfo_Add_p(out memberId, ref verifyTag, ref accessToken, ref rcToken,  socialOpenId, socialType, avatar, memberName, email, mobile, code, pass, etag, gender, device, unionId);
         }
 
 
@@ -119,8 +120,7 @@ namespace SkillBank.Site.DataSource.Data
             var socialTypeParameter = new ObjectParameter("Type", socialType);
             var memberIdParameter = new ObjectParameter("Id", memberId);
             var relatedIdParameter = new ObjectParameter("RelatedId", relatedMemberId);
-            var Context = ((IObjectContextAdapter)this).ObjectContext;
-            var result = Context.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, accountParameter, paraParameter, socialTypeParameter, memberIdParameter, relatedIdParameter).FirstOrDefault();
+            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MemberInfo_Load_p_Result>("MemberInfo_Load_p", MergeOption.NoTracking, loadByParameter, accountParameter, paraParameter, socialTypeParameter, memberIdParameter, relatedIdParameter).FirstOrDefault();
             //Context.Refresh(System.Data.Objects.RefreshMode.StoreWins, result);
 
             return MemberMapper.Map(result);
@@ -159,7 +159,7 @@ namespace SkillBank.Site.DataSource.Data
             return ((Byte)resultParameter.Value);
         }
 
-        private int MemberInfo_Add_p(out int memberId, String socialId, Byte socialType, String avatar, String memberName, String eMail, string mobile = "", string code = "", string pass = "", String etag = "", Boolean gender = true)
+        private int MemberInfo_Add_p(out int memberId, ref Byte verifyTag, ref String accessToken, ref String rcToken, String socialId, Byte socialType, String avatar, String memberName, String eMail, string mobile = "", string code = "", string pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "")
         {
             memberId = 0;
             var socialAccountParameter = new ObjectParameter("SocialId", socialId);
@@ -173,9 +173,18 @@ namespace SkillBank.Site.DataSource.Data
             var etagParameter = new ObjectParameter("Etag", etag);
             var genderParameter = new ObjectParameter("Gender", gender);
             var passParameter = new ObjectParameter("Pass", pass);
+            var deviceParameter = new ObjectParameter("Device", device);
+            var tokenParameter = new ObjectParameter("Token", accessToken);
+            var rcTokenParameter = new ObjectParameter("RCToken", rcToken);
+            var unionIdParameter = new ObjectParameter("UnionId", unionId);
+            var verifyTagParameter = new ObjectParameter("VerifyTag", verifyTag);
             var resultParameter = new ObjectParameter("Result", 0);
-            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MemberInfo_Add_p", socialAccountParameter, socialTypeParameter, memberIdParameter, mobileParameter, codeParameter, passParameter, memberNameParameter, avatarPathParameter, eMailParameter, genderParameter, etagParameter, resultParameter);
+            var result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MemberInfo_Add_p", socialAccountParameter, socialTypeParameter, memberIdParameter, mobileParameter, codeParameter, passParameter, memberNameParameter, avatarPathParameter, eMailParameter, genderParameter, etagParameter, deviceParameter, tokenParameter, rcTokenParameter, unionIdParameter, verifyTagParameter, resultParameter);
+            
             memberId = (int)memberIdParameter.Value;
+            verifyTag = (Byte)verifyTagParameter.Value;
+            accessToken = (String)tokenParameter.Value;
+            rcToken = (String)rcTokenParameter.Value;
             return (int)resultParameter.Value;
         }
 
@@ -258,6 +267,7 @@ namespace SkillBank.Site.DataSource.Data
                 numDic.Add(Enums.NumberDictionaryKey.Class, Convert.ToInt32(result1Parameter.Value));
                 numDic.Add(Enums.NumberDictionaryKey.Student, Convert.ToInt32(result2Parameter.Value));
                 numDic.Add(Enums.NumberDictionaryKey.Rank, Convert.ToInt32(result3Parameter.Value));
+                numDic.Add(Enums.NumberDictionaryKey.Comment, Convert.ToInt32(resulto1Parameter.Value));
             }
             else if (loadType.Equals((Byte)Enums.DBAccess.MemberNumsLoadType.ByMemberSummary))
             {

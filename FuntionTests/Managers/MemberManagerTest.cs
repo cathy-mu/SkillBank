@@ -51,19 +51,19 @@ namespace SkillBank.FunctionTests
             Assert.IsNull(memberInfo);
         }
 
-        [TestMethod]
-        public void Should_CreateMember()
-        {
-            Byte socialType = 3;
-            String socialId = "E4064A72A5DF573EE358F5DC0FC8901C";
-            String name = "Cathy";
-            String email = "cathy.mu@hotmail.com";
-            //int cityId = 1;
-            int memberId;
-            int result = _mgr.CreateMember(out memberId,socialId, socialType,name, email);
-            Assert.AreEqual(result, 1);//exists member
-            Assert.AreEqual(memberId, 1);
-        }
+        //[TestMethod]
+        //public void Should_CreateMember()
+        //{
+        //    Byte socialType = 3;
+        //    String socialId = "E4064A72A5DF573EE358F5DC0FC8901C";
+        //    String name = "Cathy";
+        //    String email = "cathy.mu@hotmail.com";
+        //    //int cityId = 1;
+        //    int memberId;
+        //    int result = _mgr.CreateMember(out memberId,socialId, socialType,name, email);
+        //    Assert.AreEqual(result, 1);//exists member
+        //    Assert.AreEqual(memberId, 1);
+        //}
 
 
         //[TestMethod]
@@ -71,35 +71,35 @@ namespace SkillBank.FunctionTests
         //{
         //}
 
-        [TestMethod]
-        public void Should_Not_CreateMember_IfExists()
-        {
-            Byte socialType = 1;
-            String socialId = "adcbefghijklmi";
-            String name = "Cathy";
-            String email = "cathy.mu@hotmail.com";
-            int memberId1;
-            var result1 = _mgr.CreateMember(out memberId1, socialId, socialType, name, email/*, cityId*/);
-            Assert.AreEqual(result1, 1);
-            int memberId2;
-            var result2 = _mgr.CreateMember(out memberId2, socialId, socialType, name, email/*, cityId*/);
-            Assert.AreEqual(result2, 1);
-            Assert.AreEqual(memberId1, memberId2);
-        }
+        //[TestMethod]
+        //public void Should_Not_CreateMember_IfExists()
+        //{
+        //    Byte socialType = 1;
+        //    String socialId = "adcbefghijklmi";
+        //    String name = "Cathy";
+        //    String email = "cathy.mu@hotmail.com";
+        //    int memberId1;
+        //    var result1 = _mgr.CreateMember(out memberId1, socialId, socialType, name, email/*, cityId*/);
+        //    Assert.AreEqual(result1, 1);
+        //    int memberId2;
+        //    var result2 = _mgr.CreateMember(out memberId2, socialId, socialType, name, email/*, cityId*/);
+        //    Assert.AreEqual(result2, 1);
+        //    Assert.AreEqual(memberId1, memberId2);
+        //}
 
-        [TestMethod]
-        public void Should_Not_CreateMember_AndReturnMemberIdIfExists()
-        {
-            Byte socialType = 1;
-            String socialId = "adcbefghijklmi";
-            String name = "Cathy";
-            String email = "cathy.mu@hotmail.com";
-            int memberId;
-            var result = _mgr.CreateMember(out memberId, socialId, socialType, name, email/*, cityId*/);
-            Assert.AreEqual(result, 1);
-            var memberInfo = _mgr.GetMemberInfo(memberId);
-            Assert.AreEqual(memberId, memberInfo.MemberId);
-        }
+        //[TestMethod]
+        //public void Should_Not_CreateMember_AndReturnMemberIdIfExists()
+        //{
+        //    Byte socialType = 1;
+        //    String socialId = "adcbefghijklmi";
+        //    String name = "Cathy";
+        //    String email = "cathy.mu@hotmail.com";
+        //    int memberId;
+        //    var result = _mgr.CreateMember(out memberId, socialId, socialType, name, email/*, cityId*/);
+        //    Assert.AreEqual(result, 1);
+        //    var memberInfo = _mgr.GetMemberInfo(memberId);
+        //    Assert.AreEqual(memberId, memberInfo.MemberId);
+        //}
 
         [TestMethod]
         public void Should_UpdateMemberInfo_MemberName_Correctly()

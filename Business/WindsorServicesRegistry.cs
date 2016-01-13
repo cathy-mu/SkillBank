@@ -19,9 +19,6 @@ namespace SkillBank.Site.Services
 {
     public class WindsorServicesRegistry
     {
-        //private const string CategoryRule = "CategoryRule";
-        //private const string LessonSaveHandler = "LessonSaveHandler";
-
         public static void Register(IWindsorContainer container)
         {
             RegisterInterceptors(container);
@@ -50,6 +47,11 @@ namespace SkillBank.Site.Services
             container.Register(Component.For<ICategoryTagRepository>().ImplementedBy<CategoryTagRepository>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<ICityLkpProvider>().ImplementedBy<CityLkpProvider>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<IMetaTagProvider>().ImplementedBy<MetaTagProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<ISystemNotificationProvider>().ImplementedBy<SystemNotificationProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<ITopBannerProvider>().ImplementedBy<TopBannerProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<IPortalBannerProvider>().ImplementedBy<PortalBannerProvider>().LifeStyle.Is(LifestyleType.Singleton));
+            container.Register(Component.For<ILinkMapProvider>().ImplementedBy<LinkMapProvider>().LifeStyle.Is(LifestyleType.Singleton));
+                                              
             container.Register(Component.For<IRecommendClassCacheMgr>().ImplementedBy<RecommendClassCacheMgr>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<IClassNumCacheMgr>().ImplementedBy<ClassNumCacheMgr>().LifeStyle.Is(LifestyleType.Singleton));
             container.Register(Component.For<IClassListCacheMgr>().ImplementedBy<ClassListCacheMgr>().LifeStyle.Is(LifestyleType.Singleton));
@@ -70,15 +72,7 @@ namespace SkillBank.Site.Services
             container.Register(Component.For<IContentService>().ImplementedBy<ContentService>().LifeStyle.Is(LifestyleType.Transient));
         }
 
-        //private static void RegisterConfigurationServiceComponents(IWindsorContainer container)
-        //{
-        //    container.Register(Component.For<ICacheServerConfigRepository>().ImplementedBy<CacheServerConfigRepository>().LifeStyle.Is(LifestyleType.Singleton).DynamicParameters((k, d) => d["ns"] = ConfigurationContexts.SchoolConfigurationContext));
-        //    container.Register(Component.For<ICacheServerConfigProvider>().ImplementedBy<CacheServerConfigProvider>().LifeStyle.Is(LifestyleType.Singleton));
-        //    container.Register(Component.For<IConfigurationService>().ImplementedBy<ConfigurationService>().LifeStyle.Is(LifestyleType.Transient));
-        //}
-
-
-
+        
         private static void RegisterInterceptors(IWindsorContainer container)
         {
             container.AddFacility<LoggingFacility>(f => f.LogUsing(LoggerImplementation.Log4net));

@@ -145,16 +145,16 @@ function classdetail_Class() {
 
     this.initClassProve = function () {
         if ($("#classpreview-prove").length > 0) {
-            $("#classpreview-prove").click(function () { classdetail.setClassTag($(this), 1, false); });
-            $("#classpreview-reject").click(function () { classdetail.setClassTag($(this), 2, false); });
-            $("#classpreview-setcate").click(function () { classdetail.setClassTag($(this), 1, false); });
+            $("#classpreview-prove").click(function () { classdetail.setClassTag($(this), 1, 2); });
+            $("#classpreview-reject").click(function () { classdetail.setClassTag($(this), 2, 2); });
+            $("#classpreview-setcate").click(function () { classdetail.setClassTag($(this), 1, 18); });
             $("#classpreview-cate").change(function () {
                 var selObj = $(this).children('option:selected');
                 $("#classdetail-hidcateid").val(selObj.val());
             });
         } else {
-            $("#classpreview-active").click(function () { classdetail.setClassTag($(this), 1, true); });
-            $("#classpreview-disactive").click(function () { classdetail.setClassTag($(this), 2, true); });
+            $("#classpreview-active").click(function () { classdetail.setClassTag($(this), 1, 14); });
+            $("#classpreview-disactive").click(function () { classdetail.setClassTag($(this), 2, 14); });
         }
     }
     
@@ -272,28 +272,27 @@ function classdetail_Class() {
         }
     }
 
-    this.setClassTag = function (btnObj, infoValue, isForActive) {
+    this.setClassTag = function (btnObj, infoValue, saveType) {
         var savePath = "/ClassHelper/UpdateClassStatus";//Class update 1.1
-        var saveType = 2;
-        var isSetCate = false;
         var paraData;
         var classId = $("#classdetail-hidclassid").val();
-        if (isForActive) {
-            paraData = { classId: classId, infoValue: infoValue, forActive: isForActive };
+        if (saveType == 14) {
+            paraData = { classId: classId, infoValue: infoValue, saveType: saveType };
         }
-        else {
-            var isProved = (infoValue==1);
+        else if (saveType == 18) {
+            var cateId = $("#classdetail-hidcateid").val();
+            paraData = { classId: classId, infoValue: cateId, saveType: saveType };
+        }
+        else {//2 prove class
+            var isProved = (infoValue == 1);
             var cateId = $("#classdetail-hidcateid").val();
             if (isProved && typeof (mixpanel) != "undefined") {
                 ga('send', 'event', 'class', 'click', 'peo_create_class');
                 mixpanel.track("prove class");
             }
             if (btnObj.attr("data-classname")) {
-                paraData = { classId: classId, infoValue: cateId, forActive: isForActive, isProved: isProved, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile") };
-            } else {
-                isSetCate = true;
-                paraData = { classId: classId, infoValue: cateId, forActive: isForActive, isProved: isProved };
-            }
+                paraData = { classId: classId, infoValue: cateId, saveType: saveType, isProved: isProved, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile") };
+            } 
         }
         consoleLog(paraData);
         $.ajax({
@@ -304,15 +303,15 @@ function classdetail_Class() {
             cache: false,
             success: function (data) {
                 if (infoValue == 1) {
-                    if (isForActive) {
+                    if (saveType == 14) {
                         $("#classpreview-active").addClass("saved").removeClass("btn-primary").text("已上线");
-                    } else if (isSetCate) {
+                    } else if (saveType == 18) {
                         $("#classpreview-setcate").addClass("saved").removeClass("btn-primary").text("已修改");
                     } else {
                         $("#classpreview-prove").addClass("saved").removeClass("btn-primary").text("已批准");
                     }
                 } else if (infoValue == 2) {
-                    if (isForActive) {
+                    if (saveType == 14) {
                         $("#classpreview-disactive").addClass("saved").removeClass("btn-warning").text("已下架");
                     } else {
                         $("#classpreview-reject").addClass("saved").removeClass("btn-warning").text("已拒绝");

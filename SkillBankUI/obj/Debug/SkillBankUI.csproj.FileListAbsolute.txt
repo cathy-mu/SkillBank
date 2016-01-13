@@ -1,7 +1,3 @@
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankUI.csprojFakesResolveAssemblyReference.cache
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankUI.csprojResolveAssemblyReference.cache
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankWeb.dll
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankWeb.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBankWeb.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBankWeb.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Fasterflect.2.1.3.0.Fakes.fakesconfig
@@ -25,7 +21,6 @@ D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\log4net.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Microsoft.QualityTools.Testing.Fakes.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Microsoft.Web.Infrastructure.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Microsoft.Web.Mvc.FixedDisplayModes.dll
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Newtonsoft.Json.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.Common.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.DataSource.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.Services.dll
@@ -41,6 +36,7 @@ D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\WebActivator.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\WebGrease.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Yahoo.Yui.Compressor.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\CodeScales.Http.dll
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\RongCloudServerSDK.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\NetDimension.Weibo.dll
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.Services.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\SkillBank.Site.Common.pdb
@@ -54,10 +50,16 @@ D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\EntityFramework.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Fasterflect.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Fasterflect.2.1.3.0.Fakes.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.Mvc.xml
-D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Newtonsoft.Json.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.Razor.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.WebPages.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.WebPages.Deployment.xml
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\System.Web.WebPages.Razor.xml
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\RongCloudServerSDK.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\NetDimension.Weibo.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\NetDimension.Weibo.xml
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankUI.csprojFakesResolveAssemblyReference.cache
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankUI.csprojResolveAssemblyReference.cache
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankWeb.dll
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\obj\Debug\SkillBankWeb.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Newtonsoft.Json.dll
+D:\SkillBank\SourceCode\VS\SkillBank\SkillBankUI\bin\Newtonsoft.Json.xml

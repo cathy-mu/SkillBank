@@ -37,6 +37,10 @@ namespace SkillBankWeb.Controllers
             return Json("true", JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// PC site remove all order notification
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult SetOrderNotificationAsReadByMemberId()
         {
@@ -45,6 +49,11 @@ namespace SkillBankWeb.Controllers
             return Json("true", JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// PC site remove single order notification by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult SetOrderNotificationAsReadByNotificationId(int id)
         {

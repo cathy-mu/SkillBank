@@ -18,7 +18,7 @@ namespace SkillBank.Site.DataSource.Data
         public int Member_Id { get; set; }
         public string Cover { get; set; }
         public string Name { get; set; }
-        public Nullable<int> CityId { get; set; }
+        public int CityId { get; set; }
         public Nullable<decimal> PosX { get; set; }
         public Nullable<decimal> PosY { get; set; }
         public string Title { get; set; }

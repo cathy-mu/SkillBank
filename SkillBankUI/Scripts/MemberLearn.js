@@ -91,12 +91,10 @@ function memberlearn_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                if (data == 0) {
-                    window.location.reload();
-                } else if (data == 2) {
+                if (data == 2) {
                     alert("预定状态已改变,无法执行当前操作");
-                    window.location.reload();
                 }
+                window.location.reload();
             }
         });
     }

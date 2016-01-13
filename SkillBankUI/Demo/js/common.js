@@ -213,7 +213,7 @@ var checkPage = function(){
             Code: ''
         };
         seconds = 60;
-        post(ENV.host + '/api/verification', data, function (fb) {
+        post(ENV.host + '/api/Validation', data, function (fb) {
             // timer
             var t = setInterval(function () {
                 if (seconds <= 0) {
@@ -552,7 +552,7 @@ function reservationForm(){
       Name: this.name.value,
     };
     post(ENV.host + '/api/Order', data, function(fb){
-      if( !fb ) return;
+      if( fb!=1 ) return;
     });
     $modal[0].style.display = 'none';
 

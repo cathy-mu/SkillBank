@@ -16,7 +16,9 @@
 </style>
 <div class="body">
     <div class="toolgroup">
-        @if (ViewBag.Type == 3)
+    @if(ViewBag.HasAccess)
+    {    
+        if (ViewBag.Type == 3)
         {
             <p>
                 社交账号为 @ViewBag.Key 的用户
@@ -41,7 +43,7 @@
             </p>
         }
 
-        @if (ViewBag.MemberInfos != null)
+        if (ViewBag.MemberInfos != null)
         {
             <table>
                 <tr>
@@ -76,6 +78,12 @@
         {
             <p>Sorry,没有相关用户</p>
         }
+    
+    }else{
+        <p>
+            Sorry, you have no permission to access this page.
+        </p>
+    }
     </div>
 </div>
 <!-- end of body -->

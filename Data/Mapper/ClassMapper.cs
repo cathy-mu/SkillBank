@@ -47,7 +47,7 @@ namespace SkillBank.Site.DataSource.Mapper
                     Summary = item.Summary,
                     Title = item.Title,
                     Detail = item.Detail,
-                    HasOffline = item.HasOffline,
+                    HasOnline = item.HasOnline,
                     Tags = item.Tags
                 }).ToList<ClassInfo>();
                 return (classes.Count > 0) ? classes : null;
@@ -79,7 +79,7 @@ namespace SkillBank.Site.DataSource.Mapper
                     WhyU = item.WhyU,
                     IsLike = item.IsLike,
                     LikeNum = item.LikeNum,
-                    HasOffline = item.HasOffline,
+                    HasOnline = item.HasOnline,
                     Tags = item.Tags
                 }).ToList<ClassEditItem>();
                 return (classes.Count > 0) ? classes : null;

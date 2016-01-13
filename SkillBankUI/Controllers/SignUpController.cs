@@ -384,7 +384,7 @@ namespace SkillBankWeb.Controllers
                         var result = apis.CallGet("https://api.weibo.com/oauth2/revokeoauth2", accessToken);
                         rs = Json(result, JsonRequestBehavior.AllowGet);
                     }
-                    catch (Exception e)
+                    catch 
                     {
                     }
                 }

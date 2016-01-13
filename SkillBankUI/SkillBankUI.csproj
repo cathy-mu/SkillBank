@@ -188,9 +188,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\API\Ajax\ClassController.cs" />
+    <Compile Include="Controllers\API\Ajax\CoinsController.cs" />
+    <Compile Include="Controllers\API\Ajax\LinkMapController.cs" />
+    <Compile Include="Controllers\API\Ajax\LogoutController.cs" />
+    <Compile Include="Controllers\API\Ajax\CourseController.cs" />
     <Compile Include="Controllers\API\Ajax\OrderHandlerController.cs" />
-    <Compile Include="Controllers\API\Ajax\LookUpController.cs" />
+    <Compile Include="Controllers\API\Ajax\OrderReviewController.cs" />
     <Compile Include="Controllers\API\Ajax\RecommendClassController.cs" />
+    <Compile Include="Controllers\API\Ajax\RongCloudController.cs" />
+    <Compile Include="Controllers\API\Ajax\ValidationController.cs" />
     <Compile Include="Controllers\API\AlterController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -199,12 +206,14 @@
     </Compile>
     <Compile Include="Controllers\API\CityController.cs" />
     <Compile Include="Controllers\API\Ajax\ComplaintController.cs" />
-    <Compile Include="Controllers\API\OrderDateController.cs" />
+    <Compile Include="Controllers\API\Content\ContentAboutUsController.cs" />
+    <Compile Include="Controllers\API\Content\ContentCoinsController.cs" />
+    <Compile Include="Controllers\API\Content\ContentFlowController.cs" />
+    <Compile Include="Controllers\API\Content\LookUpController.cs" />
     <Compile Include="Controllers\API\Page\ClassDetailController.cs" />
     <Compile Include="Controllers\API\ClassListsController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\API\CoinsController.cs" />
     <Compile Include="Controllers\API\Ajax\CommentController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -214,6 +223,10 @@
     <Compile Include="Controllers\API\Ajax\ClassListController.cs" />
     <Compile Include="Controllers\API\Page\ClassIndexController.cs" />
     <Compile Include="Controllers\API\Page\ClassSearchController.cs" />
+    <Compile Include="Controllers\API\Page\ClassCommentController.cs" />
+    <Compile Include="Controllers\API\Page\PortalController.cs" />
+    <Compile Include="Controllers\API\Page\NoticeController.cs" />
+    <Compile Include="Controllers\API\Page\InteractionController.cs" />
     <Compile Include="Controllers\API\Page\MemberCollectionController.cs" />
     <Compile Include="Controllers\API\Page\HomeController.cs" />
     <Compile Include="Controllers\API\Page\MemberInfoController.cs" />
@@ -226,10 +239,6 @@
     <Compile Include="Controllers\API\Page\FansController.cs" />
     <Compile Include="Controllers\API\Page\PersonalController.cs" />
     <Compile Include="Controllers\API\UpCloudController.cs" />
-    <Compile Include="Controllers\API\OrderReviewController.cs" />
-    <Compile Include="Controllers\API\CourseController.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Controllers\API\Ajax\FollowMemberController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -248,9 +257,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\UploadCoverController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\API\Ajax\VerificationController.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\API\ValuesController.cs">

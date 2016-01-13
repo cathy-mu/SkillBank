@@ -165,17 +165,17 @@ namespace SkillBank.Site.Web
             }
         }
 
-        public static String GetClassOwnerDistinceTag(int? myCity, int? classCityId, Decimal? posX, Decimal? posY)
+        public static String GetClassOwnerDistinceTag(int myCity, int classCityId, Decimal? posX, Decimal? posY)
         {
             StringBuilder result = new StringBuilder();
 
             if (classCityId.Equals(myCity) && posX.HasValue && posY.HasValue && posX.Value != 0 && posY.Value != 0)
             {
-                result.Append(ResourceHelper.GetTransText(222).Replace("{1}", (classCityId.HasValue ? TagHelper.GetCityName(classCityId.Value) : "")).Replace("{0}", String.Format("<label class=\"classlist-distince\" data-pos=\"{0},{1}\"></label>", posX.Value, posY.Value)));
+                result.Append(ResourceHelper.GetTransText(222).Replace("{1}", (classCityId.Equals(0) ? "" : TagHelper.GetCityName(classCityId))).Replace("{0}", String.Format("<label class=\"classlist-distince\" data-pos=\"{0},{1}\"></label>", posX.Value, posY.Value)));
             }
             else
             {
-                result.Append(classCityId.HasValue ? TagHelper.GetCityName(classCityId.Value) : "");
+                result.Append(classCityId.Equals(0) ? "" : TagHelper.GetCityName(classCityId));
             }
 
             return result.ToString();

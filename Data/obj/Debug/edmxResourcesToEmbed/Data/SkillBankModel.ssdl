@@ -13,13 +13,17 @@
     <EntitySet Name="EmailAccount" EntityType="SkillBank.Site.DataSource.Data.Store.EmailAccount" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EmailTemplate" EntityType="SkillBank.Site.DataSource.Data.Store.EmailTemplate" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Favorite" EntityType="SkillBank.Site.DataSource.Data.Store.Favorite" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="LinkMap" EntityType="SkillBank.Site.DataSource.Data.Store.LinkMap" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="MemberInfo" EntityType="SkillBank.Site.DataSource.Data.Store.MemberInfo" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Message" EntityType="SkillBank.Site.DataSource.Data.Store.Message" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="MetaTag" EntityType="SkillBank.Site.DataSource.Data.Store.MetaTag" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Order" EntityType="SkillBank.Site.DataSource.Data.Store.Order" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PortalBanner" EntityType="SkillBank.Site.DataSource.Data.Store.PortalBanner" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="SkillCategory" EntityType="SkillBank.Site.DataSource.Data.Store.SkillCategory" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="StudentReview" EntityType="SkillBank.Site.DataSource.Data.Store.StudentReview" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SystemNotification" EntityType="SkillBank.Site.DataSource.Data.Store.SystemNotification" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TeacherReview" EntityType="SkillBank.Site.DataSource.Data.Store.TeacherReview" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TopBanner" EntityType="SkillBank.Site.DataSource.Data.Store.TopBanner" store:Type="Tables" Schema="dbo" />
   </EntityContainer>
   <EntityType Name="BlurbsMain">
     <Key>
@@ -82,8 +86,8 @@
     <Property Name="Location" Type="nvarchar" Nullable="false" MaxLength="200" />
     <Property Name="Available" Type="nvarchar" Nullable="false" MaxLength="200" />
     <Property Name="Remark" Type="nvarchar" Nullable="false" MaxLength="800" />
-    <Property Name="HasOffline" Type="bit" Nullable="false" />
     <Property Name="Tags" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="HasOnline" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="ClassInfo">
     <Key>
@@ -111,9 +115,9 @@
     <Property Name="Remark" Type="nvarchar" MaxLength="200" />
     <Property Name="ClassId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="WhyU" Type="nvarchar" Nullable="false" MaxLength="800" />
-    <Property Name="HasOffline" Type="bit" Nullable="false" />
     <Property Name="Tags" Type="varchar" MaxLength="200" />
     <Property Name="Cate_Id" Type="tinyint" Nullable="false" />
+    <Property Name="HasOnline" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="CoinsHistory">
     <Key>
@@ -177,6 +181,16 @@
     <Property Name="MemberId" Type="int" Nullable="false" />
     <Property Name="FavoriteType" Type="tinyint" Nullable="false" />
   </EntityType>
+  <EntityType Name="LinkMap">
+    <Key>
+      <PropertyRef Name="LinkMapId" />
+    </Key>
+    <Property Name="LinkMapId" Type="int" Nullable="false" />
+    <Property Name="SourceId" Type="int" Nullable="false" />
+    <Property Name="Link" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="LinkType" Type="tinyint" Nullable="false" />
+    <Property Name="SourceLink" Type="nvarchar" Nullable="false" MaxLength="300" />
+  </EntityType>
   <EntityType Name="MemberInfo">
     <Key>
       <PropertyRef Name="MemberId" />
@@ -207,6 +221,11 @@
     <Property Name="NotifyTag" Type="tinyint" Nullable="false" />
     <Property Name="Credit" Type="int" Nullable="false" />
     <Property Name="Pass" Type="nvarchar" MaxLength="50" />
+    <Property Name="DeviceToken" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="AccessToken" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="UnionId" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="OpenId1" Type="nvarchar" Nullable="false" MaxLength="70" />
+    <Property Name="RCToken" Type="nvarchar" Nullable="false" MaxLength="100" />
   </EntityType>
   <EntityType Name="Message">
     <Key>
@@ -248,6 +267,17 @@
     <Property Name="TeacherReview" Type="bit" Nullable="false" />
     <Property Name="StudentReview" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="PortalBanner">
+    <Key>
+      <PropertyRef Name="PortalBannerId" />
+    </Key>
+    <Property Name="PortalKey" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="PortalImage" Type="nvarchar" MaxLength="100" />
+    <Property Name="Link" Type="nvarchar" MaxLength="300" />
+    <Property Name="Rank" Type="tinyint" Nullable="false" />
+    <Property Name="LinkType" Type="tinyint" Nullable="false" />
+    <Property Name="PortalBannerId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+  </EntityType>
   <EntityType Name="SkillCategory">
     <Key>
       <PropertyRef Name="CategoryId" />
@@ -267,9 +297,24 @@
     <Property Name="Score2" Type="tinyint" />
     <Property Name="Score3" Type="tinyint" />
     <Property Name="FeedBack" Type="tinyint" />
-    <Property Name="Comment" Type="nvarchar" MaxLength="400" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="600" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="PrivateComment" Type="nvarchar" Nullable="false" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="SystemNotification">
+    <Key>
+      <PropertyRef Name="NotificationId" />
+    </Key>
+    <Property Name="NotificationId" Type="int" Nullable="false" />
+    <Property Name="TitleBlurbId" Type="int" />
+    <Property Name="ShowType" Type="tinyint" />
+    <Property Name="BeginDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="ContentBlurbId" Type="int" />
+    <Property Name="Link" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Banner" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="AddType" Type="tinyint" Nullable="false" />
   </EntityType>
   <EntityType Name="TeacherReview">
     <Key>
@@ -278,9 +323,20 @@
     <Property Name="ReviewId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Order_Id" Type="int" Nullable="false" />
     <Property Name="FeedBack" Type="tinyint" />
-    <Property Name="Comment" Type="nvarchar" MaxLength="400" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="600" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="PrivateComment" Type="nvarchar" Nullable="false" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="TopBanner">
+    <Key>
+      <PropertyRef Name="BannerId" />
+    </Key>
+    <Property Name="BannerKey" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="BannerImg" Type="nvarchar" MaxLength="100" />
+    <Property Name="Link" Type="nvarchar" MaxLength="300" />
+    <Property Name="Rank" Type="tinyint" Nullable="false" />
+    <Property Name="LinkType" Type="tinyint" Nullable="false" />
+    <Property Name="BannerId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
   </EntityType>
   <Function Name="Blurbs_LoadByLanguageSiteVersion_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Language" Type="varchar" Mode="In" />
@@ -314,6 +370,8 @@
     <Parameter Name="Location" Type="varchar" Mode="In" />
     <Parameter Name="Available" Type="nvarchar" Mode="In" />
     <Parameter Name="Remark" Type="nvarchar" Mode="In" />
+    <Parameter Name="Tags" Type="varchar" Mode="In" />
+    <Parameter Name="HasOnline" Type="bit" Mode="In" />
     <Parameter Name="ClassId" Type="int" Mode="InOut" />
   </Function>
   <Function Name="ClassEditInfo_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -471,6 +529,7 @@
     <Parameter Name="isLike" Type="bit" Mode="In" />
     <Parameter Name="isFavorite" Type="bit" Mode="In" />
   </Function>
+  <Function Name="LinkMap_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="Master_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="MemberId" Type="int" Mode="In" />
     <Parameter Name="ParaStr" Type="varchar" Mode="In" />
@@ -487,6 +546,11 @@
     <Parameter Name="VerifyCode" Type="nvarchar" Mode="In" />
     <Parameter Name="Gender" Type="bit" Mode="In" />
     <Parameter Name="Pass" Type="nvarchar" Mode="In" />
+    <Parameter Name="UnionId" Type="varchar" Mode="In" />
+    <Parameter Name="Device" Type="varchar" Mode="In" />
+    <Parameter Name="RCToken" Type="nvarchar" Mode="InOut" />
+    <Parameter Name="Token" Type="nvarchar" Mode="InOut" />
+    <Parameter Name="VerifyTag" Type="tinyint" Mode="InOut" />
     <Parameter Name="Id" Type="int" Mode="InOut" />
     <Parameter Name="Result" Type="int" Mode="InOut" />
   </Function>
@@ -567,10 +631,6 @@
     <Parameter Name="memberId" Type="int" Mode="In" />
     <Parameter Name="loadType" Type="tinyint" Mode="In" />
   </Function>
-  <Function Name="Order_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="loadType" Type="tinyint" Mode="In" />
-    <Parameter Name="paraId" Type="int" Mode="In" />
-  </Function>
   <Function Name="Order_LoadByStudent_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="paraId" Type="int" Mode="In" />
     <Parameter Name="isCheck" Type="bit" Mode="In" />
@@ -600,6 +660,7 @@
   <Function Name="OrderStatus_ListHandler_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="memberId" Type="int" Mode="In" />
   </Function>
+  <Function Name="PortalBanner_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="Recommendation_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="ClassId" Type="int" Mode="In" />
   </Function>
@@ -643,6 +704,7 @@
     <Parameter Name="paraId" Type="int" Mode="InOut" />
     <Parameter Name="priComment" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="SystemNotification_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="TeacherReview_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="loadBy" Type="int" Mode="In" />
     <Parameter Name="paraId" Type="int" Mode="In" />
@@ -655,6 +717,7 @@
     <Parameter Name="paraId" Type="int" Mode="InOut" />
     <Parameter Name="priComment" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="TopBanner_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="Verification_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="SaveType" Type="tinyint" Mode="In" />
     <Parameter Name="MemberId" Type="int" Mode="In" />

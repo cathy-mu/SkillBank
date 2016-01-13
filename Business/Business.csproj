@@ -58,6 +58,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RongCloudServerSDK">
+      <HintPath>..\RongCloudServerSDK\bin\Debug\RongCloudServerSDK.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
@@ -101,6 +107,10 @@
     <Compile Include="Providers\CityLkpProvider.cs" />
     <Compile Include="CacheManager\RecommendClassCacheMgr.cs" />
     <Compile Include="Providers\CategoryLkpProvider.cs" />
+    <Compile Include="Providers\LinkMapProvider.cs" />
+    <Compile Include="Providers\PortalBannerProvider.cs" />
+    <Compile Include="Providers\SystemNotificationProvider.cs" />
+    <Compile Include="Providers\TopBannerProvider.cs" />
     <Compile Include="Providers\MailTemplateProvider.cs" />
     <Compile Include="Providers\MetaTagProvider.cs" />
     <Compile Include="Providers\StaticCacheProvider.cs" />
@@ -111,6 +121,7 @@
     <Compile Include="Tencent\Cryptography.cs" />
     <Compile Include="Tencent\WXBizMsgCrypt.cs" />
     <Compile Include="Models\WeChatBaseMessage.cs" />
+    <Compile Include="Utility\RongCloudHelper.cs" />
     <Compile Include="Utility\DataTagHelper.cs" />
     <Compile Include="Utility\CryptographyHelper.cs" />
     <Compile Include="Utility\XMLHelper.cs" />

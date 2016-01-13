@@ -4,7 +4,11 @@
 @section FooterJs
 {@Html.CombresCustomUrl("toolsJs")}
 <!--Member public Profile page / profile -->
+
+
 <div class="body">
+    @if(Model != null)
+    {
     <div class="inner">
 
         <div class="profile cf">
@@ -171,7 +175,10 @@
 
         </div>
     </div>
+    
     <input type="hidden" id="profile-hidmemberid" value="@((Model.MemberInfo == null) ? 0 : Model.MemberInfo.MemberId)" />
     <input type="hidden" id="classlist-mycityid" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.CityId)"/>
     <input type="hidden" id="profile-myposx" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.PosX)"/>
     <input type="hidden" id="profile-myposy" value="@((ViewBag.MemberInfo == null) ? 0 : ViewBag.MemberInfo.PosY)"/>
+    }
+</div>

@@ -78,18 +78,18 @@ namespace SkillBank.FunctionTests
             Assert.IsNull(result);
         }
 
-        [TestMethod]
-        public void Should_CreatNewMember_IfSocialAccountNotExists()
-        {
-            String tempAccount = "E4064A72A5DF573EE358F5DC0FC8901C";// DateTime.Now.ToString() + "testsocialId";
-            String name = DateTime.Now.ToString() + "testname";
-            String email = DateTime.Now.ToString() + "test@test.com";
-            Byte socialType = 3;// (Byte)Enums.SocialTpye.Sina;
-            int memberId;
-            int result = _repository.CreateMember(out memberId, tempAccount, socialType, name, email);
-            memberId.AssertIsGreaterThan(0);
-            result.AssertIsEqual(0);
-        }
+        //[TestMethod]
+        //public void Should_CreatNewMember_IfSocialAccountNotExists()
+        //{
+        //    String tempAccount = "E4064A72A5DF573EE358F5DC0FC8901C";// DateTime.Now.ToString() + "testsocialId";
+        //    String name = DateTime.Now.ToString() + "testname";
+        //    String email = DateTime.Now.ToString() + "test@test.com";
+        //    Byte socialType = 3;// (Byte)Enums.SocialTpye.Sina;
+        //    int memberId;
+        //    int result = _repository.CreateMember(out memberId, tempAccount, socialType, name, email);
+        //    memberId.AssertIsGreaterThan(0);
+        //    result.AssertIsEqual(0);
+        //}
 
         [TestMethod]
         public void Should_SaveEmailAccount()

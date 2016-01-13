@@ -86,3 +86,7 @@ D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\NetDimension.Weibo.p
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\NetDimension.Weibo.xml
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\Combres.Mvc.xml
 D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\Combres.xml
+D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\RongCloudServerSDK.dll
+D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\RongCloudServerSDK.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\Newtonsoft.Json.dll
+D:\SkillBank\SourceCode\VS\SkillBank\FuntionTests\bin\Debug\Newtonsoft.Json.xml

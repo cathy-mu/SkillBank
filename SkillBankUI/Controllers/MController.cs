@@ -191,15 +191,15 @@ namespace SkillBank.Controllers
                     classDetailModel.IsOwner = memberId.Equals(teacherId);
                     ViewBag.ContactMobile = (teacherInfo.NotifyTag & 1).Equals(1) ? teacherInfo.Phone : "";//for send SMS notify
 
-                    if (classDetailModel.IsOwner)
-                    {
-                        _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetClassRelatedAsReadByClassId, memberId, id);
-                    }
+                    //if (classDetailModel.IsOwner)
+                    //{
+                    //    _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetClassRelatedAsReadByClassId, memberId, id);
+                    //}
 
                     var numDic = _commonService.GetNumsByMemberClass(teacherId, id, (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassSummary);
                     //init numbers on page
                     numDic.Add(Enums.NumberDictionaryKey.StudentReview, reviewNum);
-                    numDic.Add(Enums.NumberDictionaryKey.Comment, commentNum);
+                    //numDic.Add(Enums.NumberDictionaryKey.Comment, commentNum);
                     numDic.Add(Enums.NumberDictionaryKey.Like, likeNum);
                     classDetailModel.ClassNumDic = numDic;
 
@@ -361,10 +361,10 @@ namespace SkillBank.Controllers
                 ViewBag.IsOwner = true;
             }
 
-            if (ViewBag.IsOwner)
-            {
-                _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetTeacherReviewAsRead, memberId);
-            }
+            //if (ViewBag.IsOwner)
+            //{
+            //    _commonService.UpdateNotification((Byte)Enums.DBAccess.NotificationTagUpdateType.SetTeacherReviewAsRead, memberId);
+            //}
 
             GetNotificationNums(currMemberId);
 

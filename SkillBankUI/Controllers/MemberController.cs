@@ -111,7 +111,7 @@ namespace SkillBankWeb.Controllers
                 dashboardModel.HasClass = (dashboardModel.ClassEditList != null && dashboardModel.ClassEditList.Count > 0);
 
                 ViewBag.ShowQRCode = false;
-                if (memberInfo.SocialType.Equals(1))
+                if (memberInfo.SocialType.Equals(1) && System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName))
                 {
                     if (memberInfo.SocialAccount.Equals(memberInfo.OpenId))
                     {

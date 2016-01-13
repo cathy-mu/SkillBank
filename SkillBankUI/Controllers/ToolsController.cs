@@ -261,68 +261,85 @@ namespace SkillBank.Controllers
 
         public ActionResult MemberProfile(int id = 0)
         {
-            String userName = "";
-            int likeNum = 0;
-            ProfilelModel profileModel = new ProfilelModel();
             var currMemberId = WebContext.Current.MemberId;
-            var currMemberInfo = currMemberId > 0 ? _commonService.GetMemberInfo(currMemberId) : null;
-            ViewBag.MemberInfo = currMemberInfo;
-
-            int memberId = 0;
-            //view other member's page
-            if (id > 0)
+            List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
+            if (whiteListMem.Contains(currMemberId.ToString()))
             {
-                memberId = id;
-                var memberInfo = _commonService.GetMemberInfo(memberId);
-                if (memberInfo != null)
-                {
-                    likeNum = memberInfo.MemberId;
-                    memberInfo.MemberId = memberId;
-                    profileModel.MemberInfo = memberInfo;
 
-                    String masterInfo = memberInfo.ExtraInfo;
-                    if (!String.IsNullOrEmpty(masterInfo))
+                String userName = "";
+                int likeNum = 0;
+                ProfilelModel profileModel = new ProfilelModel();
+                var currMemberInfo = currMemberId > 0 ? _commonService.GetMemberInfo(currMemberId) : null;
+                ViewBag.MemberInfo = currMemberInfo;
+
+                int memberId = 0;
+                //view other member's page
+                if (id > 0)
+                {
+                    memberId = id;
+
+                    var memberInfo = _commonService.GetMemberInfo(memberId);
+                    if (memberInfo != null)
                     {
-                        var masterInfoDic = new Dictionary<Byte, String>();
-                        masterInfo = masterInfo.Substring(0, masterInfo.Length - 1);
-                        String[] paras = masterInfo.Split(';');
-                        foreach (String para in paras)
-                        {
-                            String[] items = para.Split(',');
-                            masterInfoDic.Add(Convert.ToByte(items[0]), items[1]);
-                        }
-                        profileModel.MasterInfos = masterInfoDic;
-                    }
-                }
-                else
-                {
-                    return View();
-                }
-                userName = memberInfo == null ? "" : memberInfo.Name;
-            }
-            else if (id == 0)
-            {
-                memberId = currMemberId;
-                profileModel.MemberInfo = currMemberInfo;
-                userName = currMemberInfo.Name;
-            }
-            profileModel.ClassList = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, memberId);
-            
-            var metaTags = MetaTagHelper.GetMetaTags("profile");
-            ViewBag.MetaTagTitle = metaTags[0].Replace("{0}", userName);
-            ViewBag.MetaTagKeyWords = metaTags[1];
-            ViewBag.MetaTagDescription = metaTags[2];
+                        likeNum = memberInfo.MemberId;
+                        memberInfo.MemberId = memberId;
+                        profileModel.MemberInfo = memberInfo;
 
-            return View(profileModel);
+                        String masterInfo = memberInfo.ExtraInfo;
+                        if (!String.IsNullOrEmpty(masterInfo))
+                        {
+                            var masterInfoDic = new Dictionary<Byte, String>();
+                            masterInfo = masterInfo.Substring(0, masterInfo.Length - 1);
+                            String[] paras = masterInfo.Split(';');
+                            foreach (String para in paras)
+                            {
+                                String[] items = para.Split(',');
+                                masterInfoDic.Add(Convert.ToByte(items[0]), items[1]);
+                            }
+                            profileModel.MasterInfos = masterInfoDic;
+                        }
+                    }
+                    else
+                    {
+                        return View();
+                    }
+                    userName = memberInfo == null ? "" : memberInfo.Name;
+                }
+                else if (id == 0)
+                {
+                    memberId = currMemberId;
+                    profileModel.MemberInfo = currMemberInfo;
+                    userName = currMemberInfo.Name;
+                }
+                profileModel.ClassList = _commonService.GetClassInfo((Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished, 0, memberId);
+
+                var metaTags = MetaTagHelper.GetMetaTags("profile");
+                ViewBag.MetaTagTitle = metaTags[0].Replace("{0}", userName);
+                ViewBag.MetaTagKeyWords = metaTags[1];
+                ViewBag.MetaTagDescription = metaTags[2];
+
+                return View(profileModel);
+            }
+            return View();
         }
 
         public ActionResult SearchMemeber(Byte t, string k)
         {
-            ViewBag.Key = k;
-            ViewBag.Type = t;
+            ViewBag.HasAccess = false;
+            if (Request.UrlReferrer != null && Request.UrlReferrer.ToString().Contains("/tools/links"))
+            {
+                var memberId = WebContext.Current.MemberId;
+                List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
+                if (whiteListMem.Contains(memberId.ToString()))
+                {
+                    ViewBag.HasAccess = true;
+                    ViewBag.Key = k;
+                    ViewBag.Type = t;
 
-            ViewBag.MemberInfos = _commonService.GetMemberInfos(t, k);
+                    ViewBag.MemberInfos = _commonService.GetMemberInfos(t, k);
+                }
 
+            }
             return View();
         }
 

@@ -9,3 +9,4 @@ D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\bin\Debug\dotNetDR_OAuth2.d
 D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\bin\Debug\dotNetDR_OAuth2.pdb
 D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.dll
 D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.pdb
+D:\SkillBank\SourceCode\VS\SkillBank\dotNetDR_OAuth2\obj\Debug\dotNetDR_OAuth2.csprojResolveAssemblyReference.cache

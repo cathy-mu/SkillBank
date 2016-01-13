@@ -32,6 +32,6 @@ namespace SkillBank.Site.DataSource.Data
         public bool IsLike { get; set; }
         public int LikeNum { get; set; }
         public string Tags { get; set; }
-        public bool HasOffline { get; set; }
+        public bool HasOnline { get; set; }
     }
 }

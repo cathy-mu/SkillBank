@@ -75,6 +75,11 @@
       <Parameter Name="VerifyCode" Mode="In" Type="String" />
       <Parameter Name="Gender" Mode="In" Type="Boolean" />
       <Parameter Name="Pass" Mode="In" Type="String" />
+      <Parameter Name="UnionId" Mode="In" Type="String" />
+      <Parameter Name="Device" Mode="In" Type="String" />
+      <Parameter Name="RCToken" Mode="InOut" Type="String" />
+      <Parameter Name="Token" Mode="InOut" Type="String" />
+      <Parameter Name="VerifyTag" Mode="InOut" Type="Byte" />
       <Parameter Name="Id" Mode="InOut" Type="Int32" />
       <Parameter Name="Result" Mode="InOut" Type="Int32" />
     </FunctionImport>
@@ -115,14 +120,6 @@
     <FunctionImport Name="Order_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Order_Load_p_Result)">
       <Parameter Name="loadType" Mode="In" Type="Byte" />
       <Parameter Name="paraId" Mode="In" Type="Int32" />
-    </FunctionImport>
-    <FunctionImport Name="Order_LoadByStudent_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Order_LoadByStudent_p_Result)">
-      <Parameter Name="paraId" Mode="In" Type="Int32" />
-      <Parameter Name="isCheck" Mode="In" Type="Boolean" />
-    </FunctionImport>
-    <FunctionImport Name="Order_LoadByTeacher_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Order_LoadByTeacher_p_Result)">
-      <Parameter Name="paraId" Mode="In" Type="Int32" />
-      <Parameter Name="isCheck" Mode="In" Type="Boolean" />
     </FunctionImport>
     <FunctionImport Name="Order_Save_p">
       <Parameter Name="studentId" Mode="In" Type="Int32" />
@@ -355,6 +352,8 @@
       <Parameter Name="Location" Mode="In" Type="String" />
       <Parameter Name="Available" Mode="In" Type="String" />
       <Parameter Name="Remark" Mode="In" Type="String" />
+      <Parameter Name="Tags" Mode="In" Type="String" />
+      <Parameter Name="HasOnline" Mode="In" Type="Boolean" />
       <Parameter Name="ClassId" Mode="InOut" Type="Int32" />
     </FunctionImport>
     <EntitySet Name="MemberInfoes" EntityType="SkillBank.Site.DataSource.Data.MemberInfo" />
@@ -428,6 +427,22 @@
       <Parameter Name="minId" Mode="In" Type="Int32" />
       <Parameter Name="maxId" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="PortalBanners" EntityType="SkillBank.Site.DataSource.Data.PortalBanner" />
+    <EntitySet Name="TopBanners" EntityType="SkillBank.Site.DataSource.Data.TopBanner" />
+    <EntitySet Name="SystemNotifications" EntityType="SkillBank.Site.DataSource.Data.SystemNotification" />
+    <FunctionImport Name="SystemNotification_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.SystemNotification_LoadAll_p_Result)" />
+    <FunctionImport Name="Order_LoadByStudent_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Order_LoadByStudent_p_Result)">
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
+      <Parameter Name="isCheck" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="Order_LoadByTeacher_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Order_LoadByTeacher_p_Result)">
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
+      <Parameter Name="isCheck" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <EntitySet Name="LinkMaps" EntityType="SkillBank.Site.DataSource.Data.LinkMap" />
+    <FunctionImport Name="LinkMap_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.LinkMap_LoadAll_p_Result)" />
+    <FunctionImport Name="PortalBanner_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.PortalBanner_LoadAll_p_Result)" />
+    <FunctionImport Name="TopBanner_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.TopBanner_LoadAll_p_Result)" />
   </EntityContainer>
   <EntityType Name="CategoryPopTag">
     <Key>
@@ -537,7 +552,7 @@
     <Property Name="Score2" Type="Byte" />
     <Property Name="Score3" Type="Byte" />
     <Property Name="FeedBack" Type="Byte" />
-    <Property Name="Comment" Type="String" MaxLength="400" Unicode="true" FixedLength="false" />
+    <Property Name="Comment" Type="String" MaxLength="600" Unicode="true" FixedLength="false" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="PrivateComment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
   </EntityType>
@@ -548,7 +563,7 @@
     <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Order_Id" Type="Int32" Nullable="false" />
     <Property Name="FeedBack" Type="Byte" />
-    <Property Name="Comment" Type="String" MaxLength="400" Unicode="true" FixedLength="false" />
+    <Property Name="Comment" Type="String" MaxLength="600" Unicode="true" FixedLength="false" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="PrivateComment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
   </EntityType>
@@ -587,7 +602,7 @@
     <Property Type="Decimal" Name="Rank" Nullable="false" Precision="18" Scale="0" />
     <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
     <Property Type="String" Name="Tags" Nullable="false" />
-    <Property Type="Boolean" Name="HasOffline" Nullable="false" />
+    <Property Type="Boolean" Name="HasOnline" Nullable="false" />
   </ComplexType>
   <ComplexType Name="ClassInfo_LoadAll_p_Result">
     <Property Type="Int32" Name="ClassId" Nullable="false" />
@@ -638,38 +653,6 @@
     <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
     <Property Type="Byte" Name="OrderStatus" Nullable="true" />
     <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
-  </ComplexType>
-  <ComplexType Name="Order_LoadByStudent_p_Result">
-    <Property Type="Int32" Name="OrderId" Nullable="false" />
-    <Property Type="Int32" Name="ClassId" Nullable="false" />
-    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
-    <Property Type="Byte" Name="OrderStatus" Nullable="true" />
-    <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
-    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="MemberName" Nullable="false" MaxLength="50" />
-    <Property Type="Int32" Name="MemberId" Nullable="false" />
-    <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
-    <Property Type="String" Name="Avatar" Nullable="false" />
-    <Property Type="Boolean" Name="HasReview" Nullable="false" />
-    <Property Type="String" Name="Remark" Nullable="false" />
-    <Property Type="Byte" Name="NotifyTag" Nullable="false" />
-  </ComplexType>
-  <ComplexType Name="Order_LoadByTeacher_p_Result">
-    <Property Type="Int32" Name="OrderId" Nullable="false" />
-    <Property Type="Int32" Name="ClassId" Nullable="false" />
-    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
-    <Property Type="Byte" Name="OrderStatus" Nullable="true" />
-    <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
-    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="MemberName" Nullable="true" MaxLength="50" />
-    <Property Type="Int32" Name="MemberId" Nullable="false" />
-    <Property Type="String" Name="Phone" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="Avatar" Nullable="false" />
-    <Property Type="Boolean" Name="HasReview" Nullable="false" />
-    <Property Type="String" Name="Remark" Nullable="false" />
-    <Property Type="Byte" Name="NotifyTag" Nullable="false" />
   </ComplexType>
   <ComplexType Name="SkillCategory_LoadAll_p_Result">
     <Property Type="Byte" Name="CategoryId" Nullable="false" />
@@ -725,9 +708,9 @@
     <Property Type="String" Name="Available" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="Remark" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Type="String" Name="WhyU" Nullable="false" MaxLength="800" FixedLength="false" Unicode="true" />
-    <Property Type="Boolean" Name="HasOffline" Nullable="false" />
     <Property Type="String" Name="Tags" MaxLength="200" FixedLength="false" Unicode="false" />
     <Property Type="Byte" Name="Cate_Id" Nullable="false" />
+    <Property Type="Boolean" Name="HasOnline" Nullable="false" />
   </EntityType>
   <EntityType Name="BlurbsMain">
     <Key>
@@ -819,7 +802,7 @@
     <Property Type="Int32" Name="Member_Id" Nullable="false" />
     <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
     <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
-    <Property Type="Int32" Name="CityId" Nullable="true" />
+    <Property Type="Int32" Name="CityId" Nullable="false" />
     <Property Type="Decimal" Name="PosX" Nullable="true" Precision="10" Scale="6" />
     <Property Type="Decimal" Name="PosY" Nullable="true" Precision="10" Scale="6" />
     <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
@@ -851,8 +834,8 @@
     <Property Type="String" Name="Available" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Type="String" Name="Remark" MaxLength="800" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Type="String" Name="WhyU" Nullable="false" MaxLength="800" FixedLength="false" Unicode="true" />
-    <Property Type="Boolean" Name="HasOffline" Nullable="false" />
     <Property Type="String" Name="Tags" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="HasOnline" Nullable="false" />
   </EntityType>
   <ComplexType Name="ClassEditInfo_Load_p_Result">
     <Property Type="Int32" Name="ClassId" Nullable="false" />
@@ -874,7 +857,7 @@
     <Property Type="Boolean" Name="IsLike" Nullable="false" />
     <Property Type="Int32" Name="LikeNum" Nullable="false" />
     <Property Type="String" Name="Tags" Nullable="false" />
-    <Property Type="Boolean" Name="HasOffline" Nullable="false" />
+    <Property Type="Boolean" Name="HasOnline" Nullable="false" />
   </ComplexType>
   <ComplexType Name="ReportNumItem">
     <Property Type="Int32" Name="Num1" Nullable="false" />
@@ -915,7 +898,7 @@
     <Property Type="Int32" Name="Member_Id" Nullable="false" />
     <Property Type="String" Name="Cover" Nullable="true" MaxLength="150" />
     <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
-    <Property Type="Int32" Name="CityId" Nullable="true" />
+    <Property Type="Int32" Name="CityId" Nullable="false" />
     <Property Type="Decimal" Name="PosX" Nullable="true" Precision="10" Scale="6" />
     <Property Type="Decimal" Name="PosY" Nullable="true" Precision="10" Scale="6" />
     <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
@@ -972,6 +955,11 @@
     <Property Type="Byte" Name="NotifyTag" Nullable="false" />
     <Property Type="Int32" Name="Credit" Nullable="false" />
     <Property Type="String" Name="Pass" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="DeviceToken" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="AccessToken" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="UnionId" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="OpenId1" Nullable="false" MaxLength="70" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="RCToken" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="ConfigureInfo">
     <Key>
@@ -1038,8 +1026,10 @@
     <Property Type="Byte" Name="NotifyTag" Nullable="false" />
     <Property Type="Int32" Name="Credit" Nullable="false" />
     <Property Type="Boolean" Name="IsLike" Nullable="false" />
-    <Property Type="String" Name="ExtraInfo" Nullable="false" MaxLength="1" />
+    <Property Type="String" Name="ExtraInfo" Nullable="false" MaxLength="500" />
     <Property Type="DateTime" Name="BirthDate" Nullable="false" />
+    <Property Type="String" Name="RCToken" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="DeviceToken" Nullable="true" MaxLength="100" />
   </ComplexType>
   <ComplexType Name="ClassCategory_Load_p_Result">
     <Property Type="Byte" Name="CategoryId" Nullable="false" />
@@ -1076,5 +1066,121 @@
     <Property Type="Int32" Name="MemberId" Nullable="false" />
     <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
     <Property Type="Int32" Name="CityId" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="PortalBanner">
+    <Key>
+      <PropertyRef Name="PortalBannerId" />
+    </Key>
+    <Property Type="Int32" Name="PortalBannerId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="PortalKey" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="PortalImage" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Link" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="Rank" Nullable="false" />
+    <Property Type="Byte" Name="LinkType" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TopBanner">
+    <Key>
+      <PropertyRef Name="BannerId" />
+    </Key>
+    <Property Type="Int32" Name="BannerId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="BannerKey" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="BannerImg" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Link" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="Rank" Nullable="false" />
+    <Property Type="Byte" Name="LinkType" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SystemNotification">
+    <Key>
+      <PropertyRef Name="NotificationId" />
+    </Key>
+    <Property Type="Int32" Name="NotificationId" Nullable="false" />
+    <Property Type="Int32" Name="TitleBlurbId" />
+    <Property Type="Byte" Name="ShowType" />
+    <Property Type="DateTime" Name="BeginDate" Precision="3" />
+    <Property Type="DateTime" Name="EndDate" Precision="3" />
+    <Property Type="DateTime" Name="CreatedDate" Precision="3" />
+    <Property Type="Int32" Name="ContentBlurbId" />
+    <Property Type="String" Name="Link" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Banner" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Byte" Name="AddType" Nullable="false" />
+  </EntityType>
+  <ComplexType Name="SystemNotification_LoadAll_p_Result">
+    <Property Type="Int32" Name="NotificationId" Nullable="false" />
+    <Property Type="Int32" Name="TitleBlurbId" Nullable="true" />
+    <Property Type="Byte" Name="ShowType" Nullable="true" />
+    <Property Type="DateTime" Name="BeginDate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="EndDate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="ContentBlurbId" Nullable="true" />
+    <Property Type="String" Name="Link" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Banner" Nullable="false" MaxLength="50" />
+    <Property Type="Byte" Name="AddType" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="Order_LoadByStudent_p_Result">
+    <Property Type="Int32" Name="OrderId" Nullable="false" />
+    <Property Type="Int32" Name="ClassId" Nullable="false" />
+    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+    <Property Type="Byte" Name="OrderStatus" Nullable="false" />
+    <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="MemberName" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="MemberId" Nullable="false" />
+    <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+    <Property Type="Byte" Name="NotifyTag" Nullable="false" />
+    <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
+    <Property Type="String" Name="DeviceToken" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Remark" Nullable="true" MaxLength="300" />
+    <Property Type="Boolean" Name="HasReview" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="Order_LoadByTeacher_p_Result">
+    <Property Type="Int32" Name="OrderId" Nullable="false" />
+    <Property Type="Int32" Name="ClassId" Nullable="false" />
+    <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="23" />
+    <Property Type="Byte" Name="OrderStatus" Nullable="false" />
+    <Property Type="DateTime" Name="BookedDate" Nullable="false" Precision="23" />
+    <Property Type="String" Name="Title" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="MemberName" Nullable="false" MaxLength="50" />
+    <Property Type="Int32" Name="MemberId" Nullable="false" />
+    <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+    <Property Type="Byte" Name="NotifyTag" Nullable="false" />
+    <Property Type="String" Name="Avatar" Nullable="false" MaxLength="150" />
+    <Property Type="String" Name="DeviceToken" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Remark" Nullable="true" MaxLength="300" />
+    <Property Type="Boolean" Name="HasReview" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="LinkMap">
+    <Key>
+      <PropertyRef Name="LinkMapId" />
+    </Key>
+    <Property Type="Int32" Name="LinkMapId" Nullable="false" />
+    <Property Type="Int32" Name="SourceId" Nullable="false" />
+    <Property Type="String" Name="Link" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Type="Byte" Name="LinkType" Nullable="false" />
+    <Property Type="String" Name="SourceLink" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <ComplexType Name="LinkMap_LoadAll_p_Result">
+    <Property Type="Int32" Name="LinkMapId" Nullable="false" />
+    <Property Type="Int32" Name="SourceId" Nullable="false" />
+    <Property Type="String" Name="Link" Nullable="false" MaxLength="100" />
+    <Property Type="Byte" Name="LinkType" Nullable="false" />
+    <Property Type="String" Name="SourceLink" Nullable="false" MaxLength="300" />
+  </ComplexType>
+  <ComplexType Name="PortalBanner_LoadAll_p_Result">
+    <Property Type="String" Name="PortalKey" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="PortalImage" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Link" Nullable="true" MaxLength="300" />
+    <Property Type="Byte" Name="Rank" Nullable="false" />
+    <Property Type="Byte" Name="LinkType" Nullable="false" />
+    <Property Type="Int32" Name="PortalBannerId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="TopBanner_LoadAll_p_Result">
+    <Property Type="String" Name="BannerKey" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="BannerImg" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Link" Nullable="true" MaxLength="300" />
+    <Property Type="Byte" Name="Rank" Nullable="false" />
+    <Property Type="Byte" Name="LinkType" Nullable="false" />
+    <Property Type="Int32" Name="BannerId" Nullable="false" />
   </ComplexType>
 </Schema>

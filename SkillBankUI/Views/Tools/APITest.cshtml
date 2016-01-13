@@ -148,10 +148,16 @@
 
     <div class="func">
         <div class="functitle">7 课程信息</div>
+        <span class="funclabel">id :</span>
+        
+        <input type="text" value="22" id="course-id" class="s" />
+        <br />
+        <br />
+        <div class="funbtn">
+            <input type="button" value="课程修改Step1" id="updatecourse1" />
+        </div>
         <span class="funclabel">city :</span>
         <input type="text" value="上海" id="course-city" class="s" />
-        <span class="funclabel">id :</span>
-        <input type="text" value="22" id="course-id" class="s" />
         <span class="funclabel">Level :</span>
         <input type="text" value="2" id="course-level" class="s" />
         <span class="funclabel">category :</span>
@@ -163,6 +169,10 @@
         <span class="funclabel">名字 :</span>
         <input type="text" value="课程名称" id="course-title" />
         <br />
+        <br />
+        <div class="funbtn">
+            <input type="button" value="课程修改Step2" id="updatecourse2" />
+        </div>
         <br />
         <span class="funclabel">介绍 :</span>
         <input type="text" value="课程介绍" id="course-summary" />
@@ -176,10 +186,11 @@
         <input type="text" value="课程备注" id="course-remark" />
         <span class="funclabel">有空时间 :</span>
         <input type="text" value="有空时间" id="course-available" />
+        <span class="funclabel">标签 :</span>
+        <input type="text" value="测试，标签" id="course-tags" />
+        <span class="funclabel">是否线上 :</span>
+        <input type="text" value="1" id="course-online" />
         <br />
-        <div class="funbtn">
-            <input type="button" value="Update Course" id="updatecourse" />
-        </div>
         <div class="funbtn">
             <input type="button" value="Add Course" id="addcourse" />
         </div>
@@ -191,6 +202,8 @@
 
     <div class="func">
         <div class="functitle">8 用户信息</div>
+        <span class="funclabel">用户名id :</span>
+        <input type="text" value="1" id="memberinfo-id" />
         <span class="funclabel">用户名 :</span>
         <input type="text" value="用户名" id="memberinfo-name" />
         <span class="funclabel">city :</span>
@@ -215,6 +228,7 @@
         </div>
         <div class="funbtn">
             <input type="button" value="Update Password" id="updatepassword" />
+            <input type="button" value="Reset Password" id="resetpassword" />
         </div>
     </div>
 
@@ -272,8 +286,14 @@
             <input type="button" value="Teacher Review" id="teacherreviewbtn" />
         </div>
     </div>
-
-
+    <div class="func">
+        <div class="functitle">11 分享课币</div>
+        <span class="funclabel">用户id :</span>
+        <input type="text" value="1" id="coin-memberid" />
+        <div class="funbtn">
+            <input type="button" value="CoinUpdate" id="coinupdatebtn" />
+        </div>
+    </div>
 
     <div class="func">
         <div class="functitle">11 设备测试: </div>

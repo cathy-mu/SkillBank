@@ -20,7 +20,7 @@ namespace SkillBank.Site.Services
         MemberInfo GetMemberInfo(int memberId);
         MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0);
         MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para = "");
-        int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", String pass = "", string etag = "", Boolean isMale = true);
+        int CreateMember(out int memberId, ref Byte verifyTag, ref String accessToken, ref String rcToken, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "");
         Byte UpdateMemberInfo(int memberId, Byte saveType, String saveValue, String saveValue2 = "");
         Byte UpdateMemberProfile(MemberInfo memberInfo, Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateProfile);
         void SaveEmailAccount(String name, String email);
@@ -57,7 +57,7 @@ namespace SkillBank.Site.Services
         List<ClassListItem> GetRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum);
         List<ClassListItem> GetRecommendationClassPopList(int memberId);
         //cached class list
-        List<ClassListItem> GetCachedRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum);
+        List<ClassListItem> GetCachedRecommendationClassList(Byte typeId, int minId, int maxId, int memberId, out int totalNum);
         List<ClassListItem> GetClassList(Byte loadType, int pageId, int pageSize, out int classNum);
         ClassEditItem GetClassItem(int id);
 
@@ -84,7 +84,7 @@ namespace SkillBank.Site.Services
         //Byte UpdateOrderStatus(int orderId, Byte orderStatus);
         Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0);
         Byte UpdateOrderStatusWithCoins(int orderId, Byte orderStatus, int studentId, int teacherId = 0);
-        Boolean AddOrder(int studentId, int classId, DateTime bookDate, String remark, String studentName = "", String studentPhone = "", String studentEmail = "");
+        Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark, String studentName = "", String studentPhone = "", String studentEmail = "");
         Byte UpdateOrderDate(int orderId, DateTime bookDate);
         Byte AcceptOrder(int orderId, int studentId, int teacherId, String name = "", String phone = "", String email = "");
         List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck);
@@ -156,7 +156,11 @@ namespace SkillBank.Site.Services
 
         public List<NotificationAlertItem> GetPopNotification(int memberId, Byte loadType)
         {
-            return _notificationMgr.GetPopNotification(memberId, loadType);
+            if (memberId > 0)
+            {
+                return _notificationMgr.GetPopNotification(memberId, loadType);
+            }
+            return null;
         }
 
         public void UpdateNotification(Byte saveType, int memberId, int paraId = 0)
@@ -242,16 +246,10 @@ namespace SkillBank.Site.Services
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="memberId"></param>
-        /// <param name="socialOpenId"></param>
-        /// <param name="socialType"></param>
-        /// <param name="memberName"></param>
-        /// <param name="email"></param>
-        /// <param name="cityId"></param>
-        /// <returns></returns>
-        public int CreateMember(out int memberId, String account, Byte socialType, String memberName, String email, String avatar, string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true)
+        public int CreateMember(out int memberId, ref Byte verifyTag, ref String accessToken, ref String rcToken, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "")
         {
-            return this._memberMgr.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, pass, etag, gender);
+            int result = _memberMgr.CreateMember(out memberId, ref verifyTag, ref accessToken, ref rcToken, socialOpenId, socialType, memberName, email, avatar, mobile, code, pass, etag, gender, device, unionId);
+            return result;
         }
 
         /// <summary>
@@ -591,10 +589,10 @@ namespace SkillBank.Site.Services
         //    return null;
         //}
 
-        public List<ClassListItem> GetCachedRecommendationClassList(Byte typeId, int pageSize, int pageId, int memberId, out int totalNum)
+        public List<ClassListItem> GetCachedRecommendationClassList(Byte typeId, int minId, int maxId, int memberId, out int totalNum)
         {
             totalNum = 0;
-            var result = _cacheMgr.GetRecommendClassList(typeId, pageSize, pageId);
+            var result = _cacheMgr.GetRecommendClassList(typeId, minId, maxId);
             return result;
         }
 
@@ -737,9 +735,10 @@ namespace SkillBank.Site.Services
         /// </summary>
         /// <param name="teacherId"></param>
         /// <returns></returns>
-        public Boolean AddOrder(int studentId, int classId, DateTime bookDate, String remark, String name = "", String phone = "", String email = "")
+        public Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark, String name = "", String phone = "", String email = "")
         {
             var result = _orderMgr.AddOrder(studentId, classId, bookDate, remark);
+            //update student contact info
             if (!String.IsNullOrEmpty(name) || !String.IsNullOrEmpty(phone))
             {
                 MemberInfo studentInfo = new MemberInfo();
@@ -757,7 +756,7 @@ namespace SkillBank.Site.Services
                     _memberMgr.UpdateMemberInfo((Byte)Enums.DBAccess.MemberSaveType.UpdateName, studentInfo);
                 }
             }
-            return (result == 0);
+            return result;
         }
 
         public Byte AcceptOrder(int orderId, int studentId, int teacherId, String name = "", String phone = "", String email = "")

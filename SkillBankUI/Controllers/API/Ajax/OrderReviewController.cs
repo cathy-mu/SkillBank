@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using System.Web.Http;
 
 using SkillBank.Site.DataSource.Data;
@@ -21,6 +20,7 @@ namespace SkillBankWeb.API
 
         public class ReviewItem
         {
+            public int MemberId { get; set; }
             public int OrderId { get; set; }
             public Byte Feedback { get; set; }
             public String Comment { get; set; }
@@ -33,14 +33,20 @@ namespace SkillBankWeb.API
 
         }
 
+        public string Options()
+        {
+            return null; // HTTP 200 response with empty body 
+        }
+
         /// <summary>
         /// Add student and teacher review
         /// </summary>
         /// <param name="item">student review should has classid</param>
         /// <returns>true : add successful</returns>
+        [HttpPost]
         public Boolean Post(ReviewItem item)
         {
-            int memberId = APIHelper.GetMemberId(true);
+            int memberId = (item.MemberId > 0) ? item.MemberId : APIHelper.GetMemberId(true);
             Boolean result = false;
             if (memberId > 0)
             {

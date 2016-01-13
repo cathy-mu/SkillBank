@@ -40,6 +40,11 @@ namespace SkillBank.Site.DataSource.Data
         public byte NotifyTag { get; set; }
         public int Credit { get; set; }
         public string Pass { get; set; }
+        public string DeviceToken { get; set; }
+        public string AccessToken { get; set; }
+        public string UnionId { get; set; }
+        public string OpenId1 { get; set; }
+        public string RCToken { get; set; }
         public bool IsLike { get; set; }
         public string ExtraInfo { get; set; }
     }

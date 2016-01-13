@@ -376,6 +376,7 @@ var checkPage = function () {
                     return;
                 }
                 triggerTackingEvent("click signup");
+                
                 var data = {
                     Mobile: $form.phone.value,
                     Code: $form.code.value,
@@ -385,12 +386,26 @@ var checkPage = function () {
                     Gender: ($form.registebtn.dataset.gender === "1")
                 };
 
+                //var data = {
+                //    Mobile: "13700000000",
+                //    Code: "999999",
+                //    Pass: "",
+                //    Avatar: "myAvatar",
+                //    Name: "Name",
+                //    Gender: ($form.registebtn.dataset.gender === "1")
+                //};
+                
                 post(ENV.host + '/api/registe', data, function (fb) {
+                    if (fb.Result != undefined) {
+                        fb = fb.Result;
+                    }
                     if (fb == 2) {
                         alert("验证失败，请检查验证码或重新发送");
-                    } else if (fb > 2) {
+                    } else if (fb == 3) {
                         alert("手机号码被占用");
-                    } else if (fb == 1) {
+                    } else if (fb == 4) {
+                        alert("数据格式错误");
+                    } else if (fb == 1 || fb == 0) {
                         triggerTackingEvent("submit signup");
                         redirectAfterLogin();
                     }
@@ -403,7 +418,7 @@ var checkPage = function () {
                     Mobile: $form.phone.value,
                     Code: $form.code.value
                 };
-                post(ENV.host + '/api/verification', data, function (fb) {
+                post(ENV.host + '/api/Validation', data, function (fb) {
                     if (fb == 0) {
                         alert("验证失败，请检查验证码或重新发送");
                     } else if (fb == 2) {
@@ -440,13 +455,12 @@ var checkPage = function () {
             console.log(data);
 
             seconds = 60;
-            post(ENV.host + '/api/verification', data, function (fb) {
+            post(ENV.host + '/api/Validation', data, function (fb) {
                 if (fb == 1) {
                     if (isRegister) {
                         triggerTackingEvent("send verify");
                     }
-                    else {
-                    }
+
                     // timer
                     var t = setInterval(function () {
                         if (seconds == undefined || seconds <= 0) {
@@ -1046,14 +1060,14 @@ function reservationForm() {
             };
 
             post(ENV.host + '/api/Order', data, function (fb) {
-                if (!fb) {
-                    myAlert("订课请求发送失败", 2);
-                    return;
-                }
-                else {
+                if (fb === 1) {
                     myAlert("订课请求已发送", 2);
                     $form[0].date.value = "";
                     triggerTackingEvent("book class");
+                }
+                else {
+                    myAlert("订课请求发送失败", 2);
+                    return;
                 }
             });
 
@@ -1085,7 +1099,7 @@ function commentForm() {
             goToLogin();
             return false;
         }
-
+        
         if (validHasValue($input)) {
             var data = {
                 //MemberId: 0,
@@ -1664,9 +1678,10 @@ function logOut() {
 }
 
 function getShareClassCoins() {
-    if ($('.getcoin-wechat')[0].style.display != "none") {
-        post(ENV.host + '/api/coins', function (fb) {
-            if (fb == 0) {
+    if ($('.getcoin-wechat').length > 0 && $('.getcoin-wechat')[0].style.display != "none") {
+        var data = { MemberId: 0, UpdateType: 0 };
+        put(ENV.host + '/api/coins', data, function (fb) {
+            if (fb) {
                 $('.current-coins')[0].textContent = parseInt($('.current-coins')[0].textContent) + 2;
             }
             $("#howToShare")[0].classList.remove('active');
@@ -1731,13 +1746,13 @@ function changeBookDate() {
             };
 
            put(ENV.host + '/api/Order/' + orderId, data, function (fb) {
-               if (fb < 2) {
-                   alert("修改成功");
+               if (fb === 1) {
+                   myAlert("修改成功");
                    var $card = $('.teaching.active')[0];
                    var $dateEl = $card.querySelector(".course-info span");
                    $dateEl.innerText = $input.value.replace("-0", ".").replace("-", ".");
                }
-               else { alert("修改失败"); }
+               else { myAlert("修改失败"); }
                $('#changeDate')[0].classList.remove('active');
                return;
             });
@@ -1819,11 +1834,11 @@ function confirmManage() {
                     toAcceptedState($card, false);
                 } else if (fb === 3) {
                     alert("订单状态已经改变，请刷新");
-                } else if (fb === -1) {
-                    alert("操作失败");
-                } else {
+                } else if (fb === 1) {
                     triggerTackingEvent("accept booking");
-                    toAcceptedState($card, true);
+                    toAcceptedState($card, true); 
+                } else {
+                    myAlert("操作失败");
                 }
                 return;
             });
@@ -1848,12 +1863,9 @@ function confirmManage() {
         //console.log(data);
         put(ENV.host + '/api/order/' + orderId, data, function (fb) {
             if (fb === 3) {
-                alert("订单状态已经改变，请刷新");
+                myAlert("订单状态已经改变，请刷新");
                 return;
-            } else if (fb === 0) {
-                alert("操作失败");
-                return;
-            } else {
+            } else if (fb === 1) {
                 if (status === 2) {//T
                     toDidabledState(el, "未被接受");
                     triggerTackingEvent("reject booking");
@@ -1866,6 +1878,9 @@ function confirmManage() {
                 } else if (status === 8) {//T
                     toDidabledState(el, "退币失败");
                 }
+            } else {
+                myAlert("操作失败");
+                return;
             }
         });
 
@@ -1873,7 +1888,7 @@ function confirmManage() {
 
     function updateClassInfo(data) {
         put(ENV.host + '/api/course/' + data.ClassId, data, function (fb) {
-            //console.log(fb);
+            console.log(fb);
             if (fb > 0) {
                 if (data.City != null) {
                     $('#preview-city')[0].innerText = data.City;
@@ -1919,15 +1934,15 @@ function confirmManage() {
 
                         put(ENV.host + '/api/order/' + datas.orderid, data, function (fb) {
                             if (fb === 3) {
-                                alert("订单状态已经改变，请刷新");
+                                myAlert("订单状态已经改变，请刷新");
                                 return;
-                            } else if (fb === -1) {
-                                alert("操作失败");
-                                return;
-                            } else {
+                            } else if (fb === 1) {
                                 $('#paycoin')[0].classList.remove('active');
                                 toDidabledState($card, "授课结束");
                                 $form.message.value = "";
+                                return;
+                            } else {
+                                myAlert("操作失败");
                                 return;
                             }
                             $subbtn.classList.remove("disable");

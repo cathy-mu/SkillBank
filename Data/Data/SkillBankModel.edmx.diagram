@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="558dccd9c8584feaa96303496b2fa669" Name="Diagram1" ZoomLevel="100">
+      <Diagram DiagramId="558dccd9c8584feaa96303496b2fa669" Name="Diagram1" ZoomLevel="83">
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CategoryPopTag" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CityInfo" Width="1.5" PointX="0.625" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CoinsHistory" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
@@ -22,8 +22,12 @@
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassEditInfo" Width="1.5" PointX="6.75" PointY="5.5" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Comment" Width="1.5" PointX="10.75" PointY="6.125" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.MemberInfo" Width="1.5" PointX="2.75" PointY="3.375" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ConfigureInfo" Width="1.5" PointX="4.9260157239278852" PointY="11.59015310350347" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassCategory" Width="1.5" PointX="11.47298615028755" PointY="4.2587871571345195" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ConfigureInfo" Width="1.5" PointX="10.75" PointY="8.375" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassCategory" Width="1.5" PointX="8.75" PointY="8.5" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.PortalBanner" Width="1.5" PointX="0.625" PointY="9.25" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.TopBanner" Width="1.5" PointX="9.1697486588590529" PointY="23.092095057988583" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.SystemNotification" Width="1.5" PointX="4.0878916178307918" PointY="22.360574196260689" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.LinkMap" Width="1.5" PointX="8.17471578911632" PointY="8.4952866176587" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

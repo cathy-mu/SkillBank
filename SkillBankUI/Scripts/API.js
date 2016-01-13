@@ -46,19 +46,27 @@ function apitest_Class() {
         });
 
         $("#updatepassword").click(function () {
-            apitest.updatePassword();
+            apitest.updatePassword(false);
+        });
+
+        $("#resetpassword").click(function () {
+            apitest.updatePassword(true);
         });
 
         $("#addcourse").click(function () {
             apitest.addCourseInfo();
         });
 
-        $("#updatecourse").click(function () {
-            apitest.updateCourseInfo(false);
+        $("#updatecourse1").click(function () {
+            apitest.updateCourseInfo(1);
+        });
+
+        $("#updatecourse2").click(function () {
+            apitest.updateCourseInfo(2);
         });
 
         $("#pubcourse").click(function () {
-            apitest.updateCourseInfo(true);
+            apitest.updateCourseInfo(3);
         });
 
         $("#addorder").click(function () {
@@ -79,6 +87,10 @@ function apitest_Class() {
 
         $("#teacherreviewbtn").click(function () {
             apitest.addReview(false);
+        });
+
+        $("#coinupdatebtn").click(function () {
+            apitest.getShareClassCoins();
         });
 
     };
@@ -139,16 +151,21 @@ function apitest_Class() {
     }
 
     this.updateProfile = function () {
+        var id = $("#memberinfo-id").val();
         var name = $("#memberinfo-name").val();
         var gender = $("#memberinfo-gender").val();
         var avatar = $("#memberinfo-avatar").val();
         var city = $("#memberinfo-city").val();
         var intro = $("#memberinfo-intro").val();
-        var id = 1;
-        var paraData = { "Id": id, "Name": name, "Gender": gender, "Intro": intro, "CityName": city, "Avatar": avatar };
-        console.log(paraData);
+        //var paraData = { "Id": id, "Name": name, "Gender": gender, "Intro": intro, "CityName": city, "Avatar": avatar };
+        var paraData = { "Name": "cathy1", "Gender": 1, "CityName": "上海市" };
+        //var paraData = { "Mobile": "13564813923", "Code": "999999", "Password": "abcd1234" };
+        //var paraData = { "Intro": "Here is my test introduction for API" };
 
-        var savePath = "/API/profile/"+id;
+        var paraData = { "PosX": 116.225426, "PosY": 40.148060 };
+        var savePath = "/API/profile/" + id;
+        console.log("path : "+savePath);
+        console.log("para : " + paraData);
         $.ajax({
             url: savePath,
             type: "PUT",
@@ -156,16 +173,16 @@ function apitest_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                alert(data);
+                console.log("result : " + data);
             }
         });
     }
-
-    this.updatePassword = function () {
+    
+    this.updatePassword = function (isReset) {
         var pass = $("#memberinfo-pass").val();
         var code = $("#memberinfo-code").val();
         var mobile = $("#memberinfo-mobile").val();
-        var id = 1;
+        var id = isReset?0:$("#memberinfo-id").val();
 
         var paraData = { "Id": id, "Password": pass, "Mobile": mobile, "Code": code };
         console.log(paraData);
@@ -184,7 +201,7 @@ function apitest_Class() {
     }
 
 
-    this.updateCourseInfo = function (isPublish) {
+    this.updateCourseInfo = function (step) {
         var courseId = $("#course-id").val();
         var cityName = $("#course-city").val();
         var title = $("#course-title").val();
@@ -198,11 +215,31 @@ function apitest_Class() {
         var skill = $("#course-skill").val();
         var teach = $("#course-teach").val();
         var remark = $("#course-remark").val();
-        
-        var paraData = { "CityName": cityName, "Title": title, "Summary": summary, "level": level, "skill": skill, "teach": teach, "category": category, "WhyU": whyu, "location": location, "period": period, "available": available, "remark": remark };
-        console.log(paraData);
+        var tags = $("#course-tags").val();
+        var online = $("#course-online").val();
 
+        if (step == 1) {
+            var paraData = {
+                "CityName": cityName,
+                "Title": title, //"Summary": summary,
+                "category": category, "level": level, "skill": skill, "teach": teach
+                //,"category": category,
+                //"WhyU": whyu, "location": location, "period": period, "available": available, "remark": remark,
+                //"Tags":tags, "HasOnline":(online=="1")
+            };
+        } else if (step == 2) {
+            var paraData = {
+                "Summary": summary,
+                "WhyU": whyu,
+                "location": location, "period": period, "available": available, "remark": remark,
+                "Tags": tags,
+                "HasOnline": online == "1"
+            };
+        } else {
+        }
+        console.log(paraData);
         var savePath = "/API/Course/" + courseId;
+
         $.ajax({
             url: savePath,
             type: "PUT",
@@ -210,13 +247,12 @@ function apitest_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                alert(data);
+                console.log(data);
             }
         });
     }
 
     this.addCourseInfo = function () {
-        
         var cityName = $("#course-city").val();
         var title = $("#course-title").val();
         var summary = $("#course-summary").val();
@@ -229,11 +265,20 @@ function apitest_Class() {
         var skill = $("#course-skill").val();
         var teach = $("#course-teach").val();
         var remark = $("#course-remark").val();
+        var tags = $("#course-tags").val();
+        var online = $("#course-online").val();
+        var category = $("#course-category").val();
 
-        var paraData = { "CityName": cityName, "Title": title, "Summary": summary, "level": level, "skill": skill, "teach": teach, "category": category, "WhyU": whyu, "location": location, "period": period, "available": available, "remark": remark };
+        
+        var paraData = {
+            "CityName": cityName,
+            "Title": title, //"Summary": summary,
+            "category": category, "level": level, "skill": skill, "teach": teach
+        };
+   
         console.log(paraData);
 
-        var savePath = "/API/Course/";
+        var savePath = "/API/Class/";
         $.ajax({
             url: savePath,
             type: "POST",
@@ -241,7 +286,7 @@ function apitest_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                alert(data);
+                console.log(data);
             }
         });
     }
@@ -407,15 +452,36 @@ function apitest_Class() {
             }
         });
     }
-        
+
+    this.getShareClassCoins = function () {
+        var memberid = $("#coin-memberid").val();
+        var paraData = { MemberId: memberid, UpdateType: 0 };
+        console.log(paraData);
+
+        $.ajax({
+            url: 'http://www.skill-bank.com/api/coins',
+            type: "PUT",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    alert("success");
+                }
+            }
+        });
+
+    }
+            
     this.verfyMobileCode = function () {
         var mobile = $("#valid-mobile").val();
         var code = $("#valid-code").val();
         var memberid = $("#valid-memberid").val();
 
-        var paraData = { "mobile": mobile, "code": code, "memberid": memberid };
-        var savePath = "/api/verification";
-        
+        //var paraData = { "mobile": mobile, "code": code, "memberid": memberid };
+        var paraData = { "Type": 3, "mobile": "13917782601", "code": "999999", "memberid": 62 };
+        var savePath = "/api/Validation";
+        console.log(paraData);
         $.ajax({
             url: savePath,
             type: "POST",
@@ -423,7 +489,7 @@ function apitest_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                alert(data);
+                console.log(data);
             }
         });
     }
@@ -432,8 +498,9 @@ function apitest_Class() {
         var mobile = $("#valid-mobile").val();
         var memberid = $("#valid-memberid").val();
 
-        var paraData = { "type": type, "mobile": mobile, "code": "", "memberid": memberid };
-        var savePath = "/api/verification";
+        //var paraData = { "type": type, "mobile": mobile, "code": "", "memberid": memberid };
+        var paraData = { "Type": 6, "mobile": "13127853967" };
+        var savePath = "/api/Validation";
         console.log(paraData);
 
         $.ajax({
@@ -450,31 +517,17 @@ function apitest_Class() {
 
 
     this.createMember = function () {
-        //var name = $("#member-name").val();
-        //var code = $("#member-code").val();
-        //var mobile = $("#member-mobile").val();
-        //var account = $("#member-account").val();
-        //var avatar = $("#member-avatar").val();
-        //var type = 1;
-        ////var paraData = { "Mobile": mobile, "Name": name, "Type": type, "Account": account, "Avatar": avatar, "Code": code }; 
-        //var paraData = { "Mobile": mobile, "Name": name, "Type": 2, "Avatar": avatar, "Code": code , "Pass": "123sdg$%"};
-        //var savePath = "/API/Registe";
-        //console.log(paraData);
-        //$.ajax({
-        //    url: savePath,
-        //    type: "POST",
-        //    dataType: "Json",
-        //    data: paraData,
-        //    cache: false,
-        //    success: function (data) {
-        //        alert(data);
-        //    }
-        //});
-        
-     
-        //var paraData = { "Mobile": mobile, "Name": name, "Type": type, "Account": account, "Avatar": avatar, "Code": code }; 
-        var paraData = { account: "1885646861", socialType: "1", memberName: "cathytest", email: "cathy.test@hotmail.com", avatar: "http://tp2.sinaimg.cn/1885646861/180/1298686485/0"};
-        var savePath = "/MemberHelper/CreateMember";
+        var name = $("#member-name").val();
+        var code = $("#member-code").val();
+        var mobile = $("#member-mobile").val();
+        var account = $("#member-account").val();
+        var avatar = $("#member-avatar").val();
+        var type = 1;
+        //var paraData = { "Mobile": mobile, "Name": name, "Type": 2, "Avatar": avatar, "Code": code, "Pass": "123456", "DeviceToken": "abcdeabcdeabcde", "UnionId": "123451234512345" };
+        //var paraData = { "Account": "13500000000", "Name": name, "Type": 2, "Avatar": avatar, "Code": code };
+        var paraData = { "Account": "0000000001", "Name": "TestName", "Type": 2, "Avatar": "my avatar", "Type": 5 };
+        var savePath = "/API/Registe";
+        //var paraData = { "Mobile": "13700000000", "Name": "TestName", "Type": 2, "Avatar": "my avatar", "Code": "999999", "Pass": "mypass" };
         console.log(paraData);
         $.ajax({
             url: savePath,
@@ -483,9 +536,29 @@ function apitest_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                alert(data);
+                console.log(data);
+                if (data.Result != undefined) {
+                    data = data.Result;
+                }
+                console.log(data);
             }
         });
+        
+     
+        ////var paraData = { "Mobile": mobile, "Name": name, "Type": type, "Account": account, "Avatar": avatar, "Code": code }; 
+        //var paraData = { account: "1885646861", socialType: "1", memberName: "cathytest", email: "cathy.test@hotmail.com", avatar: "http://tp2.sinaimg.cn/1885646861/180/1298686485/0"};
+        //var savePath = "/MemberHelper/CreateMember";
+        //console.log(paraData);
+        //$.ajax({
+        //    url: savePath,
+        //    type: "POST",
+        //    dataType: "Json",
+        //    data: paraData,
+        //    cache: false,
+        //    success: function (data) {
+        //        console.log(data);
+        //    }
+        //});
     }
 
     this.getClassList = function () {

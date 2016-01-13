@@ -11,6 +11,7 @@ using Castle.Windsor;
 using Castle.Windsor.Installer;
 using SkillBank.Windsor;
 using System.Web.Http.Dispatcher;
+using Newtonsoft.Json.Converters;
 
 namespace SkillBankWeb
 {
@@ -33,8 +34,9 @@ namespace SkillBankWeb
 
             RegisterCastleComponents();
 
-            GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear(); 
-
+            GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter { DateTimeFormat = "yyyy'-'MM'-'dd' 'HH':'mm':'ss" });
+            
         }
         
         private void RegisterCastleComponents()

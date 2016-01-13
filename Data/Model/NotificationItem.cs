@@ -10,7 +10,6 @@ namespace SkillBank.Site.DataSource.Data
         public int NotificationId { get; set; }
         public byte TypeId { get; set; }
         public byte TypeRank { get; set; }
-        //public int Member_Id { get; set; }
         public int RelatedMemberId { get; set; }
         public int ClassOrderId { get; set; }
         public string Name { get; set; }

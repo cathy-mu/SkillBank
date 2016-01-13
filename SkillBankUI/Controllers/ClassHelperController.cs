@@ -146,18 +146,23 @@ namespace SkillBankWeb.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UpdateClassStatus(int classId, Byte infoValue, Boolean forActive = false, Boolean isProved = true, String className = "", String name = "", String email = "", String mobile = "")
+        public JsonResult UpdateClassStatus(int classId, Byte infoValue, Byte saveType, Boolean isProved = true, String className = "", String name = "", String email = "", String mobile = "")
         {
             Boolean result;
-            Byte updateType = forActive ? (Byte)Enums.DBAccess.ClassSaveType.SetActiveTag : (Byte)Enums.DBAccess.ClassSaveType.UpdateProvedTag;
-            if (forActive)
+            //Active/Disactive course 
+            if (saveType.Equals((Byte)Enums.DBAccess.ClassSaveType.SetActiveTag))
             {
-                result = _commonService.UpdateClassEditInfo(updateType, classId, infoValue);
+                result = _commonService.UpdateClassEditInfo(saveType, classId, infoValue);
+            }
+            //Set new category
+            else if (saveType.Equals((Byte)Enums.DBAccess.ClassSaveType.UpdateCateId))
+            {
+                result = _commonService.UpdateClassEditInfo(saveType, classId, infoValue);
             }
             //prove course
             else
             {
-                result = _commonService.UpdateClassEditInfo(updateType, classId, infoValue, isProved);
+                result = _commonService.UpdateClassEditInfo(saveType, classId, infoValue, isProved);
                 Boolean sendNotify = System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName);
 
                 if (sendNotify)

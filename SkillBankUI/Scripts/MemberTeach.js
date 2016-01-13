@@ -116,7 +116,7 @@ function memberteach_Class() {
             cache: false,
             success: function (data) {
                 consoleLog(data);
-                if (data == 0) {
+                if (data == 1) {
                     window.location.href = "/member/teach";
                 }
             }

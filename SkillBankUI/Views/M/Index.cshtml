@@ -13,25 +13,26 @@
 
 <div class="content" id="course-search">
     <div class="search-bar">
-           <img src="/images/logo.png" alt="" class="logo">
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <span class="icon icon-search"></span>
-                    </div>
-                    <input name="key" id="key" type="text" placeholder="搜索技能" class="icon icon-search" maxlength="50">
+        <img src="/images/logo.png" alt="" class="logo">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <span class="icon icon-search"></span>
                 </div>
+                <input name="key" id="key" type="text" placeholder="搜索技能" class="icon icon-search" maxlength="50">
             </div>
+        </div>
     </div>
     <div id="search-cat">
         <div class="search-cat-wrap toBeRemoved">
-            <div class="inner"><!---->
+            <div class="inner">
+                <!---->
                 @if (!String.IsNullOrEmpty(ViewBag.SearchKey))
                 {
-                <a data-ignore="push" class="active" href="?key=@ViewBag.SearchKey" data-by="3" data-type="1" data-key="@ViewBag.SearchKey">搜索"@(ViewBag.SearchKey.Length>4?ViewBag.SearchKey.Substring(0,4)+"...":ViewBag.SearchKey)" </a>
+                    <a data-ignore="push" class="active" href="?key=@ViewBag.SearchKey" data-by="3" data-type="1" data-key="@ViewBag.SearchKey">搜索"@(ViewBag.SearchKey.Length > 4 ? ViewBag.SearchKey.Substring(0, 4) + "..." : ViewBag.SearchKey)" </a>
                 }
                 <a data-ignore="push" href="#by=0&type=1" data-by="0" data-type="1">附近技能 </a>
-                <a data-ignore="push" @(String.IsNullOrEmpty(ViewBag.SearchKey)?"class=active":"") href="#by=1&type=2" data-by="1" data-type="2">新荐技能 </a>
+                <a data-ignore="push" @(String.IsNullOrEmpty(ViewBag.SearchKey) ? "class=active" : "") href="#by=1&type=2" data-by="1" data-type="2">新荐技能 </a>
                 <a data-ignore="push" href="#by=1&type=1" data-by="1" data-type="1">达人技能 </a>
                 <a data-ignore="push" href="#by=1&type=3" data-by="1" data-type="3">小众奇葩 </a>
                 @if (Model.CategoryLkp != null)
@@ -74,7 +75,7 @@
                         <img src="@ContentHelper.GetAvatarPath(classItem.Avatar, "mb")" alt="" class="avatar">
                     </a>
                     <h4>@classItem.Name</h4>
-                    <p>@(classItem.CityId.HasValue ? TagHelper.GetCityName(classItem.CityId.Value) : "")</p>
+                    <p>@(classItem.CityId.Equals(0) ? "" : TagHelper.GetCityName(classItem.CityId))</p>
                 </div>
             </div>
             }
@@ -115,4 +116,3 @@
     <script src="/bower_components/page/page.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=RZG8k5YBPYBRvU64kWTVLDsK"></script>
 }
-    

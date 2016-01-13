@@ -16,7 +16,7 @@ namespace SkillBank.Site.DataSource.Data
         public int OrderId { get; set; }
         public int ClassId { get; set; }
         public System.DateTime LastUpdateDate { get; set; }
-        public Nullable<byte> OrderStatus { get; set; }
+        public byte OrderStatus { get; set; }
         public System.DateTime BookedDate { get; set; }
         public string Title { get; set; }
         public string MemberName { get; set; }
@@ -27,5 +27,6 @@ namespace SkillBank.Site.DataSource.Data
         public Boolean HasReview { get; set; }
         public string Remark { get; set; }
         public byte NotifyTag { get; set; }
+        public string DeviceToken { get; set; }
     }
 }

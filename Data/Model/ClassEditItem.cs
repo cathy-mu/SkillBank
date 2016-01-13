@@ -22,7 +22,7 @@
         public string Available { get; set; }
         public string Remark { get; set; }
         public string Tags { get; set; }
-        public bool HasOffline { get; set; }
+        public bool HasOnline { get; set; }
     
         public Boolean IsLike { get; set; }
         public int LikeNum { get; set; }

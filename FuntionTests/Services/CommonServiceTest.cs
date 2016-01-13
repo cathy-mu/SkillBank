@@ -12,6 +12,8 @@ using SkillBank.Site.Services;
 using SkillBank.Site.Services.Managers;
 using SkillBank.Site.Services.CacheProviders;
 
+using SkillBank.Site.Services.Utility;
+
 namespace SkillBank.FunctionTests
 {
     [TestClass]
@@ -235,18 +237,18 @@ namespace SkillBank.FunctionTests
             Assert.AreEqual((gender == "1"), exceptMemberInfo.Gender);
         }
                 
-        [TestMethod]
-        public void Should_CreateMember()
-        {
-            Random rd = new Random();
-            String account = rd.Next(0, 10).ToString() + "social@test.com";
-            Byte socialType = 3;//(Byte)rd.Next(1, 3);
-            int memberId = 0;
-            var result = _svr.CreateMember(out memberId, account, socialType, "name", "social@test.com","");
+        //[TestMethod]
+        //public void Should_CreateMember()
+        //{
+        //    Random rd = new Random();
+        //    String account = rd.Next(0, 10).ToString() + "social@test.com";
+        //    Byte socialType = 3;//(Byte)rd.Next(1, 3);
+        //    int memberId = 0;
+        //    var result = _svr.CreateMember(out memberId, account, socialType, "name", "social@test.com","");
 
-            var exceptMemberInfo = _svr.GetMemberInfo(memberId);
-            memberId.AssertIsGreaterThan(0);
-        }
+        //    var exceptMemberInfo = _svr.GetMemberInfo(memberId);
+        //    memberId.AssertIsGreaterThan(0);
+        //}
 
         [TestMethod]
         public void Should_GetMemberInfo_BySocialAccout()
@@ -349,6 +351,16 @@ namespace SkillBank.FunctionTests
         }
         
         #endregion 
+
+        //[TestMethod]
+        //public void Should_GetCategoryByCityId1()
+        //{
+        //    String rcToken = RongCloudHelper.GetToken(1, "", "");
+
+        //    Byte type = (Byte)Enums.DBAccess.MemberSaveType.UpdateRCToken;
+        //    MemberInfo memberInfo = new MemberInfo() { MemberId = 1, Avatar = rcToken };
+        //    var updateResult = _svr.UpdateMemberProfile(memberInfo, type);
+        //}
 
         [TestCleanup]
         public void TestCleanup()

@@ -32,9 +32,11 @@ namespace SkillBankWeb.Controllers
         public JsonResult CreateMember(String account, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", Boolean gender = true)
         {
             int memberId;
-            
+            String accessToken="";
+            String rcToken = "";
+            Byte verifyTag = 0;
             String etag = (WebContext.Current.Etag == null)? "" : WebContext.Current.Etag;
-            var result = _commonService.CreateMember(out memberId, account, socialType, memberName, email, avatar, mobile, code, "", etag, gender);
+            var result = _commonService.CreateMember(out memberId,ref verifyTag, ref accessToken, ref rcToken, account, socialType, memberName, email, avatar, mobile, code, "", etag, gender,"","");
             if (memberId > 0)
             {
                 WebContext.Current.MemberId = memberId;

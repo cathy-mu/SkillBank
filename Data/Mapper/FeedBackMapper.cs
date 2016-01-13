@@ -35,7 +35,7 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objReview != null)
             {
-                var reviews = objReview.Select(item => new MemberReviewItem() { Avatar = item.Avatar, Comment = item.Comment, FeedBack = item.FeedBack, CreatedDate = item.CreatedDate.ToString("MM.dd.yyyy"), ReviewId = item.ReviewId, MemberId = item.MemberId, Name = item.Name, Title = item.Title, ClassId = item.ClassId, TabId = item.TabId.Value }).ToList();
+                var reviews = objReview.Select(item => new MemberReviewItem() { Avatar = item.Avatar, Comment = item.Comment, FeedBack = item.FeedBack, CreatedDate = item.CreatedDate, ReviewId = item.ReviewId, MemberId = item.MemberId, Name = item.Name, Title = item.Title, ClassId = item.ClassId, TabId = item.TabId.Value }).ToList();
                 return (reviews.Count > 0) ? reviews : null;
             }
             return null;
@@ -45,7 +45,7 @@ namespace SkillBank.Site.DataSource.Mapper
         {
             if (objReview != null)
             {
-                var reviews = objReview.Select(item => new MemberReviewItem() { Avatar = item.Avatar, Comment = item.Comment, FeedBack = item.FeedBack, CreatedDate = item.CreatedDate.ToString("MM.dd.yyyy"), ReviewId = item.ReviewId, MemberId = item.MemberId, Name = item.Name, Title = item.Title, ClassId = item.ClassId, TabId = item.TabId.Value }).ToList();
+                var reviews = objReview.Select(item => new MemberReviewItem() { Avatar = item.Avatar, Comment = item.Comment, FeedBack = item.FeedBack, CreatedDate = item.CreatedDate, ReviewId = item.ReviewId, MemberId = item.MemberId, Name = item.Name, Title = item.Title, ClassId = item.ClassId, TabId = item.TabId.Value }).ToList();
                 return (reviews.Count > 0) ? reviews : null;
             }
             return null;

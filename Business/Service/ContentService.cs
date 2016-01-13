@@ -25,6 +25,10 @@ namespace SkillBank.Site.Services
         Dictionary<int, CityInfo> GetCities(String localeCode);
         Dictionary<int, CityInfo> GetClassCities(String localeCode);
         String GetCityNameById(String localeCode, int cityId);
+        Dictionary<int, SystemNotification> GetSystemNotificationLkp();
+        List<TopBanner> GetTopBannerLkp();
+        List<PortalBanner> GetPortalBannerLkp();
+        List<LinkMap> GetLinkMapLkp(int sourceId);
     }
 
     public class ContentService : IContentService
@@ -35,10 +39,15 @@ namespace SkillBank.Site.Services
         private readonly ICategoryProvider _categoryProvider;
         private readonly IMetaTagProvider _metaTagProvider;
         private readonly ICategoryLkpProvider _categoryLkpProvider;
+        private readonly ISystemNotificationProvider _notificationProvider;
+        private readonly ITopBannerProvider _topBannerProvider;
+        private readonly IPortalBannerProvider _portalBannerProvider;
+        private readonly ILinkMapProvider _linkMapProvider;
+
 
         #region Constructors
 
-        public ContentService(IContentManager contentMgr, IBlurbsProvider blurbProvider, ICityLkpProvider cityLkpProvider, IMetaTagProvider metaTagProvider, ICategoryLkpProvider categoryLkpProvider, ICategoryProvider categoryProvider)
+        public ContentService(IContentManager contentMgr, IBlurbsProvider blurbProvider, ICityLkpProvider cityLkpProvider, IMetaTagProvider metaTagProvider, ICategoryLkpProvider categoryLkpProvider, ICategoryProvider categoryProvider, ISystemNotificationProvider systemNotificationProvider, ITopBannerProvider topBanProvider, IPortalBannerProvider portalBanProvider, ILinkMapProvider linkMapProvider)
         {
             this._contentMgr = contentMgr;
             this._blurbProvider = blurbProvider;
@@ -46,6 +55,10 @@ namespace SkillBank.Site.Services
             this._metaTagProvider = metaTagProvider;
             this._categoryLkpProvider = categoryLkpProvider;
             this._categoryProvider = categoryProvider;
+            this._notificationProvider = systemNotificationProvider;
+            this._topBannerProvider = topBanProvider;
+            this._portalBannerProvider = portalBanProvider;
+            this._linkMapProvider = linkMapProvider;
         }
 
         #endregion
@@ -138,8 +151,8 @@ namespace SkillBank.Site.Services
         /// <returns></returns>
         public String GetCityNameById(String localeCode,int cityId)
         {
-            var result = _cityLkpProvider.GetCityLkp(localeCode);
-            if (result.ContainsKey(cityId))
+            var result = _cityLkpProvider.GetCityLkp(localeCode.ToLower());
+            if (result!=null && result.ContainsKey(cityId))
             {
                 return result[cityId].CityName;
             }
@@ -161,7 +174,33 @@ namespace SkillBank.Site.Services
             var result = _categoryProvider.GetCategory(categoryId);
             return result;
         }
-        
+
+        public Dictionary<int, SystemNotification> GetSystemNotificationLkp()
+        {
+            var result = _notificationProvider.GetSystemNotificationLkp();
+            return result;
+        }
+
+        public List<TopBanner> GetTopBannerLkp()
+        {
+            var result = _topBannerProvider.GetTopBannerLkp();
+            return result;
+        }
+
+        public List<PortalBanner> GetPortalBannerLkp()
+        {
+            var result = _portalBannerProvider.GetPortalBannerLkp();
+            return result;
+        }
+
+        public List<LinkMap> GetLinkMapLkp(int sourceId)
+        {
+            var result = _linkMapProvider.GetLinkMapLkp(sourceId);
+            return result;
+        }
+
+
+
         #endregion
 
     }

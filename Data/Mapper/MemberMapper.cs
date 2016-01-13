@@ -43,8 +43,9 @@ namespace SkillBank.Site.DataSource.Mapper
                     NotifyTag = result.NotifyTag,
                     Credit = result.Credit,
                     IsLike = result.IsLike,
-                    ExtraInfo = result.ExtraInfo
-                    
+                    ExtraInfo = result.ExtraInfo,
+                    RCToken = result.RCToken,
+                    DeviceToken = result.DeviceToken
                 };
                 return memberInfo;
             }
@@ -84,6 +85,7 @@ namespace SkillBank.Site.DataSource.Mapper
                     Credit = item.Credit,
                     IsLike = item.IsLike,
                     ExtraInfo = item.ExtraInfo
+                    //,RCToken = item.RCToken
                 }).ToList();
                 return (members.Count > 0) ? members : null;
             }

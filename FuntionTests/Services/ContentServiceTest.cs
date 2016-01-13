@@ -29,16 +29,19 @@ namespace SkillBank.FunctionTests
             _memberId = 1;
             _member2Id = 2;
             _invalidMemberId = 9999;
-            // MemberRepository _repository = 
-            //ClassRepository _repository = new ClassRepository();
+
             ContentManager _contentMgr = new ContentManager(new BlurbsRepository());
             BlurbsProvider _blurbProvider = new BlurbsProvider(new BlurbsRepository());
-            CityLkpProvider _cityLkpProvider =new CityLkpProvider(new LookupsRepository());
+            CityLkpProvider _cityLkpProvider = new CityLkpProvider(new LookupsRepository());
             MetaTagProvider _metaTagProvider = new MetaTagProvider(new LookupsRepository());
             CategoryLkpProvider _categoryLkpProvider = new CategoryLkpProvider(new LookupsRepository());
             CategoryProvider _categoryProvider = new CategoryProvider(new LookupsRepository());
+            SystemNotificationProvider _systemNotificationProvider = new SystemNotificationProvider(new LookupsRepository());
+            TopBannerProvider _topBannerProvider = new TopBannerProvider(new LookupsRepository());
+            PortalBannerProvider _portalBannerProvider = new PortalBannerProvider(new LookupsRepository());
+            LinkMapProvider _linkMapProvider = new LinkMapProvider(new LookupsRepository());
 
-            _svr = new ContentService(_contentMgr, _blurbProvider, _cityLkpProvider, _metaTagProvider, _categoryLkpProvider, _categoryProvider);
+            _svr = new ContentService(_contentMgr, _blurbProvider, _cityLkpProvider, _metaTagProvider, _categoryLkpProvider, _categoryProvider, _systemNotificationProvider, _topBannerProvider, _portalBannerProvider, _linkMapProvider);
         }
 
         #region Review Test Functions
@@ -102,6 +105,41 @@ namespace SkillBank.FunctionTests
             categories.Count.AssertIsGreaterThan(0);
         }
         #endregion
+
+        #region Banner Test Functions
+        [TestMethod]
+        public void Should_GetTopBanners()
+        {
+            var lkp = _svr.GetTopBannerLkp();
+            Assert.IsNotNull(lkp);
+            lkp.Count.AssertIsGreaterThan(0);
+        }
+
+        [TestMethod]
+        public void Should_GetPrtalBanners()
+        {
+            var lkp = _svr.GetPortalBannerLkp();
+            Assert.IsNotNull(lkp);
+            lkp.Count.AssertIsGreaterThan(0);
+        }
+
+        [TestMethod]
+        public void Should_GetLinkMap()
+        {
+            int sourceId = 4;
+            var lkp = _svr.GetLinkMapLkp(sourceId);
+            Assert.IsNotNull(lkp);
+            lkp.Count.AssertIsGreaterThan(0);
+
+            sourceId = 1;
+            lkp = _svr.GetLinkMapLkp(sourceId);
+            Assert.IsNull(lkp);
+            
+        }
+
+        #endregion
+
+        
 
         [TestCleanup]
         public void TestCleanup()

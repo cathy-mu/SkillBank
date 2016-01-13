@@ -16,6 +16,7 @@ namespace SkillBank.Site.Services.Managers
         void UpdateClassLikeTag(int memberId, int classId, Boolean isLike);
 
         int CreateClass(int memberId, int categoryId, Byte skillLevel, Byte teacheLevel, out Boolean isExist);
+        //ClassEditInfo_Add_p
         int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue);

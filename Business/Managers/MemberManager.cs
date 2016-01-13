@@ -19,7 +19,7 @@ namespace SkillBank.Site.Services.Managers
         Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy);
         Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId);
 
-        int CreateMember(out int memberId, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true);
+        int CreateMember(out int memberId, ref Byte verifyTag, ref String accessToken, ref String rcToken, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "");
         Byte UpdateMemberInfo(Byte saveType, MemberInfo memberInfo);
         void SaveEmailAccount(String name, String email);
         Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd);//admin tool
@@ -165,9 +165,9 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="memberName"></param>
         /// <param name="email"></param>
         /// <returns>1 new member, 0 exists member</returns>
-        public int CreateMember(out int memberId, String socialId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true)
+        public int CreateMember(out int memberId, ref Byte verifyTag, ref String accessToken, ref String rcToken, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "")
         {
-            int result = _repository.CreateMember(out memberId, socialId, socialType, memberName, email, avatar, mobile, code, pass, etag, gender);
+            int result = _repository.CreateMember(out memberId, ref verifyTag, ref accessToken, ref rcToken, socialOpenId, socialType, memberName, email, avatar, mobile, code, pass, etag, gender, device, unionId);
             return result;
         }
 
@@ -183,7 +183,6 @@ namespace SkillBank.Site.Services.Managers
             memberInfo.PosY = (memberInfo.PosY.Equals(null) ? 0 : memberInfo.PosY);
             memberInfo.BirthDate = ((memberInfo.BirthDate.Equals(null) || memberInfo.BirthDate.Year < 1900) ? new DateTime(1900, 01, 01) : memberInfo.BirthDate);
             memberInfo.Avatar = (String.IsNullOrEmpty(memberInfo.Avatar) ? "" : memberInfo.Avatar);
-
             var result = _repository.UpdateMemberInfo(memberInfo.MemberId, saveType, memberInfo.Phone, memberInfo.CityId, memberInfo.Name, memberInfo.SelfIntro, memberInfo.Gender, memberInfo.Email, memberInfo.PosX, memberInfo.PosY, memberInfo.BirthDate, memberInfo.Avatar);
             return (result);
         }

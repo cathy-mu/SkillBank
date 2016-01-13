@@ -24,7 +24,7 @@ namespace SkillBank.Site.DataSource.Data
         Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId, int teacherId = 0);
         Byte UpdateOrderStatusWithCoins(int orderId, Byte status, int studentId, int teacherId);
 
-        List<Order> GetOrders(Byte loadType, int paraId);
+        //List<Order> GetOrders(Byte loadType, int paraId);
         List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck);
         List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck);
 
@@ -91,14 +91,14 @@ namespace SkillBank.Site.DataSource.Data
             return OrderCoin_Update_p(orderId, status, studentId, teacherId);
         }
 
-        public List<Order> GetOrders(Byte loadType, int paraId)
-        {
-            var loadTypeParameter = new ObjectParameter("LoadType", loadType);
-            var idParameter = new ObjectParameter("ParaId", paraId);
+        //public List<Order> GetOrders(Byte loadType, int paraId)
+        //{
+        //    var loadTypeParameter = new ObjectParameter("LoadType", loadType);
+        //    var idParameter = new ObjectParameter("ParaId", paraId);
 
-            ObjectResult<Order_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Order_Load_p_Result>("Order_Load_p", MergeOption.NoTracking, loadTypeParameter, idParameter);
-            return OrderMapper.Map(result);
-        }
+        //    ObjectResult<Order_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Order_Load_p_Result>("Order_Load_p", MergeOption.NoTracking, loadTypeParameter, idParameter);
+        //    return OrderMapper.Map(result);
+        //}
 
 
         public List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck)

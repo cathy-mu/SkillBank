@@ -9,6 +9,19 @@ namespace SkillBank.Site.DataSource.Mapper
 {
     public class LookupsMapper
     {
+
+        public static List<SystemNotification> Map(ObjectResult<SystemNotification_LoadAll_p_Result> objectItems)
+        {
+            if (objectItems != null)
+            {
+                var items = objectItems.Select(item => new SystemNotification() { NotificationId = item.NotificationId, TitleBlurbId = item.TitleBlurbId, ContentBlurbId = item.ContentBlurbId, Link = item.Link, Banner = item.Banner, AddType = item.AddType, ShowType = item.ShowType, CreatedDate = item.CreatedDate }).ToList<SystemNotification>();
+                return (items.Count > 0) ? items : null;
+            }
+            return null;
+        }
+
+
+
         public static List<ClassCategory> Map(ObjectResult<ClassCategory_Load_p_Result> objectCategories)
         {
             if (objectCategories != null)
@@ -69,16 +82,6 @@ namespace SkillBank.Site.DataSource.Mapper
             return null;
         }
 
-        //public static List<CityInfo> Map(ObjectResult<CityInfo> objectCities)
-        //{
-        //    if (objectCities != null)
-        //    {
-        //        var cities = objectCities.ToList<CityInfo>();
-        //        return (cities.Count > 0) ? cities : null;
-        //    }
-        //    return null;
-        //}
-
         public static List<CityInfo> Map(ObjectResult<CityInfo_LoadAll_p_Result> objectCities)
         {
             if (objectCities != null)
@@ -89,5 +92,37 @@ namespace SkillBank.Site.DataSource.Mapper
             return null;
         }
 
+        #region Banner LKPS
+        public static List<TopBanner> Map(ObjectResult<TopBanner_LoadAll_p_Result> objectItems)
+        {
+            if (objectItems != null)
+            {
+                var items = objectItems.Select(item => new TopBanner() { BannerId = item.BannerId, BannerImg = item.BannerImg, BannerKey = item.BannerKey, Link = item.Link, Rank = item.Rank, LinkType = item.LinkType }).ToList<TopBanner>();
+                return (items.Count > 0) ? items : null;
+            }
+            return null;
+        }
+
+        public static List<PortalBanner> Map(ObjectResult<PortalBanner_LoadAll_p_Result> objectItems)
+        {
+            if (objectItems != null)
+            {
+                var items = objectItems.Select(item => new PortalBanner() { PortalBannerId = item.PortalBannerId, PortalImage = item.PortalImage, PortalKey = item.PortalKey, Link = item.Link, Rank = item.Rank, LinkType = item.LinkType }).ToList<PortalBanner>();
+                return (items.Count > 0) ? items : null;
+            }
+            return null;
+        }
+
+        public static List<LinkMap> Map(ObjectResult<LinkMap_LoadAll_p_Result> objectItems)
+        {
+            if (objectItems != null)
+            {
+                var items = objectItems.Select(item => new LinkMap() { LinkMapId = item.LinkMapId, SourceLink = item.SourceLink, SourceId = item.SourceId, Link = item.Link, LinkType = item.LinkType }).ToList<LinkMap>();
+                return (items.Count > 0) ? items : null;
+            }
+            return null;
+        }
+
+        #endregion
     }
 }
