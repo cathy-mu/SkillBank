@@ -10,6 +10,7 @@ using SkillBank.Site.Common;
 using SkillBank.Site.Web;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.Web.ViewModel;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBankWeb.API
 {
@@ -40,10 +41,16 @@ namespace SkillBankWeb.API
         [HttpPost]
         public Boolean UpdateLikeTag(LikeClassItem item)
         {
-            int memberId = (item.MemberId.HasValue && item.MemberId.Value > 0) ? item.MemberId.Value : WebContext.Current.MemberId;
+            int memberId = (item.MemberId.HasValue) ? item.MemberId.Value : WebContext.Current.MemberId;
+            String deviceToken = "";
             if (memberId > 0)
             {
-                _commonService.UpdateClassLikeTag(memberId, item.ClassId, item.IsLike);
+                _commonService.UpdateClassLikeTag(memberId, item.ClassId, item.IsLike, out deviceToken);
+                //push liked notification
+                if (item.IsLike && !String.IsNullOrEmpty(deviceToken))
+                {
+                    PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.ClassLiked);
+                }
                 return true;
             }
             else

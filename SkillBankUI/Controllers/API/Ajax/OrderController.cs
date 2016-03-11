@@ -12,6 +12,7 @@ using SkillBank.Site.Web.Context;
 using SkillBank.Site.Web.ViewModel;
 using SkillBank.Site.Services.Net.Mail;
 using SkillBank.Site.Services.Net.SMS;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBankWeb.Controllers.API
 {
@@ -89,6 +90,7 @@ namespace SkillBankWeb.Controllers.API
                     var isMobileVerified = (contactInfo.VerifyTag & 1).Equals(1);
                     int teacherId;
                     int studentId;
+                    String deviceToken = "";
                     item.Comment = String.IsNullOrEmpty(item.Comment) ? "" : item.Comment;
 
                     switch (item.Status)
@@ -96,56 +98,79 @@ namespace SkillBankWeb.Controllers.API
                         case (Byte)Enums.OrderStatus.Rejected://2 reject,T
                             teacherId = memberId;
                             studentId = item.MemberId;
-                            result = _commonService.UpdateOrderStatus(item.OrderId, item.Status, studentId, teacherId);
-                            OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                            result = _commonService.UpdateOrderStatus(out deviceToken, item.OrderId, item.Status, studentId, teacherId);
+                            if (result.Equals(1))
+                            {
+                                OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                                PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.BookRejected);
+                            }
                             break;
                         case (Byte)Enums.OrderStatus.Cancled://3 cancle,S
                             teacherId = item.MemberId;
                             studentId = memberId;
-                            result = _commonService.UpdateOrderStatus(item.OrderId, item.Status, studentId, teacherId);
-                            OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                            result = _commonService.UpdateOrderStatus(out deviceToken, item.OrderId, item.Status, studentId, teacherId);
                             break;
                         case (Byte)Enums.OrderStatus.Accepted://4 accpet order,T
                             teacherId = memberId;
                             studentId = item.MemberId;
-                            item.Name = String.IsNullOrEmpty(item.Name) ? "" : item.Name;
-                            item.Phone = String.IsNullOrEmpty(item.Phone) ? "" : item.Phone;
                             //update own contact info when teacher accept order
-                            result = _commonService.AcceptOrder(item.OrderId, studentId, teacherId, item.MyName, item.MyPhone);
-                            OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                            result = _commonService.AcceptOrder(out deviceToken, item.OrderId, studentId, teacherId, item.MyName, item.MyPhone);
+                            if (result.Equals(1))
+                            {
+                                OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                                PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.BookAccepted);
+                            }
                             break;
                         case (Byte)Enums.OrderStatus.Refund://6 refund
                             teacherId = item.MemberId;
                             studentId = memberId;
-                            result = _commonService.UpdateOrderStatus(item.OrderId, item.Status, studentId, teacherId);
-                            OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                            result = _commonService.UpdateOrderStatus(out deviceToken, item.OrderId, item.Status, studentId, teacherId);
+                            if (result.Equals(1))
+                            {
+                                OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                                PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.RefundRequest);
+                            }
                             break;
                         case (Byte)Enums.OrderStatus.RefundProve:// 7 RefundProve
                             teacherId = memberId;
                             studentId = item.MemberId;
-                            result = _commonService.UpdateOrderStatusWithCoins(item.OrderId, item.Status, studentId, teacherId);
-                            OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                            result = _commonService.UpdateOrderStatusWithCoins(out deviceToken, item.OrderId, item.Status, studentId, teacherId);
+                            if (result.Equals(1))
+                            {
+                                OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                                PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.RefundProved);
+                            }
                             break;
                         case (Byte)Enums.OrderStatus.RefundReject://reject,8
                             teacherId = memberId;
                             studentId = item.MemberId;
-                            result = _commonService.UpdateOrderStatus(item.OrderId, item.Status, studentId, teacherId);
-                            OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                            result = _commonService.UpdateOrderStatus(out deviceToken, item.OrderId, item.Status, studentId, teacherId);
+                            if (result.Equals(1))
+                            {
+                                OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                                PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.RefundRejected);
+                            }
                             break;
                         case (Byte)Enums.OrderStatus.Confirmed://9 confirm
                             teacherId = item.MemberId;
                             studentId = memberId;
-                            result = _commonService.UpdateOrderStatusWithCoins(item.OrderId, item.Status, studentId, teacherId);
-                            _commonService.AddStudentReview(item.OrderId, 0, item.FeedBack, item.Comment, "");//leave classid as 0 and get id in sp
-                            OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                            String phone;
+                            result = _commonService.UpdateOrderStatusWithCoins(out deviceToken, item.OrderId, item.Status, studentId, teacherId);
+                            _commonService.AddStudentReview(item.OrderId, 0, item.FeedBack, item.Comment, out deviceToken, out phone);//leave classid as 0 and get id in sp
+                            if (result.Equals(1))
+                            {
+                                OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                                PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.OrderPaid);
+                            }
                             break;
                         case (Byte)Enums.OrderStatus.TeacherCancled://12 teacher cancled after accept
                             teacherId = memberId;
                             studentId = item.MemberId;
-                            result = _commonService.UpdateOrderStatusWithCoins(item.OrderId, item.Status, studentId, teacherId);
-                            if (result < 2)//update successfully
+                            result = _commonService.UpdateOrderStatusWithCoins(out deviceToken, item.OrderId, item.Status, studentId, teacherId);
+                            if (result.Equals(1))//update successfully
                             {
                                 OrderNotificationHelper.NotifyOrderStatusUpdate(item.Status, item.Phone, item.Email, item.Title, item.Name);
+                                PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.BookCancled);
                             }
                             break;
                         default://5 finish 10 autoconfirm 11://autorefund
@@ -167,15 +192,15 @@ namespace SkillBankWeb.Controllers.API
             Boolean isWeb = item.MemberId.Equals(0);
             try
             {
+                String deviceToken;
                 int memberId = isWeb ? APIHelper.GetMemberId(true) : item.MemberId;
                 item.Remark = String.IsNullOrEmpty(item.Remark) ? "" : item.Remark;
-                item.Name = String.IsNullOrEmpty(item.Name) ? "" : item.Name;
-                item.Phone = String.IsNullOrEmpty(item.Phone) ? "" : item.Phone;
-
-                result = _commonService.AddOrder(memberId, item.ClassId, item.BookDate, item.Remark, item.Name, item.Phone);
+                
+                result = _commonService.AddOrder(out deviceToken, memberId, item.ClassId, item.BookDate, item.Remark, item.Name, item.Phone);
                 if (result.Equals(1))
                 {
                     OrderNotificationHelper.NotifyOrderStatusUpdate((Byte)Enums.OrderStatus.Booked, item.TeacherPhone, item.TeacherMail, item.ClassName, item.TeacherName);
+                    PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.BookRequest);
                 }
             }
             catch

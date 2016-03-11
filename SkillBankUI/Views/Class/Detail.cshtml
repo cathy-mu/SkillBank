@@ -429,7 +429,7 @@
                     <h4>
                         <span class="gray spaced-right">@Model.ClassInfo.Title </span>
                         <a href="javascript:void(0);" class="spaced-right">
-                            <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "s", Model.MemberInfo.SocialType)"></a>
+                            <img src="@ContentHelper.GetAvatarPath(Model.MemberInfo.Avatar, "s", Model.MemberInfo.SocialType)" class="avatar-s"></a>
                         @if (ViewBag.MemberInfo == null)
                         {
                             <a href="#modal-login" data-toggle="modal" class="btn btn-primary">@Html.GetTrans(202)</a>

@@ -27,8 +27,8 @@ namespace SkillBank.FunctionTests
         [TestMethod]
         public void ShouldSendOrderSMS()
         {
-            YunPianSMS.SendOrderUpdateSms(1,"13917782601", "如何寻找最近的公交车站");
-            //YunPianSMS.SendOrderUpdateSms("13564813923", "市场营销");
+            YunPianSMS.SendOrderUpdateSMS(1, "13917782601", "如何寻找最近的公交车站");
+            //YunPianSMS.SendOrderUpdateSMS("13564813923", "市场营销");
         }
 
     }

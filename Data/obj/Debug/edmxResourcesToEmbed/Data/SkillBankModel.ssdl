@@ -293,9 +293,6 @@
     </Key>
     <Property Name="ReviewId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Order_Id" Type="int" Nullable="false" />
-    <Property Name="Score1" Type="tinyint" />
-    <Property Name="Score2" Type="tinyint" />
-    <Property Name="Score3" Type="tinyint" />
     <Property Name="FeedBack" Type="tinyint" />
     <Property Name="Comment" Type="nvarchar" MaxLength="600" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -486,6 +483,7 @@
     <Parameter Name="MemberId" Type="int" Mode="In" />
     <Parameter Name="CommentText" Type="varchar" Mode="In" />
     <Parameter Name="Id" Type="int" Mode="InOut" />
+    <Parameter Name="DeviceToken" Type="varchar" Mode="InOut" />
   </Function>
   <Function Name="Complaint_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="LoadType" Type="tinyint" Mode="In" />
@@ -528,6 +526,7 @@
     <Parameter Name="paraId" Type="int" Mode="In" />
     <Parameter Name="isLike" Type="bit" Mode="In" />
     <Parameter Name="isFavorite" Type="bit" Mode="In" />
+    <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
   </Function>
   <Function Name="LinkMap_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="Master_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -647,8 +646,9 @@
     <Parameter Name="classDate" Type="datetime" Mode="In" />
     <Parameter Name="comment" Type="varchar" Mode="In" />
     <Parameter Name="saveType" Type="tinyint" Mode="In" />
-    <Parameter Name="paraId" Type="int" Mode="InOut" />
+    <Parameter Name="paraId" Type="int" Mode="In" />
     <Parameter Name="result" Type="tinyint" Mode="InOut" />
+    <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
   </Function>
   <Function Name="OrderCoin_Update_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="paraId" Type="int" Mode="In" />
@@ -656,6 +656,7 @@
     <Parameter Name="studentId" Type="int" Mode="In" />
     <Parameter Name="teacherId" Type="int" Mode="In" />
     <Parameter Name="result" Type="tinyint" Mode="InOut" />
+    <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
   </Function>
   <Function Name="OrderStatus_ListHandler_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="memberId" Type="int" Mode="In" />
@@ -670,6 +671,11 @@
     <Parameter Name="Split" Type="varchar" Mode="In" />
   </Function>
   <Function Name="ReportClassMemberNum_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="ReportOrderRemind_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="LoadType" Type="tinyint" Mode="In" />
+    <Parameter Name="Para" Type="int" Mode="In" />
+    <Parameter Name="LastHandleDate" Type="datetime" Mode="InOut" />
+  </Function>
   <Function Name="ReportOrderStatus_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="LoadType" Type="tinyint" Mode="In" />
     <Parameter Name="BeginDate" Type="datetime" Mode="In" />
@@ -696,13 +702,12 @@
   <Function Name="StudentReview_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="orderId" Type="int" Mode="In" />
     <Parameter Name="classId" Type="int" Mode="In" />
-    <Parameter Name="scoreA" Type="int" Mode="In" />
-    <Parameter Name="scoreB" Type="int" Mode="In" />
-    <Parameter Name="scoreC" Type="int" Mode="In" />
     <Parameter Name="feedBack" Type="tinyint" Mode="In" />
     <Parameter Name="comment" Type="varchar" Mode="In" />
-    <Parameter Name="paraId" Type="int" Mode="InOut" />
     <Parameter Name="priComment" Type="varchar" Mode="In" />
+    <Parameter Name="paraId" Type="int" Mode="InOut" />
+    <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
+    <Parameter Name="phone" Type="varchar" Mode="InOut" />
   </Function>
   <Function Name="SystemNotification_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="TeacherReview_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -716,6 +721,8 @@
     <Parameter Name="comment" Type="varchar" Mode="In" />
     <Parameter Name="paraId" Type="int" Mode="InOut" />
     <Parameter Name="priComment" Type="varchar" Mode="In" />
+    <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
+    <Parameter Name="phone" Type="varchar" Mode="InOut" />
   </Function>
   <Function Name="TopBanner_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="Verification_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -733,4 +740,5 @@
     <Parameter Name="ParaValue" Type="nvarchar" Mode="In" />
     <Parameter Name="Result" Type="tinyint" Mode="InOut" />
   </Function>
+  <Function Name="WeChatUser_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
 </Schema>

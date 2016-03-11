@@ -68,6 +68,10 @@
     <Reference Include="dotless.Core">
       <HintPath>..\packages\dotless.1.3.1.0\lib\dotless.Core.dll</HintPath>
     </Reference>
+    <Reference Include="dotNetDR_OAuth2, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\dotNetDR_OAuth2.dll</HintPath>
+    </Reference>
     <Reference Include="EcmaScript.NET.modified, Version=0.1.1.0, Culture=neutral, PublicKeyToken=7d53ba4f537753a5, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\YUICompressor.NET.1.7.1.0\lib\net35\EcmaScript.NET.modified.dll</HintPath>
@@ -89,7 +93,7 @@
     <Reference Include="Fasterflect.2.1.3.0.Fakes">
       <HintPath>FakesAssemblies\Fasterflect.2.1.3.0.Fakes.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.dll</HintPath>
     </Reference>
@@ -190,6 +194,7 @@
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\API\Ajax\ClassController.cs" />
     <Compile Include="Controllers\API\Ajax\CoinsController.cs" />
+    <Compile Include="Controllers\API\Ajax\RCChatController.cs" />
     <Compile Include="Controllers\API\Ajax\LinkMapController.cs" />
     <Compile Include="Controllers\API\Ajax\LogoutController.cs" />
     <Compile Include="Controllers\API\Ajax\CourseController.cs" />
@@ -224,6 +229,7 @@
     <Compile Include="Controllers\API\Page\ClassIndexController.cs" />
     <Compile Include="Controllers\API\Page\ClassSearchController.cs" />
     <Compile Include="Controllers\API\Page\ClassCommentController.cs" />
+    <Compile Include="Controllers\API\Page\MessageController.cs" />
     <Compile Include="Controllers\API\Page\PortalController.cs" />
     <Compile Include="Controllers\API\Page\NoticeController.cs" />
     <Compile Include="Controllers\API\Page\InteractionController.cs" />
@@ -265,6 +271,7 @@
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\ClassHelperController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\WCHelperController.cs" />
     <Compile Include="Controllers\MController.cs" />
     <Compile Include="Controllers\NotificationHelperController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -1586,6 +1593,8 @@
     <Content Include="Views\M\LoginA.cshtml" />
     <Content Include="Views\M\SignUp.cshtml" />
     <Content Include="Views\M\LoginM.cshtml" />
+    <Content Include="Views\M\RCChat.cshtml" />
+    <Content Include="Views\M\RCChatList.cshtml" />
     <None Include="Views\Tools\ClassView.cshtml" />
     <Content Include="Views\Class\Rejected.cshtml" />
     <Content Include="Views\Member\Teach.cshtml" />
@@ -1598,6 +1607,8 @@
     <Content Include="Views\WeChat\Index.cshtml" />
     <Content Include="Views\WeChat\Test.cshtml" />
     <Content Include="Views\Tools\Complaint.cshtml" />
+    <Content Include="Views\Tools\OrderRemind.cshtml" />
+    <Content Include="Views\WCHelper\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="css\images\" />
@@ -1620,10 +1631,6 @@
     <ProjectReference Include="..\Data\DataSource.csproj">
       <Project>{7d49e64b-6df5-4b06-a2d6-7a9759fec527}</Project>
       <Name>DataSource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\dotNetDR_OAuth2\dotNetDR_OAuth2.csproj">
-      <Project>{7b72ffe8-bddf-4d2c-9a8e-f51b59f7b949}</Project>
-      <Name>dotNetDR_OAuth2</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web\Web.csproj">
       <Project>{97ed241f-9284-4ea6-87b7-afaee1095019}</Project>

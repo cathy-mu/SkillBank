@@ -114,7 +114,7 @@ namespace SkillBank.Site.Common
                 UpdateAvailable = 15,
                 UpdateLocation = 16,
                 UpdateRemark = 17,
-                UpdateCateId = 18,//new category
+                UpdateCategoryATags = 18,//Category and Tag
                 DeleteClass = 19,
                 CreateNew = 20,//20+ is for mobile 3 step saving
                 UpdateStep1 = 21,
@@ -244,9 +244,9 @@ namespace SkillBank.Site.Common
                 TeacherReview = 8,
                 ClassLiked = 9,
                 
-                OrderBooked = 11,
+                OrderBooked = 11,//Both Student and Teacher, set student as Read for update in process
                 OrderRejected = 12,
-                OrderCancled = 13,
+                OrderCancled = 13,//Student Cancle and System Cancle(4 teacher)
                 OrderAccept = 14,
                 OrderFinished = 15,
 
@@ -256,9 +256,7 @@ namespace SkillBank.Site.Common
 
                 OrderConfirmed = 19,
                 TeacherCancled = 20,
-                //,AutoConfirmed = 20 
-                //,AutoRefund = 21  
-                //,ReferralPromo = 11*/
+                AutoCancled4Student = 21, //System Cancle(4 student)
                 Followed = 30
             }
 
@@ -504,6 +502,46 @@ namespace SkillBank.Site.Common
             L//Learn
         }
 
+
+        public enum PushNotificationType
+        {
+            //0-3 管理员
+            System,//0 系统通知
+            SkillKiller,//1 技者汇更新
+            ClassProved,//2 开课审批通过
+            ClassRejected,//3 开课未通过
+
+            //4-5 评价
+            StudentReview,//4 学生评价
+            TeacherReview,//5 老师评价
+
+            //6-9 互动
+            Message,//6新私信
+            Followed,//7被关注
+            ClassLiked,//8课程被收藏
+            Commented,//9课程被留言
+
+            //10-13  For 老师
+            BookRequest,//10 订课申请
+            RefundRequest,//11 退币申请
+            OrderPaid,//12 订单支付并评价
+            RemindAccept,//13 提醒接受订单
+
+            //14-18 For 学生
+            BookAccepted,//14 接受订课
+            BookRejected,//15 接受订课
+            BookCancled,//16 老师取消订课
+            RefundProved,//17 接受退币请求
+            RefundRejected//18 拒绝退币请求
+        }
+
+        public enum SmsType
+        {
+            StudentReview = 1,
+            TeacherReview = 2,
+            BookRequestRemind = 3
+            
+        }
         
     }    
 }

@@ -11,14 +11,11 @@ namespace SkillBank.Site.Services.Managers
 {
     public interface IOrderManager
     {
-        Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark);
+        Byte AddOrder(out String deviceToken, int studentId, int classId, DateTime bookDate, String remark);
         Byte UpdateOrderDate(int orderId, DateTime bookDate);
-        Byte UpdateOrderStatusWithCoins(int orderId, Byte orderStatus, int studentId, int teacherId);
-        Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0);
-        //void UpdateBookDate(int orderId, DateTime bookedDate);
-
-        //List<Order> GetOrdersByStudentId(int memberId);
-        //List<Order> GetOrdersByTeacherId(int memberId);
+        Byte UpdateOrderStatusWithCoins(out String deviceToken, int orderId, Byte orderStatus, int studentId, int teacherId);
+        Byte UpdateOrderStatus(out String deviceToken, int orderId, Byte orderStatus, int studentId, int teacherId);
+        
         List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck);
         List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck);
 
@@ -45,23 +42,11 @@ namespace SkillBank.Site.Services.Managers
             return result;
         }
 
-        public Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark)
+        public Byte AddOrder(out String deviceToken, int studentId, int classId, DateTime bookDate, String remark)
         {
-            var result = _orderRep.AddOrder(studentId, classId, bookDate, remark);
+            var result = _orderRep.AddOrder(out deviceToken, studentId, classId, bookDate, remark);
             return result;
         }
-
-        //public List<Order> GetOrdersByStudentId(int memberId)
-        //{
-        //    Byte loadBy = (Byte)Enums.DBAccess.OrderLoadType.ByOrderId;
-        //    return _orderRep.GetOrders(loadBy, memberId);
-        //}
-
-        //public List<Order> GetOrdersByTeacherId(int memberId)
-        //{
-        //    Byte loadBy = (Byte)Enums.DBAccess.OrderLoadType.ByTeacherId;
-        //    return _orderRep.GetOrders(loadBy, memberId);
-        //}
 
         public List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck)
         {
@@ -73,9 +58,9 @@ namespace SkillBank.Site.Services.Managers
             return _orderRep.GetOrderListByStudent(studentId, shouldCheck);
         }
 
-        public Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0)
+        public Byte UpdateOrderStatus(out String deviceToken, int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0)
         {
-           return _orderRep.UpdateOrderStatus(orderId, orderStatus, studentId, teacherId);
+            return _orderRep.UpdateOrderStatus(out deviceToken, orderId, orderStatus, studentId, teacherId);
         }
 
         /// <summary>
@@ -86,9 +71,9 @@ namespace SkillBank.Site.Services.Managers
         /// <param name="studentId"></param>
         /// <param name="teacherId"></param>
         /// <returns></returns>
-        public Byte UpdateOrderStatusWithCoins(int orderId, Byte orderStatus, int studentId, int teacherId)
+        public Byte UpdateOrderStatusWithCoins(out String deviceToken, int orderId, Byte orderStatus, int studentId, int teacherId)
         {
-            return _orderRep.UpdateOrderStatusWithCoins(orderId, orderStatus, studentId, teacherId);
+            return _orderRep.UpdateOrderStatusWithCoins(out deviceToken, orderId, orderStatus, studentId, teacherId);
         }
         
 

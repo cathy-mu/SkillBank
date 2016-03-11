@@ -75,7 +75,7 @@ namespace SkillBank.Site.Services
         
         private static void RegisterInterceptors(IWindsorContainer container)
         {
-            container.AddFacility<LoggingFacility>(f => f.LogUsing(LoggerImplementation.Log4net));
+            //container.AddFacility<LoggingFacility>(f => f.LogUsing(LoggerImplementation.Log4net));
             //container.Register(Component.For<LoggingInterceptor>().ImplementedBy<LoggingInterceptor>().LifeStyle.Is(LifestyleType.Transient));
         }
 

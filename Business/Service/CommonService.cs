@@ -19,6 +19,7 @@ namespace SkillBank.Site.Services
         List<MemberInfo> GetMemberInfos(Byte loadBy, String searchKey);
         MemberInfo GetMemberInfo(int memberId);
         MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0);
+        MemberInfo GetMemberInfoByAccount(String mobile, String password);
         MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para = "");
         int CreateMember(out int memberId, ref Byte verifyTag, ref String accessToken, ref String rcToken, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "");
         Byte UpdateMemberInfo(int memberId, Byte saveType, String saveValue, String saveValue2 = "");
@@ -34,7 +35,7 @@ namespace SkillBank.Site.Services
         //[Obsolete]
         //Byte CheckIsMobileVerified(int memberId);
         Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount);
-        void UpdateMemberLikeTag(int memberId, int relatedId, Boolean isLike);
+        void UpdateMemberLikeTag(int memberId, int relatedId, Boolean isLike, out String deviceToken);
         List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId);
         Byte SaveWeChatEvent(Byte saveType, int memberId, String openId, String paraId, String paraValue);
         Byte UpdateCredit(Byte saveType, int memberId, int paraValue);
@@ -43,6 +44,7 @@ namespace SkillBank.Site.Services
         int CreateClass(int memberId, int categoryId, Byte teacheLevel, Byte skillLevel, out Boolean isExist);
         int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true);
+        Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, String txtValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, String paraValue);
         List<ClassEditItem> GetClassEditInfoByMemberId(int memberId, Byte loadType);
@@ -67,26 +69,27 @@ namespace SkillBank.Site.Services
         List<ClassInfo> GetClassInfo(Byte loadType, int paraId, int memberId = 0);
         List<ClassInfo> GetClassInfoForAdmin(Boolean isRejected);
 
-        int AddComment(int memberId, int classId, String commentText);
+        int AddComment(int memberId, int classId, String commentText, out String deviceToken);
         void RemoveComment(int memberId, int commentId);
-        void UpdateClassLikeTag(int memberId, int classId, Boolean isLike);
+        void UpdateClassLikeTag(int memberId, int classId, Boolean isLike, out String deviceToken);
         List<ClassCollection_Load_p_Result> GetClassCollection(Byte loadBy, int memberId, int paraId = 0);
         
         //Review
         List<TeacherReviewItem> GetTeacherReviewsByMemberId(int memberId, int maxReviewId = 0);
         //List<StudentReviewItem> GetStudentReviewsByMemberId(int memberId, int minReviewId = 0);
-        Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, String privateComment);
-        Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, String privateComment);
+        Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, out String deviceToken, out String phone);
+        Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, out String deviceToken, out String phone);
         List<MemberReviewItem> GetClassReviews(Byte loadBy, int memberId, int classId, Byte feedback = 0, int maxReviewId = 0);
         List<MemberReviewItem> GetMemberReviews(Byte loadBy, int memberId, Byte feedback = 0, int maxReviewId = 0);
 
         //Order
-        //Byte UpdateOrderStatus(int orderId, Byte orderStatus);
-        Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0);
-        Byte UpdateOrderStatusWithCoins(int orderId, Byte orderStatus, int studentId, int teacherId = 0);
-        Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark, String studentName = "", String studentPhone = "", String studentEmail = "");
+        Byte UpdateOrderStatus(out String deviceToken, int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0);
+        Byte UpdateOrderStatusWithCoins(out String deviceToken, int orderId, Byte orderStatus, int studentId, int teacherId = 0);
+        Byte AddOrder(out String deviceToken, int studentId, int classId, DateTime bookDate, String remark, String studentName = "", String studentPhone = "", String studentEmail = "");
         Byte UpdateOrderDate(int orderId, DateTime bookDate);
-        Byte AcceptOrder(int orderId, int studentId, int teacherId, String name = "", String phone = "", String email = "");
+        Byte AcceptOrder(out String deviceToken, int orderId, int studentId, int teacherId, String name = "", String phone = "", String email = "");
+        
+
         List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck);
         List<OrderItem> GetOrderListByTeacher(int teacherId, Boolean shouldCheck);
         void HandleMemberOrder(int memberId);
@@ -109,13 +112,16 @@ namespace SkillBank.Site.Services
         void SendOrderUpdateSMS(Byte statusType, String mobile, String className, Boolean sendSMS = true);
         void SendClassProveSMS(Boolean isProve, String mobile, String className, String link, Boolean sendSMS = true);
         void SendNewMessageSMS(String mobile, String name, String link, Boolean sendSMS = true);
-
+        void SendSMSWithLink(Byte type, String mobile, Boolean sendSMS = true);
+        
         // report and tools
         List<ReportNumItem> GetReportClassMemberNum();
+        List<ReportOrderRemind_Load_p_Result> GetReportOrderRemindList(Byte loadBy, int dayBuffer, out DateTime handleDate);
         List<ReportOrderStatus_Load_p_Result> GetReportClassMemberNum(Byte loadBy, DateTime beginDate, DateTime endDate);
         List<RecommendationItem> GetRecommendation(int classId);
         void SaveMasterMember(int memberId, String paraStr, char split);
         void SaveRecommendationClass(int classId, String paraStr, char split);
+        List<String> GetWeChatUser();
     }
 
     public class CommonService : ICommonService
@@ -183,13 +189,19 @@ namespace SkillBank.Site.Services
             _notificationMgr.SendNewMessageSMS(mobile, name, link, sendSMS);
         }
 
+
+        public void SendSMSWithLink(Byte type, String mobile, Boolean sendSMS = true)
+        {
+            _notificationMgr.SendSMSWithLink(type, mobile, sendSMS);
+        }
+
+
         #endregion
 
         #region Member Management
-
-        public void UpdateMemberLikeTag(int memberId, int relatedId, Boolean isLike)
+        public void UpdateMemberLikeTag(int memberId, int relatedId, Boolean isLike, out String deviceToken)
         {
-            _memberMgr.UpdateMemberLikeTag(memberId, relatedId, isLike);
+            _memberMgr.UpdateMemberLikeTag(memberId, relatedId, isLike, out deviceToken);
         }
 
         public Byte CheckIsMobileVerified(int memberId)
@@ -228,9 +240,20 @@ namespace SkillBank.Site.Services
             return this._memberMgr.GetMemberInfos(loadBy, searchKey);
         }
 
+        public MemberInfo GetMemberInfoByAccount(String mobile, String password)
+        {
+            if (!String.IsNullOrEmpty(password))
+            {
+                Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.ByMobileAPass;
+                return this._memberMgr.GetMemberInfo(loadType, mobile, (Byte)Enums.SocialTpye.Mobile, password);
+            }
+            return null;
+        }
+
         public MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para = "")
         {
-            return this._memberMgr.GetMemberInfo(socialAccount, socialType, para);
+            Byte loadType = (Byte)Enums.DBAccess.MemberLoadType.BySocialAccount;
+            return this._memberMgr.GetMemberInfo(loadType, socialAccount, socialType, para);
         }
         
         public MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0)
@@ -456,9 +479,9 @@ namespace SkillBank.Site.Services
             return _classMgr.GetClassCollection(loadBy, memberId, paraId);
         }
 
-        public int AddComment(int memberId, int classId, String commentText)
+        public int AddComment(int memberId, int classId, String commentText, out String deviceToken)
         {
-            return _classMgr.AddComment(memberId, classId, commentText);
+            return _classMgr.AddComment(memberId, classId, commentText, out deviceToken);
         }
 
         public void RemoveComment(int memberId, int commentId)
@@ -466,9 +489,9 @@ namespace SkillBank.Site.Services
             _classMgr.RemoveComment(memberId, commentId);
         }
 
-        public void UpdateClassLikeTag(int memberId, int classId, Boolean isLike)
+        public void UpdateClassLikeTag(int memberId, int classId, Boolean isLike, out String deviceToken)
         {
-            _classMgr.UpdateClassLikeTag(memberId, classId, isLike);
+            _classMgr.UpdateClassLikeTag(memberId, classId, isLike, out deviceToken);
         }
 
         /// <summary>
@@ -500,6 +523,11 @@ namespace SkillBank.Site.Services
         public Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true)
         {
             return _classMgr.UpdateClassEditInfo(updateType, classId, paraValue, isValue);
+        }
+
+        public Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, String txtValue)
+        {
+            return _classMgr.UpdateClassEditInfo(updateType, classId, paraValue, txtValue);
         }
 
         public Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue)
@@ -672,25 +700,29 @@ namespace SkillBank.Site.Services
             return _feedbackMgr.GetTeacherReviewsByMemberId(memberId, maxReviewId);
         }
 
-        public Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, String privateComment)
+        public Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, out String deviceToken, out String phone)
         {
+            deviceToken = "";
+            phone = "";
             //invalid data
             if (orderId <= 0 || feedBack <= 0 || feedBack > 3)
             {
                 return false;
             }
 
-            return _feedbackMgr.AddStudentReview(orderId, classId, feedBack, comment, privateComment);
+            return _feedbackMgr.AddStudentReview(orderId, classId, feedBack, comment, out deviceToken, out phone);
         }
 
-        public Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, String privateComment)
+        public Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, out String deviceToken, out String phone)
         {
+            deviceToken = "";
+            phone = "";
             //invalid data
             if (orderId <= 0 || feedBack <= 0 || feedBack > 3)
             {
                 return false;
             }
-            return _feedbackMgr.AddTeacherReview(orderId, feedBack, comment, privateComment);
+            return _feedbackMgr.AddTeacherReview(orderId, feedBack, comment, out deviceToken, out phone);
         }
 
 
@@ -735,42 +767,19 @@ namespace SkillBank.Site.Services
         /// </summary>
         /// <param name="teacherId"></param>
         /// <returns></returns>
-        public Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark, String name = "", String phone = "", String email = "")
+        public Byte AddOrder(out String deviceToken, int studentId, int classId, DateTime bookDate, String remark, String name = "", String phone = "", String email = "")
         {
-            var result = _orderMgr.AddOrder(studentId, classId, bookDate, remark);
+            var result = _orderMgr.AddOrder(out deviceToken, studentId, classId, bookDate, remark);
             //update student contact info
-            if (!String.IsNullOrEmpty(name) || !String.IsNullOrEmpty(phone))
-            {
-                MemberInfo studentInfo = new MemberInfo();
-                studentInfo.MemberId = studentId;
-                if (!String.IsNullOrEmpty(phone) && !String.IsNullOrEmpty(name))
-                {
-                    studentInfo.Name = name;
-                    studentInfo.Phone = phone;
-                    studentInfo.Email = email;
-                    _memberMgr.UpdateMemberInfo((Byte)Enums.DBAccess.MemberSaveType.UpdateContactInfo, studentInfo);
-                }
-                else if (!String.IsNullOrEmpty(name))
-                {
-                    studentInfo.Name = name;
-                    _memberMgr.UpdateMemberInfo((Byte)Enums.DBAccess.MemberSaveType.UpdateName, studentInfo);
-                }
-            }
+            _memberMgr.UpdateMemberContactInfo(studentId, name, phone, email);
             return result;
         }
 
-        public Byte AcceptOrder(int orderId, int studentId, int teacherId, String name = "", String phone = "", String email = "")
+        public Byte AcceptOrder(out String deviceToken, int orderId, int studentId, int teacherId, String name = "", String phone = "", String email = "")
         {
-            var result = _orderMgr.UpdateOrderStatusWithCoins(orderId, (Byte)Enums.OrderStatus.Accepted, studentId, teacherId);
-            if (!String.IsNullOrEmpty(name) || !String.IsNullOrEmpty(phone) || !String.IsNullOrEmpty(email))
-            {
-                MemberInfo studentInfo = new MemberInfo();
-                studentInfo.MemberId = teacherId;
-                studentInfo.Name = String.IsNullOrEmpty(name) ? "" : name;
-                studentInfo.Phone = String.IsNullOrEmpty(phone) ? "" : phone;
-                studentInfo.Email = String.IsNullOrEmpty(email) ? "" : email;
-                _memberMgr.UpdateMemberInfo((Byte)Enums.DBAccess.MemberSaveType.UpdateContactInfo, studentInfo);
-            }
+            var result = _orderMgr.UpdateOrderStatusWithCoins(out deviceToken, orderId, (Byte)Enums.OrderStatus.Accepted, studentId, teacherId);
+            //update teacher contact info
+            _memberMgr.UpdateMemberContactInfo(teacherId, name, phone, email);
             return result;
         }
 
@@ -780,9 +789,9 @@ namespace SkillBank.Site.Services
         /// <param name="orderId"></param>
         /// <param name="orderStatus"></param>
         /// <returns>-1 : Error , 2: Not Available Status(May be another member update it before you change status but before you get page)</returns>
-        public Byte UpdateOrderStatusWithCoins(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0)
+        public Byte UpdateOrderStatusWithCoins(out String deviceToken, int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0)
         {
-            var result = _orderMgr.UpdateOrderStatusWithCoins(orderId, orderStatus, studentId, teacherId);
+            var result = _orderMgr.UpdateOrderStatusWithCoins(out deviceToken, orderId, orderStatus, studentId, teacherId);
             return result;
         }
 
@@ -792,9 +801,9 @@ namespace SkillBank.Site.Services
         /// <param name="orderId"></param>
         /// <param name="orderStatus"></param>
         /// <returns>-1 : Error , 2: Not Available Status(May be another member update it before you change status but before you get page)</returns>
-        public Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0)
+        public Byte UpdateOrderStatus(out String deviceToken, int orderId, Byte orderStatus, int studentId = 0, int teacherId = 0)
         {
-            var result = _orderMgr.UpdateOrderStatus(orderId, orderStatus, studentId, teacherId);
+            var result = _orderMgr.UpdateOrderStatus(out deviceToken, orderId, orderStatus, studentId, teacherId);
             return result;
         }
 
@@ -880,6 +889,11 @@ namespace SkillBank.Site.Services
             return _repMgr.GetReportClassMemberNum(loadBy, beginDate, endDate);
         }
 
+        public List<ReportOrderRemind_Load_p_Result> GetReportOrderRemindList(Byte loadBy, int dayBuffer, out DateTime handleDate)
+        {
+            return _repMgr.GetReportOrderRemindList(loadBy, dayBuffer, out handleDate);
+        }
+
         public List<RecommendationItem> GetRecommendation(int classId)
         {
             return _repMgr.GetRecommendation(classId);
@@ -894,6 +908,13 @@ namespace SkillBank.Site.Services
         {
             _repMgr.SaveRecommendationClass(classId, paraStr, split);
         }
+
+
+        public List<String> GetWeChatUser()
+        {
+            return _repMgr.GetWeChatUser();
+        }
+
         #endregion
     }
 }

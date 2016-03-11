@@ -143,6 +143,7 @@ namespace SkillBank.Site.Common
             public const String MobileMessagePage = "http://m.skillbank.cn/m/message";
             public const String WebDashboard = "http://www.skillbank.cn/member";
             public const String MobileDashboard = "http://m.skillbank.cn/m/dashboard";
+            public const String MobileInteractionPage = "http://m.skillbank.cn/m/message?tabid=1";
         }
 
         public static class ValidationExpressions

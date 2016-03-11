@@ -298,9 +298,6 @@
           </Key>
           <Property Name="ReviewId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Order_Id" Type="int" Nullable="false" />
-          <Property Name="Score1" Type="tinyint" />
-          <Property Name="Score2" Type="tinyint" />
-          <Property Name="Score3" Type="tinyint" />
           <Property Name="FeedBack" Type="tinyint" />
           <Property Name="Comment" Type="nvarchar" MaxLength="600" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -491,6 +488,7 @@
           <Parameter Name="MemberId" Type="int" Mode="In" />
           <Parameter Name="CommentText" Type="varchar" Mode="In" />
           <Parameter Name="Id" Type="int" Mode="InOut" />
+          <Parameter Name="DeviceToken" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="Complaint_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LoadType" Type="tinyint" Mode="In" />
@@ -533,6 +531,7 @@
           <Parameter Name="paraId" Type="int" Mode="In" />
           <Parameter Name="isLike" Type="bit" Mode="In" />
           <Parameter Name="isFavorite" Type="bit" Mode="In" />
+          <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="LinkMap_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Master_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -652,8 +651,9 @@
           <Parameter Name="classDate" Type="datetime" Mode="In" />
           <Parameter Name="comment" Type="varchar" Mode="In" />
           <Parameter Name="saveType" Type="tinyint" Mode="In" />
-          <Parameter Name="paraId" Type="int" Mode="InOut" />
+          <Parameter Name="paraId" Type="int" Mode="In" />
           <Parameter Name="result" Type="tinyint" Mode="InOut" />
+          <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="OrderCoin_Update_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="paraId" Type="int" Mode="In" />
@@ -661,6 +661,7 @@
           <Parameter Name="studentId" Type="int" Mode="In" />
           <Parameter Name="teacherId" Type="int" Mode="In" />
           <Parameter Name="result" Type="tinyint" Mode="InOut" />
+          <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="OrderStatus_ListHandler_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="memberId" Type="int" Mode="In" />
@@ -675,6 +676,11 @@
           <Parameter Name="Split" Type="varchar" Mode="In" />
         </Function>
         <Function Name="ReportClassMemberNum_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ReportOrderRemind_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LoadType" Type="tinyint" Mode="In" />
+          <Parameter Name="Para" Type="int" Mode="In" />
+          <Parameter Name="LastHandleDate" Type="datetime" Mode="InOut" />
+        </Function>
         <Function Name="ReportOrderStatus_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LoadType" Type="tinyint" Mode="In" />
           <Parameter Name="BeginDate" Type="datetime" Mode="In" />
@@ -701,13 +707,12 @@
         <Function Name="StudentReview_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="orderId" Type="int" Mode="In" />
           <Parameter Name="classId" Type="int" Mode="In" />
-          <Parameter Name="scoreA" Type="int" Mode="In" />
-          <Parameter Name="scoreB" Type="int" Mode="In" />
-          <Parameter Name="scoreC" Type="int" Mode="In" />
           <Parameter Name="feedBack" Type="tinyint" Mode="In" />
           <Parameter Name="comment" Type="varchar" Mode="In" />
-          <Parameter Name="paraId" Type="int" Mode="InOut" />
           <Parameter Name="priComment" Type="varchar" Mode="In" />
+          <Parameter Name="paraId" Type="int" Mode="InOut" />
+          <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
+          <Parameter Name="phone" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="SystemNotification_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="TeacherReview_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -721,6 +726,8 @@
           <Parameter Name="comment" Type="varchar" Mode="In" />
           <Parameter Name="paraId" Type="int" Mode="InOut" />
           <Parameter Name="priComment" Type="varchar" Mode="In" />
+          <Parameter Name="deviceToken" Type="varchar" Mode="InOut" />
+          <Parameter Name="phone" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="TopBanner_LoadAll_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Verification_Save_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -738,6 +745,7 @@
           <Parameter Name="ParaValue" Type="nvarchar" Mode="In" />
           <Parameter Name="Result" Type="tinyint" Mode="InOut" />
         </Function>
+        <Function Name="WeChatUser_Load_p" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -752,7 +760,6 @@
           <EntitySet Name="MetaTag" EntityType="SkillBank.Site.DataSource.Data.MetaTag" />
           <EntitySet Name="Order" EntityType="SkillBank.Site.DataSource.Data.Order" />
           <EntitySet Name="SkillCategory" EntityType="SkillBank.Site.DataSource.Data.SkillCategory" />
-          <EntitySet Name="StudentReview" EntityType="SkillBank.Site.DataSource.Data.StudentReview" />
           <EntitySet Name="TeacherReview" EntityType="SkillBank.Site.DataSource.Data.TeacherReview" />
           <FunctionImport Name="Blurbs_LoadByLanguageSiteVersion_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Blurbs_LoadByLanguageSiteVersion_p_Result)">
             <Parameter Name="Language" Mode="In" Type="String" />
@@ -871,8 +878,9 @@
             <Parameter Name="classDate" Mode="In" Type="DateTime" />
             <Parameter Name="comment" Mode="In" Type="String" />
             <Parameter Name="saveType" Mode="In" Type="Byte" />
-            <Parameter Name="paraId" Mode="InOut" Type="Int32" />
+            <Parameter Name="paraId" Mode="In" Type="Int32" />
             <Parameter Name="result" Mode="InOut" Type="Byte" />
+            <Parameter Name="deviceToken" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="OrderCoin_Update_p">
             <Parameter Name="paraId" Mode="In" Type="Int32" />
@@ -880,6 +888,7 @@
             <Parameter Name="studentId" Mode="In" Type="Int32" />
             <Parameter Name="teacherId" Mode="In" Type="Int32" />
             <Parameter Name="result" Mode="InOut" Type="Byte" />
+            <Parameter Name="deviceToken" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SkillCategory_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.SkillCategory_LoadAll_p_Result)" />
           <FunctionImport Name="StudentReview_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.StudentReview_Load_p_Result)">
@@ -889,13 +898,12 @@
           <FunctionImport Name="StudentReview_Save_p">
             <Parameter Name="orderId" Mode="In" Type="Int32" />
             <Parameter Name="classId" Mode="In" Type="Int32" />
-            <Parameter Name="scoreA" Mode="In" Type="Int32" />
-            <Parameter Name="scoreB" Mode="In" Type="Int32" />
-            <Parameter Name="scoreC" Mode="In" Type="Int32" />
             <Parameter Name="feedBack" Mode="In" Type="Byte" />
             <Parameter Name="comment" Mode="In" Type="String" />
-            <Parameter Name="paraId" Mode="InOut" Type="Int32" />
             <Parameter Name="priComment" Mode="In" Type="String" />
+            <Parameter Name="paraId" Mode="InOut" Type="Int32" />
+            <Parameter Name="deviceToken" Mode="InOut" Type="String" />
+            <Parameter Name="phone" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="TeacherReview_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.TeacherReview_Load_p_Result)">
             <Parameter Name="loadBy" Mode="In" Type="Int32" />
@@ -908,6 +916,8 @@
             <Parameter Name="comment" Mode="In" Type="String" />
             <Parameter Name="paraId" Mode="InOut" Type="Int32" />
             <Parameter Name="priComment" Mode="In" Type="String" />
+            <Parameter Name="deviceToken" Mode="InOut" Type="String" />
+            <Parameter Name="phone" Mode="InOut" Type="String" />
           </FunctionImport>
           <EntitySet Name="ClassInfo" EntityType="SkillBank.Site.DataSource.Data.ClassInfo" />
           <EntitySet Name="BlurbsMain" EntityType="SkillBank.Site.DataSource.Data.BlurbsMain" />
@@ -1003,6 +1013,7 @@
             <Parameter Name="paraId" Mode="In" Type="Int32" />
             <Parameter Name="isLike" Mode="In" Type="Boolean" />
             <Parameter Name="isFavorite" Mode="In" Type="Boolean" />
+            <Parameter Name="deviceToken" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="ClassInfo_LoadByList_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ClassInfo_LoadByList_p_Result)">
             <Parameter Name="loadType" Mode="In" Type="Byte" />
@@ -1046,6 +1057,7 @@
             <Parameter Name="MemberId" Mode="In" Type="Int32" />
             <Parameter Name="CommentText" Mode="In" Type="String" />
             <Parameter Name="Id" Mode="InOut" Type="Int32" />
+            <Parameter Name="DeviceToken" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="Master_Save_p">
             <Parameter Name="MemberId" Mode="In" Type="Int32" />
@@ -1185,6 +1197,13 @@
           <FunctionImport Name="LinkMap_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.LinkMap_LoadAll_p_Result)" />
           <FunctionImport Name="PortalBanner_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.PortalBanner_LoadAll_p_Result)" />
           <FunctionImport Name="TopBanner_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.TopBanner_LoadAll_p_Result)" />
+          <EntitySet Name="StudentReviews" EntityType="SkillBank.Site.DataSource.Data.StudentReview" />
+          <FunctionImport Name="ReportOrderRemind_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ReportOrderRemind_Load_p_Result)">
+            <Parameter Name="LoadType" Mode="In" Type="Byte" />
+            <Parameter Name="Para" Mode="In" Type="Int32" />
+            <Parameter Name="LastHandleDate" Mode="InOut" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="WeChatUser_Load_p" ReturnType="Collection(String)" />
         </EntityContainer>
         <EntityType Name="CategoryPopTag">
           <Key>
@@ -1283,20 +1302,6 @@
           <Property Name="Blurb_Id" Type="Int32" Nullable="false" />
           <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
           <Property Name="Parent_CategoryId" Type="Byte" />
-        </EntityType>
-        <EntityType Name="StudentReview">
-          <Key>
-            <PropertyRef Name="ReviewId" />
-          </Key>
-          <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Order_Id" Type="Int32" Nullable="false" />
-          <Property Name="Score1" Type="Byte" />
-          <Property Name="Score2" Type="Byte" />
-          <Property Name="Score3" Type="Byte" />
-          <Property Name="FeedBack" Type="Byte" />
-          <Property Name="Comment" Type="String" MaxLength="600" Unicode="true" FixedLength="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PrivateComment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="TeacherReview">
           <Key>
@@ -1925,6 +1930,23 @@
           <Property Type="Byte" Name="LinkType" Nullable="false" />
           <Property Type="Int32" Name="BannerId" Nullable="false" />
         </ComplexType>
+        <EntityType Name="StudentReview">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Type="Int32" Name="ReviewId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Order_Id" Nullable="false" />
+          <Property Type="Byte" Name="FeedBack" />
+          <Property Type="String" Name="Comment" MaxLength="600" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+          <Property Type="String" Name="PrivateComment" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="ReportOrderRemind_Load_p_Result">
+          <Property Type="Int32" Name="MemberId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DeviceToken" Nullable="false" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2035,21 +2057,6 @@
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Blurb_Id" ColumnName="Blurb_Id" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StudentReview">
-            <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.StudentReview">
-              <MappingFragment StoreEntitySet="StudentReview">
-                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
-                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
-                <ScalarProperty Name="Score1" ColumnName="Score1" />
-                <ScalarProperty Name="Score2" ColumnName="Score2" />
-                <ScalarProperty Name="Score3" ColumnName="Score3" />
-                <ScalarProperty Name="FeedBack" ColumnName="FeedBack" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="PrivateComment" ColumnName="PrivateComment" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2809,6 +2816,29 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="StudentReviews">
+            <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.StudentReview">
+              <MappingFragment StoreEntitySet="StudentReview">
+                <ScalarProperty Name="PrivateComment" ColumnName="PrivateComment" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="FeedBack" ColumnName="FeedBack" />
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ReportOrderRemind_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ReportOrderRemind_Load_p">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ReportOrderRemind_Load_p_Result">
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="DeviceToken" ColumnName="DeviceToken" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="WeChatUser_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.WeChatUser_Load_p" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

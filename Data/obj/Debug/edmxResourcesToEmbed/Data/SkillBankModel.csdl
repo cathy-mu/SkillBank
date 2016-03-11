@@ -10,7 +10,6 @@
     <EntitySet Name="MetaTag" EntityType="SkillBank.Site.DataSource.Data.MetaTag" />
     <EntitySet Name="Order" EntityType="SkillBank.Site.DataSource.Data.Order" />
     <EntitySet Name="SkillCategory" EntityType="SkillBank.Site.DataSource.Data.SkillCategory" />
-    <EntitySet Name="StudentReview" EntityType="SkillBank.Site.DataSource.Data.StudentReview" />
     <EntitySet Name="TeacherReview" EntityType="SkillBank.Site.DataSource.Data.TeacherReview" />
     <FunctionImport Name="Blurbs_LoadByLanguageSiteVersion_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.Blurbs_LoadByLanguageSiteVersion_p_Result)">
       <Parameter Name="Language" Mode="In" Type="String" />
@@ -129,8 +128,9 @@
       <Parameter Name="classDate" Mode="In" Type="DateTime" />
       <Parameter Name="comment" Mode="In" Type="String" />
       <Parameter Name="saveType" Mode="In" Type="Byte" />
-      <Parameter Name="paraId" Mode="InOut" Type="Int32" />
+      <Parameter Name="paraId" Mode="In" Type="Int32" />
       <Parameter Name="result" Mode="InOut" Type="Byte" />
+      <Parameter Name="deviceToken" Mode="InOut" Type="String" />
     </FunctionImport>
     <FunctionImport Name="OrderCoin_Update_p">
       <Parameter Name="paraId" Mode="In" Type="Int32" />
@@ -138,6 +138,7 @@
       <Parameter Name="studentId" Mode="In" Type="Int32" />
       <Parameter Name="teacherId" Mode="In" Type="Int32" />
       <Parameter Name="result" Mode="InOut" Type="Byte" />
+      <Parameter Name="deviceToken" Mode="InOut" Type="String" />
     </FunctionImport>
     <FunctionImport Name="SkillCategory_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.SkillCategory_LoadAll_p_Result)" />
     <FunctionImport Name="StudentReview_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.StudentReview_Load_p_Result)">
@@ -147,13 +148,12 @@
     <FunctionImport Name="StudentReview_Save_p">
       <Parameter Name="orderId" Mode="In" Type="Int32" />
       <Parameter Name="classId" Mode="In" Type="Int32" />
-      <Parameter Name="scoreA" Mode="In" Type="Int32" />
-      <Parameter Name="scoreB" Mode="In" Type="Int32" />
-      <Parameter Name="scoreC" Mode="In" Type="Int32" />
       <Parameter Name="feedBack" Mode="In" Type="Byte" />
       <Parameter Name="comment" Mode="In" Type="String" />
-      <Parameter Name="paraId" Mode="InOut" Type="Int32" />
       <Parameter Name="priComment" Mode="In" Type="String" />
+      <Parameter Name="paraId" Mode="InOut" Type="Int32" />
+      <Parameter Name="deviceToken" Mode="InOut" Type="String" />
+      <Parameter Name="phone" Mode="InOut" Type="String" />
     </FunctionImport>
     <FunctionImport Name="TeacherReview_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.TeacherReview_Load_p_Result)">
       <Parameter Name="loadBy" Mode="In" Type="Int32" />
@@ -166,6 +166,8 @@
       <Parameter Name="comment" Mode="In" Type="String" />
       <Parameter Name="paraId" Mode="InOut" Type="Int32" />
       <Parameter Name="priComment" Mode="In" Type="String" />
+      <Parameter Name="deviceToken" Mode="InOut" Type="String" />
+      <Parameter Name="phone" Mode="InOut" Type="String" />
     </FunctionImport>
     <EntitySet Name="ClassInfo" EntityType="SkillBank.Site.DataSource.Data.ClassInfo" />
     <EntitySet Name="BlurbsMain" EntityType="SkillBank.Site.DataSource.Data.BlurbsMain" />
@@ -261,6 +263,7 @@
       <Parameter Name="paraId" Mode="In" Type="Int32" />
       <Parameter Name="isLike" Mode="In" Type="Boolean" />
       <Parameter Name="isFavorite" Mode="In" Type="Boolean" />
+      <Parameter Name="deviceToken" Mode="InOut" Type="String" />
     </FunctionImport>
     <FunctionImport Name="ClassInfo_LoadByList_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ClassInfo_LoadByList_p_Result)">
       <Parameter Name="loadType" Mode="In" Type="Byte" />
@@ -304,6 +307,7 @@
       <Parameter Name="MemberId" Mode="In" Type="Int32" />
       <Parameter Name="CommentText" Mode="In" Type="String" />
       <Parameter Name="Id" Mode="InOut" Type="Int32" />
+      <Parameter Name="DeviceToken" Mode="InOut" Type="String" />
     </FunctionImport>
     <FunctionImport Name="Master_Save_p">
       <Parameter Name="MemberId" Mode="In" Type="Int32" />
@@ -443,6 +447,13 @@
     <FunctionImport Name="LinkMap_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.LinkMap_LoadAll_p_Result)" />
     <FunctionImport Name="PortalBanner_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.PortalBanner_LoadAll_p_Result)" />
     <FunctionImport Name="TopBanner_LoadAll_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.TopBanner_LoadAll_p_Result)" />
+    <EntitySet Name="StudentReviews" EntityType="SkillBank.Site.DataSource.Data.StudentReview" />
+    <FunctionImport Name="ReportOrderRemind_Load_p" ReturnType="Collection(SkillBank.Site.DataSource.Data.ReportOrderRemind_Load_p_Result)">
+      <Parameter Name="LoadType" Mode="In" Type="Byte" />
+      <Parameter Name="Para" Mode="In" Type="Int32" />
+      <Parameter Name="LastHandleDate" Mode="InOut" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="WeChatUser_Load_p" ReturnType="Collection(String)" />
   </EntityContainer>
   <EntityType Name="CategoryPopTag">
     <Key>
@@ -541,20 +552,6 @@
     <Property Name="Blurb_Id" Type="Int32" Nullable="false" />
     <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
     <Property Name="Parent_CategoryId" Type="Byte" />
-  </EntityType>
-  <EntityType Name="StudentReview">
-    <Key>
-      <PropertyRef Name="ReviewId" />
-    </Key>
-    <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Order_Id" Type="Int32" Nullable="false" />
-    <Property Name="Score1" Type="Byte" />
-    <Property Name="Score2" Type="Byte" />
-    <Property Name="Score3" Type="Byte" />
-    <Property Name="FeedBack" Type="Byte" />
-    <Property Name="Comment" Type="String" MaxLength="600" Unicode="true" FixedLength="false" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="PrivateComment" Type="String" Nullable="false" MaxLength="300" Unicode="true" FixedLength="false" />
   </EntityType>
   <EntityType Name="TeacherReview">
     <Key>
@@ -1182,5 +1179,22 @@
     <Property Type="Byte" Name="Rank" Nullable="false" />
     <Property Type="Byte" Name="LinkType" Nullable="false" />
     <Property Type="Int32" Name="BannerId" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="StudentReview">
+    <Key>
+      <PropertyRef Name="ReviewId" />
+    </Key>
+    <Property Type="Int32" Name="ReviewId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="Order_Id" Nullable="false" />
+    <Property Type="Byte" Name="FeedBack" />
+    <Property Type="String" Name="Comment" MaxLength="600" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
+    <Property Type="String" Name="PrivateComment" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <ComplexType Name="ReportOrderRemind_Load_p_Result">
+    <Property Type="Int32" Name="MemberId" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="DeviceToken" Nullable="false" MaxLength="100" />
   </ComplexType>
 </Schema>

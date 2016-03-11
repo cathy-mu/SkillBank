@@ -13,8 +13,8 @@ namespace SkillBank.Site.Services.Managers
     {
         List<TeacherReviewItem> GetTeacherReviewsByMemberId(int memberId, int maxReviewId = 0);
         //List<StudentReviewItem> GetStudentReviewsByMemberId(int memberId, int maxReviewId = 0);
-        Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, String privateComment);
-        Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, String privateComment);
+        Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, out String deviceToken, out String phone);
+        Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, out String deviceToken, out String phone);
         List<MemberReviewItem> GetClassReviews(Byte loadBy, int memberId, int classId, Byte feedback = 0, int maxReviewId = 0);
         List<MemberReviewItem> GetMemberReviews(Byte loadBy, int memberId, Byte feedback = 0, int maxReviewId = 0);
     }
@@ -47,15 +47,15 @@ namespace SkillBank.Site.Services.Managers
             return result;
         }
 
-        public Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, String privateComment)
+        public Boolean AddStudentReview(int orderId, int classId, Byte feedBack, String comment, out String deviceToken, out String phone)
         {
-            var result = _stdReviewRep.AddStudentReview(orderId, classId, 0, 0, 0, feedBack, comment, privateComment);
+            var result = _stdReviewRep.AddStudentReview(orderId, classId, feedBack, comment, out deviceToken, out phone);
             return (result > 0);
         }
 
-        public Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, String privateComment)
+        public Boolean AddTeacherReview(int orderId, Byte feedBack, String comment, out String deviceToken, out String phone)
         {
-            var result = _teaReviewRep.AddTeacherReview(orderId, feedBack, comment, privateComment);
+            var result = _teaReviewRep.AddTeacherReview(orderId, feedBack, comment, out deviceToken, out phone);
             return (result > 0);
         }
 
@@ -71,6 +71,6 @@ namespace SkillBank.Site.Services.Managers
             return result;
         }
 
-        
+
     }
 }

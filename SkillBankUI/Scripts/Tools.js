@@ -49,6 +49,25 @@
             updateCredit(type, 0, 0);
         });
     }
+    else if ($("#orderremind-btn").length > 0) {
+        $("#orderremind-btn").click(function () {
+            var savePath = "/Tools/RemindOrder";
+            $.ajax({
+                url: savePath,
+                type: "POST",
+                dataType: "Json",
+                data: null,
+                cache: false,
+                success: function (data) {
+                    if (data) {
+                        alert("已发送提醒");
+                    } else {
+                        alert("发送提醒失败，请以管理员身份登陆");
+                    }
+                }
+            });
+        });
+    }
     else {
         var llCookieName = "debugll";
         var memberIdCookieName = "mid";
@@ -129,7 +148,7 @@
 
         }
 
-        
+
         $('#btn1').click(function () {
             var memberId = $('#memberid1').val();
             if (memberId != "" && memberId > 0) {
@@ -197,7 +216,7 @@
                 alert("我是无辜的机器人。麻烦你检查下参数都填好了吗？");
             }
         });
-                      
+
 
         $("#logoutbtn").click(function () {
             $.ajax({
@@ -215,7 +234,7 @@
             sitecommon.setCookie(sitecommon.memberIdCookieName, 0);
             sitecommon.removeCookie("sai");
             sitecommon.removeCookie("sid");
-         });
+        });
 
 
         $("#unbindmobile").click(function () {
@@ -315,18 +334,19 @@
         //            alert("举报成功");
         //        }
         //    });
-         
+
         //});
 
         $(".handlecomplaint").click(function () {
-            if (confirm("确认处理此条举报吗？")) {
-                var id = $(this).attr("data-id");
+            var id = $(this).attr("data-id");
+            if (confirm("确认已处理记录号为： " + id + " 的对：   " + $(this).attr("data-name") + "    的举报吗？")) {
                 $.ajax({
                     url: "/api/Complaint?id=" + id,
                     type: "PUT",
                     dataType: "Json",
                     cache: false,
                     success: function (data) {
+                        alert("此记录处理完毕");
                         window.location.reload();
                     }, error: function (e) {
                         alert("出错啦，确认以管理员身份登录啊~");
@@ -370,6 +390,7 @@
             }
         });
     }
+
 
 
 });

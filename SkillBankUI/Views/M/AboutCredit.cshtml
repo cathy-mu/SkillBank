@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "关注";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+@Html.Partial("_MobileMenuPartial")
+<div class="setting-page setting-credit-page content">
+    <header class="mb-05">
+        <div class="main">
+            <span class="page-title" align="center">积分介绍</span>
+        </div>
+    </header>
+    <div class="desc-nums">
+        <span>担心课币不够花，这将是你赚取课币的新途径。通过以下几种方式获得积分，累积30个积分就可以兑换一枚课币。我们会不断增加新的方式，赶紧行动起来吧~</span>
+    </div>
+    <br />
+
+    <div class="card getcoin-bars">
+        <ul class="table-view">
+            @if (ViewBag.MissStudentReview > 0)
+            {
+                <li class="table-view-cell getcredit-method"><a class="navigate-right" href="@Url.Action("learning", "m")"><span class="addmethod">积分+10</span>每次课后给老师评价</a></li>
+            }
+            else
+            {
+                <li class="table-view-cell getcredit-method"><a class=""><span class="addmethod">积分+10</span>每次课后给老师评价</a></li>
+            }
+
+            @if (ViewBag.MissTeacherReview > 0)
+            {
+                <li class="table-view-cell getcredit-method"><a class="navigate-right" href="@Url.Action("teaching", "m")"><span class="addmethod">积分+&nbsp;&nbsp;6</span>每次课后给学生评价</a></li>
+            }
+            else
+            {
+                <li class="table-view-cell getcredit-method"><a class=""><span class="addmethod">积分+&nbsp;&nbsp;6</span>每次课后给学生评价</a></li>
+            }
+            @if (ViewBag.IsSignIn > 0)
+            {
+                <li class="table-view-cell getcredit-method"><a class=""><span class="addmethod">积分+&nbsp;&nbsp;2</span>每日签到一次</a></li>
+            }
+            else
+            {
+                <li class="table-view-cell getcredit-method"><a class="navigate-right" href="@Url.Action("dashboard", "m")"><span class="addmethod">积分+&nbsp;&nbsp;2</span>每日签到一次</a></li>
+            }
+        </ul>
+    </div>
+
+
+</div>
+

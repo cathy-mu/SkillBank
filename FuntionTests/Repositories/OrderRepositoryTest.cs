@@ -88,7 +88,8 @@ namespace SkillBank.FunctionTests
             order.Class_Id = _classId;
             order.BookedDate = DateTime.Now.AddDays(1);
             order.Remark = "Here is remark";
-            int orderId = _repository.AddOrder(order.Student_Id, order.Class_Id, order.BookedDate, order.Remark);
+            String deviceToken = "";
+            int orderId = _repository.AddOrder(out deviceToken, order.Student_Id, order.Class_Id, order.BookedDate, order.Remark);
 
             Assert.AreEqual(orderId,-1);
         }

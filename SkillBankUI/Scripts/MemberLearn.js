@@ -42,24 +42,28 @@ function memberlearn_Class() {
 
         if (feedbackCtl.length > 0) {
             var feedback = feedbackCtl.parent().attr("data-value");
-            var paraData = { orderid: orderId, classid: classId, feedback: feedback, comment: $("#feedback-comment").val() };
-            consoleLog(paraData);
+            //var data = { orderid: orderId, classid: classId, feedback: feedback, comment: $("#feedback-comment").val() };
+            var data = {
+                "OrderId": orderId,
+                "Feedback": feedback,
+                "Comment":  $("#feedback-comment").val(),
+                "IsStudent": true
+            };
+            var savePath = "/api/orderreview";
+            
+            consoleLog(data);
             if (typeof (mixpanel) != "undefined") {
                 mixpanel.track("student give review");
             }
 
-            var savePath = "/OrderHelper/ReviewOrder";
             $.ajax({
                 url: savePath,
                 type: "POST",
                 dataType: "Json",
-                data: paraData,
+                data: data,
                 cache: false,
                 success: function (data) {
-                    consoleLog(data);
-                    if (data == "true") {
-                        window.location.reload();
-                    }
+                    window.location.reload();
                 }
             });
         }

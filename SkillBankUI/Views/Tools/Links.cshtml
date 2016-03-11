@@ -25,6 +25,9 @@
             <a href="@Url.Action("prove", "tools")" target="_blank">@Html.GetTrans(572)</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("rejected", "tools")" target="_blank">查看被拒绝的课程</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="退出登录" id="logoutbtn" />
             <br />
             <br />
+            <a href="@Url.Action("OrderRemind", "tools")" target="_blank">提醒老师接受订单</a>
+            <br />
+            <br />
             <span class="inputtitle">Show Blurb Id</span><input type="button" value="Show Blurb" id="showll" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Hide Blurb" id="hidell" />
             <br />
             <br />
@@ -109,10 +112,11 @@
         <div class="toolgroup">
             <fieldset>
                 <legend>用户举报</legend>
+                <span >对用户处理或忽略，可点击处理按钮，记录将不在举报列表中显示</span>
                 <table>
                 <tr>
-                    <td style="width: 200px;">举报号</td>
-                    <td style="width: 200px;">嫌疑人</td>
+                    <td style="width: 100px;">举报号</td>
+                    <td style="width: 200px;">嫌疑人/被举报</td>
                     <td style="width: 200px;">类型</td>
                     <td style="width: 200px;">举报人</td>
                     <td style="width: 200px;">举报时间</td>
@@ -126,7 +130,7 @@
                         <td>@(item.Type.Equals(1)?"收费":(item.Type.Equals(21)?"骚扰":"其它"))</td>
                         <td><a href="@Url.Action("index", "profile", new {id = item.Member_Id })" target="_blank">@item.Name</a></td>
                         <td>@item.CreatedDate.ToString("yy-MM-dd hh:mm")</td>
-                        <td><a class="handlecomplaint" data-id="@item.ComplaintId">处理 @item.ComplaintId</a></td>
+                        <td><a class="handlecomplaint" data-id="@item.ComplaintId" data-name="@item.RelatedName">处理 @item.ComplaintId</a></td>
                     </tr>
                 }
             </table></fieldset>

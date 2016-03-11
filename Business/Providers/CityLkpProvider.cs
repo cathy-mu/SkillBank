@@ -21,6 +21,7 @@ namespace SkillBank.Site.Services.CacheProviders
     public interface ICityLkpProvider
     {
         Dictionary<String, Dictionary<int, CityInfo>> GetCitys();
+        //List<CityInfo> GetCityList(String localeCode);
         Dictionary<int, CityInfo> GetCityLkp(String localeCode);
         Dictionary<int, CityInfo> GetClassCityLkp(String localeCode);
     }
@@ -126,6 +127,19 @@ namespace SkillBank.Site.Services.CacheProviders
 
             return null;
         }
+
+        //public List<CityInfo> GetCityList(String localeCode)
+        //{
+        //    var citys = this.GetItem(GetKey());
+        //    if (citys != null && citys.Count() > 0 && citys.ContainsKey(localeCode))
+        //    {
+        //        var result = citys[localeCode];
+        //        var list = result.Values.ToList<CityInfo>();
+        //        return list;
+        //    }
+
+        //    return null;
+        //}
 
         public Dictionary<int, CityInfo> GetCityLkp(String localeCode)
         {

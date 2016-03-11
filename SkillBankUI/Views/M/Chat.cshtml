@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_MobileLayout.cshtml";
 }
 <div class="chat-page bar bar-footer">
-    <form id="form-write" data-contactid="@(Model.Contact==null?0:Model.Contact.MemberId)" data-avatar="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mm")" data-fromname="@ViewBag.MemberInfo.Name" data-tomobile="@ViewBag.ContactMobile">
+    <form id="form-write" data-contactid="@(Model.Contact==null?0:Model.Contact.MemberId)" data-avatar="@ContentHelper.GetAvatarPath(ViewBag.MemberInfo.Avatar, "mm")" data-fromname="@ViewBag.MemberInfo.Name" data-tomobile="@ViewBag.ContactMobile" data-hasrctoken="@(!String.IsNullOrEmpty(ViewBag.MemberInfo.RCToken))">
         <textarea id="write-box" rows="1"></textarea>
         <div class="pull-right">
             <button class="btn btn-link" disabled>发送</button>

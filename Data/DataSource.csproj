@@ -206,6 +206,9 @@
     <Compile Include="Data\ReportNumItem.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\ReportOrderRemind_Load_p_Result.cs">
+      <DependentUpon>SkillBankModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\ReportOrderStatus_Load_p_Result.cs">
       <DependentUpon>SkillBankModel.tt</DependentUpon>
     </Compile>
@@ -296,6 +299,7 @@
     <Compile Include="Model\SocialCacheItem.cs" />
     <Compile Include="Model\StudentReviewItem.cs" />
     <Compile Include="Model\TeacherReviewItem.cs" />
+    <Compile Include="Model\WeChatUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

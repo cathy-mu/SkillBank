@@ -270,10 +270,12 @@ namespace SkillBank.Controllers
             return View(classDetailModel);
         }
 
-        public ActionResult Message()
+        public ActionResult Message(int tabid = 0)
         {
             ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("message");
             ViewBag.ActiveTab = 1;
+            ViewBag.TopMenuTab = tabid;
+
 
             int memberId = GetCurrentMemberInfo(true);
 
@@ -941,6 +943,51 @@ namespace SkillBank.Controllers
             ViewBag.MissTeacherReview = numDic[Enums.NumberDictionaryKey.MissTeacherReview];
             ViewBag.IsSignIn = numDic[Enums.NumberDictionaryKey.IsSignIn];
 
+            return View();
+        }
+
+
+
+        public ActionResult RCChat(int id = 2)
+        {
+            ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("chat");
+
+            int contactId = id;
+            int memberId = GetCurrentMemberInfo(false);//true
+            var contact = _commonService.GetMemberInfo(contactId);
+            if (contact != null)
+            {
+                ViewBag.ContactName = contact.Name;
+                ViewBag.ContactId = contactId;
+                ViewBag.ContactAvatar = contact.Avatar;
+            }
+            
+            //LoadNotificationAlert(currMemberId);
+
+
+            //MessageDetailModel messageDetailModel = new MessageDetailModel();
+            //if (memberId > 0 && memberId != contactId && contactId > 0)
+            //{
+            //    var messages = _commonService.GetMessageDetail(memberId, contactId, (Byte)Enums.DBAccess.MessageLoadType.DateAsc);
+            //    messageDetailModel.Messages = messages;
+            //    var contact = _commonService.GetMemberInfo(contactId);
+            //    messageDetailModel.Contact = contact;
+            //    //messageDetailModel.ContactClass = _commonService.GetClassInfoById(contactId, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherPublished);
+            //    messageDetailModel.MaxMessageId = (messages == null || messages.Count.Equals(0)) ? 0 : messageDetailModel.Messages.Max(m => m.MessageId);
+
+            //    //TO DO : Move to client side with set max message id
+            //    _commonService.SetMessageAsRead(0, memberId, contactId);
+            //    ViewBag.ContactMobile = (contact.NotifyTag & 1).Equals(1) ? contact.Phone : "";//for send SMS notify
+            //}
+            return View();
+        }
+
+
+        public ActionResult RCChatList()
+        {
+            ViewBag.MetaTagTitle = MetaTagHelper.GetMetaTitle("message");
+
+            //var memberId = GetCurrentMemberInfo(true);
             return View();
         }
 

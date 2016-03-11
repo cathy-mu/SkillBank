@@ -18,7 +18,7 @@ namespace SkillBank.Site.DataSource.Data
 {
     public interface IStudentReviewRepository
     {
-        int AddStudentReview(int orderId, int classId, Byte scoreA, Byte scoreB, Byte scoreC, Byte feedBack, String comment, String privateComment);
+        int AddStudentReview(int orderId, int classId, Byte feedBack, String comment, out String deviceToken, out String phone);
         List<StudentReviewItem> GetStudentReviews(Byte loadBy, int paraid);
         List<MemberReviewItem> GetClassReviews(Byte loadBy, int memberId, int classId, Byte feedback, int maxReviewId);
         List<MemberReviewItem> GetMemberReviews(Byte loadBy, int memberId, Byte feedback, int maxReviewId);
@@ -31,9 +31,9 @@ namespace SkillBank.Site.DataSource.Data
         {
         }
 
-        public int AddStudentReview(int orderId, int classId, Byte scoreA, Byte scoreB, Byte scoreC, Byte feedBack, String comment, String privateComment)
+        public int AddStudentReview(int orderId, int classId, Byte feedBack, String comment, out String deviceToken, out String phone)
         {
-            return StudentReview_Add_p(orderId, classId, scoreA, scoreB, scoreC, feedBack, comment, privateComment);
+            return StudentReview_Add_p(orderId, classId, feedBack, comment, out deviceToken, out phone);
         }
 
         public List<StudentReviewItem> GetStudentReviews(Byte loadBy, int paraid)
@@ -42,19 +42,23 @@ namespace SkillBank.Site.DataSource.Data
             return FeedBackMapper.Map(result);
         }
 
-        private int StudentReview_Add_p(int orderId, int classId, Byte scoreA, Byte scoreB, Byte scoreC, Byte feedBack, String comment, String privateComment)
+        private int StudentReview_Add_p(int orderId, int classId, Byte feedBack, String comment, out String deviceToken, out String phone)
         {
+            String privateComment = "";
+            deviceToken = "";
+            phone = "";
             ObjectParameter paraId = new ObjectParameter("paraId", 0);
             ObjectParameter orderIdParameter = new ObjectParameter("orderId", orderId);
             ObjectParameter classIdParameter = new ObjectParameter("classId", classId);
-            ObjectParameter score1Parameter = new ObjectParameter("scoreA", scoreA);
-            ObjectParameter score2Parameter = new ObjectParameter("scoreB", scoreB);
-            ObjectParameter score3Parameter = new ObjectParameter("scoreC", scoreC);
             ObjectParameter feedBackParameter = new ObjectParameter("feedBack", feedBack);
             ObjectParameter commentParameter = new ObjectParameter("comment", comment);
             ObjectParameter priComment = new ObjectParameter("priComment", privateComment);
+            ObjectParameter devicePara = new ObjectParameter("deviceToken", deviceToken);
+            ObjectParameter phonePara = new ObjectParameter("phone", phone);
 
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("StudentReview_Save_p", orderIdParameter, classIdParameter, score1Parameter, score2Parameter, score3Parameter, feedBackParameter, commentParameter, paraId, priComment);
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("StudentReview_Save_p", orderIdParameter, classIdParameter, feedBackParameter, commentParameter, paraId, priComment, devicePara, phonePara);
+            deviceToken = (String)devicePara.Value;
+            phone = (String)phonePara.Value;
             return (int)paraId.Value;
         }
 

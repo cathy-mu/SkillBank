@@ -14,10 +14,12 @@ namespace SkillBank.Site.Services.Managers
     public interface IReportToolsManager
     {
         List<ReportNumItem> GetReportClassMemberNum();
+        List<ReportOrderRemind_Load_p_Result> GetReportOrderRemindList(Byte loadBy, int dayBuffer, out DateTime handleDate);
         List<ReportOrderStatus_Load_p_Result> GetReportClassMemberNum(Byte loadBy, DateTime beginDate, DateTime endDate);
         List<RecommendationItem> GetRecommendation(int classId);
         void SaveMasterMember(int memberId, String paraStr, char split);
         void SaveRecommendationClass(int classId, String paraStr, char split);
+        List<String> GetWeChatUser();
     }
 
     public class ReportToolsManager : IReportToolsManager
@@ -39,6 +41,11 @@ namespace SkillBank.Site.Services.Managers
             return _repository.GetReportOrderStatus(loadBy, beginDate, endDate);
         }
 
+        public List<ReportOrderRemind_Load_p_Result> GetReportOrderRemindList(Byte loadBy, int dayBuffer, out DateTime handleDate)
+        {
+            return _repository.GetReportOrderRemindList(loadBy, dayBuffer, out handleDate);
+        }
+
         public List<RecommendationItem> GetRecommendation(int classId)
         {
             return _repository.GetRecommendation(classId);
@@ -53,7 +60,11 @@ namespace SkillBank.Site.Services.Managers
         {
             _repository.SaveRecommendationClass(classId, paraStr, split);
         }
-    
+
+        public List<String> GetWeChatUser()
+        {
+            return _repository.GetWeChatUser();
+        }
 
     }
 }

@@ -10,6 +10,7 @@ using SkillBank.Site.Web;
 using SkillBank.Site.Web.ViewModel;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.Services.Net.Mail;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBankWeb.Controllers
 {
@@ -84,14 +85,15 @@ namespace SkillBankWeb.Controllers
         /// <param name="classId"></param>
         /// <param name="isLike"></param>
         /// <returns></returns>
-        [HttpPost]
+        [Obsolete]
         public JsonResult UpdateLikeClass(int classId, Boolean isLike)
         {
             int memberId = WebContext.Current.MemberId;
-            _commonService.UpdateClassLikeTag(memberId, classId, isLike);
+            String deviceToken = "";
+            _commonService.UpdateClassLikeTag(memberId, classId, isLike, out deviceToken);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-                
+
         /// <summary>
         /// Ajax update class info (4 create class and class info edit page)
         /// </summary>
@@ -135,7 +137,7 @@ namespace SkillBankWeb.Controllers
             var result = _commonService.UpdateClassEditInfo(updateType, classId, infoValue);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -146,16 +148,11 @@ namespace SkillBankWeb.Controllers
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UpdateClassStatus(int classId, Byte infoValue, Byte saveType, Boolean isProved = true, String className = "", String name = "", String email = "", String mobile = "")
+        public JsonResult UpdateClassStatus(int classId, Byte infoValue, Byte saveType, Boolean isProved = true, String className = "", String name = "", String email = "", String mobile = "", String device = "")
         {
             Boolean result;
             //Active/Disactive course 
             if (saveType.Equals((Byte)Enums.DBAccess.ClassSaveType.SetActiveTag))
-            {
-                result = _commonService.UpdateClassEditInfo(saveType, classId, infoValue);
-            }
-            //Set new category
-            else if (saveType.Equals((Byte)Enums.DBAccess.ClassSaveType.UpdateCateId))
             {
                 result = _commonService.UpdateClassEditInfo(saveType, classId, infoValue);
             }
@@ -169,6 +166,11 @@ namespace SkillBankWeb.Controllers
                 {
                     if (isProved)//Send Class Prove notify
                     {
+                        if(!String.IsNullOrEmpty(device))
+                        {
+                            PushManager.PushNotification(device, (Byte)Enums.PushNotificationType.ClassProved);
+                        }
+
                         if (!String.IsNullOrEmpty(mobile))
                         {
                             _commonService.SendClassProveSMS(true, mobile, className, Constants.PageURL.MobileMyCoursePage);
@@ -180,6 +182,11 @@ namespace SkillBankWeb.Controllers
                     }
                     else //Send reject notify
                     {
+                        if (!String.IsNullOrEmpty(device))
+                        {
+                            PushManager.PushNotification(device, (Byte)Enums.PushNotificationType.ClassRejected);
+                        } 
+                        
                         if (!String.IsNullOrEmpty(mobile))
                         {
                             _commonService.SendClassProveSMS(false, mobile, className, Constants.PageURL.MobileMyCoursePage);
@@ -193,7 +200,16 @@ namespace SkillBankWeb.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
+
+        public JsonResult UpdateClassTagCategory(int classId, Byte cateId, String tags)
+        {
+            var result = false;
+            //Set category and tags
+            Byte saveType = (Byte)Enums.DBAccess.ClassSaveType.UpdateCategoryATags;
+            result = _commonService.UpdateClassEditInfo(saveType, classId, cateId, tags);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         /// <summary>
         /// Create new class
         /// </summary>
@@ -248,7 +264,7 @@ namespace SkillBankWeb.Controllers
 
                 if (cityId > 0 && cityId != memberInfo.CityId)
                 {
-                    _commonService.UpdateMemberInfo(memberId, (Byte)Enums.DBAccess.MemberSaveType.UpdateCity, cityId.ToString(), cityNoClass?"1":"");
+                    _commonService.UpdateMemberInfo(memberId, (Byte)Enums.DBAccess.MemberSaveType.UpdateCity, cityId.ToString(), cityNoClass ? "1" : "");
                 }
                 result.Data = new { classId = classId, type = actionType, memberId = memberId };
             }
@@ -271,41 +287,14 @@ namespace SkillBankWeb.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-
-        //[HttpPost]
-        //public JsonResult GetClassInfo(int cityId, Byte categoryId, Boolean isParentCate, int pageId, Byte type = (Byte)ClientSetting.ClassListOrderType.ByDisctince, Boolean asc = true)
-        //{
-        //    int memberId = WebContext.Current.MemberId;
-        //    var memberInfo = memberId > 0 ? _commonService.GetMemberInfo(memberId) : null;
-        //    ViewBag.MemberInfo = memberInfo;
-
-        //    int pageSize = 12;
-        //    int classNum = 0;
-        //    int pageNum = 0;
-        //    //List<ClassItem> result;
-        //    if (memberInfo != null)
-        //    {
-        //        var result = _commonService.SearchClass(cityId, categoryId, isParentCate, pageSize, pageId, out classNum, out pageNum, type, asc, memberInfo.PosX, memberInfo.PosY);
-        //        return Json(result, JsonRequestBehavior.AllowGet);
-        //    }
-        //    else
-        //    {
-        //        //not a member
-        //        var result = _commonService.SearchClass(cityId, categoryId, isParentCate, pageSize, pageId, out classNum, out pageNum, type, asc, 0, 0);
-        //        return Json(result, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
-        [HttpPost]
+        [Obsolete]
         public JsonResult AddComment(int classId, String comment)
         {
             int memberId = WebContext.Current.MemberId;
-            _commonService.AddComment(memberId, classId, comment);
+            String deviceToken = "";
+            _commonService.AddComment(memberId, classId, comment, out deviceToken);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        
-                 
 
-       
     }
 }

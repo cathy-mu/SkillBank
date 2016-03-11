@@ -121,7 +121,7 @@ namespace SkillBank.Site.Services.Net.SMS
         /// <param name="mobile"></param>
         /// <param name="className"></param>
         /// <param name="link"></param>
-        public static void SendOrderUpdateSms(Byte statusType, string mobile, String className)//, String link
+        public static void SendOrderUpdateSMS(Byte statusType, string mobile, String className)//, String link
         {
             long tpl_id = 0;
             String pageUrl = default(String);
@@ -134,10 +134,6 @@ namespace SkillBank.Site.Services.Net.SMS
                 //reject order
                 case 2: tpl_id = 781417;//您预订的《#class#》未被接受。请务必先和老师沟通过后再来订课，来完善你的自我介绍也会对订课有帮助哦。#link#
                     pageUrl = Constants.PageURL.MobileLearnPage;
-                    break;
-                //cancle order
-                case 3: tpl_id = 0;//cancle
-                    pageUrl = Constants.PageURL.MobileTeachPage;
                     break;
                 //accept order
                 case 4: tpl_id = 781423;//恭喜，老师已经接受了您预订的《#class#》,快来看一下吧#link#
@@ -159,13 +155,44 @@ namespace SkillBank.Site.Services.Net.SMS
                 case 9: tpl_id = 781451;//恭喜，学生已经对你的《#class#》支付了课币并做出了评价，快来看一下吧#link#
                     pageUrl = Constants.PageURL.MobileTeachPage;
                     break;
-
+                case (Byte)Enums.OrderStatus.TeacherCancled:
+                    tpl_id = 1237775;
+                    pageUrl = Constants.PageURL.MobileLearnPage;
+                    break;
                 default:
                     break;
             }
             if (!tpl_id.Equals(0))
             {
                 string tpl_value = "#class#=" + Uri.EscapeDataString(className) + "&#link#=" + Uri.EscapeDataString(pageUrl);
+                var result = tplSendSms(YunPianApiKey, tpl_id, tpl_value, mobile);
+            }
+        }
+
+        public static void SendSMSWithLink(Byte smsType, string mobile)
+        {
+            long tpl_id = 0;
+            String pageUrl = default(String);
+            switch (smsType)
+            {
+                //Student Review
+                case (Byte)Enums.SmsType.StudentReview: tpl_id = 1237773;
+                    pageUrl = Constants.PageURL.MobileInteractionPage;
+                    break;
+                //Teacher Review
+                case (Byte)Enums.SmsType.TeacherReview: tpl_id = 1237777;
+                    pageUrl = Constants.PageURL.MobileInteractionPage;
+                    break;
+                //Remind teacher accept book request
+                case (Byte)Enums.SmsType.BookRequestRemind: tpl_id = 1237767;
+                    pageUrl = Constants.PageURL.MobileTeachPage;
+                    break;
+                default:
+                    break;
+            }
+            if (!tpl_id.Equals(0))
+            {
+                string tpl_value = "#link#=" + Uri.EscapeDataString(pageUrl);
                 var result = tplSendSms(YunPianApiKey, tpl_id, tpl_value, mobile);
             }
         }
@@ -177,7 +204,7 @@ namespace SkillBank.Site.Services.Net.SMS
         /// <param name="mobile"></param>
         /// <param name="className"></param>
         /// <param name="link"></param>
-        public static void SendClassProveSms(Boolean isProve, string mobile, String className, String link)
+        public static void SendClassProveSMS(Boolean isProve, string mobile, String className, String link)
         {
             long tpl_id;
             if (isProve)

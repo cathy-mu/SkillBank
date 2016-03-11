@@ -108,21 +108,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="StudentReview">
-      <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.StudentReview">
-        <MappingFragment StoreEntitySet="StudentReview">
-          <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
-          <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
-          <ScalarProperty Name="Score1" ColumnName="Score1" />
-          <ScalarProperty Name="Score2" ColumnName="Score2" />
-          <ScalarProperty Name="Score3" ColumnName="Score3" />
-          <ScalarProperty Name="FeedBack" ColumnName="FeedBack" />
-          <ScalarProperty Name="Comment" ColumnName="Comment" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="PrivateComment" ColumnName="PrivateComment" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="TeacherReview">
       <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.TeacherReview">
         <MappingFragment StoreEntitySet="TeacherReview">
@@ -879,5 +864,28 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="StudentReviews">
+      <EntityTypeMapping TypeName="SkillBank.Site.DataSource.Data.StudentReview">
+        <MappingFragment StoreEntitySet="StudentReview">
+          <ScalarProperty Name="PrivateComment" ColumnName="PrivateComment" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="FeedBack" ColumnName="FeedBack" />
+          <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+          <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ReportOrderRemind_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.ReportOrderRemind_Load_p">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SkillBank.Site.DataSource.Data.ReportOrderRemind_Load_p_Result">
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="DeviceToken" ColumnName="DeviceToken" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="WeChatUser_Load_p" FunctionName="SkillBank.Site.DataSource.Data.Store.WeChatUser_Load_p" />
   </EntityContainerMapping>
 </Mapping>

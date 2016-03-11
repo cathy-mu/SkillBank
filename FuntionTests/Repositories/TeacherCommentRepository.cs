@@ -39,9 +39,10 @@ namespace SkillBank.FunctionTests
             int orderId = 1;
             Byte feedBack = (Byte)rad.Next(1, 3);
             String comment = "";
-            String privateComment = "";
+            String phone = "";
+            String deviceToken = "";
 
-            int commentId = _repository.AddTeacherReview(orderId, feedBack, comment, privateComment);
+            int commentId = _repository.AddTeacherReview(orderId, feedBack, comment, out deviceToken, out phone);
         }
 
         [TestMethod]
@@ -51,9 +52,11 @@ namespace SkillBank.FunctionTests
             int orderId = 1;
             Byte feedBack = (Byte)rad.Next(1, 3);
             String comment = "";
-            String privateComment = "";
-            int commentId = _repository.AddTeacherReview(orderId, feedBack, comment, privateComment);
-            commentId = _repository.AddTeacherReview(orderId, feedBack, comment, privateComment);
+            String phone = "";
+            String deviceToken = "";
+
+            int commentId = _repository.AddTeacherReview(orderId, feedBack, comment, out deviceToken, out phone);
+            commentId = _repository.AddTeacherReview(orderId, feedBack, comment, out deviceToken, out phone);
 
             Assert.AreEqual(commentId, -1);
         }
@@ -65,10 +68,11 @@ namespace SkillBank.FunctionTests
             int orderId = 1;
             Byte feedBack = (Byte)rad.Next(0, 3);
             String comment = "Here is teacher comment for testing." + rad.Next(0, 10).ToString();
-            String privateComment = "Thanks for comming and see you next time.";
+            String deviceToken;
+            String phone;
 
             _helperRep.TeacherReviewCleanUp(orderId);
-            int commentId = _repository.AddTeacherReview(orderId, feedBack, comment, privateComment);
+            int commentId = _repository.AddTeacherReview(orderId, feedBack, comment, out deviceToken, out phone);
             var comments = _repository.GetTeacherReviews(_loadType, commentId,0);
             Assert.IsNotNull(comments);
             var commentItem = comments.FirstOrDefault();

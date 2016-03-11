@@ -23,7 +23,8 @@ namespace SkillBankWeb.API
         {
             public List<ClassCategory> Categories;
             public List<ClassLinkItem> ClassList;
-            public Dictionary<int, CityInfo> CityLkp;
+            //public Dictionary<int, CityInfo> CityLkp;
+            public List<CityInfo> CityLkp;
             //public Int16 Status;
             public String Version;
             public Dictionary<String, int> Badge;
@@ -70,12 +71,16 @@ namespace SkillBankWeb.API
             int avatarw = 150;
             Boolean hasLkpList = false;
 
+            //Hack before add new order 
+            //order = (order.Equals(3)) ? (Byte)2 : order;
+
             var cityDic = _contentService.GetClassCities("cn");
+            var cityList = cityDic.Values.ToList<CityInfo>();
             
             if (String.IsNullOrEmpty(version) || !version.Equals(Constants.ContentSiteVersion.CityCategoryLookup))
             {
                 hasLkpList = true;
-                model.CityLkp = cityDic;
+                model.CityLkp = cityList;
             }
                         
             var result = _commonService.GetClassPagingList(cate, city, (Decimal)x, (Decimal)y, mid, minId, maxId, order);

@@ -16,9 +16,6 @@ namespace SkillBank.Site.DataSource.Data
     {
         public int ReviewId { get; set; }
         public int Order_Id { get; set; }
-        public Nullable<byte> Score1 { get; set; }
-        public Nullable<byte> Score2 { get; set; }
-        public Nullable<byte> Score3 { get; set; }
         public Nullable<byte> FeedBack { get; set; }
         public string Comment { get; set; }
         public System.DateTime CreatedDate { get; set; }

@@ -149,6 +149,11 @@
             </h4>
             <p>
                 @Html.Raw(TextContentHelper.GetTextContent(Model.ClassInfo.Location, 484))
+                
+                @if (Model.ClassInfo.HasOnline)
+                {
+                    <br /><br /><span>可以在线教授</span>
+                }
             </p>
             <h4>
                 <img src="/img/icons/icon-tag.png">
@@ -304,7 +309,7 @@
                 <div class="content">
                     <div class="content-inner">
                         <div class="content-padded">
-                            <form id="form-write" data-contactid="@Model.ClassInfo.Member_Id" data-fromname="@ViewBag.MemberInfo.Name" data-tomobile="@ViewBag.ContactMobile">
+                            <form id="form-write" data-contactid="@Model.ClassInfo.Member_Id" data-fromname="@ViewBag.MemberInfo.Name" data-tomobile="@ViewBag.ContactMobile" data-hasrctoken="@(!String.IsNullOrEmpty(ViewBag.MemberInfo.RCToken))">
                                 <textarea name="message" id="" cols="30" rows="6" placeholder="输入你的私信内容，向老师咨询关于课程的各种问题"></textarea>
                                 <button class="btn btn-primary btn-block">发送私信</button>
                             </form>
@@ -400,6 +405,8 @@
 
 @section FooterScripts
 {
+    @if (Model.ClassInfo != null)
+    {
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script type="text/javascript">
         wx.config({
@@ -433,4 +440,5 @@
                     });
             });
     </script>
+    }
 }

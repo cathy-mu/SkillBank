@@ -4,12 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 
-using SkillBank.Site.DataSource.Data;
 using SkillBank.Site.Services;
 using SkillBank.Site.Common;
 using SkillBank.Site.Web;
 using SkillBank.Site.Web.Context;
-using SkillBank.Site.Web.ViewModel;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBankWeb.API
 {
@@ -18,7 +17,7 @@ namespace SkillBankWeb.API
         public readonly ICommonService _commonService;
         public class CommentItem
         {
-            public int MemberId { get; set; }
+            public int? MemberId { get; set; }
             public int ClassId { get; set; }
             public String CommentText { get; set; }
         }
@@ -38,10 +37,16 @@ namespace SkillBankWeb.API
         [HttpPost]
         public Boolean AddComment(CommentItem item)
         {
-            int memberId = item.MemberId.Equals(0) ? WebContext.Current.MemberId : item.MemberId;
+            int memberId = item.MemberId.HasValue ? item.MemberId.Value : WebContext.Current.MemberId;
+            String deviceToken = "";
             if (!memberId.Equals(0))
             {
-                var result = _commonService.AddComment(memberId, item.ClassId, item.CommentText);
+                var result = _commonService.AddComment(memberId, item.ClassId, item.CommentText, out deviceToken);
+                //push liked notification
+                if (!String.IsNullOrEmpty(deviceToken))
+                {
+                    PushManager.PushNotification(deviceToken, (Byte)Enums.PushNotificationType.Commented);
+                }
                 if (result > 0)
                     return true;
             }

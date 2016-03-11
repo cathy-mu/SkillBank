@@ -90,7 +90,7 @@ namespace SkillBankWeb.Controllers.API
 
                 item.Etag = (WebContext.Current.Etag == null) ? "" : WebContext.Current.Etag;
                 item.Account = WebContext.Current.SocialAccount;
-                item.Type = 4;// WebContext.Current.SocialType;
+                item.Type = WebContext.Current.SocialType;
 
                 if (item.Type > 0 && !String.IsNullOrEmpty(item.Account) && !String.IsNullOrEmpty(item.Name) && isMobileValid && isCodeValid)
                 {
@@ -110,13 +110,13 @@ namespace SkillBankWeb.Controllers.API
                         isValidData = true;
 
                         WebContext.Current.MemberId = memberId;
-                        //Only for web register?
+                        //Only for web register
                         String message = ResourceHelper.GetTransText(284);
                         _commonService.AddMessage(Constants.BizConfig.AdminMemberId, memberId, message);
                     }
                 }
             }
-            //new registe process
+            //new registe process for APP
             else
             {
                 //valid datas
@@ -131,9 +131,6 @@ namespace SkillBankWeb.Controllers.API
                         WebContext.Current.SocialType = item.Type;
                         WebContext.Current.SocialAccount = item.Account;
 
-                        //TO DO:APP Switch to new message plantform for APP
-                        //String message = ResourceHelper.GetTransText(284);
-                        //_commonService.AddMessage(Constants.BizConfig.AdminMemberId, memberId, message);
                         if (item.Type.Equals((Byte)Enums.SocialTpye.Mobile) && result.Result.Equals(0))
                         {
                             result.MemberId = 0;
@@ -147,11 +144,11 @@ namespace SkillBankWeb.Controllers.API
                         isValidData = true;
                     }
                 }
-
-                if (!isValidData)
+                else
                 {
                     result.Result = 4;
                 }
+                       
 
                 if (!isValidData || result.MemberId.Equals(0))
                 {
@@ -159,11 +156,10 @@ namespace SkillBankWeb.Controllers.API
                 }
             }
                         
-            //TO DO:APP turn off Rong Cloud token after live release
             //Get RongCloud Token
             if (!memberId.Equals(0) && String.IsNullOrEmpty(rcToken))
             {
-                rcToken = RongCloudHelper.GetToken(result.MemberId, item.Name, item.Avatar);
+                rcToken = RongCloudHelper.GetToken(System.Configuration.ConfigurationManager.AppSettings["ENV"], result.MemberId, item.Name, item.Avatar);
                 if (!String.IsNullOrEmpty(rcToken))
                 {
                     result.RCToken = rcToken;

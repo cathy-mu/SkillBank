@@ -6,28 +6,28 @@
     <edmx:Diagrams>
       <Diagram DiagramId="558dccd9c8584feaa96303496b2fa669" Name="Diagram1" ZoomLevel="83">
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CategoryPopTag" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CityInfo" Width="1.5" PointX="0.625" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CityInfo" Width="1.5" PointX="0.625" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.CoinsHistory" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.EmailAccount" Width="1.5" PointX="4.75" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.EmailTemplate" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Message" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.MetaTag" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Order" Width="1.5" PointX="0.625" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Order" Width="1.5" PointX="0.625" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.SkillCategory" Width="1.5" PointX="6.75" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.StudentReview" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.TeacherReview" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassInfo" Width="1.5" PointX="4.75" PointY="5.5" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.BlurbsMain" Width="1.5" PointX="0.625" PointY="0.75" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Favorite" Width="1.5" PointX="8.75" PointY="6.125" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassEditInfo" Width="1.5" PointX="6.75" PointY="5.5" />
         <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.Comment" Width="1.5" PointX="10.75" PointY="6.125" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.MemberInfo" Width="1.5" PointX="2.75" PointY="3.375" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ConfigureInfo" Width="1.5" PointX="10.75" PointY="8.375" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassCategory" Width="1.5" PointX="8.75" PointY="8.5" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.PortalBanner" Width="1.5" PointX="0.625" PointY="9.25" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.TopBanner" Width="1.5" PointX="9.1697486588590529" PointY="23.092095057988583" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.SystemNotification" Width="1.5" PointX="4.0878916178307918" PointY="22.360574196260689" />
-        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.LinkMap" Width="1.5" PointX="8.17471578911632" PointY="8.4952866176587" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.MemberInfo" Width="1.5" PointX="2.75" PointY="3" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ConfigureInfo" Width="1.5" PointX="10.75" PointY="8.625" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.ClassCategory" Width="1.5" PointX="8.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.PortalBanner" Width="1.5" PointX="0.625" PointY="8.125" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.TopBanner" Width="1.5" PointX="2.75" PointY="10" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.SystemNotification" Width="1.5" PointX="6.75" PointY="10.5" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.LinkMap" Width="1.5" PointX="0.625" PointY="10.5" />
+        <EntityTypeShape EntityType="SkillBank.Site.DataSource.Data.StudentReview" Width="1.5" PointX="10.625" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

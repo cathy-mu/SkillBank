@@ -52,17 +52,24 @@ namespace SkillBankWeb.API
                 {
                     var model = new MyCoursesModel();
                     var classList = _commonService.GetClassEditInfoByMemberId(id, (Byte)Enums.DBAccess.ClassLoadType.ByTeacherId);
-                    List<ClassEditListItem> classEditlist = classList.Select(i =>
-                        new ClassEditListItem
-                        {
-                            ClassId = i.ClassId,
-                            Title = (String.IsNullOrEmpty(i.Title) ? "一堂未开完的课程" : i.Title),
-                            Cover = i.Cover,
-                            Status = i.IsProved.Equals(0) ? (Byte)(i.PublishStatus + 4) : i.IsProved
-                        }
-                        ).ToList();
+                    if (classList != null)
+                    {
+                        List<ClassEditListItem> classEditlist = classList.Select(i =>
+                            new ClassEditListItem
+                            {
+                                ClassId = i.ClassId,
+                                Title = (String.IsNullOrEmpty(i.Title) ? "一堂未开完的课程" : i.Title),
+                                Cover = i.Cover,
+                                Status = i.IsProved.Equals(0) ? (Byte)(i.PublishStatus + 4) : i.IsProved
+                            }
+                            ).ToList();
 
-                    model.ClassList = classEditlist;
+                        model.ClassList = classEditlist;
+                    }
+                    else
+                    {
+                        model.ClassList = null;
+                    }
                     model.MemberInfo = new MemberBasicInfo() { MemberId = id, Avatar = memberInfo.Avatar, Name = memberInfo.Name };
                     
                     var alertList = _commonService.GetPopNotification(id, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileMyCourse);

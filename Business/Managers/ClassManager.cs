@@ -11,14 +11,15 @@ namespace SkillBank.Site.Services.Managers
 {
     public interface IClassManager
     {
-        int AddComment(int memberId, int classId, String commentText);
+        int AddComment(int memberId, int classId, String commentText, out String deviceToken);
         void RemoveComment(int memberId, int commentId);
-        void UpdateClassLikeTag(int memberId, int classId, Boolean isLike);
+        void UpdateClassLikeTag(int memberId, int classId, Boolean isLike, out String deviceToken);
 
         int CreateClass(int memberId, int categoryId, Byte skillLevel, Byte teacheLevel, out Boolean isExist);
         //ClassEditInfo_Add_p
         int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true);
+        Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, String txtValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, Boolean paraValue);
         Boolean UpdateClassEditInfo(Byte updateType, int classId, String paraValue);
         List<ClassEditItem> GetClassEditInfoForAdmin(Boolean isRejected);
@@ -56,17 +57,18 @@ namespace SkillBank.Site.Services.Managers
         {
             return _classRep.GetClassCollection(loadBy, memberId, paraId);
         }
-        
-        public int AddComment(int memberId, int classId, String commentText)
+
+        public int AddComment(int memberId, int classId, String commentText, out String deviceToken)
         {
             Byte saveType = (Byte)Enums.DBAccess.CommentSaveType.AddComment;
-            return _intRep.UpdateComment(saveType, memberId, classId, commentText);
+            return _intRep.UpdateComment(saveType, memberId, classId, commentText, out deviceToken);
         }
 
         public void RemoveComment(int memberId, int commentId)
         {
             Byte saveType = (Byte)Enums.DBAccess.CommentSaveType.RemoveComment;
-            _intRep.UpdateComment(saveType, 0, commentId, "");
+            String deviceToken = "";
+            _intRep.UpdateComment(saveType, 0, commentId, "", out deviceToken);
         }
 
         public ClassEditItem GetClassInfoItem(Byte loadType, int classId, int memberId = 0)
@@ -75,9 +77,9 @@ namespace SkillBank.Site.Services.Managers
             return (result != null && result.Count > 0) ? result[0] : null;
         }
 
-        public void UpdateClassLikeTag(int memberId, int classId, Boolean isLike)
+        public void UpdateClassLikeTag(int memberId, int classId, Boolean isLike, out String deviceToken)
         {
-            _intRep.UpdateLike((Byte)Enums.DBAccess.FavoriteSaveType.SaveFavoriteTag, (Byte)Enums.FavoriteType.LikeClass, memberId, classId, isLike);
+            _intRep.UpdateLike((Byte)Enums.DBAccess.FavoriteSaveType.SaveFavoriteTag, (Byte)Enums.FavoriteType.LikeClass, memberId, classId, isLike, out deviceToken);
         }
 
         public int CreateClass(int memberId, int categoryId, Byte skillLevel, Byte teacheLevel, out Boolean isExist)
@@ -109,6 +111,20 @@ namespace SkillBank.Site.Services.Managers
         public Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, Boolean isValue = true)
         {
             _classRep.UpdateClassEditInfo(updateType, classId, paraValue, isValue);
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="updateType"></param>
+        /// <param name="classId"></param>
+        /// <param name="paraValue"></param>
+        /// <param name="txtValue"></param>
+        /// <returns></returns>
+        public Boolean UpdateClassEditInfo(Byte updateType, int classId, Byte paraValue, String txtValue)
+        {
+            _classRep.UpdateClassEditInfo(updateType, classId, paraValue, txtValue);
             return true;
         }
 

@@ -93,6 +93,10 @@ function apitest_Class() {
             apitest.getShareClassCoins();
         });
 
+        $("#testbtn").click(function () {
+            apitest.addMessage();
+        });
+
     };
 
     this.addReview = function (isStudent) {
@@ -111,9 +115,10 @@ function apitest_Class() {
             return false;
         }
 
-        var paraData = { "OrderId": orderId, "IsStudent": isStudent, "Feedback": feedback,  "Comment": comment };
+        var paraData = { "OrderId": orderId, "IsStudent": isStudent, "Feedback": feedback, "Comment": comment };
         console.log(paraData);
         var savePath = "/API/OrderReview";
+        console.log(savePath);
         $.ajax({
             url: savePath,
             type: "POST",
@@ -121,7 +126,7 @@ function apitest_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                alert(data);
+                console.log(data);
             }
         });
     }
@@ -158,13 +163,13 @@ function apitest_Class() {
         var city = $("#memberinfo-city").val();
         var intro = $("#memberinfo-intro").val();
         //var paraData = { "Id": id, "Name": name, "Gender": gender, "Intro": intro, "CityName": city, "Avatar": avatar };
-        var paraData = { "Name": "cathy1", "Gender": 1, "CityName": "上海市" };
-        //var paraData = { "Mobile": "13564813923", "Code": "999999", "Password": "abcd1234" };
+        //var paraData = { "Name": "cathy1", "Gender": 1, "CityName": "上海市" };
         //var paraData = { "Intro": "Here is my test introduction for API" };
 
-        var paraData = { "PosX": 116.225426, "PosY": 40.148060 };
+        ///var paraData = { "PosX": 116.225426, "PosY": 40.148060 };
+        
         var savePath = "/API/profile/" + id;
-        console.log("path : "+savePath);
+        console.log("path : " + savePath);
         console.log("para : " + paraData);
         $.ajax({
             url: savePath,
@@ -185,9 +190,11 @@ function apitest_Class() {
         var id = isReset?0:$("#memberinfo-id").val();
 
         var paraData = { "Id": id, "Password": pass, "Mobile": mobile, "Code": code };
+        var paraData = { "Mobile": "13917782601", "Code": "862594", "Password": "abcd1234" };
+        id = 0;
         console.log(paraData);
 
-        var savePath = "/API/profile/"+id;
+        var savePath = "/API/profile/" + id;
         $.ajax({
             url: savePath,
             type: "PUT",
@@ -296,7 +303,7 @@ function apitest_Class() {
         var fromId = $("#chat-fid").val();
         var toId = $("#chat-tid").val();
         var message = $("#chat-message").val();
-        var paraData = { "fromId": fromId, "toId": toId, "MessageText": message };
+        var paraData = { "fromId": fromId, "toId": toId, "MessageText": message, "HasRCToken": true };
         var savePath = "/API/Chat";
         console.log(paraData);
         $.ajax({
@@ -418,7 +425,7 @@ function apitest_Class() {
             "Comment": "comment",
             "MyId": 1
         };
-        //var paraData = { "memberId": memberId, "Status": statusId, "name": name, "Phone": mobile };
+        var paraData = { "memberId": memberId, "Status": statusId, "name": name, "Phone": mobile };
         var savePath = "/API/Order/" + orderId;
         console.log(paraData);
         $.ajax({
@@ -478,8 +485,8 @@ function apitest_Class() {
         var code = $("#valid-code").val();
         var memberid = $("#valid-memberid").val();
 
-        //var paraData = { "mobile": mobile, "code": code, "memberid": memberid };
-        var paraData = { "Type": 3, "mobile": "13917782601", "code": "999999", "memberid": 62 };
+        var paraData = { "mobile": mobile, "code": code, "memberid": memberid };
+        //var paraData = { "Type": 3, "mobile": "13917782601", "code": "999999", "memberid": 62 };
         var savePath = "/api/Validation";
         console.log(paraData);
         $.ajax({
@@ -499,8 +506,8 @@ function apitest_Class() {
         var memberid = $("#valid-memberid").val();
 
         //var paraData = { "type": type, "mobile": mobile, "code": "", "memberid": memberid };
-        var paraData = { "Type": 6, "mobile": "13127853967" };
-        var savePath = "/api/Validation";
+        var paraData = { "type": 6, "mobile": "13917782601" };
+        var savePath = "http://www.skillbank.cn/api/Validation";
         console.log(paraData);
 
         $.ajax({
@@ -510,9 +517,11 @@ function apitest_Class() {
             data: paraData,
             cache: false,
             success: function (data) {
-                alert(data);
+                console.log(data);
             }
         });
+        
+
     }
 
 
@@ -523,11 +532,11 @@ function apitest_Class() {
         var account = $("#member-account").val();
         var avatar = $("#member-avatar").val();
         var type = 1;
-        //var paraData = { "Mobile": mobile, "Name": name, "Type": 2, "Avatar": avatar, "Code": code, "Pass": "123456", "DeviceToken": "abcdeabcdeabcde", "UnionId": "123451234512345" };
-        //var paraData = { "Account": "13500000000", "Name": name, "Type": 2, "Avatar": avatar, "Code": code };
-        var paraData = { "Account": "0000000001", "Name": "TestName", "Type": 2, "Avatar": "my avatar", "Type": 5 };
+        var paraData = { "Mobile": mobile, "Name": name, "Type": 2, "Avatar": avatar, "Code": code, "Pass": "123456", "DeviceToken": "", "UnionId": "123451234512345" };
+        //var paraData = { "Account": "1885646861", "Name": name, "Type": 2, "Avatar": avatar, "Code": code };
+        //var paraData = { "Account": "aaaaaaaaaa", "Name": "Cathy", "Type": 5, "DeviceToken": "1234567890", "UnionId": "123451234512345" };
+        //var paraData = { "Mobile": "18516646830", "Name": "TestName", "Type": 2, "Avatar": "my avatar", "Code": "111111", "Pass": "mypass" };
         var savePath = "/API/Registe";
-        //var paraData = { "Mobile": "13700000000", "Name": "TestName", "Type": 2, "Avatar": "my avatar", "Code": "999999", "Pass": "mypass" };
         console.log(paraData);
         $.ajax({
             url: savePath,
@@ -582,6 +591,24 @@ function apitest_Class() {
         //            });
 
         //        });
+    }
+
+
+    this.addMessage = function () {
+        var paraData = { MemberId: 14314, ToId: 1, MessageText: "API test" };
+
+        console.log(paraData);
+        $.ajax({
+            url: "http://www.skillbank.cn/api/rcchat",
+            type: "POST",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            async: false,
+            success: function (data) {
+                console.log(data);
+            }
+        });
     }
 
 }

@@ -24,6 +24,8 @@ namespace SkillBank.Site.Services
 
         Dictionary<int, CityInfo> GetCities(String localeCode);
         Dictionary<int, CityInfo> GetClassCities(String localeCode);
+        //List<CityInfo> GetCityList(String localeCode);
+
         String GetCityNameById(String localeCode, int cityId);
         Dictionary<int, SystemNotification> GetSystemNotificationLkp();
         List<TopBanner> GetTopBannerLkp();
@@ -132,6 +134,12 @@ namespace SkillBank.Site.Services
             var result = _cityLkpProvider.GetCityLkp(localeCode);
             return result;
         }
+
+        //public List<CityInfo> GetCityList(String localeCode)
+        //{
+        //    var result = _cityLkpProvider.GetCityList(localeCode);
+        //    return result;
+        //}
 
         /// <summary>
         /// 

@@ -43,5 +43,26 @@ namespace SkillBank.Site.DataSource.Mapper
             return null;
         }
 
+
+        public static List<ReportOrderRemind_Load_p_Result> Map(ObjectResult<ReportOrderRemind_Load_p_Result> objItems)
+        {
+            if (objItems != null)
+            {
+                var items = objItems.Select(item => new ReportOrderRemind_Load_p_Result() { DeviceToken = item.DeviceToken, MemberId = item.MemberId, Name = item.Name, Phone = item.Phone }).ToList();
+                return (items.Count > 0) ? items : null;
+            }
+            return null;
+        }
+
+        public static List<String> Map(ObjectResult<String> objItems)
+        {
+            if (objItems != null)
+            {
+                var items = objItems.ToList();
+                return (items.Count > 0) ? items : null;
+            }
+            return null;
+        }
+
     }
 }

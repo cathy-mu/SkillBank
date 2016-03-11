@@ -155,7 +155,6 @@
                         <span class="icon icomoon icon-checkmark round yellow @((Model.ClassInfo != null && Model.ClassInfo.Level.Equals(1)) ? "selected" : "")"></span>
                         <input type="radio" name="level" value="1" @((Model.ClassInfo != null && Model.ClassInfo.Level.Equals(1)) ? "checked=checked" : "")">
                         基本
-                  
                     </label>
                 </li>
                 <li>
@@ -183,6 +182,24 @@
             </div>
             <h5 class="mb-1">你的技能水平</h5>
             <textarea placeholder="这门技能你掌握了多久？到达了什么水平？你的优势是什么？" name="highlight">@(Model.ClassInfo == null ? "" : Model.ClassInfo.WhyU)</textarea>
+            <h5 class="mb-1">可否在线授课</h5>
+            <ul class="custom-radio mb-1">
+                <li>
+                    <label>
+                        <span class="icon icomoon icon-checkmark round yellow @(Model.ClassInfo.HasOnline ? "selected" : "")"></span>
+                        <input type="radio" name="hasonline" value="1" @(Model.ClassInfo.HasOnline ? "checked='checked'" : "") />
+                        是
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="icon icomoon icon-checkmark round yellow @(!Model.ClassInfo.HasOnline ? "selected" : "")"></span>
+                        <input type="radio" name="hasonline" value="0" @(!Model.ClassInfo.HasOnline ? "checked='checked'" : "")>
+                        否
+                    </label>
+                </li>
+                <li></li>
+            </ul>
         </div>
         <div id="extra">
             <div class="inner">

@@ -49,18 +49,25 @@ namespace SkillBankWeb.API
             InteractionModel model = new InteractionModel();
             //Step 1 load page content
             var notifications = _commonService.GetNotification(id, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileInteration);
-            var interactions = notifications.Select(item => new InteractionItem()
+            if (notifications != null)
             {
-                Avatar = item.Avatar,
-                ClassOrderId = item.ClassOrderId,
-                LastUpdateDate = item.LastUpdateDate,
-                Title = item.Name,
-                RelatedMemberId = item.RelatedMemberId,
-                TypeId = item.TypeId,
-                IsNew = item.TypeRank < 2,
-                Content = GetInteractionText(item.TypeId,item.Title)
-            }).ToList();
-            model.Interaction = interactions;
+                var interactions = notifications.Select(item => new InteractionItem()
+                {
+                    Avatar = item.Avatar,
+                    ClassOrderId = item.ClassOrderId,
+                    LastUpdateDate = item.LastUpdateDate,
+                    Title = item.Name,
+                    RelatedMemberId = item.RelatedMemberId,
+                    TypeId = item.TypeId,
+                    IsNew = item.TypeRank < 2,
+                    Content = GetInteractionText(item.TypeId, item.Title)
+                }).ToList();
+                model.Interaction = interactions;
+            }
+            else
+            {
+                model.Interaction = null;
+            }
 
             //Step 2 load menu badge, change data status
             var alertList = _commonService.GetPopNotification(id, (Byte)Enums.DBAccess.NotificationAlterLoadType.MobileInteration);

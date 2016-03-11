@@ -27,10 +27,11 @@ namespace SkillBank.Site.DataSource.Data
         List<ClassInfo_LoadByPage_p_Result> GetClassPagingList(Byte categoryId, int cityId, Decimal posX, Decimal posY, int memberId, int minId, int maxId, Byte orderBy);
         List<ClassInfo_LoadByKey_p_Result> GetClassSearchList(String searchKey, int cityId, Decimal posX, Decimal posY, int minId, int maxId, Byte orderBy);
         List<ClassCollection_Load_p_Result> GetClassCollection(Byte loadBy, int memberId, int paraId);
-    
+
         /*For new class edit page 1.1*/
         int UpdateClassEditInfo(Byte savaType, ClassInfo classInfo);
         void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue, Boolean isValue = true);
+        void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue, String txtValue);
         void UpdateClassEditInfo(Byte saveType, int classId, Boolean isValue);
         void UpdateClassEditInfo(Byte saveType, int classId, String txtValue);
 
@@ -60,6 +61,11 @@ namespace SkillBank.Site.DataSource.Data
         public void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue, Boolean isValue = true)
         {
             ClassEditInfo_Save_p(saveType, classId, paraValue, isValue, "");
+        }
+
+        public void UpdateClassEditInfo(Byte saveType, int classId, Byte paraValue, String txtValue)
+        {
+            ClassEditInfo_Save_p(saveType, classId, paraValue, true, txtValue);
         }
 
         public void UpdateClassEditInfo(Byte saveType, int classId, String txtValue)

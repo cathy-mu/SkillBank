@@ -24,23 +24,7 @@ namespace SkillBankWeb.Controllers
         {
             _commonService = commonService;
         }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="orderid"></param>
-        /// <param name="feedback"></param>
-        /// <param name="comment"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult AddTeacherReview(int orderid, byte feedback, String comment = "")
-        {
-            _commonService.AddTeacherReview(orderid, feedback, comment, "");
-            return Json("true", JsonRequestBehavior.AllowGet);
-        }
-
-
+              
         [HttpPost]
         public JsonResult GetClassReview(Byte tabid, int memberid, int classid, byte feedback, int maxid)
         {

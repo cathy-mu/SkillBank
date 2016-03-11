@@ -28,6 +28,13 @@ namespace SkillBank.Site.Common
                 { "1", "http://www.skillbank.cn" }, 
                 { "2", "http://localhost" }
             };
+
+            public static readonly Dictionary<String, String> SiteDomain = new Dictionary<String, String>() 
+            { 
+                { "0", "http://www.skillbank.cn" }, 
+                { "1", "http://www.skill-bank.com" }, 
+                { "2", "http://localhost" }
+            };
         }
 
             
@@ -143,29 +150,86 @@ namespace SkillBank.Site.Common
 
                 public static readonly String QQ_APPKey = "801504346";
                 public static readonly String QQ_APPSecret = "7f937514830a46ce132a30aa3253073d";
-                
+
                 public static readonly String Sina_APPKey = "111240964";
                 public static readonly String Sina_APPSecret = "3a9bd6965729abbb3b048a6dfd4670e2";
-                
+
             }
-            
+
             public static class WeChatSetting
             {
-                public const String Token = "skillbank2015";
                 public const String AppID = "wxa10c0a8a413081b6";
                 public const String Secret = "aa43e002d3f7b6d583ac9f4019cbb7bc";
+                public const String Token = "skillbank2015";
                 public const String EncodingAESKey = "wjxKHVotmZCB89vuCAWt0CBOAEah0Yi0Xo2UMWvNfVF";
+
+                //New Open platform
+                //public const String OpenAppID = "wx33b427acda857e00";
+                //public const String OpenSecret = "82dbaa6bccb5a82e1bcb6fd379edeecd";
             }
 
 
             public static class RongCloudSetting
             {
-                public const String AppKey = "vnroth0kr9rjo";
-                public const String AppSecret = "Ak3CNPqQJOZKtp";
+                public static readonly Dictionary<String, String> AppKey =
+                new Dictionary<String, String>() 
+                { 
+                { "0", "m7ua80gbuvu6m"},
+                { "1", "vnroth0kr9rjo"}
+                };
+
+                public static readonly Dictionary<String, String> AppSecret =
+                new Dictionary<String, String>() 
+                { 
+                { "0", "F6DNFVSHGP2"},
+                { "1", "Ak3CNPqQJOZKtp"}
+                };
+
+                public const String MessageTypeText = "RC:TxtMsg";
+            }
+            
+
+            public static class GeTuiSetting
+            {
+                public const String AppId = "YCaO9w8JiZ80pxYY6GwMe8";
+                public const String AppKey = "cYeoBeICSu5WXSG9IhToI6";
+                public const String MasterSecret = "dlrxzx5RgiAxF9s7lcWiW7";
+                public const String AppSecret = "XEUDKux2XlA4SoD44JVv49";
+                public const String Host = "http://sdk.open.api.igexin.com/apiex.htm";
+                public const String Host2 = "https://api.getui.com/apiex.htm";
             }
 
+            
         }
+        
 
+        public static class APPSetting
+        {
+            public static readonly Dictionary<Byte, String> PushNotificaitonText = new Dictionary<Byte, String> { 
+            { 0, "你收到一条新通知，点击查看" },
+            { 1, "技者汇更新了哦" },//文字待定 
+            { 2, "恭喜，您开设的一堂课已经通过了我们的审核， 点此查看" }, 
+            { 3, "很抱歉，你有一堂课没能通过审核，请修改后重新发布" }, 
+            { 4, "有学生评价了你的课，点击查看" } , 
+            { 5, "有老师评价了你，点击查看" } , 
+
+            { 6, "你收到一条私信， 点此查看" } , 
+            { 7, "有人关注了你，点击查看" } , 
+            { 8, "有人收藏了你的课，点击查看" } , 
+            { 9, "你收到一条留言，点击查看" } , 
+
+            { 10, "有人预订了你的课，请快来回复，过时会被系统自动取消哦" } , 
+            { 11, "你收到一个退币申请，请快来处理，过时会被系统自动退币哦" } , 
+            { 12, "恭喜，学生已支付了课币并做出评价，点此查看" } , 
+            { 13, "你有一个即将到期的订课申请，请快来回复，过时会被系统自动取消哦" } , 
+
+            { 14, "恭喜，老师已经接受了你预订的课, 点此查看" } , 
+            { 15, "很遗憾，你有一个订课申请未被接受。请先和老师沟通过后再来订课" } , 
+            { 16, "老师取消了一堂你预订的课，点击查看" } , 
+            { 17, "你的退币请求已被接受，课币已经退还到你的账户， 点此查看" } , 
+            { 18, "你的退币请求未被接受，点此查看" }  
+            };
+        }
 
     }
 }

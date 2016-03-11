@@ -18,11 +18,10 @@ namespace SkillBank.Site.DataSource.Data
 {
     public interface IOrderRepository
     {
-        Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark);
+        Byte AddOrder(out String deviceToken, int studentId, int classId, DateTime bookDate, String remark);
         Byte UpdateOrderDate(int orderId, DateTime bookDate);
-        //void UpdateBookDate(int orderId, DateTime bookedDate);
-        Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId, int teacherId = 0);
-        Byte UpdateOrderStatusWithCoins(int orderId, Byte status, int studentId, int teacherId);
+        Byte UpdateOrderStatus(out String deviceToken, int orderId, Byte orderStatus, int studentId, int teacherId);
+        Byte UpdateOrderStatusWithCoins(out String deviceToken, int orderId, Byte orderStatus, int studentId, int teacherId);
 
         //List<Order> GetOrders(Byte loadType, int paraId);
         List<OrderItem> GetOrderListByStudent(int studentId, Boolean shouldCheck);
@@ -49,28 +48,23 @@ namespace SkillBank.Site.DataSource.Data
             OrderStatus_ListHandler_p(memberId);
         }
 
+        //Student chnage book date before accepted
         public Byte UpdateOrderDate(int orderId, DateTime bookDate)
         {
             Byte saveType = (Byte)Enums.DBAccess.OrderSaveType.UpdateBookedDate;
-            return Order_Save(saveType, 0, 0, 0, bookDate, "", orderId);
+            String deviceToken; 
+            //only need order id and booke date as para
+            return Order_Save(out deviceToken, saveType, 0, 0, 0, bookDate, "", orderId);
         }
 
-        public Byte AddOrder(int studentId, int classId, DateTime bookDate, String remark)
+        public Byte AddOrder(out String deviceToken, int studentId, int classId, DateTime bookDate, String remark)
         {
             Byte status = (Byte)Enums.OrderStatus.Booked;
             Byte saveType = (Byte)Enums.DBAccess.OrderSaveType.AddNew;
-            return Order_Save(saveType, studentId, classId, status, bookDate, remark, 0);
-        }
 
-        public void UpdateBookDate(int orderId, DateTime bookedDate)
-        {
-            Byte saveType = (Byte)Enums.DBAccess.OrderSaveType.UpdateBookedDate;
-            Order order = new Order();
-            order.OrderId = orderId;
-            order.BookedDate = bookedDate;
-            Order_Save(saveType, 0, 0, 0, order.BookedDate, "", order.OrderId);
+            return Order_Save(out deviceToken, saveType, studentId, classId, status, bookDate, remark, 0);
         }
-
+        
         /// <summary>
         /// Only chanage status tag, not coins update
         /// orderStatus == 2 || 3 || 5 || 6 || 8 || 12
@@ -78,17 +72,17 @@ namespace SkillBank.Site.DataSource.Data
         /// <param name="orderId"></param>
         /// <param name="orderStatus"></param>
         /// <returns></returns>
-        public Byte UpdateOrderStatus(int orderId, Byte orderStatus, int studentId, int teacherId = 0)
+        public Byte UpdateOrderStatus(out String deviceToken, int orderId, Byte orderStatus, int studentId, int teacherId = 0)
         {
             Byte saveType = (Byte)Enums.DBAccess.OrderSaveType.UpdateSatatus;
-            return Order_Save(saveType, studentId, 0, orderStatus, new DateTime(1900, 01, 01), "", orderId, teacherId);
+            return Order_Save(out deviceToken, saveType, studentId, 0, orderStatus, new DateTime(1900, 01, 01), "", orderId, teacherId);
         }
 
         //Coins related status update
         //orderStatus == 4 || 7 || 9 || 10 || 11
-        public Byte UpdateOrderStatusWithCoins(int orderId, Byte status, int studentId, int teacherId)
+        public Byte UpdateOrderStatusWithCoins(out String deviceToken, int orderId, Byte status, int studentId, int teacherId)
         {
-            return OrderCoin_Update_p(orderId, status, studentId, teacherId);
+            return OrderCoin_Update_p(out deviceToken, orderId, status, studentId, teacherId);
         }
 
         //public List<Order> GetOrders(Byte loadType, int paraId)
@@ -159,19 +153,22 @@ namespace SkillBank.Site.DataSource.Data
         /// <param name="remark"></param>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        private Byte Order_Save(Byte saveType, int studentId, int classId, Byte? orderStatus, DateTime bookedDate, String remark, int? orderId, int teacherId = 0)
+        private Byte Order_Save(out String deviceToken, Byte saveType, int studentId, int classId, Byte orderStatus, DateTime bookedDate, String remark, int orderId, int teacherId = 0)
         {
-            ObjectParameter paraId = new ObjectParameter("paraId", orderId.HasValue ? orderId : 0);
+            deviceToken = "";
+            ObjectParameter paraId = new ObjectParameter("paraId", orderId);
             ObjectParameter studentIdParameter = new ObjectParameter("studentId", studentId);
             ObjectParameter teacherIdParameter = new ObjectParameter("teacherId", teacherId);
             ObjectParameter classIdParameter = new ObjectParameter("classId", classId);
-            ObjectParameter orderStatusParameter = new ObjectParameter("status", orderStatus.HasValue ? orderStatus : 0);
+            ObjectParameter orderStatusParameter = new ObjectParameter("status", orderStatus);
             ObjectParameter classDateParameter = new ObjectParameter("classDate", bookedDate);
             ObjectParameter saveTypeParameter = new ObjectParameter("saveType", saveType);
             ObjectParameter remarkParameter = new ObjectParameter("comment", String.IsNullOrEmpty(remark) ? "" : remark);
             ObjectParameter resultParameter = new ObjectParameter("result", 0);
+            ObjectParameter deviceParameter = new ObjectParameter("deviceToken", deviceToken);
 
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Order_Save_p", studentIdParameter, teacherIdParameter, classIdParameter, orderStatusParameter, classDateParameter, saveTypeParameter, remarkParameter, paraId, resultParameter);
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Order_Save_p", studentIdParameter, teacherIdParameter, classIdParameter, orderStatusParameter, classDateParameter, saveTypeParameter, remarkParameter, paraId, resultParameter, deviceParameter);
+            deviceToken = (String)deviceParameter.Value;
             return (Byte)resultParameter.Value;
         }
 
@@ -202,15 +199,18 @@ namespace SkillBank.Site.DataSource.Data
         /// <param name="status"></param>
         /// <param name="paraId"></param>
         /// <returns></returns>
-        public Byte OrderCoin_Update_p(int orderId, Byte status, int studentId, int teacherId)
+        public Byte OrderCoin_Update_p(out String deviceToken, int orderId, Byte status, int studentId, int teacherId = 0)
         {
+            deviceToken = "";
             ObjectParameter paraIdParameter = new ObjectParameter("paraId", orderId);
             ObjectParameter statusParameter = new ObjectParameter("status", status);
             ObjectParameter studentIdParameter = new ObjectParameter("studentId", studentId);
             ObjectParameter teacherIdParameter = new ObjectParameter("teacherId", teacherId);
             ObjectParameter resultParameter = new ObjectParameter("result", 0);
+            ObjectParameter deviceParameter = new ObjectParameter("deviceToken", deviceToken);
 
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("OrderCoin_Update_p", paraIdParameter, statusParameter, studentIdParameter, teacherIdParameter, resultParameter);
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("OrderCoin_Update_p", paraIdParameter, statusParameter, studentIdParameter, teacherIdParameter, resultParameter, deviceParameter);
+            deviceToken = (String)deviceParameter.Value;
             return (Byte)resultParameter.Value;
         }
 

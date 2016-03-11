@@ -12,6 +12,9 @@ using SkillBank.Site.DataSource;
 using SkillBank.Site.Web;
 using SkillBank.Site.Web.ViewModel;
 using SkillBank.Site.Web.Context;
+using SkillBank.Site.DataSource.Data;
+using SkillBank.Site.Services.Utility;
+
 
 namespace SkillBank.Controllers
 {
@@ -258,6 +261,27 @@ namespace SkillBank.Controllers
             return View();
         }
 
+        public ActionResult OrderRemind()
+        {
+            var memberId = WebContext.Current.MemberId;
+            List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
+            if (whiteListMem.Contains(memberId.ToString()))
+            {
+                Byte loadType = 1;//get order info and last handler date
+                int dayBuffer = 1;
+                DateTime handleDate = new DateTime(2015, 1, 1);
+                List<ReportOrderRemind_Load_p_Result> list = _commonService.GetReportOrderRemindList(loadType, dayBuffer, out handleDate);
+                ViewBag.IsAdmin = true;
+                ViewBag.HandleDate = handleDate.ToString("yyyy-MM-dd");
+                return View(list);
+            }
+            else
+            {
+                ViewBag.IsAdmin = false;
+                return View();
+            }
+        }
+
 
         public ActionResult MemberProfile(int id = 0)
         {
@@ -441,6 +465,41 @@ namespace SkillBank.Controllers
             if (isValid)
             {
                 _commonService.UpdateVerification(type, memberId, verifyAccount);
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult RemindOrder()
+        {
+            var memberId = WebContext.Current.MemberId;
+            List<String> whiteListMem = ConfigurationManager.AppSettings["MemberWhiteList"].Split(',').ToList<String>();
+            if (whiteListMem.Contains(memberId.ToString()))
+            {
+                Boolean sendNotify = System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName);
+                if (sendNotify)
+                {
+                    Byte loadType = 2;//resert order handler date when get data
+                    int dayBuffer = 1;
+                    DateTime handleDate = new DateTime(2015, 1, 1);
+                    List<ReportOrderRemind_Load_p_Result> list = _commonService.GetReportOrderRemindList(loadType, dayBuffer, out handleDate);
+                    foreach (var item in list)
+                    {
+                        if (!String.IsNullOrEmpty(item.DeviceToken))
+                        {
+                            PushManager.PushNotification(item.DeviceToken, (Byte)Enums.PushNotificationType.RemindAccept);
+                        }
+                        if (!String.IsNullOrEmpty(item.Phone))
+                        {
+                            _commonService.SendSMSWithLink((Byte)Enums.SmsType.BookRequestRemind, item.Phone, sendNotify);
+                        }
+                    }
+                }
                 return Json("true", JsonRequestBehavior.AllowGet);
             }
             else

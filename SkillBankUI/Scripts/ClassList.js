@@ -180,9 +180,9 @@ function classlist_Class() {
     }
 
     this.setLikeTag = function (classId, isLike) {
-        var paraData = { classId: classId, isLike: isLike };
-        var savePath = "/ClassHelper/UpdateLikeClass";
-        consoleLog(paraData);
+        var paraData = {"classId": classId, "IsLike": isLike };
+        var savePath = "/API/LikeClass";
+        
         $.ajax({
             url: savePath,
             type: "POST",

@@ -85,8 +85,8 @@ function classdetail_Class() {
         var classId = $("#classdetail-hidclassid").val();
         var commentCtl = $("#classdetail-comment");
         if (commentCtl.val() != "") {
-            var paraData = { "classId": classId, "comment": commentCtl.val() };
-            var savePath = "/ClassHelper/AddComment";
+            var paraData = { "ClassId": classId, "CommentText": commentCtl.val() };
+            var savePath = "/api/comment";
             consoleLog(paraData);
             $.ajax({
                 url: savePath,
@@ -126,8 +126,9 @@ function classdetail_Class() {
 
     this.setLikeTag = function (isLike) {
         var classId = $("#classdetail-hidclassid").val();
-        var paraData = { classId: classId, isLike: isLike };
-        var savePath = "/ClassHelper/UpdateLikeClass"; 
+        var paraData = { "classId": classId, "IsLike": isLike };
+        var savePath = "/API/LikeClass";
+
         consoleLog(paraData);
         $.ajax({
             url: savePath,
@@ -147,7 +148,7 @@ function classdetail_Class() {
         if ($("#classpreview-prove").length > 0) {
             $("#classpreview-prove").click(function () { classdetail.setClassTag($(this), 1, 2); });
             $("#classpreview-reject").click(function () { classdetail.setClassTag($(this), 2, 2); });
-            $("#classpreview-setcate").click(function () { classdetail.setClassTag($(this), 1, 18); });
+            $("#classpreview-setcatetag").click(function () { classdetail.setClassCateTag(); });
             $("#classpreview-cate").change(function () {
                 var selObj = $(this).children('option:selected');
                 $("#classdetail-hidcateid").val(selObj.val());
@@ -272,6 +273,27 @@ function classdetail_Class() {
         }
     }
 
+    this.setClassCateTag = function () {
+        var classId = $("#classdetail-hidclassid").val();
+        var cateId = $("#classdetail-hidcateid").val();
+        var classTags = $("#classpreview-tags").val().replace("，",",");
+        var savePath = "/ClassHelper/UpdateClassTagCategory";
+        var paraData = { classId: classId, cateId: cateId, tags: classTags };
+        consoleLog(paraData);
+        $.ajax({
+            url: savePath,
+            type: "POST",
+            dataType: "Json",
+            data: paraData,
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    $("#classpreview-setcatetag").addClass("saved").removeClass("btn-primary").text("已修改");
+                }
+            }
+        });
+    }
+
     this.setClassTag = function (btnObj, infoValue, saveType) {
         var savePath = "/ClassHelper/UpdateClassStatus";//Class update 1.1
         var paraData;
@@ -291,7 +313,7 @@ function classdetail_Class() {
                 mixpanel.track("prove class");
             }
             if (btnObj.attr("data-classname")) {
-                paraData = { classId: classId, infoValue: cateId, saveType: saveType, isProved: isProved, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile") };
+                paraData = { classId: classId, infoValue: cateId, saveType: saveType, isProved: isProved, className: btnObj.attr("data-classname"), name: btnObj.attr("data-teachername"), email: btnObj.attr("data-email"), mobile: btnObj.attr("data-mobile"), device: btnObj.attr("data-device") };
             } 
         }
         consoleLog(paraData);
@@ -305,9 +327,7 @@ function classdetail_Class() {
                 if (infoValue == 1) {
                     if (saveType == 14) {
                         $("#classpreview-active").addClass("saved").removeClass("btn-primary").text("已上线");
-                    } else if (saveType == 18) {
-                        $("#classpreview-setcate").addClass("saved").removeClass("btn-primary").text("已修改");
-                    } else {
+                    }else {
                         $("#classpreview-prove").addClass("saved").removeClass("btn-primary").text("已批准");
                     }
                 } else if (infoValue == 2) {

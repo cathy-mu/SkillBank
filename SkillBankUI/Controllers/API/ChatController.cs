@@ -11,6 +11,7 @@ using SkillBank.Site.Common;
 using SkillBank.Site.Web;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.Web.ViewModel;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBankWeb.API
 {
@@ -24,10 +25,11 @@ namespace SkillBankWeb.API
             public String MessageText { get; set; }
             public String FromName { get; set; }
             public String ToMobile { get; set; }
+            public Boolean HasRCToken { get; set; }
         }
+        
         //
-        // GET: /Message/
-
+        // For mobile site to save message and send message to rong cloud
         public ChatController(ICommonService commonService)
         {
             _commonService = commonService;
@@ -62,16 +64,24 @@ namespace SkillBankWeb.API
                 int toId = chatItem.ToId;
                 String messageText = chatItem.MessageText;
                 var result = _commonService.AddMessage(memberId, toId, messageText);
-                Boolean sendNotify = System.Configuration.ConfigurationManager.AppSettings["ENV"].Equals(ConfigConstants.EnvSetting.LiveEnvName);
-                if (sendNotify)
+                String envName = System.Configuration.ConfigurationManager.AppSettings["ENV"];
+if (!chatItem.HasRCToken)
+                    {
+                        SaveRongCloudToken(memberId);
+                    }
+                if (envName.Equals(ConfigConstants.EnvSetting.LiveEnvName))
                 {
-                    if (result.Equals(2))
+                    
+
+                    //App user(already got rong cloud token)， push rong cloud message 
+                    if (result.Equals(3))
+                    {
+                        RongCloudHelper.PushMessage(envName, memberId.ToString(), toId.ToString(), messageText);
+                    }
+                    //web user with phone number ,and first message between 2 users
+                    else if (result.Equals(2))
                     {
                         _commonService.SendNewMessageSMS(chatItem.ToMobile, chatItem.FromName, Constants.PageURL.MobileMessagePage, true);
-                    }
-                    else
-                    {
-                        //SendCloudEmail.SendMessageReceiveMail(mremail, chatItem.t, chatItem.FromName, Constants.PageURL.MessagePage);
                     }
                 }
                 return true;
@@ -79,6 +89,25 @@ namespace SkillBankWeb.API
             return false;
         }
 
+        /// <summary>
+        /// Generate and save current user's RongCloud Token
+        /// </summary>
+        /// <param name="memberId"></param>
+        private void SaveRongCloudToken(int memberId)
+        {
+            MemberInfo memberInfo = _commonService.GetMemberInfo(memberId);
+            //Generate and save own RongCloud Token
+            if (memberInfo != null && String.IsNullOrEmpty(memberInfo.RCToken))
+            {
+                String rcToken = RongCloudHelper.GetToken(System.Configuration.ConfigurationManager.AppSettings["ENV"], memberInfo.MemberId, memberInfo.Name, memberInfo.Avatar);
+                if (!String.IsNullOrEmpty(rcToken))
+                {
+                    Byte type = (Byte)Enums.DBAccess.MemberSaveType.UpdateRCTokenADeviceToken;
+                    MemberInfo updateInfo = new MemberInfo() { MemberId = memberInfo.MemberId, Avatar = rcToken };
+                    var updateResult = _commonService.UpdateMemberProfile(updateInfo, type);
+                }
+            }
+        }
 
         private int GetMemberId(Boolean shouldAuthorize)
         {

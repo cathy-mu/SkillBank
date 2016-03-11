@@ -23,6 +23,7 @@ namespace SkillBank.Site.Services.Managers
         void SendOrderUpdateSMS(Byte statusType, String mobile, String className, Boolean sendSMS = true);
         void SendClassProveSMS(Boolean isProve, String mobile, String className, String link, Boolean sendSMS = true);
         void SendNewMessageSMS(String mobile, String name, String link, Boolean sendSMS = true);
+        void SendSMSWithLink(Byte type, String mobile, Boolean sendSMS = true);
     }
 
     public class NotificationManager : INotificationManager
@@ -38,7 +39,7 @@ namespace SkillBank.Site.Services.Managers
         {
             if (sendSMS)
             {
-                YunPianSMS.SendOrderUpdateSms(statusType, mobile, className);
+                YunPianSMS.SendOrderUpdateSMS(statusType, mobile, className);
             }
         }
 
@@ -46,7 +47,7 @@ namespace SkillBank.Site.Services.Managers
         {
             if (sendSMS)
             {
-                YunPianSMS.SendClassProveSms(isProve, mobile, className, link);
+                YunPianSMS.SendClassProveSMS(isProve, mobile, className, link);
             }
         }
 
@@ -55,6 +56,14 @@ namespace SkillBank.Site.Services.Managers
             if (sendSMS)
             {
                 YunPianSMS.SendNewMessageSMS(mobile, name, link);
+            }
+        }
+
+        public void SendSMSWithLink(Byte type, String mobile, Boolean sendSMS = true)
+        {
+            if (sendSMS)
+            {
+                YunPianSMS.SendSMSWithLink(type, mobile);
             }
         }
 

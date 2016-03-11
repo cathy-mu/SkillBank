@@ -13,18 +13,19 @@ namespace SkillBank.Site.Services.Managers
     {
         MemberInfo GetMemberInfo(int memberId);
         MemberInfo GetMemberInfo(Byte loadType, int memberId, int relatedMemberId = 0);
-        MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para="");
+        MemberInfo GetMemberInfo(Byte loadType, String socialAccount, Byte socialType, String para = "");
         List<MemberInfo> GetMemberInfos(Byte loadType, String searchKey);
 
         Dictionary<Enum, int> GetNumsByMember(int memberId, Byte loadBy);
         Dictionary<Enum, int> GetNumsByMemberClass(int memberId, int classId, Byte loadBy = (Byte)Enums.DBAccess.MemberNumsLoadType.ByClassId);
 
         int CreateMember(out int memberId, ref Byte verifyTag, ref String accessToken, ref String rcToken, String socialOpenId, Byte socialType, String memberName, String email, String avatar = "", string mobile = "", string code = "", String pass = "", String etag = "", Boolean gender = true, String device = "", String unionId = "");
+        void UpdateMemberContactInfo(int memberId, String name, String phone, String email = "");
         Byte UpdateMemberInfo(Byte saveType, MemberInfo memberInfo);
+        
         void SaveEmailAccount(String name, String email);
         Boolean CoinUpdate(Byte updateType, int memberId, int classId, int coinsToAdd);//admin tool
         Boolean AddMembersCoin(int memberId, int coinsToAdd, Byte addType);
-        //void AddShareClassCoin(int memberId);
         bool HasShareClassCoin(int memberId);
 
         Byte SendMobileVerifyCode(Byte type, int memberId, String mobile, Boolean sendSMS);
@@ -32,7 +33,7 @@ namespace SkillBank.Site.Services.Managers
         Byte CheckIsMobileVerified(int memberId);
         Byte UpdateVerification(Byte saveType, int memberId, String verifyAccount);
 
-        void UpdateMemberLikeTag(int memberId, int relatedId, bool isLike);
+        void UpdateMemberLikeTag(int memberId, int relatedId, bool isLike, out String deviceToken);
         List<FavoriteItem> GetFavorites(Byte loadType, int memberId, int paraId);
 
         Byte SaveWeChatEvent(Byte saveType, int memberId, String openId, String paraId, String paraValue);
@@ -50,9 +51,9 @@ namespace SkillBank.Site.Services.Managers
             _intRep = intRep;
         }
 
-        public void UpdateMemberLikeTag(int memberId, int relatedId, bool isLike)
+        public void UpdateMemberLikeTag(int memberId, int relatedId, bool isLike, out String deviceToken)
         {
-            _intRep.UpdateLike((Byte)Enums.DBAccess.FavoriteSaveType.SaveFavoriteTag, (Byte)Enums.FavoriteType.LikeMember, memberId, relatedId, isLike);
+            _intRep.UpdateLike((Byte)Enums.DBAccess.FavoriteSaveType.SaveFavoriteTag, (Byte)Enums.FavoriteType.LikeMember, memberId, relatedId, isLike, out deviceToken);
         }
 
         public Byte UpdateCredit(Byte saveType, int memberId, int paraValue)
@@ -136,16 +137,8 @@ namespace SkillBank.Site.Services.Managers
             return result;
         }
 
-        public MemberInfo GetMemberInfo(String socialAccount, Byte socialType, String para="")
+        public MemberInfo GetMemberInfo(Byte loadType, String socialAccount, Byte socialType, String para = "")
         {
-            Byte loadType;
-            if (socialType.Equals((Byte)Enums.SocialTpye.Mobile) && !String.IsNullOrEmpty(para))
-            {
-                loadType = (Byte)Enums.DBAccess.MemberLoadType.ByMobileAPass;
-            }else
-            {
-                loadType = (Byte)Enums.DBAccess.MemberLoadType.BySocialAccount;
-            }
             var result = _repository.GetMemberInfo(loadType, socialAccount, socialType, para);
             return result;
         }
@@ -169,6 +162,28 @@ namespace SkillBank.Site.Services.Managers
         {
             int result = _repository.CreateMember(out memberId, ref verifyTag, ref accessToken, ref rcToken, socialOpenId, socialType, memberName, email, avatar, mobile, code, pass, etag, gender, device, unionId);
             return result;
+        }
+
+        //update member info when book class or accept order
+        public void UpdateMemberContactInfo(int memberId, String name, String phone, String email = "")
+        {
+            if (memberId > 0)
+            {
+                MemberInfo memberInfo = new MemberInfo();
+                memberInfo.MemberId = memberId;
+                if (!String.IsNullOrEmpty(phone) && !String.IsNullOrEmpty(name))
+                {
+                    memberInfo.Name = name;
+                    memberInfo.Phone = phone;
+                    memberInfo.Email = email;
+                    UpdateMemberInfo((Byte)Enums.DBAccess.MemberSaveType.UpdateContactInfo, memberInfo);
+                }
+                else if (!String.IsNullOrEmpty(name))
+                {
+                    memberInfo.Name = name;
+                    UpdateMemberInfo((Byte)Enums.DBAccess.MemberSaveType.UpdateName, memberInfo);
+                }
+            }
         }
 
         public Byte UpdateMemberInfo(Byte saveType, MemberInfo memberInfo)

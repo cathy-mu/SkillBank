@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Verification";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+       
+    <div class="content" id="verification-page">
+    <div class="register_form">
+        <form>
+            <div class="input-group">
+                <input type="tel" placeholder="手机号码" name="phone" value="@ViewBag.MemberInfo.Phone">
+            </div>
+            <div class="input-group">
+                <input type="tel" placeholder="验证码" name="code" maxlength="6">
+                <button class="btn btn-grey" type="button">获得验证码</button>
+            </div>
+            <div class="input-group">
+                <button class="btn btn-olive btn-block" name="verifybtn"  id="verifybtn" type="button">验证手机号码</button>
+            </div>
+        </form>
+    </div>
+</div>

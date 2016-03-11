@@ -202,7 +202,7 @@ namespace SkillBankWeb.API
                 Period = "",
                 Cover = "",
                 Tags = "",
-                HasOnline = false
+                HasOnline = true
             };
 
             var result = _commonService.UpdateClassEditInfo(saveType, classInfo);

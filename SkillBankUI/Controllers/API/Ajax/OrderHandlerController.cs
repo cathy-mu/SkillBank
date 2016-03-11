@@ -16,13 +16,17 @@ namespace SkillBankWeb.API
     {
         public readonly ICommonService _commonService;
 
+        public class OrderHandleResult
+        {
+            public Int16 Status { get; set; }
+        }
+
         //
         // GET: /Message/
 
         public OrderHandlerController(ICommonService commonService)
         {
             _commonService = commonService;
-
         }
 
         public string Options()
@@ -36,14 +40,20 @@ namespace SkillBankWeb.API
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public String Get(int id)
+        public OrderHandleResult Get(int id)
         {
-            _commonService.HandleMemberOrder(id);
-            return "";
+            OrderHandleResult result = new OrderHandleResult();
+
+            try
+            {
+                _commonService.HandleMemberOrder(id);
+                result.Status = 200;
+            }
+            catch
+            {
+                result.Status = 500;
+            }
+            return result;
         }
-
-      
-
-
     }
 }

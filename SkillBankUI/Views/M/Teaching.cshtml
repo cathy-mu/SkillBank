@@ -21,7 +21,7 @@
         {
             foreach (var item in Model)
             {
-                var status = item.OrderStatus.Value;
+                var status = item.OrderStatus;
                 var isDisable = status.Equals(2) || status.Equals(3) || status.Equals(7) || status.Equals(8) || status.Equals(11) || status.Equals(12) || status.Equals(13) || ((status.Equals(9) || status.Equals(10)) && item.HasReview);
             <div class="teaching card @(isDisable ? "disabled" : "")"
                 data-orderid="@item.OrderId"

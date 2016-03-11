@@ -383,18 +383,10 @@ var checkPage = function () {
                     Pass: "",
                     Avatar: $form.registebtn.dataset.avatar,
                     Name: $form.registebtn.dataset.name,
-                    Gender: ($form.registebtn.dataset.gender === "1")
+                    Gender: ($form.registebtn.dataset.gender === "1"),
+                    UnionId: $form.registebtn.dataset.unionid
                 };
-
-                //var data = {
-                //    Mobile: "13700000000",
-                //    Code: "999999",
-                //    Pass: "",
-                //    Avatar: "myAvatar",
-                //    Name: "Name",
-                //    Gender: ($form.registebtn.dataset.gender === "1")
-                //};
-                
+                                
                 post(ENV.host + '/api/registe', data, function (fb) {
                     if (fb.Result != undefined) {
                         fb = fb.Result;
@@ -451,8 +443,6 @@ var checkPage = function () {
                 Mobile: $form.phone.value,
                 Code: $form.code.value
             };
-
-            console.log(data);
 
             seconds = 60;
             post(ENV.host + '/api/Validation', data, function (fb) {
@@ -693,7 +683,6 @@ function exchangeToCoin() {
                 $mcredit.classList.remove("credit-twinkling");
                 $mcoin.classList.remove("credit-twinkling");
                 var data = { Type: 2, ParaValue: exchange };
-                console.log(data);
                 post(ENV.host + '/api/credit', data, function (fb) {
                     if (fb === 1) {
                         $mcredit.textContent = parseInt($mcredit.textContent) - exchange * 30;
@@ -724,7 +713,6 @@ function exchangeToCoin() {
 
 function bindHashChangeToSteps() {
     var changeContent = function () {
-        //console.log("hash" + location.hash);
         var stepName = location.hash.slice(1);
         if (!stepName) return;
         $('.steps.active')[0].classList.remove('active');
@@ -968,7 +956,8 @@ function chatForm() {
                     ToId: toId,
                     MessageText: $input.value,
                     FromName: $form[0].dataset.fromname,
-                    ToMobile: $form[0].dataset.tomobile
+                    ToMobile: $form[0].dataset.tomobile,
+                    HasRCToken: $form[0].dataset.hasrctoken
                 };
                 $btn.classList.add("disabled");
                 showLoadingIcon(true);
@@ -1008,8 +997,9 @@ function privateMsgForm() {
                 ToId: toId,
                 MessageText: $input.value,
                 FromName: $form[0].dataset.fromname,
-                ToMobile: $form[0].dataset.tomobile
-            };
+                ToMobile: $form[0].dataset.tomobile,
+                HasRCToken: $form[0].dataset.hasrctoken
+        };
             post(ENV.host + '/api/chat', data, function (fb) {
                 $btn.classList.remove("disabled");
                 $btn.textContent = "发送私信";
@@ -1102,7 +1092,6 @@ function commentForm() {
         
         if (validHasValue($input)) {
             var data = {
-                //MemberId: 0,
                 ClassId: $form[0].dataset.classid,
                 CommentText: $input.value
             };
@@ -1303,8 +1292,10 @@ function showRangeVal(el) {
 function customRadio() {
     $('.custom-radio input[type=radio]').on('change', function () {
         var $icon = this.parentNode.querySelector('.icon');
-        [].forEach.call($('.custom-radio .icon'), function (el) {
-            el.classList.remove('selected');
+        var $parent = this.parentNode.parentNode.parentNode.querySelectorAll('.icon');
+        // [].forEach.call($('.custom-radio .icon'), function (el) {
+        [].forEach.call($parent, function (el) {
+                el.classList.remove('selected');
         })
         $icon.classList.add('selected');
     })
@@ -1366,7 +1357,7 @@ function checkAllFillIn(maxlen) {
     var $nextBtn = $('.step-2 .main .next')[0];
     var checkInputs = function () {
         if ($nextBtn) {
-            var ifAllFillIn = $('input[type="radio"]:checked').length &&
+            var ifAllFillIn = $('input[type="radio"]:checked').length > 1 &&
                               $form.courseName.value &&
                               $form.highlight.value &&
                               $form.intro.value.length >= maxlen ? true : false;
@@ -1402,14 +1393,15 @@ function initPubClassStep2() {
         var $form = $('.step-2 form')[0];
         var data = {
             "ClassId": $('#classid')[0].value,
-            "Level": $('.step-2 input[type="radio"]:checked')[0].value,
+            "Level": $('.step-2 input[name="level"]:checked')[0].value,
             "Title": $form.courseName.value,
             "Summary": $form.intro.value,
             "WhyU": $form.highlight.value,
             "Location": $form.location.value,
             "Period": $form.period.value,
             "Available": $form.available.value,
-            "Remark": $form.remark.value
+            "Remark": $form.remark.value,
+            "HasOnline": ($('.step-2 input[name="hasonline"]:checked')[0].value=="1"),
         };
         updateClassInfo(data);
     });
@@ -1443,7 +1435,7 @@ function checkAllEvaluateModal() {
                     "Comment": comment,
                     "IsStudent": isStudent
                 };
-                //console.log(data);
+
                 post(ENV.host + '/api/orderreview', data, function (fb) {
                     if (fb) {
                         $('#evaluate')[0].classList.remove('active');
@@ -1827,7 +1819,6 @@ function confirmManage() {
                 "MyName": $name.value,
                 "MyPhone": $phone.value
             };
-            //console.log(data);
             put(ENV.host + '/api/order/' + orderId, data, function (fb) {
                 if (fb === 2) {
                     //alert("学生课币不足，接受订课失败");
@@ -1860,7 +1851,7 @@ function confirmManage() {
             "Phone": datas.phone,
             "Email": datas.email
         };
-        //console.log(data);
+
         put(ENV.host + '/api/order/' + orderId, data, function (fb) {
             if (fb === 3) {
                 myAlert("订单状态已经改变，请刷新");
@@ -1888,7 +1879,6 @@ function confirmManage() {
 
     function updateClassInfo(data) {
         put(ENV.host + '/api/course/' + data.ClassId, data, function (fb) {
-            console.log(fb);
             if (fb > 0) {
                 if (data.City != null) {
                     $('#preview-city')[0].innerText = data.City;
@@ -1930,8 +1920,7 @@ function confirmManage() {
                             "Feedback": feedback,
                             "Comment": comment,
                         };
-                        //console.log(data);
-
+                        
                         put(ENV.host + '/api/order/' + datas.orderid, data, function (fb) {
                             if (fb === 3) {
                                 myAlert("订单状态已经改变，请刷新");
@@ -1979,7 +1968,7 @@ function confirmManage() {
         if (isPublish) {
             formData.append('ispublish', "1");
         }
-        //console.log(formData);
+
         uploadFile(formData, url, function (data) {
             if (type === 0) {
                 myAlert("保存成功", 2);

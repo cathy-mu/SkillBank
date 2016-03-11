@@ -87,7 +87,7 @@ namespace SkillBankWeb.API
         /// <returns></returns>
 
         [HttpGet]
-        public MemberProfileInfo Get(int id = 0, Byte type = 0, String account = "", String para = "", String deviceToken = "")
+        public MemberProfileInfo Get(int id = 0, Byte type = 0, String account = "", String para = "", String deviceToken = "", Boolean resetRCToken = false)
         {
             MemberInfo memberInfo = null;
             Int16 statusCode = Constants.APIStatusCode.NotFound;
@@ -98,10 +98,10 @@ namespace SkillBankWeb.API
                 memberInfo = _commonService.GetMemberInfo(id);
             }
             //Get by mobile and password
-            else if (!String.IsNullOrEmpty(account) && !String.IsNullOrEmpty(para) && type.Equals(2))
+            else if (!String.IsNullOrEmpty(account) && !String.IsNullOrEmpty(para) && type.Equals((Byte)Enums.SocialTpye.Mobile))
             {
                 String password = String.IsNullOrEmpty(para) ? "" : FormsAuthentication.HashPasswordForStoringInConfigFile(para, "SHA1");
-                memberInfo = _commonService.GetMemberInfo(account, 2, password);
+                memberInfo = _commonService.GetMemberInfoByAccount(account, password);
                 //use phone as password
                 if (memberInfo != null)
                 {
@@ -130,7 +130,7 @@ namespace SkillBankWeb.API
 
             if (memberInfo != null)
             {
-                UpdateUser3rdToken(ref memberInfo, deviceToken);
+                UpdateUser3rdToken(ref memberInfo, deviceToken, resetRCToken);
 
                 var cityDic = _contentService.GetCities("cn");
                 profileInfo = new MemberProfileInfo()
@@ -290,15 +290,15 @@ namespace SkillBankWeb.API
         /// </summary>
         /// <param name="memberInfo"></param>
         /// <param name="deviceToken">new client id for para</param>
-        private void UpdateUser3rdToken(ref MemberInfo memberInfo, String deviceToken)
+        private void UpdateUser3rdToken(ref MemberInfo memberInfo, String deviceToken, Boolean resetRCToken = false)
         {
             Boolean isResave = false;
             deviceToken = String.IsNullOrEmpty(deviceToken) ? "" : deviceToken;
 
             //Not has Rong Cloud token before, generate token
-            if (String.IsNullOrEmpty(memberInfo.RCToken))
+            if (resetRCToken || String.IsNullOrEmpty(memberInfo.RCToken))
             {
-                memberInfo.RCToken = RongCloudHelper.GetToken(memberInfo.MemberId, memberInfo.Name, memberInfo.Avatar);
+                memberInfo.RCToken = RongCloudHelper.GetToken(System.Configuration.ConfigurationManager.AppSettings["ENV"], memberInfo.MemberId, memberInfo.Name, memberInfo.Avatar);
                 isResave = !String.IsNullOrEmpty(memberInfo.RCToken);
             }
             //Has rong cloud token ,should update device token

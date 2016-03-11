@@ -7,7 +7,7 @@
         {
             <h3 class="spaced-larger errormessage">@ViewBag.ErrorMessage</h3>
         }
-        @if (Model.ClassEditInfo != null)
+        @if (Model.ClassEditInfo != null && Model.MemberInfo != null)
         {
             <div class="class-detail cf">
 
@@ -145,16 +145,17 @@
                 <div class="class-detail-side">
 
                     <div class="class-booking spaced-larger">
-
-                        <div class="row-fluid spaced">
-                            <div class="span6"><span class="gray-light">@Html.GetTrans(197)</span></div>
-                            <div class="span6 tright"><em>1</em>@Html.GetTrans(198)</div>
-                        </div>
                         @if (Model.IsAdmin)
                         {   
-                            <a href="#" data-classname="@Model.ClassEditInfo.Title" data-teachername="@Model.MemberInfo.Name" data-email="@Model.MemberInfo.Email" data-mobile="@Model.MemberInfo.Phone" id="classpreview-prove" class="btn btn-primary btn-block spaced">@Html.GetTrans(572) (发通知)</a>
-                            <a href="#" data-classname="@Model.ClassEditInfo.Title" data-teachername="@Model.MemberInfo.Name" data-email="@Model.MemberInfo.Email" data-mobile="@Model.MemberInfo.Phone" id="classpreview-reject" class="btn btn-warning btn-block spaced">@Html.GetTrans(583) (发通知)</a>
+                            <a href="#" data-classname="@Model.ClassEditInfo.Title" data-teachername="@Model.MemberInfo.Name" data-email="@Model.MemberInfo.Email" data-mobile="@Model.MemberInfo.Phone" data-device="@Model.MemberInfo.DeviceToken" id="classpreview-prove" class="btn btn-primary btn-block spaced">@Html.GetTrans(572) (发通知)</a>
+                            <a href="#" data-classname="@Model.ClassEditInfo.Title" data-teachername="@Model.MemberInfo.Name" data-email="@Model.MemberInfo.Email" data-mobile="@Model.MemberInfo.Phone" data-device="@Model.MemberInfo.DeviceToken" id="classpreview-reject" class="btn btn-warning btn-block spaced">@Html.GetTrans(583) (发通知)</a>
                             <div id="class-grouppanel">
+                                 <div class="row-fluid spaced"><b>课程标签（半角逗号分隔）</b></div>
+                                    
+                                <div class="row-fluid spaced">
+                                    <input type="text" id="classpreview-tags" class="span12" value="@Model.ClassEditInfo.Tags" />
+                                </div>
+
                                 <div class="row-fluid spaced">
                                     <select id="classpreview-cate" class="span12">
                                         <option value="0">未分类</option>
@@ -167,7 +168,7 @@
                                         }
                                     </select>
                                 </div>
-                                <a href="#" id="classpreview-setcate" class="btn btn-primary btn-block spaced">修改分类(不发通知)</a>
+                                <a href="#" id="classpreview-setcatetag" class="btn btn-primary btn-block spaced">修改分类/标签(不发通知)</a>
                                 <div class="row-fluid spaced">
                                     <div class="span2">推荐</div>
                                     <div class="span4">类型</div>
@@ -214,13 +215,20 @@
                             <a href="#" id="classpreview-setgroup" class="btn btn-warning btn-block spaced">设置为推荐</a>
                             
                         }
-                        @if (Model.IsOwner)
+                        else
                         {
+                            <div class="row-fluid spaced">
+                                <div class="span6"><span class="gray-light">@Html.GetTrans(197)</span></div>
+                                <div class="span6 tright"><em>1</em>@Html.GetTrans(198)</div>
+                            </div>
+                        
+                            if (Model.IsOwner)
+                            {
                             <a href="#" class="btn btn-warning btn-block spaced">@Html.GetTrans(199)</a>
+                            }
+
+                            <div class="tcenter">@Html.ActionLink(ResourceHelper.GetTransText(200), "qanda", "about", "http", "www.skillbank.cn", "qatab0s2", new { id = 0 }, new { @class = "gray-light", target = "_blank" })</div>
                         }
-
-                        <div class="tcenter">@Html.ActionLink(ResourceHelper.GetTransText(200), "qanda", "about", "http", "www.skillbank.cn", "qatab0s2", new { id = 0 }, new { @class = "gray-light", target = "_blank" })</div>
-
                     </div>
                     <!-- end of booking pane -->
 

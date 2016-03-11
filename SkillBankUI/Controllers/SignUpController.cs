@@ -15,6 +15,8 @@ using SkillBank.Site.Web;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.Common;
 using SkillBank.Site.Services;
+using SkillBank.Site.DataSource.Data;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBankWeb.Controllers
 {
@@ -117,6 +119,7 @@ namespace SkillBankWeb.Controllers
                         }
                         Session.Add("accessToken", accessToken);
                         WebContext.Current.SocialAccessInfo = accessToken.access_token;
+                        WebContext.Current.SocialType = (Byte)Enums.SocialTpye.WeChat;
                     }
                 }
                 //Sina
@@ -172,6 +175,7 @@ namespace SkillBankWeb.Controllers
             int memberId = 0;
             isMobileVerified = false;
             String socialAccount = "";
+            String unionId = "";
             var accessTokenObj = Session["accessToken"] as dynamic;
             var accessToken = accessTokenObj.access_token;
 
@@ -198,8 +202,9 @@ namespace SkillBankWeb.Controllers
             }
             else if (socialType == 4)
             {
+                //TO DO:APP WeChat1 switch url
                 var model = apiw.CallGet("sns/userinfo", accessToken, false, GetOpenidOpenkeyParamsExt());
-                //var model = apiw.CallGet("/cgi-bin/user/info", accessToken, false, GetOpenidOpenkeyParamsExt());
+                //var model2 = apiw.CallGet("https://api.weixin.qq.com/cgi-bin/user/info", accessToken, false, GetOpenidOpenkeyParamsExt());
 
                 if (apiw.WasError(model, out _err))
                 {
@@ -220,7 +225,8 @@ namespace SkillBankWeb.Controllers
                     ViewBag.SocialAvatar = avatarImg;
                     String gender = (model.sex == null ? "" : Convert.ToString(model.sex));
                     ViewBag.Gender = (!String.IsNullOrEmpty(gender) && gender.Equals("2")) ? 0 : 1;
-                    ViewBag.Test = ViewBag.Gender;
+                    unionId = (accessTokenObj.unionid != null) ? (String)accessTokenObj.unionid : "";
+                    ViewBag.UnionId = unionId;
                     socialAccount = model.openid;
                     WebContext.Current.SocialType = (Byte)Enums.SocialTpye.WeChat;
                 }
@@ -247,15 +253,31 @@ namespace SkillBankWeb.Controllers
             if (!String.IsNullOrEmpty(socialAccount))
             {
                 ViewBag.SocialAccount = socialAccount;
+                ViewBag.UnionId = unionId;
                 WebContext.Current.SocialAccount = socialAccount;
 
-                var memberInfo = _commonService.GetMemberInfo(socialAccount, (Byte)socialType);
+                var memberInfo = _commonService.GetMemberInfo(socialAccount, (Byte)socialType, unionId);
                 if (memberInfo == null)
                 {
                     memberId = 0;
-                }else{  
-                     memberId = memberInfo.MemberId;
-                     isMobileVerified = (memberInfo.VerifyTag & 1).Equals(1);
+                }
+                else
+                {
+                    memberId = memberInfo.MemberId;
+                    isMobileVerified = (memberInfo.VerifyTag & 1).Equals(1);
+                    
+                    //get and save rong cloud token for old users
+                    if (!memberId.Equals(0) && String.IsNullOrEmpty(memberInfo.RCToken))
+                    {
+                        String rcToken = RongCloudHelper.GetToken(System.Configuration.ConfigurationManager.AppSettings["ENV"], memberInfo.MemberId, memberInfo.Name, memberInfo.Avatar);
+                        if (!String.IsNullOrEmpty(rcToken))
+                        {
+                            Byte type = (Byte)Enums.DBAccess.MemberSaveType.UpdateRCTokenADeviceToken;
+                            MemberInfo updateInfo = new MemberInfo() { MemberId = memberId, Avatar = rcToken };
+                            var updateResult = _commonService.UpdateMemberProfile(updateInfo, type);
+                        }
+                    }
+
                 }
                
             }

@@ -38,12 +38,10 @@ namespace SkillBank.FunctionTests
             int Class_Id = 0;
             Byte FeedBack = (Byte)rad.Next(0, 3);
             String Comment = "";
-            String PrivateComment = "";
-            Byte Score1 = (Byte)rad.Next(0, 100);
-            Byte Score2 = (Byte)rad.Next(0, 100);
-            Byte Score3 = (Byte)rad.Next(0, 100);
+            String phone = "";
+            String deviceToken = "";
 
-            int commentId = _repository.AddStudentReview(Order_Id, Class_Id, Score1, Score2, Score3, FeedBack, Comment, PrivateComment);
+            int commentId = _repository.AddStudentReview(Order_Id, Class_Id, FeedBack, Comment, out deviceToken, out phone);
         }
 
         [TestMethod]
@@ -54,13 +52,11 @@ namespace SkillBank.FunctionTests
             int Class_Id = 0;
             Byte FeedBack = (Byte)rad.Next(1, 3);
             String Comment = "";
-            String PrivateComment = "";
-            Byte Score1 = (Byte)rad.Next(0, 100);
-            Byte Score2 = (Byte)rad.Next(0, 100);
-            Byte Score3 = (Byte)rad.Next(0, 100);
+            String phone = "";
+            String deviceToken = "";
 
-            int commentId = _repository.AddStudentReview(Order_Id, Class_Id, Score1, Score2, Score3, FeedBack, Comment, PrivateComment);
-            commentId = _repository.AddStudentReview(Order_Id, Class_Id, Score1, Score2, Score3, FeedBack, Comment, PrivateComment);
+            int commentId = _repository.AddStudentReview(Order_Id, Class_Id, FeedBack, Comment, out deviceToken, out phone);
+            commentId = _repository.AddStudentReview(Order_Id, Class_Id, FeedBack, Comment, out deviceToken, out phone);
 
             Assert.AreEqual(commentId, -1);
         }
@@ -74,21 +70,16 @@ namespace SkillBank.FunctionTests
             int Class_Id = 0;
             Byte FeedBack = (Byte)rad.Next(1, 3);
             String Comment = "This is the comment for the class I had before." + rad.Next(0, 100).ToString();
-            String PrivateComment = "Nice to meet U, and U are so helpful";
-            Byte Score1 = (Byte)rad.Next(0, 100);
-            Byte Score2 = (Byte)rad.Next(0, 100);
-            Byte Score3 = (Byte)rad.Next(0, 100);
+            String phone = "";
+            String deviceToken = "";
 
             _helperRep.StudentReviewCleanUp(comment.Order_Id);
-            int commentId = _repository.AddStudentReview(Order_Id, Class_Id, Score1, Score2, Score3, FeedBack, Comment, PrivateComment);
+            int commentId = _repository.AddStudentReview(Order_Id, Class_Id, FeedBack, Comment, out deviceToken, out phone);
             var comments = _repository.GetStudentReviews(_loadType, commentId);
             Assert.IsNotNull(comments);
             var commentItem = comments.FirstOrDefault();
             Assert.AreEqual(commentItem.Comment, comment.Comment);
             Assert.AreEqual(commentItem.Order_Id, comment.Order_Id);
-            Assert.AreEqual(commentItem.Score1, comment.Score1);
-            Assert.AreEqual(commentItem.Score2, comment.Score2);
-            Assert.AreEqual(commentItem.Score3, comment.Score3);
             Assert.AreEqual(commentItem.FeedBack, comment.FeedBack);
         }
 

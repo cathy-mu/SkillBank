@@ -55,16 +55,16 @@ namespace SkillBankWeb.API
         [HttpGet]
         public List<ClassLinkItem> GetClassList(Byte cate = 0, String key = "", int city = 0, Double x = 0, Double y = 0, int mid = 0, int minId = 1, int maxId = 20, Byte order = 1, Boolean reload = false)
         {
-            mid = mid.Equals(0) ? WebContext.Current.MemberId : mid;
+            //mid = mid.Equals(0) ? WebContext.Current.MemberId : mid;
             
-            var cityDic = _contentService.GetCities("cn");
+            //var cityDic = _contentService.GetCities("cn");
             
-            var result = _commonService.GetClassPagingList(cate, city, (Decimal)x, (Decimal)y, mid, minId, maxId, order);
-            if (result != null)
-            {
-                var classList = DataMapper.Map(result,cityDic);
-                return classList;
-            }
+            //var result = _commonService.GetClassPagingList(cate, city, (Decimal)x, (Decimal)y, mid, minId, maxId, order);
+            //if (result != null)
+            //{
+            //    var classList = DataMapper.Map(result,cityDic);
+            //    return classList;
+            //}
 
             
             return null;

@@ -1,0 +1,75 @@
+﻿@using SkillBank.Site.DataSource.Data
+@model List<ClassCollectionItem>
+@{
+     Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+@Html.Partial("_MobileMenuPartial")
+
+<div class="setting-page setting-favorites-page content">
+    <header class="mb-05">
+        <div class="main">
+            <!--<a href="index.html" class="icon icomoon icon-arrow-left grey"></a>-->
+            <span></span>
+            <span class="page-title" align="center">@ViewBag.Title</span>
+            <span class="avatar-wrapper" align="right">
+                <a href="#">
+                    <img class="avatar" src="@ContentHelper.GetAvatarPath(ViewBag.Avatar, "ms")" /></a>
+            </span>
+        </div>
+    </header>
+    <div class="list">
+    @if (ViewBag.Type == 4)
+    {
+        <ul class="avatar-text private-msg">
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                    <li class="card">
+                        <a href="@Url.Action("personal", "m", new { id = item.MemberId })" data-transition="slide-in">
+                            <div class="pull-left flag-num">
+                                <a href="@Url.Action("personal", "m", new { id = item.MemberId })">
+                                    <img class="avatar" src="@ContentHelper.GetAvatarPath(item.Cover, "mm")">
+                                </a>
+                            </div>
+                            <div class="msg-title">
+                                <a href="@Url.Action("personal", "m", new { id = item.MemberId })">
+                                    <time class="pull-right"></time>
+                                    <h4 class="flag-num">学生:@item.Name</h4>
+                                </a>
+                            </div>
+                            <a href="@Url.Action("personal", "m", new { id = item.MemberId })">
+                               <p>@item.Title</p>
+                            </a>
+                        </a>
+                    </li>
+                    }
+                }
+            </ul>
+
+    }else{
+        <ul>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                <li>
+                    <a href="@Url.Action("course", "m", new { id = item.ClassId })">
+                        <div class="left">
+                            <img src="@item.Cover">
+                        </div>
+                        <div class="right">
+                            <p class="course-name">@item.Title</p>
+                            <span>分享者:@item.Name </span>
+                        </div>
+                    </a>
+                </li>
+                }
+            }
+        </ul>
+    }
+    </div>
+    
+</div>
+

@@ -73,7 +73,8 @@ namespace SkillBankWeb.API
                     PosX = memberInfo.PosX,
                     PosY = memberInfo.PosY,
                     Email = memberInfo.Email,
-                    SelfIntro = memberInfo.SelfIntro
+                    SelfIntro = memberInfo.SelfIntro,
+                    Gender = memberInfo.Gender
                 };
 
                 PersonalModel model = new PersonalModel();

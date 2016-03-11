@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "关注";
+    Layout = "~/Views/Shared/_MobileLayout.cshtml";
+}
+
+@Html.Partial("_MobileMenuPartial")
+<style type="text/css">
+/*.setting-credit-page .list {
+	margin: 10px;
+}
+.setting-credit-page .list li {
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	overflow: hidden;
+	background: #fff;
+	margin-bottom: 10px;
+	padding: 8px;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-justify-content: space-between;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+}*/
+
+</style>
+<div class="setting-page setting-credit-page content">
+    <header class="mb-05">
+        <div class="main">
+            <span class="page-title" align="center">积分兑换课币</span>
+        </div>
+    </header>
+    <div class="desc-nums">
+        <span align="right">积分:
+            <label class="member-credit">@ViewBag.MemberInfo.Credit</label></span>
+        <span align="left">课币:
+            <label class="member-coin">@ViewBag.MemberInfo.Coins</label></span>
+    </div>
+    <br />
+    <div class="desc">
+        <span align="center">30积分兑换1课币，目前可兑换课币数为
+            <label class="member-creditleft">@(ViewBag.MemberInfo.Credit / 30)</label></span>
+    </div>
+    <br />
+    <div class="desc">
+        <input type="tel" placeholder="输入兑换的课币数" id="exchange-coin" name="exchange-coin" />
+    </div>
+    <div class="desc">
+        <button class="btn @(ViewBag.MemberInfo.Credit < 30 ? "btn-grey disabled" : "btn-olive") border-none btn-block" id="exchange-btn">兑换</button>
+    </div>
+    <div class="desc-bottom bar" style="bottom: 50px; background: none; text-align: center">
+        <a href="@Url.Action("aboutcredit", "m")">增加积分的方法</a>
+    </div>
+</div>
+

@@ -25,6 +25,7 @@ namespace SkillBankWeb.API
             public String CityName;
             public String Avatar;
             public String Name;
+            public Boolean Gender;
             public String Address;
             public String SelfIntro;
             public int Coins;
@@ -69,7 +70,7 @@ namespace SkillBankWeb.API
                 DashboardModel model = new DashboardModel();
                 model.NumDic = numDic;
                 Boolean mobileValidation = (memberInfo.VerifyTag & 1).Equals(1);
-                model.Member = new MemberDashboardInfo() { Name = memberInfo.Name, Avatar = memberInfo.Avatar, CityName = cityName, Credit = memberInfo.Credit, Coins = memberInfo.Coins, CoinsLocked = memberInfo.CoinsLocked, Address = memberInfo.Address, SocialType = memberInfo.SocialType, SocialAccount = memberInfo.SocialType.Equals(1) ? memberInfo.SocialAccount : "", MobileValidation = mobileValidation, SelfIntro = memberInfo.SelfIntro };
+                model.Member = new MemberDashboardInfo() { Name = memberInfo.Name, Avatar = memberInfo.Avatar, CityName = cityName, Credit = memberInfo.Credit, Coins = memberInfo.Coins, CoinsLocked = memberInfo.CoinsLocked, Address = memberInfo.Address, SocialType = memberInfo.SocialType, SocialAccount = memberInfo.SocialType.Equals(1) ? memberInfo.SocialAccount : "", MobileValidation = mobileValidation, SelfIntro = memberInfo.SelfIntro, Gender = memberInfo.Gender };
                 model.MobileText = mobileValidation ? System.Text.RegularExpressions.Regex.Replace(memberInfo.Phone, @"(?im)(\d{3})(\d{6})(\d{2})", "$1******$3") : "";
 
                 if (memberInfo.LastUpdateDate.ToString("yyyy-MM-dd").Equals(DateTime.Now.ToString("yyyy-MM-dd")))

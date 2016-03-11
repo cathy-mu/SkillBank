@@ -18,7 +18,7 @@ namespace SkillBank.Site.DataSource.Data
 {
     public interface ITeacherReviewRepository
     {
-        int AddTeacherReview(int orderId, Byte feedBack, String comment, String privateComment);
+        int AddTeacherReview(int orderId, Byte feedBack, String comment, out String deviceToken, out String phone);
         List<TeacherReviewItem> GetTeacherReviews(Byte loadBy, int id, int maxReviewId = 0);
     }
 
@@ -29,9 +29,9 @@ namespace SkillBank.Site.DataSource.Data
         {
         }
 
-        public int AddTeacherReview(int orderId, Byte feedBack, String comment, String privateComment)
+        public int AddTeacherReview(int orderId, Byte feedBack, String comment, out String deviceToken, out String phone)
         {
-            return TeacherReview_Add_p(orderId, feedBack, comment, privateComment);
+            return TeacherReview_Add_p(orderId, feedBack, comment, out deviceToken, out phone);
         }
 
         public List<TeacherReviewItem> GetTeacherReviews(Byte loadBy, int paraId, int maxReviewId = 0)
@@ -51,15 +51,22 @@ namespace SkillBank.Site.DataSource.Data
             return result;
         }
 
-        private int TeacherReview_Add_p(int orderId, Byte feedBack, String comment, String privateComment)
+        private int TeacherReview_Add_p(int orderId, Byte feedBack, String comment, out String deviceToken, out String phone)
         {
+            String privateComment = "";
+            deviceToken = "";
+            phone = "";
             ObjectParameter paraId = new ObjectParameter("paraId", 0);
             ObjectParameter orderIdParameter = new ObjectParameter("orderId", orderId);
             ObjectParameter feedBackParameter = new ObjectParameter("feedBack", feedBack);
             ObjectParameter commentParameter = new ObjectParameter("comment", comment);
             ObjectParameter priComment = new ObjectParameter("priComment", privateComment);
+            ObjectParameter devicePara = new ObjectParameter("deviceToken", deviceToken);
+            ObjectParameter phonePara = new ObjectParameter("phone", phone);
 
-            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TeacherReview_Save_p", orderIdParameter, feedBackParameter, commentParameter, paraId, priComment);
+            ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TeacherReview_Save_p", orderIdParameter, feedBackParameter, commentParameter, paraId, priComment, devicePara, phonePara);
+            deviceToken = (String)devicePara.Value;
+            phone = (String)phonePara.Value;
             return (int)paraId.Value;
         }
     }

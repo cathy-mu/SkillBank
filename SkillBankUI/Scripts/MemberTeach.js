@@ -73,30 +73,45 @@ function memberteach_Class() {
         var memberName = $("#acceptpop-student").text();
         var mobile = $("#acceptpop-hidmobile").val();
 
-        var paraData;
-        if ($("#acceptpop-updatememberinfo").val() == 0) {
-            paraData = { orderid: orderId, studentid: studentId, mailaddr: mailAddress, mailname: memberName, title: classTitle, mobile: mobile };
-        } else {
-            paraData = { orderid: orderId, studentid: studentId, mailaddr: mailAddress, mailname: memberName, title: classTitle, mobile: mobile, name: nameCtl.val(), phone: phoneCtl.val(), email: emailCtl.val() };
-        }
-
         if (typeof (mixpanel) != "undefined") {
             mixpanel.track("accept booking");
         }
-        consoleLog(paraData);
 
-        var savePath = "/OrderHelper/AcceptOrder";
+        if ($("#acceptpop-updatememberinfo").val() == 0) {
+            var data = {
+                "Status": 4,
+                "MemberId": studentId,
+                "Title": classTitle,
+                "Name": memberName,
+                "Phone": mobile,
+                "Email": mailAddress
+            };
+        } else {
+            var data = {
+                "Status": 4,
+                "MemberId": studentId,
+                "Title": classTitle,
+                "Name": memberName,
+                "Phone": mobile,
+                "Email": mailAddress,
+                "MyName": nameCtl.val(),
+                "MyPhone": phoneCtl.val()
+            };
+        }
+        console.log(data);
+
+        var savePath = "/api/order/" + orderId;//"/OrderHelper/AcceptOrder";
         $.ajax({
             url: savePath,
-            type: "POST",
+            type: "PUT",//POST
             dataType: "Json",
-            data: paraData,
+            data: data,
             cache: false,
             success: function (data) {
                 if (data == 2) {
                     alert("对不起，该学生已经没有足够的课币，无法接受预定。");
                 } else if (data == 3) {
-                    alert("对不起，订单状态已改变。");
+                    alert("对不起，订单状态已改变，请刷新。");
                 }
                 //1- error 1 success 2not enough coin
                 window.location.href = "/member/teach";
@@ -187,24 +202,27 @@ function memberteach_Class() {
         var feedbackCtl = $(".feedback").find("div.checked");
         if (feedbackCtl.length > 0) {
             var feedback = feedbackCtl.parent().attr("data-value");
-            var paraData = { orderid: orderId, feedback: feedback, comment: $("#feedback-comment").val() };
-            consoleLog(paraData);
             if (typeof (mixpanel) != "undefined") {
                 mixpanel.track("teach give review");
             }
 
-            var savePath = "/FeedbackHelper/AddTeacherReview";
+            var data = {
+                "OrderId": orderId,
+                "Feedback": feedback,
+                "Comment": $("#feedback-comment").val(),
+                "IsStudent": false
+            };
+            var savePath = "/api/orderreview";
+            consoleLog(data);
+
             $.ajax({
                 url: savePath,
                 type: "POST",
                 dataType: "Json",
-                data: paraData,
+                data: data,
                 cache: false,
                 success: function (data) {
-                    consoleLog(data);
-                    if (data == "true") {
-                        window.location.reload();
-                    }
+                    window.location.reload();
                 }
             });
         } 

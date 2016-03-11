@@ -11,6 +11,7 @@ using SkillBank.Site.Common;
 using SkillBank.Site.Web;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.Web.ViewModel;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBankWeb.Controllers.API
 {
@@ -40,7 +41,7 @@ namespace SkillBankWeb.Controllers.API
         }
 
         /// <summary>
-        /// Mobile site update profile
+        /// Mobile site update profile（APP user /API/Profile）
         /// </summary>
         /// <param name="item"></param>
         /// <returns>1保存成功，2:数据保存失败，3 城市无效，4 名字无效，5 自我介绍为空</returns>
@@ -72,7 +73,12 @@ namespace SkillBankWeb.Controllers.API
                 Byte saveType = (Byte)Enums.DBAccess.MemberSaveType.UpdateBasicInfo;
                 MemberInfo memberInfo = new MemberInfo() { MemberId = memberId, Gender = item.Gender, Name = item.Name, SelfIntro = item.Intro, CityId = cityId, Avatar = item.Avatar };
                 var result = _commonService.UpdateMemberProfile(memberInfo, saveType);
-
+                String envName = System.Configuration.ConfigurationManager.AppSettings["ENV"];
+                if (envName.Equals(ConfigConstants.EnvSetting.LiveEnvName))
+                {
+                    RongCloudHelper.RefreshUserInfo(envName, memberId, item.Name, item.Avatar);
+                }
+                    
                 return result;
             }
         }

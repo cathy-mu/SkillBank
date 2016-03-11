@@ -140,9 +140,10 @@ function proflie_Class() {
         });
     }
 
+    //Seems not use it yet
     this.setLikeTag = function (relatedId, isLike) {
-        var paraData = { "relatedId": relatedId, "isLike": isLike };
-        var savePath = "/MemberHelper/UpdateMemberLikeTag";
+        var paraData = { "FollowingId": relatedId, "IsFollow": isLike };
+        var savePath = "/API/FollowMember";
         consoleLog(paraData);
         $.ajax({
             url: savePath,
@@ -150,7 +151,7 @@ function proflie_Class() {
             dataType: "Json",
             data: paraData,
             cache: false,
-            success: function (data) {
+            success: function () {
             }
         });
     }

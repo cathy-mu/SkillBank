@@ -18,10 +18,12 @@ namespace SkillBank.Site.DataSource.Data
     public interface IReportToolsRepository
     {
         List<ReportNumItem> GetReportClassMemberNum();
+        List<ReportOrderRemind_Load_p_Result> GetReportOrderRemindList(Byte loadBy, int dayBuffer, out DateTime handleDate);
         List<ReportOrderStatus_Load_p_Result> GetReportOrderStatus(Byte loadType, DateTime beginDate, DateTime endDate);
         void SaveMasterMember(int memberId, String paraStr, char split);
         void SaveRecommendationClass(int classId, String paraStr, char split);
         List<RecommendationItem> GetRecommendation(int classId);
+        List<String> GetWeChatUser();
     }
 
     public class ReportToolsRepository : Entities, IReportToolsRepository
@@ -51,6 +53,13 @@ namespace SkillBank.Site.DataSource.Data
         {
             Recommendation_Save_p(classId, paraStr, split);
         }
+
+        public List<ReportOrderRemind_Load_p_Result> GetReportOrderRemindList(Byte loadBy, int dayBuffer, out DateTime handleDate)
+        {
+            var result = ReportOrderRemind_Load_p(loadBy, dayBuffer, out handleDate);
+            return ReportToolsMapper.Map(result);
+        }
+
 
         public List<ReportOrderStatus_Load_p_Result> GetReportOrderStatus(Byte loadBy, DateTime beginDate, DateTime endDate)
         {
@@ -99,6 +108,23 @@ namespace SkillBank.Site.DataSource.Data
             return result;
         }
 
+        private ObjectResult<ReportOrderRemind_Load_p_Result> ReportOrderRemind_Load_p(Byte loadType, int dayBuffer, out DateTime handleDate)
+        {
+            handleDate = new DateTime(2015, 01, 01);
+            var loadTypeParameter = new ObjectParameter("LoadType", loadType);
+            var paraParameter = new ObjectParameter("Para", dayBuffer);
+            var outParameter = new ObjectParameter("LastHandleDate", handleDate);
+            ObjectResult<ReportOrderRemind_Load_p_Result> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReportOrderRemind_Load_p_Result>("ReportOrderRemind_Load_p", MergeOption.NoTracking, loadTypeParameter, paraParameter, outParameter);
+
+            handleDate = Convert.ToDateTime(outParameter.Value);
+            return result;
+        }
+
+        public List<String> GetWeChatUser()
+        {
+            ObjectResult<String> result = ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<String>("WeChatUser_Load_p", MergeOption.NoTracking);
+            return ReportToolsMapper.Map(result); 
+        }
 
     }
 }

@@ -20,7 +20,8 @@ namespace SkillBankWeb.API
         public class ClassSearchModel
         {
             public List<ClassCollectionItem> ClassList;
-            public Dictionary<int, CityInfo> CityLkp;
+            //public Dictionary<int, CityInfo> CityLkp;
+            public List<CityInfo> CityLkp;
         }
 
         public ClassSearchController(ICommonService commonService, IContentService contentService)
@@ -53,7 +54,7 @@ namespace SkillBankWeb.API
                 var classList = DataMapper.Map(classes, cityDic);
                 model.ClassList = classList;
             }
-            model.CityLkp = cityDic;
+            model.CityLkp = cityDic.Values.ToList<CityInfo>();
 
             return model;
         }

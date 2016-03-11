@@ -11,6 +11,7 @@ using SkillBank.Site.Web.ViewModel;
 using SkillBank.Site.Web.Context;
 using SkillBank.Site.Common;
 using SkillBank.Site.Web.CDN;
+using SkillBank.Site.Services.Utility;
 
 namespace SkillBankWeb.Controllers
 {
@@ -44,6 +45,19 @@ namespace SkillBankWeb.Controllers
                 String message = ResourceHelper.GetTransText(284);
                 _commonService.AddMessage(Constants.BizConfig.AdminMemberId, memberId, message);
             }
+
+            //get and save rong cloud token 
+            if (!memberId.Equals(0) && String.IsNullOrEmpty(rcToken))
+            {
+                rcToken = RongCloudHelper.GetToken(System.Configuration.ConfigurationManager.AppSettings["ENV"], memberId, memberName, avatar);
+                if (!String.IsNullOrEmpty(rcToken))
+                {
+                    Byte type = (Byte)Enums.DBAccess.MemberSaveType.UpdateRCTokenADeviceToken;
+                    MemberInfo memberInfo = new MemberInfo() { MemberId = memberId, Avatar = rcToken };
+                    var updateResult = _commonService.UpdateMemberProfile(memberInfo, type);
+                }
+            }
+
             var jsonObj = new JsonResult();
             jsonObj.Data = new { r = result, i = memberId };
  
@@ -132,11 +146,12 @@ namespace SkillBankWeb.Controllers
             return Json(jsonObj, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
+        [Obsolete]
         public JsonResult UpdateMemberLikeTag(int relatedId, Boolean isLike)
         {
             int memberId = WebContext.Current.MemberId;
-            _commonService.UpdateMemberLikeTag(memberId, relatedId, isLike);
+            String deviceToken = "";
+            _commonService.UpdateMemberLikeTag(memberId, relatedId, isLike, out deviceToken);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
                 
